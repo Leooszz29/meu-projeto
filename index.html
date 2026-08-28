@@ -24,65 +24,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             padding: 0;
-        }
-
-        .hero-section {
-            width: 100%;
-            background: white;
-            padding: 40px 20px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            gap: 30px;
-            border-bottom: 2px solid #e8e8e8;
-            min-height: 380px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        .character {
-            cursor: pointer;
-            transition: transform 0.3s ease, filter 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            user-select: none;
-            flex: 1;
-            max-width: 200px;
-        }
-
-        .character:hover {
-            transform: translateY(-15px);
-            filter: brightness(1.05) drop-shadow(0 15px 30px rgba(0, 0, 0, 0.2));
-        }
-
-        .character img {
-            width: 100%;
-            height: auto;
-            max-width: 180px;
-            object-fit: contain;
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
-            transition: transform 0.3s ease;
-            background: transparent;
-        }
-
-        .character:hover img {
-            transform: scale(1.05);
-        }
-
-        .character-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #666666;
-            margin-top: 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: color 0.3s ease;
-        }
-
-        .character:hover .character-label {
-            color: #000000;
         }
 
         .login-container {
@@ -307,42 +250,7 @@
         }
 
         /* Responsividade */
-        @media (max-width: 768px) {
-            .hero-section {
-                min-height: 320px;
-                gap: 20px;
-                padding: 30px 15px;
-            }
-
-            .character {
-                max-width: 150px;
-            }
-
-            .character img {
-                max-width: 140px;
-            }
-        }
-
         @media (max-width: 600px) {
-            .hero-section {
-                min-height: 280px;
-                gap: 15px;
-                padding: 25px 12px;
-            }
-
-            .character {
-                max-width: 130px;
-            }
-
-            .character img {
-                max-width: 120px;
-            }
-
-            .character-label {
-                font-size: 11px;
-                margin-top: 10px;
-            }
-
             .login-container {
                 padding: 32px 20px;
                 margin: 30px 15px;
@@ -395,11 +303,6 @@
                 background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             }
 
-            .hero-section {
-                background: #1a1a1a;
-                border-bottom-color: #333333;
-            }
-
             .login-container {
                 background: #1a1a1a;
                 box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
@@ -430,10 +333,6 @@
                 color: #bbbbbb;
             }
 
-            .character-label {
-                color: #999999;
-            }
-
             .remember-forgot {
                 color: #aaaaaa;
             }
@@ -454,26 +353,6 @@
     </style>
 </head>
 <body>
-    <div class="hero-section">
-        <div class="character" id="femaleCharacter" role="button" tabindex="0" aria-label="Visualizar página de login - Mulher Fitness">
-            <img 
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVfjo20tO17Yi95mAN3u90za_exjMtuOYb42Ag2AUYhtseTUJW4LWwO0e8&s=120" 
-                alt="Mulher praticando exercício com halteres" 
-                loading="lazy"
-            />
-            <div class="character-label">Determinada</div>
-        </div>
-
-        <div class="character" id="maleCharacter" role="button" tabindex="0" aria-label="Visualizar página de login - Homem Musculoso">
-            <img 
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrUynsSvcyTxFbuVYZTeeH1n41rI7oEh9BjbYFRjVXdA&s=120" 
-                alt="Homem levantando peso na academia"
-                loading="lazy"
-            />
-            <div class="character-label">Musculoso</div>
-        </div>
-    </div>
-
     <div class="login-container">
         <div class="logo-section">
             <div class="logo-circle">💪</div>
@@ -532,36 +411,14 @@
         const successMessage = document.getElementById('successMessage');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
-        const femaleCharacter = document.getElementById('femaleCharacter');
-        const maleCharacter = document.getElementById('maleCharacter');
         const submitBtn = document.getElementById('submitBtn');
 
         // ==================== EVENT LISTENERS ====================
-        femaleCharacter.addEventListener('click', scrollToLogin);
-        femaleCharacter.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                scrollToLogin();
-            }
-        });
-
-        maleCharacter.addEventListener('click', scrollToLogin);
-        maleCharacter.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                scrollToLogin();
-            }
-        });
-
         form.addEventListener('submit', handleLogin);
         emailInput.addEventListener('input', clearError);
         passwordInput.addEventListener('input', clearError);
 
         // ==================== FUNÇÕES ====================
-        function scrollToLogin() {
-            const loginContainer = document.querySelector('.login-container');
-            loginContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            emailInput.focus();
-        }
-
         function clearError() {
             errorMessage.classList.remove('show');
             successMessage.classList.remove('show');
