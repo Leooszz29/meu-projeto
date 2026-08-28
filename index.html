@@ -205,7 +205,7 @@ h1{
 
     <div class="arena-floor">
 
-      <div class="station" id="station-homem">
+      <div class="station" id="station-homem" onclick="escolherGenero('masculino')">
         <div class="spotlight"></div>
         <div class="ring"></div>
         <div class="lifter-wrap" id="lift-homem">
@@ -214,7 +214,7 @@ h1{
         <div class="platform"></div>
       </div>
 
-      <div class="station" id="station-mulher">
+      <div class="station" id="station-mulher" onclick="escolherGenero('feminino')">
         <div class="spotlight"></div>
         <div class="ring"></div>
         <div class="lifter-wrap" id="lift-mulher">
@@ -235,6 +235,11 @@ stations.forEach(st => {
     st.classList.add('selected');
   });
 });
+
+function escolherGenero(genero) {
+  localStorage.setItem('generoFitZone', genero);
+  window.location.href = 'login.html';
+}
 </script>
 
 </body>
