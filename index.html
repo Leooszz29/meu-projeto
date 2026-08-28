@@ -4,9 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="FitZone - Academia Premium. Faça seu login e comece seu treino agora!">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#1a1b1d">
     <title>FitZone - Academia Premium | Login</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap');
+
+        :root{
+            --concrete-1:#2b2d30;
+            --concrete-2:#1a1b1d;
+            --steel:#3a4650;
+            --amber:#e0a53c;
+            --amber-dim:#8a6a2c;
+            --red:#c1443c;
+            --chalk:#eae6da;
+            --chalk-dim:#a7a49a;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -18,8 +31,11 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            font-family: 'Oswald', sans-serif;
+            background:
+                radial-gradient(ellipse 900px 500px at 20% 0%, rgba(224,165,60,0.08), transparent 60%),
+                radial-gradient(ellipse 900px 500px at 80% 100%, rgba(224,165,60,0.06), transparent 60%),
+                linear-gradient(135deg, var(--concrete-1) 0%, var(--concrete-2) 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -29,9 +45,10 @@
         }
 
         .login-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            background: rgba(43, 45, 48, 0.85);
+            border: 1px solid rgba(224, 165, 60, 0.25);
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
             width: 100%;
             max-width: 420px;
             padding: 48px 32px;
@@ -58,7 +75,7 @@
         .logo-circle {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #000000 0%, #333333 100%);
+            background: linear-gradient(135deg, var(--amber) 0%, var(--amber-dim) 100%);
             border-radius: 50%;
             margin: 0 auto 20px;
             display: flex;
@@ -66,23 +83,25 @@
             justify-content: center;
             font-size: 40px;
             font-weight: bold;
-            color: #f5f5f5;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            color: var(--concrete-2);
+            box-shadow: 0 4px 18px rgba(224, 165, 60, 0.35);
         }
 
         .academy-name {
-            font-size: 28px;
-            font-weight: 700;
-            color: #000000;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 34px;
+            font-weight: 400;
+            color: var(--chalk);
             margin-bottom: 8px;
-            letter-spacing: -0.5px;
+            letter-spacing: 2px;
         }
 
         .academy-subtitle {
-            font-size: 14px;
-            color: #888888;
-            font-weight: 400;
-            letter-spacing: 0.5px;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         .form-group {
@@ -93,7 +112,7 @@
             display: block;
             font-size: 12px;
             font-weight: 600;
-            color: #333333;
+            color: var(--chalk-dim);
             margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -103,25 +122,27 @@
         input[type="password"] {
             width: 100%;
             padding: 12px 16px;
-            border: 1.5px solid #e0e0e0;
-            border-radius: 8px;
+            border: 1.5px solid var(--steel);
+            border-radius: 6px;
             font-size: 14px;
             font-family: inherit;
             transition: all 0.3s ease;
-            background: #fafafa;
+            background: rgba(0, 0, 0, 0.25);
+            color: var(--chalk);
         }
 
         input[type="email"]:focus,
         input[type="password"]:focus {
             outline: none;
-            border-color: #000000;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+            border-color: var(--amber);
+            background: rgba(0, 0, 0, 0.35);
+            box-shadow: 0 0 0 3px rgba(224, 165, 60, 0.12);
         }
 
         input[type="email"]::placeholder,
         input[type="password"]::placeholder {
-            color: #bbb;
+            color: var(--chalk-dim);
+            opacity: 0.6;
         }
 
         .remember-forgot {
@@ -138,17 +159,18 @@
             align-items: center;
             gap: 6px;
             cursor: pointer;
+            color: var(--chalk-dim);
         }
 
         input[type="checkbox"] {
             width: 16px;
             height: 16px;
             cursor: pointer;
-            accent-color: #000000;
+            accent-color: var(--amber);
         }
 
         .forgot-password {
-            color: #666666;
+            color: var(--chalk-dim);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
@@ -156,30 +178,30 @@
         }
 
         .forgot-password:hover {
-            color: #000000;
+            color: var(--amber);
             text-decoration: underline;
         }
 
         .btn-login {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
-            color: white;
+            background: linear-gradient(135deg, var(--amber) 0%, #c98a2e 100%);
+            color: var(--concrete-2);
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1.5px;
             margin-bottom: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 14px rgba(224, 165, 60, 0.3);
         }
 
         .btn-login:hover {
-            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            background: linear-gradient(135deg, #f0b654 0%, var(--amber) 100%);
+            box-shadow: 0 8px 24px rgba(224, 165, 60, 0.45);
             transform: translateY(-2px);
         }
 
@@ -188,39 +210,39 @@
         }
 
         .btn-login:disabled {
-            opacity: 0.7;
+            opacity: 0.6;
             cursor: not-allowed;
         }
 
         .signup-section {
             text-align: center;
             padding-top: 20px;
-            border-top: 1px solid #e8e8e8;
+            border-top: 1px solid rgba(224, 165, 60, 0.15);
             font-size: 13px;
-            color: #666666;
+            color: var(--chalk-dim);
         }
 
         .signup-section a {
-            color: #000000;
+            color: var(--amber);
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s ease;
         }
 
         .signup-section a:hover {
-            opacity: 0.7;
+            opacity: 0.8;
             text-decoration: underline;
         }
 
         .error-message {
             display: none;
-            background: #ffe8e8;
-            color: #c00;
+            background: rgba(193, 68, 60, 0.15);
+            color: #e88a83;
             padding: 12px 14px;
             border-radius: 6px;
             font-size: 13px;
             margin-bottom: 20px;
-            border-left: 4px solid #c00;
+            border-left: 4px solid var(--red);
             animation: shake 0.3s ease;
         }
 
@@ -236,13 +258,13 @@
 
         .success-message {
             display: none;
-            background: #e8f5e9;
-            color: #2e7d32;
+            background: rgba(224, 165, 60, 0.15);
+            color: var(--amber);
             padding: 12px 14px;
             border-radius: 6px;
             font-size: 13px;
             margin-bottom: 20px;
-            border-left: 4px solid #2e7d32;
+            border-left: 4px solid var(--amber);
         }
 
         .success-message.show {
@@ -258,11 +280,11 @@
             }
 
             .academy-name {
-                font-size: 24px;
+                font-size: 28px;
             }
 
             .academy-subtitle {
-                font-size: 12px;
+                font-size: 11px;
             }
 
             .logo-circle {
@@ -294,60 +316,6 @@
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
-            }
-        }
-
-        /* Dark mode */
-        @media (prefers-color-scheme: dark) {
-            body {
-                background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            }
-
-            .login-container {
-                background: #1a1a1a;
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            }
-
-            .academy-name {
-                color: #ffffff;
-            }
-
-            .academy-subtitle {
-                color: #aaaaaa;
-            }
-
-            input[type="email"],
-            input[type="password"] {
-                background: #2d2d2d;
-                border-color: #444444;
-                color: #ffffff;
-            }
-
-            input[type="email"]:focus,
-            input[type="password"]:focus {
-                background: #333333;
-                border-color: #666666;
-            }
-
-            label {
-                color: #bbbbbb;
-            }
-
-            .remember-forgot {
-                color: #aaaaaa;
-            }
-
-            .forgot-password {
-                color: #aaaaaa;
-            }
-
-            .signup-section {
-                border-top-color: #333333;
-                color: #999999;
-            }
-
-            .signup-section a {
-                color: #ffffff;
             }
         }
     </style>
