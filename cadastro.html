@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Crie sua conta e comece seu treino agora!">
+    <meta name="theme-color" content="#1a1b1d">
+    <title>Criar Conta | Cadastro</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap');
+
+        :root{
+            --concrete-1:#2b2d30;
+            --concrete-2:#1a1b1d;
+            --steel:#3a4650;
+            --chalk:#eae6da;
+            --chalk-dim:#a7a49a;
+            --red:#c1443c;
+
+            /* Tema padrão: Feminino - Âmbar/Vermelho */
+            --accent:#e0a53c;
+            --accent-rgb:224,165,60;
+            --accent-alt:#c1443c;
+            --accent-dim:#8a6a2c;
+        }
+
+        /* Tema Masculino - Cyberpunk/Azul Esporte */
+        body.theme-masculino{
+            --accent:#2f8fed;
+            --accent-rgb:47,143,237;
+            --accent-alt:#00e5ff;
+            --accent-dim:#173a6a;
+        }
+
+        /* Tema Feminino - Âmbar/Vermelho (explícito) */
+        body.theme-feminino{
+            --accent:#e0a53c;
+            --accent-rgb:224,165,60;
+            --accent-alt:#c1443c;
+            --accent-dim:#8a6a2c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Oswald', sans-serif;
+            background:
+                radial-gradient(ellipse 900px 500px at 20% 0%, rgba(var(--accent-rgb),0.08), transparent 60%),
+                radial-gradient(ellipse 900px 500px at 80% 100%, rgba(var(--accent-rgb),0.06), transparent 60%),
+                linear-gradient(135deg, var(--concrete-1) 0%, var(--concrete-2) 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: background 0.4s ease;
+        }
+
+        .signup-container {
+            background: rgba(43, 45, 48, 0.85);
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+            width: 100%;
+            max-width: 420px;
+            padding: 48px 32px;
+            margin: 40px 20px;
+            animation: slideUp 0.5s ease;
+            transition: border-color 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            color: var(--concrete-2);
+            box-shadow: 0 4px 18px rgba(var(--accent-rgb), 0.35);
+            transition: background 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .academy-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 30px;
+            font-weight: 400;
+            color: var(--chalk);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        .academy-subtitle {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--chalk-dim);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--steel);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.25);
+            color: var(--chalk);
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, 0.35);
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
+        }
+
+        input::placeholder {
+            color: var(--chalk-dim);
+            opacity: 0.6;
+        }
+
+        .password-hint {
+            font-size: 11px;
+            color: var(--chalk-dim);
+            margin-top: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .terms-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 28px;
+            font-size: 13px;
+            color: var(--chalk-dim);
+        }
+
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .terms-group a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .terms-group a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-signup {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-alt) 100%);
+            color: var(--concrete-2);
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.3);
+        }
+
+        .btn-signup:hover {
+            background: linear-gradient(135deg, var(--accent-alt) 0%, var(--accent) 100%);
+            box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.45);
+            transform: translateY(-2px);
+        }
+
+        .btn-signup:active {
+            transform: translateY(0);
+        }
+
+        .btn-signup:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .login-section {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(var(--accent-rgb), 0.15);
+            font-size: 13px;
+            color: var(--chalk-dim);
+        }
+
+        .login-section a {
+            color: var(--accent);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .login-section a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .error-message {
+            display: none;
+            background: rgba(193, 68, 60, 0.15);
+            color: #e88a83;
+            padding: 12px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--red);
+            animation: shake 0.3s ease;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(var(--accent-rgb), 0.15);
+            color: var(--accent);
+            padding: 12px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .signup-container {
+                padding: 32px 20px;
+                margin: 30px 15px;
+                max-width: 100%;
+            }
+
+            .academy-name {
+                font-size: 24px;
+            }
+
+            .logo-circle {
+                width: 64px;
+                height: 64px;
+                font-size: 32px;
+            }
+
+            .btn-signup {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+
+        /* Acessibilidade */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="logo-section">
+            <div class="logo-circle">💪</div>
+            <h1 class="academy-name">CRIAR CONTA</h1>
+            <p class="academy-subtitle">Comece seu treino hoje</p>
+        </div>
+
+        <form id="signupForm" novalidate>
+            <div class="error-message" id="errorMessage" role="alert"></div>
+            <div class="success-message" id="successMessage" role="status"></div>
+
+            <div class="form-group">
+                <label for="name">Nome completo</label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    placeholder="Seu nome"
+                    required
+                    aria-required="true"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="seu@email.com"
+                    required
+                    aria-required="true"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Crie uma senha"
+                    required
+                    aria-required="true"
+                >
+                <div class="password-hint">Mínimo de 6 caracteres</div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirmar senha</label>
+                <input 
+                    type="password" 
+                    id="confirmPassword" 
+                    name="confirmPassword" 
+                    placeholder="Repita sua senha"
+                    required
+                    aria-required="true"
+                >
+            </div>
+
+            <div class="terms-group">
+                <input type="checkbox" name="terms" id="terms">
+                <label for="terms" style="text-transform:none; font-weight:400; letter-spacing:normal; margin:0; cursor:pointer;">
+                    Concordo com os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-signup" id="submitBtn">Criar conta</button>
+        </form>
+
+        <div class="login-section">
+            Já tem conta? <a href="fitzone-login.html">Entrar</a>
+        </div>
+    </div>
+
+    <script>
+        // ==================== VARIÁVEIS ====================
+        const form = document.getElementById('signupForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const termsInput = document.getElementById('terms');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // ==================== EVENT LISTENERS ====================
+        form.addEventListener('submit', handleSignup);
+        [nameInput, emailInput, passwordInput, confirmPasswordInput].forEach(el => {
+            el.addEventListener('input', clearError);
+        });
+        termsInput.addEventListener('change', clearError);
+
+        // ==================== FUNÇÕES ====================
+        function clearError() {
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+            successMessage.classList.remove('show');
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.classList.add('show');
+            errorMessage.classList.remove('show');
+        }
+
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function handleSignup(e) {
+            e.preventDefault();
+            clearError();
+
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            // Validação
+            if (!name || !email || !password || !confirmPassword) {
+                showError('Por favor, preencha todos os campos');
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                showError('Por favor, digite um email válido');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('A senha deve ter no mínimo 6 caracteres');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError('As senhas não coincidem');
+                return;
+            }
+
+            if (!termsInput.checked) {
+                showError('Você precisa aceitar os Termos de Uso');
+                return;
+            }
+
+            // Desabilitar botão durante envio
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Criando conta...';
+
+            // Simular envio (remova isso quando conectar a um backend)
+            setTimeout(() => {
+                showSuccess('Conta criada com sucesso! Redirecionando para o login... 💪');
+
+                setTimeout(() => {
+                    window.location.href = 'fitzone-login.html';
+                }, 1800);
+            }, 1200);
+
+            // Log para desenvolvimento
+            console.log('Tentativa de cadastro:', {
+                nome: name,
+                email: email,
+                timestamp: new Date().toLocaleString('pt-BR')
+            });
+        }
+
+        // ==================== INICIALIZAÇÃO ====================
+        window.addEventListener('DOMContentLoaded', () => {
+            // Aplicar tema de acordo com o gênero escolhido no Duelo de Ferro
+            const genero = localStorage.getItem('generoFitZone');
+            if (genero === 'masculino') {
+                document.body.classList.add('theme-masculino');
+            } else if (genero === 'feminino') {
+                document.body.classList.add('theme-feminino');
+            }
+        });
+    </script>
+</body>
+</html>
