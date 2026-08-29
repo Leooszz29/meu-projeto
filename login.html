@@ -13,11 +13,31 @@
             --concrete-1:#2b2d30;
             --concrete-2:#1a1b1d;
             --steel:#3a4650;
-            --amber:#e0a53c;
-            --amber-dim:#8a6a2c;
-            --red:#c1443c;
             --chalk:#eae6da;
             --chalk-dim:#a7a49a;
+            --red:#c1443c;
+
+            /* Tema padrão: Feminino - Âmbar/Vermelho */
+            --accent:#e0a53c;
+            --accent-rgb:224,165,60;
+            --accent-alt:#c1443c;
+            --accent-dim:#8a6a2c;
+        }
+
+        /* Tema Masculino - Cyberpunk/Azul Esporte */
+        body.theme-masculino{
+            --accent:#2f8fed;
+            --accent-rgb:47,143,237;
+            --accent-alt:#00e5ff;
+            --accent-dim:#173a6a;
+        }
+
+        /* Tema Feminino - Âmbar/Vermelho (explícito) */
+        body.theme-feminino{
+            --accent:#e0a53c;
+            --accent-rgb:224,165,60;
+            --accent-alt:#c1443c;
+            --accent-dim:#8a6a2c;
         }
 
         * {
@@ -33,8 +53,8 @@
         body {
             font-family: 'Oswald', sans-serif;
             background:
-                radial-gradient(ellipse 900px 500px at 20% 0%, rgba(224,165,60,0.08), transparent 60%),
-                radial-gradient(ellipse 900px 500px at 80% 100%, rgba(224,165,60,0.06), transparent 60%),
+                radial-gradient(ellipse 900px 500px at 20% 0%, rgba(var(--accent-rgb),0.08), transparent 60%),
+                radial-gradient(ellipse 900px 500px at 80% 100%, rgba(var(--accent-rgb),0.06), transparent 60%),
                 linear-gradient(135deg, var(--concrete-1) 0%, var(--concrete-2) 100%);
             min-height: 100vh;
             display: flex;
@@ -42,11 +62,12 @@
             align-items: center;
             justify-content: center;
             padding: 0;
+            transition: background 0.4s ease;
         }
 
         .login-container {
             background: rgba(43, 45, 48, 0.85);
-            border: 1px solid rgba(224, 165, 60, 0.25);
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
             border-radius: 10px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
             width: 100%;
@@ -54,6 +75,7 @@
             padding: 48px 32px;
             margin: 40px 20px;
             animation: slideUp 0.5s ease;
+            transition: border-color 0.4s ease;
         }
 
         @keyframes slideUp {
@@ -75,7 +97,7 @@
         .logo-circle {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, var(--amber) 0%, var(--amber-dim) 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
             border-radius: 50%;
             margin: 0 auto 20px;
             display: flex;
@@ -84,7 +106,8 @@
             font-size: 40px;
             font-weight: bold;
             color: var(--concrete-2);
-            box-shadow: 0 4px 18px rgba(224, 165, 60, 0.35);
+            box-shadow: 0 4px 18px rgba(var(--accent-rgb), 0.35);
+            transition: background 0.4s ease, box-shadow 0.4s ease;
         }
 
         .academy-name {
@@ -126,9 +149,9 @@
         input[type="email"]:focus,
         input[type="password"]:focus {
             outline: none;
-            border-color: var(--amber);
+            border-color: var(--accent);
             background: rgba(0, 0, 0, 0.35);
-            box-shadow: 0 0 0 3px rgba(224, 165, 60, 0.12);
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
         }
 
         input[type="email"]::placeholder,
@@ -158,7 +181,7 @@
             width: 16px;
             height: 16px;
             cursor: pointer;
-            accent-color: var(--amber);
+            accent-color: var(--accent);
         }
 
         .forgot-password {
@@ -170,14 +193,14 @@
         }
 
         .forgot-password:hover {
-            color: var(--amber);
+            color: var(--accent);
             text-decoration: underline;
         }
 
         .btn-login {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, var(--amber) 0%, #c98a2e 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-alt) 100%);
             color: var(--concrete-2);
             border: none;
             border-radius: 6px;
@@ -188,12 +211,12 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             margin-bottom: 16px;
-            box-shadow: 0 4px 14px rgba(224, 165, 60, 0.3);
+            box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.3);
         }
 
         .btn-login:hover {
-            background: linear-gradient(135deg, #f0b654 0%, var(--amber) 100%);
-            box-shadow: 0 8px 24px rgba(224, 165, 60, 0.45);
+            background: linear-gradient(135deg, var(--accent-alt) 0%, var(--accent) 100%);
+            box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.45);
             transform: translateY(-2px);
         }
 
@@ -209,13 +232,13 @@
         .signup-section {
             text-align: center;
             padding-top: 20px;
-            border-top: 1px solid rgba(224, 165, 60, 0.15);
+            border-top: 1px solid rgba(var(--accent-rgb), 0.15);
             font-size: 13px;
             color: var(--chalk-dim);
         }
 
         .signup-section a {
-            color: var(--amber);
+            color: var(--accent);
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s ease;
@@ -250,13 +273,13 @@
 
         .success-message {
             display: none;
-            background: rgba(224, 165, 60, 0.15);
-            color: var(--amber);
+            background: rgba(var(--accent-rgb), 0.15);
+            color: var(--accent);
             padding: 12px 14px;
             border-radius: 6px;
             font-size: 13px;
             margin-bottom: 20px;
-            border-left: 4px solid var(--amber);
+            border-left: 4px solid var(--accent);
         }
 
         .success-message.show {
@@ -355,7 +378,7 @@
         </form>
 
         <div class="signup-section">
-            Ainda não tem conta? <a href="#">Cadastre-se aqui</a>
+            Ainda não tem conta? <a href="fitzone-cadastro.html">Cadastre-se aqui</a>
         </div>
     </div>
 
@@ -425,7 +448,7 @@
 
             // Simular envio (remova isso quando conectar a um backend)
             setTimeout(() => {
-                showSuccess('Login realizado com sucesso! Bem-vindo à FitZone! 💪');
+                showSuccess('Login realizado com sucesso! Seja bem vindo! 💪');
                 
                 // Armazenar preferência de lembrar
                 if (document.getElementById('remember').checked) {
@@ -455,6 +478,14 @@
             if (rememberedEmail) {
                 emailInput.value = rememberedEmail;
                 document.getElementById('remember').checked = true;
+            }
+
+            // Aplicar tema de acordo com o gênero escolhido no Duelo de Ferro
+            const genero = localStorage.getItem('generoFitZone');
+            if (genero === 'masculino') {
+                document.body.classList.add('theme-masculino');
+            } else if (genero === 'feminino') {
+                document.body.classList.add('theme-feminino');
             }
         });
     </script>
