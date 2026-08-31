@@ -255,6 +255,27 @@ textarea::placeholder{
     text-decoration:underline;
 }
 
+.btn-end-session{
+    display:block;
+    width:100%;
+    padding:13px;
+    margin-top:16px;
+    border-radius:8px;
+    border:1px solid rgba(193, 68, 60, 0.4);
+    background:transparent;
+    color:#e88a83;
+    font-size:12.5px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    cursor:pointer;
+    transition:all 0.2s ease;
+}
+.btn-end-session:hover{
+    background:rgba(193, 68, 60, 0.12);
+    border-color:#c1443c;
+}
+
 @media (max-width:420px){
     .field-row{grid-template-columns:1fr 1fr;}
     .form-card{padding:22px 18px;}
@@ -336,6 +357,8 @@ textarea::placeholder{
             <a href="treinos.html" class="continue-link">Ir para meus treinos →</a>
         </div>
     </div>
+
+    <button class="btn-end-session" id="btnEndSession">Finalizar sessão</button>
 </div>
 
 <script>
@@ -382,6 +405,12 @@ document.getElementById('profileForm').addEventListener('submit', (e) => {
     const successMsg = document.getElementById('successMessage');
     successMsg.classList.add('show');
     setTimeout(() => successMsg.classList.remove('show'), 3000);
+});
+
+document.getElementById('btnEndSession').addEventListener('click', () => {
+    localStorage.removeItem('generoFitZone');
+    localStorage.removeItem('rememberedEmail');
+    window.location.href = 'index.html';
 });
 
 window.addEventListener('DOMContentLoaded', () => {
