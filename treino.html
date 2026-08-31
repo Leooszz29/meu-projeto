@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -437,6 +436,269 @@ h1{
 @media (max-width:420px){
     .workout-title{font-size:19px;}
 }
+
+/* ===== Calendário de Check-in (compacto) ===== */
+.section-title{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:19px;
+    letter-spacing:2px;
+    color:var(--chalk);
+    text-transform:uppercase;
+    margin:32px 0 4px;
+    text-align:center;
+}
+.section-subtitle{
+    color:var(--chalk-dim);
+    font-size:11.5px;
+    text-align:center;
+    margin-bottom:14px;
+}
+
+.stats-row{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    margin:0 0 10px;
+    flex-wrap:wrap;
+}
+.stat-pill{
+    background:rgba(0,0,0,0.3);
+    border:1px solid rgba(var(--accent-rgb), 0.25);
+    border-radius:7px;
+    padding:6px 14px;
+    text-align:center;
+    min-width:96px;
+}
+.stat-pill .label{
+    font-size:8.5px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--chalk-dim);
+}
+.stat-pill .value{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:18px;
+    color:var(--accent);
+    letter-spacing:1px;
+}
+
+.calendar-card{
+    background:rgba(43, 45, 48, 0.85);
+    border:1px solid rgba(var(--accent-rgb), 0.25);
+    border-radius:10px;
+    box-shadow:0 8px 26px rgba(0,0,0,0.4);
+    padding:14px 14px 16px;
+    max-width:320px;
+    margin:0 auto;
+    transition:border-color 0.4s ease;
+}
+
+.month-nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:10px;
+}
+.month-nav button{
+    background:transparent;
+    border:1px solid rgba(var(--accent-rgb), 0.3);
+    color:var(--accent);
+    width:24px;
+    height:24px;
+    border-radius:5px;
+    font-size:13px;
+    line-height:1;
+    cursor:pointer;
+    transition:all 0.2s ease;
+}
+.month-nav button:hover{
+    background:rgba(var(--accent-rgb), 0.15);
+}
+.month-label{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:15px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--chalk);
+}
+
+.weekdays{
+    display:grid;
+    grid-template-columns:repeat(7, 1fr);
+    gap:3px;
+    margin-bottom:4px;
+}
+.weekdays span{
+    text-align:center;
+    font-size:9px;
+    letter-spacing:0.5px;
+    color:var(--chalk-dim);
+    text-transform:uppercase;
+}
+
+.days-grid{
+    display:grid;
+    grid-template-columns:repeat(7, 1fr);
+    gap:3px;
+}
+.day-cell{
+    position:relative;
+    aspect-ratio:1;
+    border-radius:6px;
+    border:1px solid rgba(255,255,255,0.06);
+    background:rgba(0,0,0,0.2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:all 0.2s ease;
+    overflow:hidden;
+}
+.day-cell.empty{
+    visibility:hidden;
+    cursor:default;
+}
+.day-cell:hover:not(.empty){
+    border-color:rgba(var(--accent-rgb), 0.5);
+}
+.day-cell .num{
+    font-size:10.5px;
+    font-weight:600;
+    color:var(--chalk);
+}
+.day-cell.today .num{
+    color:var(--accent);
+}
+.day-cell.today{
+    border-color:rgba(var(--accent-rgb), 0.5);
+}
+.day-cell.checked{
+    background:linear-gradient(135deg, rgba(var(--accent-rgb),0.35) 0%, rgba(var(--accent-rgb),0.12) 100%);
+    border-color:var(--accent);
+}
+.day-cell .check-badge{
+    position:absolute;
+    top:1px;
+    right:1px;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--accent);
+    color:var(--concrete-2);
+    font-size:7px;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+.day-cell.checked .check-badge{
+    display:flex;
+}
+.day-cell .treino-label{
+    display:none;
+}
+
+
+.legend{
+    display:flex;
+    gap:18px;
+    justify-content:center;
+    margin-top:12px;
+    font-size:9.5px;
+    color:var(--chalk-dim);
+    flex-wrap:wrap;
+}
+.legend span{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+.legend .dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.2);
+}
+.legend .dot.checked{
+    background:var(--accent);
+    border-color:var(--accent);
+}
+
+.divider{
+    border:none;
+    border-top:1px solid rgba(var(--accent-rgb), 0.15);
+    margin:40px 0 4px;
+}
+
+.switch{
+    width:42px;
+    height:24px;
+    border-radius:12px;
+    background:var(--steel);
+    position:relative;
+    transition:background 0.2s ease;
+    flex-shrink:0;
+}
+.switch::after{
+    content:"";
+    position:absolute;
+    top:3px;
+    left:3px;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:var(--chalk);
+    transition:transform 0.2s ease;
+}
+.checkin-toggle.active .switch{
+    background:var(--accent);
+}
+.checkin-toggle.active .switch::after{
+    transform:translateX(18px);
+}
+
+.btn-toggle-calendar{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    padding:12px;
+    margin-top:20px;
+    border-radius:8px;
+    border:1px solid rgba(var(--accent-rgb), 0.35);
+    background:rgba(var(--accent-rgb), 0.08);
+    color:var(--accent);
+    font-size:12.5px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    cursor:pointer;
+    transition:all 0.2s ease;
+}
+.btn-toggle-calendar:hover{
+    background:rgba(var(--accent-rgb), 0.15);
+}
+.btn-toggle-calendar .chevron{
+    font-size:11px;
+    transition:transform 0.25s ease;
+}
+.btn-toggle-calendar.open .chevron{
+    transform:rotate(180deg);
+}
+
+.calendar-wrapper{
+    max-height:0;
+    overflow:hidden;
+    opacity:0;
+    transition:max-height 0.35s ease, opacity 0.25s ease, margin 0.35s ease;
+}
+.calendar-wrapper.show{
+    max-height:700px;
+    opacity:1;
+    margin-top:14px;
+}
+
 </style>
 </head>
 <body>
@@ -449,6 +711,46 @@ h1{
         <h1>MEUS TREINOS</h1>
         <p class="subtitle">Adicione, edite e organize seus exercícios</p>
     </header>
+
+    <button class="btn-toggle-calendar" id="btnToggleCalendar">
+        <span id="toggleCalendarLabel">Mostrar calendário de check-in</span>
+        <span class="chevron" id="toggleCalendarChevron">▾</span>
+    </button>
+
+    <div class="calendar-wrapper" id="calendarWrapper">
+        <div class="stats-row">
+            <div class="stat-pill">
+                <div class="label">Check-ins no mês</div>
+                <div class="value" id="statMes">0</div>
+            </div>
+            <div class="stat-pill">
+                <div class="label">Sequência atual</div>
+                <div class="value" id="statSequencia">0</div>
+            </div>
+        </div>
+
+        <div class="calendar-card">
+            <div class="month-nav">
+                <button id="prevMonth" aria-label="Mês anterior">‹</button>
+                <div class="month-label" id="monthLabel">Agosto 2026</div>
+                <button id="nextMonth" aria-label="Próximo mês">›</button>
+            </div>
+
+            <div class="weekdays">
+                <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
+            </div>
+
+            <div class="days-grid" id="daysGrid"></div>
+
+            <div class="legend">
+                <span><span class="dot checked"></span> Check-in feito</span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+    <div class="section-title">MEUS TREINOS</div>
+    <div class="section-subtitle">Monte sua rotina de exercícios</div>
 
     <button class="btn-new-workout" id="btnNewWorkout">+ Novo treino</button>
 
@@ -510,6 +812,27 @@ h1{
         <div class="modal-actions">
             <button class="btn btn-cancel" id="confirmCancelBtn">Cancelar</button>
             <button class="btn btn-save" id="confirmDeleteBtn" style="background:linear-gradient(135deg, #c1443c 0%, #8a2e28 100%); box-shadow:0 4px 14px rgba(193,68,60,0.3);">Excluir</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Check-in do dia -->
+<div class="modal-overlay" id="checkinModalOverlay">
+    <div class="modal">
+        <h2>Registrar dia</h2>
+        <div class="modal-date" id="checkinModalDate" style="font-size:12px; color:var(--accent); letter-spacing:1px; text-transform:uppercase; margin-bottom:20px;">—</div>
+
+        <div class="checkin-toggle" id="checkinToggle" style="display:flex; align-items:center; justify-content:space-between; background:rgba(0,0,0,0.25); border:1px solid var(--steel); border-radius:8px; padding:12px 14px; margin-bottom:18px; cursor:pointer;">
+            <span style="font-size:13px; font-weight:600; color:var(--chalk); text-transform:uppercase; letter-spacing:0.5px;">Fiz check-in hoje</span>
+            <div class="switch"></div>
+        </div>
+
+        <label for="checkinTreinoInput">Nome do treino</label>
+        <input type="text" id="checkinTreinoInput" placeholder="Ex: Peito e tríceps">
+
+        <div class="modal-actions">
+            <button class="btn btn-cancel" id="checkinCancelBtn">Cancelar</button>
+            <button class="btn btn-save" id="checkinSaveBtn">Salvar</button>
         </div>
     </div>
 </div>
@@ -828,6 +1151,174 @@ function deleteExercise(workoutId, exerciseId) {
     });
 }
 
+// ==================== CALENDÁRIO DE CHECK-IN ====================
+const CHECKIN_STORAGE_KEY = 'fitzoneCheckins';
+const weekdayHeaders = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const monthNames = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+let calCurrentDate = new Date();
+let calViewYear = calCurrentDate.getFullYear();
+let calViewMonth = calCurrentDate.getMonth();
+let calSelectedDateKey = null;
+
+document.getElementById('btnToggleCalendar').addEventListener('click', function () {
+    const wrapper = document.getElementById('calendarWrapper');
+    const isOpen = wrapper.classList.toggle('show');
+    this.classList.toggle('open', isOpen);
+    document.getElementById('toggleCalendarLabel').textContent = isOpen
+        ? 'Ocultar calendário de check-in'
+        : 'Mostrar calendário de check-in';
+});
+
+function loadCheckins() {
+    try {
+        return JSON.parse(localStorage.getItem(CHECKIN_STORAGE_KEY)) || {};
+    } catch (e) {
+        return {};
+    }
+}
+
+function saveCheckins(data) {
+    localStorage.setItem(CHECKIN_STORAGE_KEY, JSON.stringify(data));
+}
+
+function calDateKey(y, m, d) {
+    return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+}
+
+function renderCalendar() {
+    const data = loadCheckins();
+    document.getElementById('monthLabel').textContent = `${monthNames[calViewMonth]} ${calViewYear}`;
+
+    const grid = document.getElementById('daysGrid');
+    grid.innerHTML = '';
+
+    const firstDay = new Date(calViewYear, calViewMonth, 1).getDay();
+    const daysInMonth = new Date(calViewYear, calViewMonth + 1, 0).getDate();
+    const todayKey = calDateKey(calCurrentDate.getFullYear(), calCurrentDate.getMonth(), calCurrentDate.getDate());
+
+    for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement('div');
+        empty.className = 'day-cell empty';
+        grid.appendChild(empty);
+    }
+
+    let checkinsNoMes = 0;
+
+    for (let d = 1; d <= daysInMonth; d++) {
+        const key = calDateKey(calViewYear, calViewMonth, d);
+        const entry = data[key];
+        const cell = document.createElement('div');
+        cell.className = 'day-cell';
+        if (key === todayKey) cell.classList.add('today');
+        if (entry && entry.checked) {
+            cell.classList.add('checked');
+            checkinsNoMes++;
+        }
+
+        const num = document.createElement('div');
+        num.className = 'num';
+        num.textContent = d;
+        cell.appendChild(num);
+
+        if (entry && entry.treino) {
+            const label = document.createElement('div');
+            label.className = 'treino-label';
+            label.textContent = entry.treino;
+            cell.appendChild(label);
+        }
+
+        const badge = document.createElement('div');
+        badge.className = 'check-badge';
+        badge.textContent = '✓';
+        cell.appendChild(badge);
+
+        cell.addEventListener('click', () => openCheckinModal(key, d));
+        grid.appendChild(cell);
+    }
+
+    document.getElementById('statMes').textContent = checkinsNoMes;
+    document.getElementById('statSequencia').textContent = calcularSequencia(data);
+}
+
+function calcularSequencia(data) {
+    let streak = 0;
+    let d = new Date();
+    while (true) {
+        const key = calDateKey(d.getFullYear(), d.getMonth(), d.getDate());
+        if (data[key] && data[key].checked) {
+            streak++;
+            d.setDate(d.getDate() - 1);
+        } else {
+            break;
+        }
+    }
+    return streak;
+}
+
+function openCheckinModal(key, dayNum) {
+    calSelectedDateKey = key;
+    const data = loadCheckins();
+    const entry = data[key] || { checked: false, treino: '' };
+
+    const [y, m, d] = key.split('-').map(Number);
+    const dateObj = new Date(y, m - 1, d);
+    const weekday = weekdayHeaders[dateObj.getDay()];
+    document.getElementById('checkinModalDate').textContent = `${weekday}, ${d} de ${monthNames[m - 1]}`;
+
+    const toggle = document.getElementById('checkinToggle');
+    toggle.classList.toggle('active', !!entry.checked);
+    toggle.dataset.checked = entry.checked ? 'true' : 'false';
+
+    document.getElementById('checkinTreinoInput').value = entry.treino || '';
+
+    document.getElementById('checkinModalOverlay').classList.add('show');
+}
+
+function closeCheckinModal() {
+    document.getElementById('checkinModalOverlay').classList.remove('show');
+    calSelectedDateKey = null;
+}
+
+document.getElementById('checkinToggle').addEventListener('click', function () {
+    const isActive = this.classList.toggle('active');
+    this.dataset.checked = isActive ? 'true' : 'false';
+});
+
+document.getElementById('checkinCancelBtn').addEventListener('click', closeCheckinModal);
+document.getElementById('checkinModalOverlay').addEventListener('click', (e) => {
+    if (e.target.id === 'checkinModalOverlay') closeCheckinModal();
+});
+
+document.getElementById('checkinSaveBtn').addEventListener('click', () => {
+    if (!calSelectedDateKey) return;
+    const data = loadCheckins();
+    const checked = document.getElementById('checkinToggle').dataset.checked === 'true';
+    const treino = document.getElementById('checkinTreinoInput').value.trim();
+
+    if (!checked && !treino) {
+        delete data[calSelectedDateKey];
+    } else {
+        data[calSelectedDateKey] = { checked, treino };
+    }
+
+    saveCheckins(data);
+    closeCheckinModal();
+    renderCalendar();
+});
+
+document.getElementById('prevMonth').addEventListener('click', () => {
+    calViewMonth--;
+    if (calViewMonth < 0) { calViewMonth = 11; calViewYear--; }
+    renderCalendar();
+});
+
+document.getElementById('nextMonth').addEventListener('click', () => {
+    calViewMonth++;
+    if (calViewMonth > 11) { calViewMonth = 0; calViewYear++; }
+    renderCalendar();
+});
+
 // ==================== FINALIZAR TREINO ====================
 document.getElementById('btnFinishWorkout').addEventListener('click', () => {
     document.getElementById('finishModalOverlay').classList.add('show');
@@ -863,6 +1354,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     renderWorkouts();
+    renderCalendar();
 });
 </script>
 
