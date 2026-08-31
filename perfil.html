@@ -236,6 +236,25 @@ textarea::placeholder{
     display:block;
 }
 
+.continue-section{
+    text-align:center;
+    padding-top:18px;
+    margin-top:6px;
+    border-top:1px solid rgba(var(--accent-rgb), 0.15);
+}
+.continue-link{
+    color:var(--accent);
+    font-size:13px;
+    font-weight:600;
+    text-decoration:none;
+    letter-spacing:0.5px;
+    transition:opacity 0.2s ease;
+}
+.continue-link:hover{
+    opacity:0.8;
+    text-decoration:underline;
+}
+
 @media (max-width:420px){
     .field-row{grid-template-columns:1fr 1fr;}
     .form-card{padding:22px 18px;}
@@ -312,6 +331,10 @@ textarea::placeholder{
 
             <button type="submit" class="btn-save-profile">Salvar perfil</button>
         </form>
+
+        <div class="continue-section">
+            <a href="treinos.html" class="continue-link">Ir para meus treinos →</a>
+        </div>
     </div>
 </div>
 
