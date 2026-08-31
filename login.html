@@ -468,12 +468,10 @@
                     localStorage.setItem('rememberedEmail', email);
                 }
 
-                // Limpar formulário após 2 segundos
+                // Redirecionar para o perfil após o login
                 setTimeout(() => {
-                    form.reset();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Entrar';
-                }, 2000);
+                    window.location.href = 'perfil.html';
+                }, 1500);
             }, 1500);
 
             // Log para desenvolvimento
