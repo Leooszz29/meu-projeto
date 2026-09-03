@@ -37,7 +37,7 @@ body.theme-feminino{
     --accent-dim:#8a6a2c;
 }
 
-*{box-sizing:border-box; margin:0; padding:0;}
+*{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
 
 html,body{
     min-height:100%;
@@ -46,6 +46,7 @@ html,body{
 }
 
 body{
+    position:relative;
     background:
         radial-gradient(ellipse 900px 500px at 20% 0%, rgba(var(--accent-rgb),0.08), transparent 60%),
         radial-gradient(ellipse 900px 500px at 80% 100%, rgba(var(--accent-rgb),0.06), transparent 60%),
@@ -54,13 +55,32 @@ body{
     display:flex;
     flex-direction:column;
     align-items:center;
-    padding:40px 16px 60px;
+    padding:40px 16px calc(60px + env(safe-area-inset-bottom));
     transition:background 0.4s ease;
+    overflow-x:hidden;
+}
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size:3px 3px;
+    opacity:0.5;
+    pointer-events:none;
+    z-index:0;
 }
 
 .page{
+    position:relative;
+    z-index:1;
     width:100%;
     max-width:480px;
+    animation:pageIn 0.5s ease;
+}
+
+@keyframes pageIn{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
 }
 
 header{
@@ -85,6 +105,11 @@ header{
     border-radius:50%;
     background:radial-gradient(circle, rgba(var(--accent-rgb),0.28) 0%, transparent 70%);
     transition:background 0.4s ease;
+    animation:glowPulse 3.5s ease-in-out infinite;
+}
+@keyframes glowPulse{
+    0%, 100%{opacity:1;}
+    50%{opacity:0.7;}
 }
 .character-preview img{
     position:relative;
@@ -110,6 +135,7 @@ h1{
 }
 
 .form-card{
+    position:relative;
     background:rgba(43, 45, 48, 0.85);
     border:1px solid rgba(var(--accent-rgb), 0.25);
     border-radius:12px;
@@ -117,6 +143,14 @@ h1{
     padding:28px 24px;
     margin-top:24px;
     transition:border-color 0.4s ease;
+    overflow:hidden;
+}
+.form-card::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0;
+    height:3px;
+    background:linear-gradient(90deg, transparent, var(--accent), var(--accent-alt), transparent);
 }
 
 .form-section-title{
@@ -155,11 +189,18 @@ textarea{
     padding:12px 14px;
     border:1.5px solid var(--steel);
     border-radius:6px;
-    font-size:14px;
+    font-size:16px;
     font-family:inherit;
     transition:all 0.2s ease;
     background:rgba(0,0,0,0.25);
     color:var(--chalk);
+}
+
+input[type="text"]:hover,
+input[type="number"]:hover,
+select:hover,
+textarea:hover{
+    border-color:rgba(var(--accent-rgb), 0.5);
 }
 
 textarea{
@@ -219,7 +260,8 @@ textarea::placeholder{
     transform:translateY(-2px);
 }
 .btn-save-profile:active{
-    transform:translateY(0);
+    transform:translateY(0) scale(0.98);
+    box-shadow:0 3px 10px rgba(var(--accent-rgb), 0.3);
 }
 
 .success-message{
@@ -275,10 +317,20 @@ textarea::placeholder{
     background:rgba(193, 68, 60, 0.12);
     border-color:#c1443c;
 }
+.btn-end-session:active{
+    transform:scale(0.98);
+}
 
 @media (max-width:420px){
-    .field-row{grid-template-columns:1fr 1fr;}
     .form-card{padding:22px 18px;}
+}
+
+@media (max-width:360px){
+    .field-row{grid-template-columns:1fr;}
+    .character-preview img{width:105px; height:105px;}
+    .character-preview::before{width:150px; height:150px;}
+    h1{font-size:24px;}
+    .page{padding:0 2px;}
 }
 </style>
 </head>
