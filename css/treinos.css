@@ -774,3 +774,6 @@ h1{
     margin-bottom:26px;
     line-height:1.5;
 }
+.finish-modal .btn-save{
+    width:100%;
+}
