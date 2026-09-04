@@ -783,3 +783,7 @@ h1{
     margin-bottom:24px;
     line-height:1.5;
 }
+.danger-btn{
+    background:linear-gradient(135deg, #c1443c 0%, #8a2e28 100%);
+    box-shadow:0 4px 14px rgba(193,68,60,0.3);
+}
