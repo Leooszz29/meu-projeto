@@ -777,3 +777,9 @@ h1{
 .finish-modal .btn-save{
     width:100%;
 }
+.confirm-modal-text{
+    color:var(--chalk-dim);
+    font-size:13px;
+    margin-bottom:24px;
+    line-height:1.5;
+}
