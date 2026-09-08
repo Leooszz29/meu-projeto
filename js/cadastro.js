@@ -21,27 +21,24 @@
         const target = document.getElementById(this.dataset.target);
         const isHidden = target.type === 'password';
         
-        // Altera o tipo do input
+        // Alterna o tipo do input de texto para senha e vice-versa
         target.type = isHidden ? 'text' : 'password';
         
-        // Busca a tag do ícone (normalmente <i> ou <svg>) de dentro do botão
-        const icon = this.querySelector('i') || this.querySelector('svg');
-        
-        if (icon) {
-            if (isHidden) {
-                // Se a senha estava oculta, vamos mostrar e mudar para o olho cortado
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                // Se a senha estava visível, vamos ocultar e voltar para o olho aberto
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
+        // Seleciona os dois ícones internos que você já tem no HTML
+        const iconEye = this.querySelector('.icon-eye');
+        const iconEyeOff = this.querySelector('.icon-eye-off');
+
+        if (iconEye && iconEyeOff) {
+            // Se a senha ficou visível (text), esconde o olho aberto e mostra o cortado
+            // Se a senha voltou a ser oculta (password), faz o inverso
+            iconEye.style.display = isHidden ? 'none' : 'block';
+            iconEyeOff.style.display = isHidden ? 'block' : 'none';
         }
         
         this.setAttribute('aria-label', isHidden ? 'Ocultar senha' : 'Mostrar senha');
     });
 });
+
 
 
         // ==================== FUNÇÕES ====================
