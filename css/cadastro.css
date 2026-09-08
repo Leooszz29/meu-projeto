@@ -417,3 +417,6 @@
                 transition-duration: 0.01ms !important;
             }
         }
+      .icon-eye-off {
+    display: none;
+}
