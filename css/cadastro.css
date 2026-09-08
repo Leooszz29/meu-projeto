@@ -245,7 +245,13 @@
             font-size: 13px;
             color: var(--chalk-dim);
         }
-
+        .terms-group label {
+    text-transform: none;
+    font-weight: 400;
+    letter-spacing: normal;
+    margin: 0;
+    cursor: pointer;
+} 
         input[type="checkbox"] {
             width: 16px;
             height: 16px;
