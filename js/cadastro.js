@@ -16,17 +16,33 @@
         });
         termsInput.addEventListener('change', clearError);
 
-        document.querySelectorAll('.toggle-password').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const target = document.getElementById(this.dataset.target);
-                const isHidden = target.type === 'password';
-                target.type = isHidden ? 'text' : 'password';
-                this.querySelector('.icon-eye').style.display = isHidden ? 'none' : 'block';
-                this.querySelector('.icon-eye-off').style.display = isHidden ? 'block' : 'none';
-                this.setAttribute('aria-label', isHidden ? 'Ocultar senha' : 'Mostrar senha');
-            });
-        });
+       document.querySelectorAll('.toggle-password').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const target = document.getElementById(this.dataset.target);
+        const iconEye = this.querySelector('.icon-eye');
+        const iconEyeOff = this.querySelector('.icon-eye-off');
 
+        // Se o tipo atual for password, mudamos para text (mostrar senha)
+        // Caso contrário, voltamos para password (ocultar senha)
+        if (target.type === 'password') {
+            target.type = 'text';
+            
+            // Gerencia os elementos visuais garantindo consistência técnica
+            if (iconEye) iconEye.style.setProperty('display', 'none', 'important');
+            if (iconEyeOff) iconEyeOff.style.setProperty('display', 'block', 'important');
+            
+            this.setAttribute('aria-label', 'Ocultar senha');
+        } else {
+            target.type = 'password';
+            
+            // Restaura o olho padrão e oculta a versão riscada
+            if (iconEye) iconEye.style.setProperty('display', 'block', 'important');
+            if (iconEyeOff) iconEyeOff.style.setProperty('display', 'none', 'important');
+            
+            this.setAttribute('aria-label', 'Mostrar senha');
+        }
+    });
+});
         // ==================== FUNÇÕES ====================
         function clearError() {
             errorMessage.classList.remove('show');
