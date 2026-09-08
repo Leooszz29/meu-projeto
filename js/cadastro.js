@@ -17,15 +17,32 @@
         termsInput.addEventListener('change', clearError);
 
         document.querySelectorAll('.toggle-password').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const target = document.getElementById(this.dataset.target);
-                const isHidden = target.type === 'password';
-                target.type = isHidden ? 'text' : 'password';
-                this.querySelector('.icon-eye').style.display = isHidden ? 'none' : 'block';
-                this.querySelector('.icon-eye-off').style.display = isHidden ? 'block' : 'none';
-                this.setAttribute('aria-label', isHidden ? 'Ocultar senha' : 'Mostrar senha');
-            });
-        });
+    btn.addEventListener('click', function () {
+        const target = document.getElementById(this.dataset.target);
+        const isHidden = target.type === 'password';
+        
+        // Altera o tipo do input
+        target.type = isHidden ? 'text' : 'password';
+        
+        // Busca a tag do ícone (normalmente <i> ou <svg>) de dentro do botão
+        const icon = this.querySelector('i') || this.querySelector('svg');
+        
+        if (icon) {
+            if (isHidden) {
+                // Se a senha estava oculta, vamos mostrar e mudar para o olho cortado
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                // Se a senha estava visível, vamos ocultar e voltar para o olho aberto
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+        
+        this.setAttribute('aria-label', isHidden ? 'Ocultar senha' : 'Mostrar senha');
+    });
+});
+
 
         // ==================== FUNÇÕES ====================
         function clearError() {
