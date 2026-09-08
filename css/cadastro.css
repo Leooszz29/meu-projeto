@@ -418,5 +418,5 @@
             }
         }
       .icon-eye-off {
-    display: none;
+    display: none !important;
 }
