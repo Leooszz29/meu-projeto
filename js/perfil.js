@@ -56,6 +56,8 @@ document.getElementById('btnEndSession').addEventListener('click', () => {
     window.location.href = 'index.html';
 });
 
+console.log("PERFIL.JS FOI CARREGADO");
+
 window.addEventListener('DOMContentLoaded', () => {
     const genero = localStorage.getItem('generoFitZone');
     const characterImg = document.getElementById('characterImg');
