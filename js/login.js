@@ -64,6 +64,14 @@
                 showError('Senha deve ter no mínimo 6 caracteres');
                 return;
             }
+                
+            // Buscar usuário cadastrado
+            const usuarioSalvo = JSON.parse(localStorage.getItem('usuario'));
+
+            if (!usuarioSalvo || usuarioSalvo.email !== email || usuarioSalvo.senha !== password) {
+            showError('E-mail ou senha incorretos');
+            return;
+            }
 
             // Desabilitar botão durante envio
             submitBtn.disabled = true;
