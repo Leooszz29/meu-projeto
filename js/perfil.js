@@ -46,7 +46,9 @@ document.getElementById('profileForm').addEventListener('submit', (e) => {
 
     setTimeout(() => {
     successMessage.classList.remove('show');
-    }, 2500);
+}, 2500);
+
+});
 
 document.getElementById('btnEndSession').addEventListener('click', () => {
     localStorage.removeItem('generoFitZone');
