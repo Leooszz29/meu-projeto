@@ -26,6 +26,8 @@ function fillForm() {
 }
 
 document.getElementById('profileForm').addEventListener('submit', (e) => {
+    console.log("BOTÃO SALVAR FOI ACIONADO");
+    
     e.preventDefault();
 
     const data = {
