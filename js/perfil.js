@@ -40,10 +40,13 @@ document.getElementById('profileForm').addEventListener('submit', (e) => {
 
     saveProfile(data);
 
-    const successMsg = document.getElementById('successMessage');
-    successMsg.classList.add('show');
-    setTimeout(() => successMsg.classList.remove('show'), 3000);
-});
+    const successMessage = document.getElementById('successMessage');
+    successMessage.textContent = 'Salvo com sucesso! 💪';
+    successMessage.classList.add('show');
+
+    setTimeout(() => {
+    successMessage.classList.remove('show');
+    }, 2500);
 
 document.getElementById('btnEndSession').addEventListener('click', () => {
     localStorage.removeItem('generoFitZone');
