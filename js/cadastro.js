@@ -100,6 +100,14 @@
                 showError('Você precisa aceitar os Termos de Uso');
                 return;
             }
+            // Salvar dados do usuário no navegador
+            const usuario = {
+            nome: name,
+            email: email,
+            senha: password
+};
+                
+localStorage.setItem('usuario', JSON.stringify(usuario));
 
             // Desabilitar botão durante envio
             submitBtn.disabled = true;
