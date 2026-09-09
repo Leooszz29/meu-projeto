@@ -14,7 +14,9 @@ function saveProfile(data) {
 
 function fillForm() {
     const data = loadProfile();
-    document.getElementById('nome').value = data.nome || '';
+    const usuario = JSON.parse(localStorage.getItem('usuario')) || {};
+    
+    document.getElementById('nome').value = data.nome || usuario.nome || '';
     document.getElementById('idade').value = data.idade || '';
     document.getElementById('tipoSanguineo').value = data.tipoSanguineo || '';
     document.getElementById('peso').value = data.peso || '';
