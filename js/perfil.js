@@ -1,40 +1,34 @@
-```js
 const PROFILE_STORAGE_KEY = 'fitzonePerfil';
 
-let profileCache = null;
 
-
-// ==============================
-// CARREGAR PERFIL
-// ==============================
+// ========================================
+// CARREGAR PERFIL SALVO
+// ========================================
 
 function loadProfile() {
     try {
-        const stored = localStorage.getItem(PROFILE_STORAGE_KEY);
+        const saved = localStorage.getItem(PROFILE_STORAGE_KEY);
 
-        if (stored !== null) {
-            profileCache = JSON.parse(stored);
+        if (!saved) {
+            return {};
         }
-    } catch (e) {
-        console.warn('Não foi possível ler o localStorage:', e);
-        profileCache = {};
-    }
 
-    if (profileCache === null) {
-        profileCache = {};
-    }
+        const data = JSON.parse(saved);
 
-    return profileCache;
+        return data && typeof data === 'object' ? data : {};
+
+    } catch (error) {
+        console.error('Erro ao carregar perfil:', error);
+        return {};
+    }
 }
 
 
-// ==============================
+// ========================================
 // SALVAR PERFIL
-// ==============================
+// ========================================
 
 function saveProfile(data) {
-    profileCache = data;
-
     try {
         localStorage.setItem(
             PROFILE_STORAGE_KEY,
@@ -43,143 +37,114 @@ function saveProfile(data) {
 
         return true;
 
-    } catch (e) {
-        console.warn('Não foi possível salvar no localStorage:', e);
+    } catch (error) {
+        console.error('Erro ao salvar perfil:', error);
         return false;
     }
 }
 
 
-// ==============================
-// PREENCHER FORMULÁRIO
-// ==============================
+// ========================================
+// PEGAR VALOR DE UM CAMPO
+// ========================================
 
-function fillForm() {
-    const data = loadProfile();
+function getValue(id) {
+    const element = document.getElementById(id);
 
-    // Recupera o usuário criado no cadastro
-    let usuario = {};
-
-    try {
-        usuario = JSON.parse(
-            localStorage.getItem('usuario')
-        ) || {};
-    } catch (e) {
-        console.warn('Não foi possível carregar o usuário:', e);
+    if (!element) {
+        return '';
     }
 
-    // Se já existe nome salvo no perfil,
-    // ele tem prioridade.
-    // Caso contrário, usa o nome do cadastro.
-    document.getElementById('nome').value =
-        data.nome || usuario.nome || '';
-
-    document.getElementById('idade').value =
-        data.idade || '';
-
-    document.getElementById('tipoSanguineo').value =
-        data.tipoSanguineo || '';
-
-    document.getElementById('peso').value =
-        data.peso || '';
-
-    document.getElementById('altura').value =
-        data.altura || '';
-
-    document.getElementById('treinador').value =
-        data.treinador || '';
-
-    document.getElementById('infoPessoais').value =
-        data.infoPessoais || '';
+    return element.value.trim();
 }
 
 
-// ==============================
-// SALVAR PERFIL
-// ==============================
+// ========================================
+// PREENCHER FORMULÁRIO
+// ========================================
 
-document.getElementById('profileForm').addEventListener('submit', (e) => {
+function fillForm() {
 
-    e.preventDefault();
+    const perfil = loadProfile();
 
-    const data = {
-        nome: document.getElementById('nome').value.trim(),
+    let usuario = {};
 
-        idade: document.getElementById('idade').value,
-
-        tipoSanguineo:
-            document.getElementById('tipoSanguineo').value,
-
-        peso:
-            document.getElementById('peso').value,
-
-        altura:
-            document.getElementById('altura').value,
-
-        treinador:
-            document.getElementById('treinador').value.trim(),
-
-        infoPessoais:
-            document.getElementById('infoPessoais').value.trim()
-    };
-
-
-    // Salva os dados
-    const salvo = saveProfile(data);
-
-
-    // Se ocorreu algum erro no localStorage
-    if (!salvo) {
-        alert('Não foi possível salvar o perfil.');
-        return;
+    try {
+        usuario =
+            JSON.parse(localStorage.getItem('usuario')) || {};
+    } catch (error) {
+        console.warn('Não foi possível carregar o usuário:', error);
     }
 
 
-    // ==============================
-    // FEEDBACK NO BOTÃO
-    // ==============================
+    // Nome:
+    // primeiro tenta o perfil salvo.
+    // Se não existir, usa o nome do cadastro.
 
-    const btn = document.getElementById('btnSaveProfile');
+    const nome = document.getElementById('nome');
 
-    if (btn) {
-
-        const label = btn.querySelector('.btn-label');
-
-        // Desabilita temporariamente
-        btn.disabled = true;
-
-        // Adiciona classe visual
-        btn.classList.add('saved');
-
-        // Altera o texto
-        if (label) {
-            label.innerHTML =
-                '<span class="check-icon">✓</span> Salvo com sucesso!';
-        } else {
-            btn.textContent = '✓ Salvo com sucesso!';
-        }
-
-
-        // Volta ao estado normal depois de 2,2 segundos
-        setTimeout(() => {
-
-            btn.classList.remove('saved');
-
-            btn.disabled = false;
-
-            if (label) {
-                label.textContent = 'Salvar perfil';
-            } else {
-                btn.textContent = 'Salvar perfil';
-            }
-
-        }, 2200);
+    if (nome) {
+        nome.value =
+            perfil.nome ||
+            usuario.nome ||
+            '';
     }
 
 
-    // ==============================
-    // MENSAGEM DE SUCESSO
-    // ==============================
+    const idade = document.getElementById('idade');
+
+    if (idade) {
+        idade.value = perfil.idade || '';
+    }
+
+
+    const tipoSanguineo =
+        document.getElementById('tipoSanguineo');
+
+    if (tipoSanguineo) {
+        tipoSanguineo.value =
+            perfil.tipoSanguineo || '';
+    }
+
+
+    const peso = document.getElementById('peso');
+
+    if (peso) {
+        peso.value = perfil.peso || '';
+    }
+
+
+    const altura = document.getElementById('altura');
+
+    if (altura) {
+        altura.value = perfil.altura || '';
+    }
+
+
+    const treinador =
+        document.getElementById('treinador');
+
+    if (treinador) {
+        treinador.value =
+            perfil.treinador || '';
+    }
+
+
+    const infoPessoais =
+        document.getElementById('infoPessoais');
+
+    if (infoPessoais) {
+        infoPessoais.value =
+            perfil.infoPessoais || '';
+    }
+}
+
+
+// ========================================
+// MOSTRAR SUCESSO
+// ========================================
+
+function showSuccess() {
 
     const successMessage =
         document.getElementById('successMessage');
@@ -191,90 +156,283 @@ document.getElementById('profileForm').addEventListener('submit', (e) => {
 
         successMessage.classList.add('show');
 
-
         setTimeout(() => {
-
             successMessage.classList.remove('show');
-
         }, 2200);
     }
 
-});
+
+    // Também altera o botão
+
+    const button =
+        document.getElementById('btnSaveProfile');
+
+    if (!button) {
+        return;
+    }
 
 
-// ==============================
+    const label =
+        button.querySelector('.btn-label');
+
+
+    button.disabled = true;
+
+    button.classList.add('saved');
+
+
+    if (label) {
+
+        label.innerHTML =
+            '<span class="check-icon">✓</span> Salvo com sucesso!';
+
+    } else {
+
+        button.textContent =
+            '✓ Salvo com sucesso!';
+    }
+
+
+    setTimeout(() => {
+
+        button.disabled = false;
+
+        button.classList.remove('saved');
+
+
+        if (label) {
+
+            label.textContent =
+                'Salvar perfil';
+
+        } else {
+
+            button.textContent =
+                'Salvar perfil';
+        }
+
+    }, 2200);
+}
+
+
+// ========================================
+// SALVAR PERFIL PELO CLIQUE
+// ========================================
+
+function handleSaveProfile() {
+
+    console.log('Salvar perfil acionado');
+
+
+    const data = {
+
+        nome: getValue('nome'),
+
+        idade: getValue('idade'),
+
+        tipoSanguineo:
+            getValue('tipoSanguineo'),
+
+        peso:
+            getValue('peso'),
+
+        altura:
+            getValue('altura'),
+
+        treinador:
+            getValue('treinador'),
+
+        infoPessoais:
+            getValue('infoPessoais')
+    };
+
+
+    console.log('Dados do perfil:', data);
+
+
+    const sucesso =
+        saveProfile(data);
+
+
+    if (!sucesso) {
+
+        alert(
+            'Não foi possível salvar o perfil. Tente novamente.'
+        );
+
+        return;
+    }
+
+
+    showSuccess();
+
+    console.log(
+        'Perfil salvo com sucesso no localStorage.'
+    );
+}
+
+
+// ========================================
 // FINALIZAR SESSÃO
-// ==============================
+// ========================================
 
-document.getElementById('btnEndSession').addEventListener('click', () => {
+function handleEndSession() {
+
+    // IMPORTANTE:
+    // Não apagamos fitzonePerfil.
+    //
+    // Assim, quando o usuário entrar novamente,
+    // o perfil continuará salvo.
 
     try {
-        localStorage.removeItem('generoFitZone');
-        localStorage.removeItem('rememberedEmail');
-    } catch (e) {
+
+        localStorage.removeItem(
+            'generoFitZone'
+        );
+
+        localStorage.removeItem(
+            'rememberedEmail'
+        );
+
+    } catch (error) {
+
         console.warn(
-            'Não foi possível limpar o localStorage:',
-            e
+            'Não foi possível limpar os dados da sessão:',
+            error
         );
     }
+
 
     window.location.href = 'index.html';
-});
+}
 
 
-// ==============================
-// CARREGAR PÁGINA
-// ==============================
+// ========================================
+// PERSONAGEM / GÊNERO
+// ========================================
 
-window.addEventListener('DOMContentLoaded', () => {
-
-    // Preenche os dados salvos
-    fillForm();
-
-
-    // ==============================
-    // PERSONAGEM / GÊNERO
-    // ==============================
-
-    let genero = null;
-
-    try {
-        genero = localStorage.getItem('generoFitZone');
-    } catch (e) {
-        console.warn(
-            'Não foi possível ler o gênero:',
-            e
-        );
-    }
-
+function loadCharacter() {
 
     const characterImg =
         document.getElementById('characterImg');
 
-
-    if (characterImg) {
-
-        const imagens = {
-
-            masculino:
-                'https://cdn-icons-png.flaticon.com/512/4140/4140048.png',
-
-            feminino:
-                'https://cdn-icons-png.flaticon.com/512/4140/4140047.png'
-        };
-
-
-        if (genero && imagens[genero]) {
-
-            characterImg.src = imagens[genero];
-
-            characterImg.style.display = 'block';
-
-        } else {
-
-            characterImg.style.display = 'none';
-        }
+    if (!characterImg) {
+        return;
     }
 
-});
-```
+
+    let genero = null;
+
+    try {
+
+        genero =
+            localStorage.getItem('generoFitZone');
+
+    } catch (error) {
+
+        console.warn(
+            'Não foi possível carregar o gênero:',
+            error
+        );
+    }
+
+
+    const imagens = {
+
+        masculino:
+            'https://cdn-icons-png.flaticon.com/512/4140/4140048.png',
+
+        feminino:
+            'https://cdn-icons-png.flaticon.com/512/4140/4140047.png'
+    };
+
+
+    if (genero && imagens[genero]) {
+
+        characterImg.src =
+            imagens[genero];
+
+        characterImg.style.display =
+            'block';
+
+    } else {
+
+        characterImg.style.display =
+            'none';
+    }
+}
+
+
+// ========================================
+// INICIALIZAÇÃO
+// ========================================
+
+function initializeProfile() {
+
+    console.log('PERFIL.JS INICIADO');
+
+
+    // Carrega os dados existentes
+    fillForm();
+
+
+    // Carrega personagem
+    loadCharacter();
+
+
+    // Botão salvar
+    const saveButton =
+        document.getElementById('btnSaveProfile');
+
+
+    if (saveButton) {
+
+        saveButton.addEventListener(
+            'click',
+            handleSaveProfile
+        );
+
+    } else {
+
+        console.error(
+            'Botão btnSaveProfile não encontrado.'
+        );
+    }
+
+
+    // Botão finalizar sessão
+    const endSessionButton =
+        document.getElementById('btnEndSession');
+
+
+    if (endSessionButton) {
+
+        endSessionButton.addEventListener(
+            'click',
+            handleEndSession
+        );
+
+    } else {
+
+        console.error(
+            'Botão btnEndSession não encontrado.'
+        );
+    }
+}
+
+
+// ========================================
+// EXECUTAR
+// ========================================
+
+if (document.readyState === 'loading') {
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        initializeProfile
+    );
+
+} else {
+
+    initializeProfile();
+}
