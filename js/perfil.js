@@ -328,14 +328,20 @@ function loadCharacter() {
         genero =
             localStorage.getItem('generoFitZone');
 
-    } catch (error) {
+    } catch (e) {
 
         console.warn(
             'Não foi possível carregar o gênero:',
             error
         );
     }
-
+    
+// APLICA O TEMA DE ACORDO COM O GÊNERO
+if (genero === 'masculino') {
+    document.body.classList.add('theme-masculino');
+} else if (genero === 'feminino') {
+    document.body.classList.add('theme-feminino');
+}
 
     const imagens = {
 
