@@ -76,7 +76,7 @@ body::after{
 
 header{
     text-align:center;
-    margin-bottom:22px;
+    margin-bottom:28px;
 }
 
 .character-preview{
@@ -84,18 +84,28 @@ header{
     width:100%;
     display:flex;
     justify-content:center;
-    margin-bottom:12px;
-    min-height:120px;
+    align-items:center;
+    margin-bottom:16px;
+    min-height:135px;
 }
+
 .character-preview::before{
     content:"";
     position:absolute;
-    top:-14px;
-    width:180px;
-    height:180px;
+    top:-22px;
+    width:200px;
+    height:200px;
     border-radius:50%;
-    background:radial-gradient(circle, rgba(var(--accent-rgb),0.28) 0%, transparent 70%);
-    transition:background 0.4s ease;
+    background:radial-gradient(
+        circle,
+        rgba(var(--accent-rgb),0.22) 0%,
+        rgba(var(--accent-rgb),0.08) 35%,
+        transparent 72%
+    );
+    filter:blur(1px);
+    transition:
+        background 0.4s ease,
+        transform 0.4s ease;
     animation:glowPulse 3.5s ease-in-out infinite;
 }
 @keyframes glowPulse{
