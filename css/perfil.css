@@ -122,10 +122,17 @@ header{
 
 h1{
     font-family:'Bebas Neue', sans-serif;
-    font-size:clamp(28px, 6vw, 38px);
-    letter-spacing:3px;
+    font-size:clamp(30px, 6vw, 42px);
+    font-weight:400;
+    letter-spacing:3.5px;
     color:var(--chalk);
-    text-shadow:0 4px 0 rgba(0,0,0,0.4), 0 0 30px rgba(var(--accent-rgb),0.15);
+    margin:0;
+    text-shadow:
+        0 2px 8px rgba(0,0,0,0.45),
+        0 0 24px rgba(var(--accent-rgb),0.20);
+    transition:
+        color 0.3s ease,
+        text-shadow 0.3s ease;
 }
 
 .subtitle{
