@@ -168,17 +168,17 @@ h1{
 }
 
 .form-group{
-    margin-bottom:18px;
+    margin-bottom:20px;
 }
 
 label{
     display:block;
-    font-size:11px;
-    font-weight:600;
-    color:var(--chalk-dim);
-    margin-bottom:8px;
+    font-size:12px;
+    font-weight:700;
+    color:var(--accent);
+    margin-bottom:9px;
     text-transform:uppercase;
-    letter-spacing:0.5px;
+    letter-spacing:0.8px;
 }
 
 input[type="text"],
