@@ -410,6 +410,7 @@ function calcularIMC() {
 
     imcInput.value =
         imc.toFixed(1);
+}
 
 // ========================================
 // INICIALIZAÇÃO
