@@ -328,13 +328,13 @@ function loadCharacter() {
         genero =
             localStorage.getItem('generoFitZone');
 
-    } catch (e) {
+    } catch (error) {
 
-        console.warn(
-            'Não foi possível carregar o gênero:',
-            error
-        );
-    }
+    console.warn(
+        'Não foi possível carregar o gênero:',
+        error
+    );
+}
     
 // APLICA O TEMA DE ACORDO COM O GÊNERO
 if (genero === 'masculino') {
