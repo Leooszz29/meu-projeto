@@ -466,30 +466,18 @@ function initializeIMC() {
     }
 }
 
+function initializeProfileActions();
 function initializeProfile() {
 
     console.log('PERFIL.JS INICIADO');
 
-    // Carrega os dados existentes
     fillForm();
 
-    // Carrega personagem e tema
     loadCharacter();
 
-    // Inicializa cálculo de IMC
     initializeIMC();
 
-const pesoInput =
-    document.getElementById('peso');
-
-const alturaInput =
-    document.getElementById('altura');
-
-if (pesoInput) {
-    pesoInput.addEventListener(
-        'input',
-        calcularIMC
-    );
+    initializeProfileActions();
 }
 
 if (alturaInput) {
