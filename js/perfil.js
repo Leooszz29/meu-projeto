@@ -466,7 +466,28 @@ function initializeIMC() {
     }
 }
 
-function initializeProfileActions();
+function initializeProfileActions() {
+
+    const saveButton =
+        document.getElementById('btnSaveProfile');
+
+    const endSessionButton =
+        document.getElementById('btnEndSession');
+
+    if (saveButton) {
+        saveButton.addEventListener(
+            'click',
+            handleSaveProfile
+        );
+    }
+
+    if (endSessionButton) {
+        endSessionButton.addEventListener(
+            'click',
+            handleEndSession
+        );
+    }
+}
 function initializeProfile() {
 
     console.log('PERFIL.JS INICIADO');
