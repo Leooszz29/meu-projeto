@@ -466,7 +466,7 @@ function initializeIMC() {
     }
 }
 
-function initializeProfileActions() {
+function Actions() {
 
     const saveButton =
         document.getElementById('btnSaveProfile');
@@ -507,7 +507,6 @@ if (alturaInput) {
         calcularIMC
     );
 }
-
 
     // Botão salvar
     const saveButton =
@@ -558,10 +557,10 @@ if (document.readyState === 'loading') {
 
     document.addEventListener(
         'DOMContentLoaded',
-        initializeProfile
+        
     );
 
 } else {
 
-    initializeProfile();
+    ();
 }
