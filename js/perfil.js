@@ -502,54 +502,6 @@ function initializeProfile() {
     initializeProfileActions();
 }
 
-if (alturaInput) {
-    alturaInput.addEventListener(
-        'input',
-        calcularIMC
-    );
-}
-
-    // Botão salvar
-    const saveButton =
-        document.getElementById('btnSaveProfile');
-
-
-    if (saveButton) {
-
-        saveButton.addEventListener(
-            'click',
-            handleSaveProfile
-        );
-
-    } else {
-
-        console.error(
-            'Botão btnSaveProfile não encontrado.'
-        );
-    }
-
-
-    // Botão finalizar sessão
-    const endSessionButton =
-        document.getElementById('btnEndSession');
-
-
-    if (endSessionButton) {
-
-        endSessionButton.addEventListener(
-            'click',
-            handleEndSession
-        );
-
-    } else {
-
-        console.error(
-            'Botão btnEndSession não encontrado.'
-        );
-    }
-}
-
-
 // ========================================
 // EXECUTAR
 // ========================================
@@ -558,10 +510,10 @@ if (document.readyState === 'loading') {
 
     document.addEventListener(
         'DOMContentLoaded',
-        
+        initializeProfile
     );
 
 } else {
 
-    ();
+    initializeProfile();
 }
