@@ -321,16 +321,35 @@ textarea::placeholder{
 
 .success-message{
     display:none;
-    background:rgba(var(--accent-rgb), 0.15);
+    background:rgba(var(--accent-rgb), 0.10);
     color:var(--accent);
-    padding:12px 14px;
-    border-radius:6px;
+    padding:14px 16px;
+    border-radius:10px;
     font-size:13px;
+    font-weight:600;
     margin-bottom:20px;
+    border:1px solid rgba(var(--accent-rgb), 0.25);
     border-left:4px solid var(--accent);
+    box-shadow:
+        0 6px 18px rgba(0,0,0,0.20),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+    animation:successSlide 0.3s ease-out;
 }
+
 .success-message.show{
     display:block;
+}
+
+@keyframes successSlide{
+    from{
+        opacity:0;
+        transform:translateY(-6px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
 .continue-section{
