@@ -466,7 +466,7 @@ function initializeIMC() {
     }
 }
 
-function Actions() {
+function initializeProfileActions() {
 
     const saveButton =
         document.getElementById('btnSaveProfile');
