@@ -454,3 +454,33 @@ textarea::placeholder{
     h1{font-size:24px;}
     .page{padding:0 2px;}
 }
+
+.imc-classificacao{
+    margin-top:8px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.imc-classificacao.baixo-peso{
+    color:#5dade2;
+}
+
+.imc-classificacao.peso-adequado{
+    color:#58d68d;
+}
+
+.imc-classificacao.sobrepeso{
+    color:#f4d03f;
+}
+
+.imc-classificacao.obesidade-1{
+    color:#f5b041;
+}
+
+.imc-classificacao.obesidade-2{
+    color:#eb984e;
+}
+
+.imc-classificacao.obesidade-3{
+    color:#ec7063;
+}
