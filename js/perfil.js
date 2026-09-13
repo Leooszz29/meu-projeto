@@ -410,6 +410,26 @@ function calcularIMC() {
 
     imcInput.value =
         imc.toFixed(1);
+    const classificacao =
+    document.getElementById('imcClassificacao');
+
+if (!classificacao) {
+    return;
+}
+
+if (imc < 18.5) {
+    classificacao.textContent = 'Baixo peso';
+} else if (imc < 25) {
+    classificacao.textContent = 'Peso adequado';
+} else if (imc < 30) {
+    classificacao.textContent = 'Sobrepeso';
+} else if (imc < 35) {
+    classificacao.textContent = 'Obesidade grau I';
+} else if (imc < 40) {
+    classificacao.textContent = 'Obesidade grau II';
+} else {
+    classificacao.textContent = 'Obesidade grau III';
+}
 }
 
 // ========================================
