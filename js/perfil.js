@@ -368,6 +368,49 @@ if (genero === 'masculino') {
     }
 }
 
+// ========================================
+// CALCULAR IMC
+// ========================================
+function calcularIMC() {
+
+    const pesoInput =
+        document.getElementById('peso');
+
+    const alturaInput =
+        document.getElementById('altura');
+
+    const imcInput =
+        document.getElementById('imc');
+
+    if (!pesoInput || !alturaInput || !imcInput) {
+        return;
+    }
+
+    const peso =
+        parseFloat(pesoInput.value);
+
+    const alturaCm =
+        parseFloat(alturaInput.value);
+
+    if (
+        !peso ||
+        !alturaCm ||
+        peso <= 0 ||
+        alturaCm <= 0
+    ) {
+        imcInput.value = '';
+        return;
+    }
+
+    const alturaMetros =
+        alturaCm / 100;
+
+    const imc =
+        peso / (alturaMetros * alturaMetros);
+
+    imcInput.value =
+        imc.toFixed(1);
+}
 
 // ========================================
 // INICIALIZAÇÃO
@@ -384,6 +427,29 @@ function initializeProfile() {
 
     // Carrega personagem
     loadCharacter();
+    
+    // Calcula IMC
+calcularIMC();
+
+const pesoInput =
+    document.getElementById('peso');
+
+const alturaInput =
+    document.getElementById('altura');
+
+if (pesoInput) {
+    pesoInput.addEventListener(
+        'input',
+        calcularIMC
+    );
+}
+
+if (alturaInput) {
+    alturaInput.addEventListener(
+        'input',
+        calcularIMC
+    );
+}
 
 
     // Botão salvar
