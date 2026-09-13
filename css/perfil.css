@@ -354,21 +354,38 @@ textarea::placeholder{
 
 .continue-section{
     text-align:center;
-    padding-top:18px;
-    margin-top:6px;
+    padding-top:20px;
+    margin-top:8px;
     border-top:1px solid rgba(var(--accent-rgb), 0.15);
 }
+
 .continue-link{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    min-width:190px;
+    padding:11px 18px;
+    border:1px solid rgba(var(--accent-rgb), 0.35);
+    border-radius:10px;
+    background:rgba(var(--accent-rgb), 0.06);
     color:var(--accent);
     font-size:13px;
-    font-weight:600;
+    font-weight:700;
     text-decoration:none;
-    letter-spacing:0.5px;
-    transition:opacity 0.2s ease;
+    letter-spacing:0.6px;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
+
 .continue-link:hover{
-    opacity:0.8;
-    text-decoration:underline;
+    background:rgba(var(--accent-rgb), 0.12);
+    border-color:rgba(var(--accent-rgb), 0.55);
+    transform:translateY(-2px);
+    box-shadow:0 6px 16px rgba(var(--accent-rgb), 0.18);
 }
 
 .btn-end-session{
