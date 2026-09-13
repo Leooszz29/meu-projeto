@@ -418,7 +418,6 @@ function calcularIMC() {
 
     imcInput.value =
     imc.toFixed(1);
-}
 
     if (!classificacao) {
         return;
@@ -437,6 +436,7 @@ function calcularIMC() {
     } else {
         classificacao.textContent = 'Obesidade grau III';
     }
+
 }
 // ========================================
 // INICIALIZAÇÃO
