@@ -39,14 +39,30 @@ html,body{
 body{
     position:relative;
     background:
-        radial-gradient(ellipse 900px 500px at 20% 0%, rgba(var(--accent-rgb),0.08), transparent 60%),
-        radial-gradient(ellipse 900px 500px at 80% 100%, rgba(var(--accent-rgb),0.06), transparent 60%),
-        linear-gradient(135deg, var(--concrete-1) 0%, var(--concrete-2) 100%);
+        radial-gradient(
+            circle 600px at 50% -100px,
+            rgba(var(--accent-rgb),0.16),
+            transparent 70%
+        ),
+        radial-gradient(
+            circle 500px at 100% 70%,
+            rgba(var(--accent-rgb),0.07),
+            transparent 70%
+        ),
+        linear-gradient(
+            145deg,
+            #24272b 0%,
+            #181a1d 45%,
+            #101214 100%
+        );
+
     min-height:100vh;
     display:flex;
     flex-direction:column;
     align-items:center;
+
     padding:40px 16px calc(60px + env(safe-area-inset-bottom));
+
     transition:background 0.4s ease;
     overflow-x:hidden;
 }
