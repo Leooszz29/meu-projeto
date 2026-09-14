@@ -51,7 +51,24 @@ function carregarUsuarioSalvo() {
 }
 
 
-// ==================== EVENT LISTENERS ====================
+// ==================== PREFERÊNCIA DE EMAIL ====================
+
+function atualizarPreferenciaEmail(email) {
+
+    if (rememberCheckbox.checked) {
+
+        localStorage.setItem(
+            'rememberedEmail',
+            email
+        );
+
+    } else {
+
+        localStorage.removeItem(
+            'rememberedEmail'
+        );
+    }
+}
 
         // ==================== EVENT LISTENERS ====================
         form.addEventListener('submit', handleLogin);
