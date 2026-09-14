@@ -137,9 +137,11 @@ try {
 
 // Validar credenciais
 if (
-    !usuarioSalvo ||
-    usuarioSalvo.email !== email ||
-    usuarioSalvo.senha !== password
+    !validarCredenciais(
+        usuarioSalvo,
+        email,
+        password
+    )
 ) {
 
     showError(
