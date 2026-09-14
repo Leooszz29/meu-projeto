@@ -7,6 +7,9 @@ const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const submitBtn = document.getElementById('submitBtn');
 
+const togglePassword =
+    document.getElementById('togglePassword');
+
 const rememberCheckbox =
     document.getElementById('remember');
 
