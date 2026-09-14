@@ -65,11 +65,15 @@ const rememberCheckbox =
         }
 
         function handleLogin(e) {
-            e.preventDefault();
-            clearError();
+    e.preventDefault();
+    clearError();
 
-            const email = emailInput.value.trim();
-            const password = passwordInput.value;
+    if (submitBtn.disabled) {
+        return;
+    }
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
 
             // Validação
             if (!email || !password) {
