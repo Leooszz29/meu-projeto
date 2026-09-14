@@ -71,8 +71,9 @@ function atualizarPreferenciaEmail(email) {
 }
 
 function carregarEmailLembrado() {
-
+}
    carregarEmailLembrado();
+
 
         // ==================== EVENT LISTENERS ====================
         form.addEventListener('submit', handleLogin);
