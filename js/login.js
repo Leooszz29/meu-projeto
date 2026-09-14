@@ -26,6 +26,33 @@ function validarCredenciais(usuarioSalvo, email, password) {
     );
 }
 
+
+// Adicione daqui para baixo
+function carregarUsuarioSalvo() {
+
+    try {
+
+        const usuarioJSON =
+            localStorage.getItem('usuario');
+
+        return usuarioJSON
+            ? JSON.parse(usuarioJSON)
+            : null;
+
+    } catch (error) {
+
+        console.error(
+            'Erro ao carregar usuário:',
+            error
+        );
+
+        return null;
+    }
+}
+
+
+// ==================== EVENT LISTENERS ====================
+
         // ==================== EVENT LISTENERS ====================
         form.addEventListener('submit', handleLogin);
         emailInput.addEventListener('input', clearError);
