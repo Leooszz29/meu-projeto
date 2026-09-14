@@ -196,14 +196,15 @@
 
         .academy-name {
     font-family: 'Bebas Neue', sans-serif;
+
     font-size: clamp(30px, 6vw, 42px);
     font-weight: 400;
 
-    margin: 0 0 6px;
-
     color: var(--chalk);
 
-    letter-spacing: 3px;
+    margin: 0 0 24px;
+
+    letter-spacing: 3.5px;
     text-align: center;
 
     text-shadow:
