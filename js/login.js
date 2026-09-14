@@ -90,7 +90,7 @@ function carregarEmailLembrado() {
         emailInput.addEventListener('input', clearError);
         passwordInput.addEventListener('input', clearError);
 
-        document.getElementById('togglePassword').addEventListener('click', function () {
+        togglePassword.addEventListener('click', function () {
 
     const isHidden =
         passwordInput.type === 'password';
