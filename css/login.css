@@ -470,24 +470,44 @@ input[type="text"]:focus {
         }
 
         .signup-section {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(var(--accent-rgb), 0.15);
-            font-size: 13px;
-            color: var(--chalk-dim);
-        }
+    text-align: center;
 
+    margin-top: 24px;
+    padding-top: 22px;
+
+    border-top: 1px solid rgba(var(--accent-rgb), 0.15);
+
+    font-size: 13px;
+    font-weight: 500;
+
+    color: var(--chalk-dim);
+}
         .signup-section a {
-            color: var(--accent);
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
+    display: inline-block;
 
-        .signup-section a:hover {
-            opacity: 0.8;
-            text-decoration: underline;
-        }
+    margin-left: 4px;
+
+    color: var(--accent);
+
+    font-weight: 700;
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease,
+        text-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+       .signup-section a:hover {
+    color: var(--chalk);
+
+    text-decoration: none;
+
+    text-shadow:
+        0 0 12px rgba(var(--accent-rgb), 0.35);
+
+    transform: translateY(-1px);
+}
 
         .error-message {
             display: none;
