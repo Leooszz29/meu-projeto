@@ -787,3 +787,119 @@ h1{
     background:linear-gradient(135deg, #c1443c 0%, #8a2e28 100%);
     box-shadow:0 4px 14px rgba(193,68,60,0.3);
 }
+
+/* =========================
+   CABEÇALHO MEUS TREINOS
+========================= */
+
+.workouts-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin: 34px 0 26px;
+}
+
+.workouts-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.workouts-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.section-title {
+    margin: 0;
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.8px;
+    color: var(--chalk);
+}
+
+.section-subtitle {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--chalk-dim);
+}
+
+.btn-new-workout {
+    min-height: 46px;
+    padding: 0 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(var(--accent-rgb), 0.18),
+            rgba(var(--accent-rgb), 0.08)
+        );
+
+    color: var(--accent);
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-new-workout:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+
+    background:
+        rgba(var(--accent-rgb), 0.18);
+
+    box-shadow:
+        0 10px 30px rgba(var(--accent-rgb), 0.12);
+}
+
+.btn-new-icon {
+    width: 24px;
+    height: 24px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    background: var(--accent);
+    color: var(--concrete-2);
+
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+@media (max-width: 640px) {
+
+    .workouts-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .btn-new-workout {
+        width: 100%;
+    }
+}
