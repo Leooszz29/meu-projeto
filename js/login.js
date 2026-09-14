@@ -133,35 +133,10 @@ function carregarUsuarioSalvo() {
                 return;
             }
                 
-           // Buscar usuário cadastrado com segurança
-let usuarioSalvo;
-
-try {
-
-    const usuarioJSON =
-        localStorage.getItem('usuario');
-
-    usuarioSalvo =
-        usuarioJSON
-            ? JSON.parse(usuarioJSON)
-            : null;
-
-} catch (error) {
-
-    console.error(
-        'Erro ao carregar usuário:',
-        error
-    );
-
-    showError(
-        'Não foi possível acessar os dados da conta.'
-    );
-
-    resetLoginButton();
-
-    return;
-}
-
+           // Buscar usuário cadastrado
+const usuarioSalvo =
+    carregarUsuarioSalvo();
+            
 // Validar credenciais
 if (
     !validarCredenciais(
