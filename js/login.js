@@ -227,8 +227,22 @@ function inicializarLogin() {
     const genero = localStorage.getItem('generoFitZone');
     const characterImg = document.getElementById('characterImg');
 
-    // aqui continua o restante do código
-    // que já existia para tema e personagem
+    if (genero === 'masculino') {
+
+        document.body.classList.add('theme-masculino');
+        document.body.classList.remove('theme-feminino');
+
+        characterImg.src = 'img/masculino.png';
+        characterImg.style.display = 'block';
+
+    } else if (genero === 'feminino') {
+
+        document.body.classList.add('theme-feminino');
+        document.body.classList.remove('theme-masculino');
+
+        characterImg.src = 'img/feminino.png';
+        characterImg.style.display = 'block';
+    }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
