@@ -86,13 +86,23 @@ submitBtn.classList.add('loading');
         'Login realizado com sucesso! Seja bem-vindo! 💪'
     );
 
-    // Armazenar preferência de lembrar
-    if (document.getElementById('remember').checked) {
-        localStorage.setItem(
-            'rememberedEmail',
-            email
-        );
-    }
+    // Armazenar ou remover preferência de lembrar
+const rememberCheckbox =
+    document.getElementById('remember');
+
+if (rememberCheckbox.checked) {
+
+    localStorage.setItem(
+        'rememberedEmail',
+        email
+    );
+
+} else {
+
+    localStorage.removeItem(
+        'rememberedEmail'
+    );
+}
 
     // Redirecionar para o perfil
     setTimeout(() => {
