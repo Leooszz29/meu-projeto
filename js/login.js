@@ -1,10 +1,15 @@
         // ==================== VARIÁVEIS ====================
-        const form = document.getElementById('loginForm');
-        const errorMessage = document.getElementById('errorMessage');
-        const successMessage = document.getElementById('successMessage');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const submitBtn = document.getElementById('submitBtn');
+       const form = document.getElementById('loginForm');
+const errorMessage = document.getElementById('errorMessage');
+const successMessage = document.getElementById('successMessage');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const submitBtn = document.getElementById('submitBtn');
+
+const rememberCheckbox =
+    document.getElementById('remember');
+
+// ==================== EVENT LISTENERS ====================
 
         // ==================== EVENT LISTENERS ====================
         form.addEventListener('submit', handleLogin);
