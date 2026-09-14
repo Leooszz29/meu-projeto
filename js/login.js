@@ -17,6 +17,15 @@ function resetLoginButton() {
     submitBtn.disabled = false;
     submitBtn.classList.remove('loading');
 }
+
+function validarCredenciais(usuarioSalvo, email, password) {
+    return (
+        usuarioSalvo &&
+        usuarioSalvo.email === email &&
+        usuarioSalvo.senha === password
+    );
+}
+
         // ==================== EVENT LISTENERS ====================
         form.addEventListener('submit', handleLogin);
         emailInput.addEventListener('input', clearError);
