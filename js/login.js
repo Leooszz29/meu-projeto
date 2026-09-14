@@ -214,13 +214,10 @@ atualizarPreferenciaEmail(email);
         }
 
         // ==================== INICIALIZAÇÃO ====================
-        // Restaurar email lembrado (se existir)
-        window.addEventListener('DOMContentLoaded', () => {
-            const rememberedEmail = localStorage.getItem('rememberedEmail');
-            if (rememberedEmail) {
-                emailInput.value = rememberedEmail;
-                rememberCheckbox.checked = true;
-            }
+window.addEventListener('DOMContentLoaded', () => {
+
+    // Carregar e-mail lembrado
+    carregarEmailLembrado();
 
             // Aplicar tema de acordo com o gênero escolhido no Duelo de Ferro
             const genero = localStorage.getItem('generoFitZone');
