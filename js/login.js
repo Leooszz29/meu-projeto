@@ -206,10 +206,14 @@ atualizarPreferenciaEmail(email);
 }, 600);
 
         // ==================== INICIALIZAÇÃO ====================
-window.addEventListener('DOMContentLoaded', () => {
 
-    // Carregar e-mail lembrado
+function inicializarLogin() {
     carregarEmailLembrado();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    inicializarLogin();
+});
 
             // Aplicar tema de acordo com o gênero escolhido no Duelo de Ferro
             const genero = localStorage.getItem('generoFitZone');
