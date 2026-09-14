@@ -84,30 +84,27 @@ submitBtn.disabled = true;
 
 submitBtn.classList.add('loading');
 
-            // Simular envio (remova isso quando conectar a um backend)
-            setTimeout(() => {
+          // Simular envio (remova isso quando conectar a um backend)
+setTimeout(() => {
 
     showSuccess(
         'Login realizado com sucesso! Seja bem-vindo! 💪'
     );
 
     // Armazenar ou remover preferência de lembrar
-const rememberCheckbox =
-    document.getElementById('remember');
+    if (rememberCheckbox.checked) {
 
-if (rememberCheckbox.checked) {
+        localStorage.setItem(
+            'rememberedEmail',
+            email
+        );
 
-    localStorage.setItem(
-        'rememberedEmail',
-        email
-    );
+    } else {
 
-} else {
-
-    localStorage.removeItem(
-        'rememberedEmail'
-    );
-}
+        localStorage.removeItem(
+            'rememberedEmail'
+        );
+    }
 
     // Redirecionar para o perfil
     setTimeout(() => {
