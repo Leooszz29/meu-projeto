@@ -183,20 +183,8 @@ setTimeout(() => {
         'Login realizado com sucesso! Seja bem-vindo! 💪'
     );
 
-    // Armazenar ou remover preferência de lembrar
-    if (rememberCheckbox.checked) {
-
-        localStorage.setItem(
-            'rememberedEmail',
-            email
-        );
-
-    } else {
-
-        localStorage.removeItem(
-            'rememberedEmail'
-        );
-    }
+   // Armazenar ou remover preferência de lembrar
+atualizarPreferenciaEmail(email);
 
     // Redirecionar para o perfil
     setTimeout(() => {
