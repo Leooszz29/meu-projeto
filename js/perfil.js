@@ -423,9 +423,9 @@ function calcularIMC() {
         return;
     }
     
-    classificacao.className = 'imc-classificacao';
+   classificacao.className = 'imc-classificacao';
 
-    if (imc < 18.5) {
+if (imc < 18.5) {
 
     classificacao.textContent = 'Baixo peso';
     classificacao.classList.add('baixo-peso');
@@ -455,7 +455,7 @@ function calcularIMC() {
     classificacao.textContent = 'Obesidade grau III';
     classificacao.classList.add('obesidade-3');
 }
-
+    
 }
 // ========================================
 // INICIALIZAÇÃO
