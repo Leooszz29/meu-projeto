@@ -1,5 +1,6 @@
-        // ==================== VARIÁVEIS ====================
-       const form = document.getElementById('loginForm');
+// ==================== VARIÁVEIS ====================
+
+const form = document.getElementById('loginForm');
 const errorMessage = document.getElementById('errorMessage');
 const successMessage = document.getElementById('successMessage');
 const emailInput = document.getElementById('email');
@@ -9,8 +10,13 @@ const submitBtn = document.getElementById('submitBtn');
 const rememberCheckbox =
     document.getElementById('remember');
 
-// ==================== EVENT LISTENERS ====================
 
+// ==================== FUNÇÕES AUXILIARES ====================
+
+function resetLoginButton() {
+    submitBtn.disabled = false;
+    submitBtn.classList.remove('loading');
+}
         // ==================== EVENT LISTENERS ====================
         form.addEventListener('submit', handleLogin);
         emailInput.addEventListener('input', clearError);
