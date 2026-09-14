@@ -73,9 +73,11 @@
             return;
             }
 
-            // Desabilitar botão durante envio
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Entrando...';
+           // Desabilitar botão durante envio
+
+submitBtn.disabled = true;
+
+submitBtn.classList.add('loading');
 
             // Simular envio (remova isso quando conectar a um backend)
             setTimeout(() => {
