@@ -205,14 +205,6 @@ atualizarPreferenciaEmail(email);
 
 }, 600);
 
-            // Log para desenvolvimento
-            console.log('Tentativa de login:', {
-                email: email,
-                lembrar: rememberCheckbox.checked,
-                timestamp: new Date().toLocaleString('pt-BR')
-            });
-        }
-
         // ==================== INICIALIZAÇÃO ====================
 window.addEventListener('DOMContentLoaded', () => {
 
