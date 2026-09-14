@@ -113,7 +113,7 @@ function alternarVisibilidadeSenha() {
     );
 }
 
-        // ==================== EVENT LISTENERS ====================
+     // ==================== EVENT LISTENERS ====================
 
 form.addEventListener('submit', handleLogin);
 emailInput.addEventListener('input', clearError);
@@ -123,29 +123,6 @@ togglePassword.addEventListener(
     'click',
     alternarVisibilidadeSenha
 );
-
-    const isHidden =
-        passwordInput.type === 'password';
-
-    passwordInput.type =
-        isHidden ? 'text' : 'password';
-
-    this.querySelector('.icon-eye')
-        .classList.toggle('is-hidden', isHidden);
-
-    this.querySelector('.icon-eye-off')
-        .classList.toggle('is-hidden', !isHidden);
-
-    this.setAttribute(
-        'aria-label',
-        isHidden ? 'Ocultar senha' : 'Mostrar senha'
-    );
-
-    this.setAttribute(
-        'aria-pressed',
-        isHidden
-    );
-});
 
         // ==================== FUNÇÕES ====================
         function clearError() {
