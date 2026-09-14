@@ -217,6 +217,8 @@ atualizarPreferenciaEmail(email);
 
 }, 600);
 
+}
+
         // ==================== INICIALIZAÇÃO ====================
 
 function inicializarLogin() {
