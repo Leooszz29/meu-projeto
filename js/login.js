@@ -114,11 +114,15 @@ function alternarVisibilidadeSenha() {
 }
 
         // ==================== EVENT LISTENERS ====================
-        form.addEventListener('submit', handleLogin);
-        emailInput.addEventListener('input', clearError);
-        passwordInput.addEventListener('input', clearError);
 
-        togglePassword.addEventListener('click', function () {
+form.addEventListener('submit', handleLogin);
+emailInput.addEventListener('input', clearError);
+passwordInput.addEventListener('input', clearError);
+
+togglePassword.addEventListener(
+    'click',
+    alternarVisibilidadeSenha
+);
 
     const isHidden =
         passwordInput.type === 'password';
