@@ -1027,3 +1027,85 @@ h1{
         width: 100%;
     }
 }
+
+/* =========================
+   CARDS DE ESTATÍSTICAS
+========================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(150px, 1fr));
+
+    gap: 14px;
+
+    margin: 24px 0 30px;
+}
+
+.stat-card {
+    position: relative;
+
+    padding: 18px;
+
+    border-radius: 16px;
+
+    border:
+        1px solid rgba(255,255,255,0.07);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.045),
+            rgba(255,255,255,0.015)
+        );
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.16);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+
+    border-color:
+        rgba(var(--accent-rgb), 0.30);
+}
+
+.stat-label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--chalk-dim);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.stat-value {
+    display: block;
+
+    color: var(--chalk);
+
+    font-size: 28px;
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+.stat-detail {
+    display: block;
+
+    margin-top: 9px;
+
+    color: var(--accent);
+
+    font-size: 12px;
+    font-weight: 600;
+}
