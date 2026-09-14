@@ -17,12 +17,29 @@ const rememberCheckbox =
         passwordInput.addEventListener('input', clearError);
 
         document.getElementById('togglePassword').addEventListener('click', function () {
-            const isHidden = passwordInput.type === 'password';
-            passwordInput.type = isHidden ? 'text' : 'password';
-            this.querySelector('.icon-eye').classList.toggle('is-hidden', isHidden);
-            this.querySelector('.icon-eye-off').classList.toggle('is-hidden', !isHidden);
-            this.setAttribute('aria-label', isHidden ? 'Ocultar senha' : 'Mostrar senha');
-        });
+
+    const isHidden =
+        passwordInput.type === 'password';
+
+    passwordInput.type =
+        isHidden ? 'text' : 'password';
+
+    this.querySelector('.icon-eye')
+        .classList.toggle('is-hidden', isHidden);
+
+    this.querySelector('.icon-eye-off')
+        .classList.toggle('is-hidden', !isHidden);
+
+    this.setAttribute(
+        'aria-label',
+        isHidden ? 'Ocultar senha' : 'Mostrar senha'
+    );
+
+    this.setAttribute(
+        'aria-pressed',
+        isHidden
+    );
+});
 
         // ==================== FUNÇÕES ====================
         function clearError() {
