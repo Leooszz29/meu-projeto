@@ -195,13 +195,25 @@
         }
 
         .academy-name {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 30px;
-            font-weight: 400;
-            color: var(--chalk);
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-        }
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(30px, 6vw, 42px);
+    font-weight: 400;
+
+    margin: 0 0 6px;
+
+    color: var(--chalk);
+
+    letter-spacing: 3px;
+    text-align: center;
+
+    text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.45),
+        0 0 24px rgba(var(--accent-rgb), 0.22);
+
+    transition:
+        color 0.3s ease,
+        text-shadow 0.3s ease;
+}
 
         .form-group {
             margin-bottom: 20px;
