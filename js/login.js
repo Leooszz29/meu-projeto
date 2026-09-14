@@ -81,18 +81,25 @@ submitBtn.classList.add('loading');
 
             // Simular envio (remova isso quando conectar a um backend)
             setTimeout(() => {
-                showSuccess('Login realizado com sucesso! Seja bem vindo! 💪');
-                
-                // Armazenar preferência de lembrar
-                if (document.getElementById('remember').checked) {
-                    localStorage.setItem('rememberedEmail', email);
-                }
 
-                // Redirecionar para o perfil após o login
-                setTimeout(() => {
-                    window.location.href = 'perfil.html';
-                }, 1500);
-            }, 1500);
+    showSuccess(
+        'Login realizado com sucesso! Seja bem-vindo! 💪'
+    );
+
+    // Armazenar preferência de lembrar
+    if (document.getElementById('remember').checked) {
+        localStorage.setItem(
+            'rememberedEmail',
+            email
+        );
+    }
+
+    // Redirecionar para o perfil
+    setTimeout(() => {
+        window.location.href = 'perfil.html';
+    }, 700);
+
+}, 600);
 
             // Log para desenvolvimento
             console.log('Tentativa de login:', {
