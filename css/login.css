@@ -150,16 +150,41 @@
             min-height: 150px;
         }
 
-        .character-preview::before {
-            content: "";
-            position: absolute;
-            top: -20px;
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(var(--accent-rgb), 0.28) 0%, transparent 70%);
-            transition: background 0.4s ease;
-        }
+       .character-preview::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+
+    width: 220px;
+    height: 220px;
+
+    border-radius: 50%;
+
+    background: radial-gradient(
+        circle,
+        rgba(var(--accent-rgb), 0.24) 0%,
+        rgba(var(--accent-rgb), 0.10) 38%,
+        transparent 72%
+    );
+
+    animation: loginGlow 3.5s ease-in-out infinite;
+
+    transition: background 0.4s ease;
+
+    pointer-events: none;
+}
+
+@keyframes loginGlow {
+    0%, 100% {
+        opacity: 0.75;
+        transform: scale(0.96);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.04);
+    }
+}
 
         .character-preview img {
             position: relative;
