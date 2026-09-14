@@ -72,19 +72,8 @@ function atualizarPreferenciaEmail(email) {
 
 function carregarEmailLembrado() {
 
-    const rememberedEmail =
-        localStorage.getItem('rememberedEmail');
-
-    if (!rememberedEmail) {
-        return;
-    }
-
-    emailInput.value =
-        rememberedEmail;
-
-    rememberCheckbox.checked =
-        true;
-}
+    // Carregar e-mail lembrado
+carregarEmailLembrado();
 
         // ==================== EVENT LISTENERS ====================
         form.addEventListener('submit', handleLogin);
