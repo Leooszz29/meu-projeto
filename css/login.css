@@ -645,3 +645,40 @@ a:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
 }
+
+.btn-login.loading {
+    position: relative;
+
+    color: transparent;
+
+    pointer-events: none;
+
+    filter: brightness(0.95);
+}
+
+.btn-login.loading::after {
+    content: "";
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 18px;
+    height: 18px;
+
+    margin-top: -9px;
+    margin-left: -9px;
+
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #fff;
+
+    border-radius: 50%;
+
+    animation: loginSpinner 0.7s linear infinite;
+}
+
+@keyframes loginSpinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
