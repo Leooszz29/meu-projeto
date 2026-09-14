@@ -127,7 +127,7 @@ setTimeout(() => {
             const rememberedEmail = localStorage.getItem('rememberedEmail');
             if (rememberedEmail) {
                 emailInput.value = rememberedEmail;
-                document.getElementById('remember').checked = true;
+                rememberCheckbox.checked = true;
             }
 
             // Aplicar tema de acordo com o gênero escolhido no Duelo de Ferro
