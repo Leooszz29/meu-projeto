@@ -97,13 +97,48 @@ function resetLoginButton() {
                 return;
             }
                 
-            // Buscar usuário cadastrado
-            const usuarioSalvo = JSON.parse(localStorage.getItem('usuario'));
+           // Buscar usuário cadastrado com segurança
+let usuarioSalvo;
 
-            if (!usuarioSalvo || usuarioSalvo.email !== email || usuarioSalvo.senha !== password) {
-            showError('E-mail ou senha incorretos');
-            return;
-            }
+try {
+
+    const usuarioJSON =
+        localStorage.getItem('usuario');
+
+    usuarioSalvo =
+        usuarioJSON
+            ? JSON.parse(usuarioJSON)
+            : null;
+
+} catch (error) {
+
+    console.error(
+        'Erro ao carregar usuário:',
+        error
+    );
+
+    showError(
+        'Não foi possível acessar os dados da conta.'
+    );
+
+    resetLoginButton();
+
+    return;
+}
+
+// Validar credenciais
+if (
+    !usuarioSalvo ||
+    usuarioSalvo.email !== email ||
+    usuarioSalvo.senha !== password
+) {
+
+    showError(
+        'E-mail ou senha incorretos'
+    );
+
+    return;
+}
 
            // Desabilitar botão durante envio
 
