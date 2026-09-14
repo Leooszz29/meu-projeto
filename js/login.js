@@ -116,7 +116,7 @@ setTimeout(() => {
             // Log para desenvolvimento
             console.log('Tentativa de login:', {
                 email: email,
-                lembrar: document.getElementById('remember').checked,
+                lembrar: rememberCheckbox.checked,
                 timestamp: new Date().toLocaleString('pt-BR')
             });
         }
