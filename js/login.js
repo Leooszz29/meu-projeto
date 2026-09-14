@@ -85,6 +85,34 @@ function carregarEmailLembrado() {
     emailInput.value = rememberedEmail;
     rememberCheckbox.checked = true;
 }
+
+function alternarVisibilidadeSenha() {
+
+    const isHidden =
+        passwordInput.type === 'password';
+
+    passwordInput.type =
+        isHidden ? 'text' : 'password';
+
+    togglePassword
+        .querySelector('.icon-eye')
+        .classList.toggle('is-hidden', isHidden);
+
+    togglePassword
+        .querySelector('.icon-eye-off')
+        .classList.toggle('is-hidden', !isHidden);
+
+    togglePassword.setAttribute(
+        'aria-label',
+        isHidden ? 'Ocultar senha' : 'Mostrar senha'
+    );
+
+    togglePassword.setAttribute(
+        'aria-pressed',
+        isHidden
+    );
+}
+
         // ==================== EVENT LISTENERS ====================
         form.addEventListener('submit', handleLogin);
         emailInput.addEventListener('input', clearError);
