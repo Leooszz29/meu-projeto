@@ -243,7 +243,15 @@ atualizarPreferenciaEmail(email);
         // ==================== INICIALIZAÇÃO ====================
 
 function inicializarLogin() {
+
     carregarEmailLembrado();
+
+    // Aplicar tema de acordo com o gênero escolhido
+    const genero = localStorage.getItem('generoFitZone');
+    const characterImg = document.getElementById('characterImg');
+
+    // aqui continua o restante do código
+    // que já existia para tema e personagem
 }
 
 window.addEventListener('DOMContentLoaded', () => {
