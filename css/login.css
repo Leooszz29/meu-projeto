@@ -509,42 +509,57 @@ input[type="text"]:focus {
     transform: translateY(-1px);
 }
 
-        .error-message {
-            display: none;
-            background: rgba(193, 68, 60, 0.15);
-            color: #e88a83;
-            padding: 12px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--red);
-            animation: shake 0.3s ease;
-        }
+       .error-message,
+.success-message {
+    display: none;
 
-        .error-message.show {
-            display: block;
-        }
+    padding: 13px 15px;
+    margin-bottom: 18px;
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
+    border-radius: 10px;
 
-        .success-message {
-            display: none;
-            background: rgba(var(--accent-rgb), 0.15);
-            color: var(--accent);
-            padding: 12px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--accent);
-        }
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
 
-        .success-message.show {
-            display: block;
-        }
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.18);
+
+    animation: messageSlide 0.3s ease-out;
+}
+
+.error-message {
+    background: rgba(193, 68, 60, 0.10);
+    color: #ffaaa3;
+
+    border: 1px solid rgba(193, 68, 60, 0.28);
+    border-left: 4px solid var(--red);
+}
+
+.success-message {
+    background: rgba(var(--accent-rgb), 0.10);
+    color: var(--accent);
+
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
+    border-left: 4px solid var(--accent);
+}
+
+.error-message.show,
+.success-message.show {
+    display: block;
+}
+
+@keyframes messageSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
         /* Responsividade */
         @media (max-width: 600px) {
