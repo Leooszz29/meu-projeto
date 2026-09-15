@@ -609,18 +609,37 @@ h1{
     }
 }
 
-.success-icon{
-    width:56px;
-    height:56px;
-    border-radius:50%;
-    background:linear-gradient(135deg, var(--accent) 0%, var(--accent-alt) 100%);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:28px;
-    color:var(--concrete-2);
-    margin:0 auto 18px;
-    box-shadow:0 6px 18px rgba(var(--accent-rgb), 0.4);
+/* =========================
+   TREINO CONCLUÍDO
+========================= */
+
+.success-icon {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #45ed85,
+            #28c968
+        );
+
+    color: #07351c;
+
+    font-size: 30px;
+    font-weight: 900;
+
+    box-shadow:
+        0 0 0 6px rgba(53,230,122,0.07),
+        0 10px 28px rgba(53,230,122,0.22);
 }
 
 /* =========================
