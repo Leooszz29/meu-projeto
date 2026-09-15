@@ -838,76 +838,63 @@ h1{
     letter-spacing:1px;
 }
 
-.calendar-card{
-    background:rgba(43, 45, 48, 0.85);
-    border:1px solid rgba(var(--accent-rgb), 0.25);
-    border-radius:10px;
-    box-shadow:0 8px 26px rgba(0,0,0,0.4);
-    padding:14px 14px 16px;
-    max-width:320px;
-    margin:0 auto;
-    transition:border-color 0.4s ease;
-}
-
-.month-nav{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:10px;
-}
-.month-nav button{
-    background:transparent;
-    border:1px solid rgba(var(--accent-rgb), 0.3);
-    color:var(--accent);
-    width:24px;
-    height:24px;
-    border-radius:5px;
-    font-size:13px;
-    line-height:1;
-    cursor:pointer;
-    transition:all 0.2s ease;
-}
-.month-nav button:hover{
-    background:rgba(var(--accent-rgb), 0.15);
-}
-.month-label{
-    font-family:'Bebas Neue', sans-serif;
-    font-size:15px;
-    letter-spacing:1.5px;
-    text-transform:uppercase;
-    color:var(--chalk);
-}
-
-.weekdays{
-    display:grid;
-    grid-template-columns:repeat(7, 1fr);
-    gap:3px;
-    margin-bottom:4px;
-}
-.weekdays span{
-    text-align:center;
-    font-size:9px;
-    letter-spacing:0.5px;
-    color:var(--chalk-dim);
-    text-transform:uppercase;
-}
-
-.days-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    width: 100%;
-}
 /* =========================
-   DIAS DO CALENDÁRIO
+   CALENDÁRIO
 ========================= */
 
-.day-cell {
-    position: relative;
+.calendar-card {
+    width: 100%;
+    max-width: 620px;
+    margin: 0 auto;
 
-    aspect-ratio: 1 / 1;
-    min-width: 0;
-    min-height: 0;
+    padding: 28px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.045),
+            rgba(255,255,255,0.012)
+        );
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.25);
+}
+
+
+/* CABEÇALHO */
+
+.month-nav {
+    display: grid;
+    grid-template-columns: 48px 1fr 48px;
+    align-items: center;
+
+    gap: 16px;
+
+    margin-bottom: 30px;
+}
+
+.month-label {
+    text-align: center;
+
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    color: var(--chalk);
+}
+
+
+/* SETAS */
+
+.month-nav button {
+    width: 48px;
+    height: 48px;
 
     display: flex;
     align-items: center;
@@ -915,8 +902,96 @@ h1{
 
     padding: 0;
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
+    border:
+        1px solid rgba(var(--accent-rgb), 0.35);
+
+    border-radius: 13px;
+
+    background:
+        rgba(var(--accent-rgb), 0.06);
+
+    color: var(--accent);
+
+    font-size: 24px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.month-nav button:hover {
+    background:
+        rgba(var(--accent-rgb), 0.14);
+
+    border-color: var(--accent);
+
+    transform: translateY(-1px);
+}
+
+
+/* DIAS DA SEMANA */
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+
+    gap: 8px;
+
+    margin-bottom: 8px;
+}
+
+.weekdays span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 32px;
+
+    color: var(--chalk-dim);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+
+/* GRADE */
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+
+    gap: 8px;
+
+    width: 100%;
+}
+
+
+/* DIA */
+
+.day-cell {
+    position: relative;
+
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border:
+        1px solid rgba(255,255,255,0.075);
+
+    border-radius: 14px;
 
     background:
         linear-gradient(
@@ -925,9 +1000,9 @@ h1{
             rgba(255,255,255,0.015)
         );
 
-    cursor: pointer;
-
     overflow: hidden;
+
+    cursor: pointer;
 
     transition:
         transform 0.2s ease,
@@ -937,7 +1012,7 @@ h1{
 }
 
 
-/* DIA VAZIO */
+/* ESPAÇOS VAZIOS */
 
 .day-cell.empty {
     visibility: hidden;
@@ -948,18 +1023,18 @@ h1{
 /* NÚMERO */
 
 .day-cell .num {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 9px;
+    border-radius: 10px;
 
     color: var(--chalk);
 
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
 
     line-height: 1;
@@ -979,9 +1054,7 @@ h1{
 }
 
 
-/* =========================
-   DIA ATUAL
-========================= */
+/* DIA ATUAL */
 
 .day-cell.today {
     border-color: var(--accent);
@@ -1000,45 +1073,47 @@ h1{
     color: #08111a;
 
     box-shadow:
-        0 4px 14px
+        0 5px 16px
         rgba(var(--accent-rgb), 0.30);
 }
 
 
-/* =========================
-   CHECK-IN
-========================= */
+/* CHECK-IN */
 
 .day-cell.checked {
     border-color:
-        rgba(var(--accent-rgb), 0.30);
+        rgba(73, 233, 129, 0.40);
 }
 
 .day-cell .check-badge {
     position: absolute;
 
-    top: 7px;
-    right: 7px;
+    top: 6px;
+    right: 6px;
 
-    width: 9px;
-    height: 9px;
+    width: 18px;
+    height: 18px;
 
     display: none;
+    align-items: center;
+    justify-content: center;
 
     border-radius: 50%;
 
     background: #49e981;
+    color: #07150c;
 
-    color: transparent;
+    font-size: 11px;
+    font-weight: 900;
 
-    font-size: 0;
+    line-height: 1;
 
     box-shadow:
-        0 0 9px rgba(73, 233, 129, 0.55);
+        0 0 10px rgba(73,233,129,0.45);
 }
 
 .day-cell.checked .check-badge {
-    display: block;
+    display: flex;
 }
 
 
@@ -1049,58 +1124,114 @@ h1{
 }
 
 
+/* LEGENDA */
+
+.legend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 24px;
+
+    margin-top: 28px;
+    padding-top: 20px;
+
+    border-top:
+        1px solid rgba(255,255,255,0.06);
+
+    color: var(--chalk-dim);
+
+    font-size: 11px;
+}
+
+.legend span {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+}
+
+.legend .dot {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid rgba(255,255,255,0.15);
+}
+
+.legend .dot.checked {
+    background: #49e981;
+    border-color: #49e981;
+
+    box-shadow:
+        0 0 8px rgba(73,233,129,0.35);
+}
+
+
 /* MOBILE */
 
 @media (max-width: 520px) {
 
+    .calendar-card {
+        padding: 20px 14px;
+
+        border-radius: 18px;
+    }
+
+    .month-nav {
+        grid-template-columns: 42px 1fr 42px;
+
+        margin-bottom: 22px;
+    }
+
+    .month-nav button {
+        width: 42px;
+        height: 42px;
+    }
+
+    .month-label {
+        font-size: 18px;
+    }
+
+    .weekdays,
     .days-grid {
         gap: 5px;
     }
 
+    .weekdays span {
+        font-size: 9px;
+    }
+
     .day-cell {
-        border-radius: 9px;
+        border-radius: 10px;
     }
 
     .day-cell .num {
-        width: 27px;
-        height: 27px;
+        width: 29px;
+        height: 29px;
 
-        font-size: 11px;
+        font-size: 12px;
     }
 
     .day-cell .check-badge {
-        top: 4px;
-        right: 4px;
+        top: 3px;
+        right: 3px;
 
-        width: 7px;
-        height: 7px;
+        width: 14px;
+        height: 14px;
+
+        font-size: 8px;
     }
-}
 
+    .legend {
+        gap: 16px;
 
-.legend{
-    display:flex;
-    gap:18px;
-    justify-content:center;
-    margin-top:12px;
-    font-size:9.5px;
-    color:var(--chalk-dim);
-    flex-wrap:wrap;
-}
-.legend span{
-    display:flex;
-    align-items:center;
-    gap:5px;
-}
-.legend .dot{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    border:1px solid rgba(255,255,255,0.2);
-}
-.legend .dot.checked{
-    background:var(--accent);
-    border-color:var(--accent);
+        margin-top: 22px;
+
+        font-size: 10px;
+    }
 }
 
 .divider{
