@@ -1865,10 +1865,6 @@ h1{
     transform: translateY(-1px);
 }
 
-.day-cell:not(.empty):hover .num {
-    color: var(--accent);
-}
-
 /* DIA ATUAL */
 
 .day-cell.today {
@@ -2015,4 +2011,34 @@ h1{
 
     box-shadow:
         0 0 8px rgba(53, 230, 122, 0.45);
+}
+
+/* =========================
+   CORREÇÃO DO NÚMERO DO DIA
+========================= */
+
+/* Dia normal */
+.day-cell .num {
+    color: var(--chalk);
+}
+
+/* Hover: número continua branco */
+.day-cell:not(.today):hover .num {
+    color: var(--chalk);
+}
+
+/* Dia com check-in: número continua branco */
+.day-cell.checked:not(.today) .num {
+    color: var(--chalk);
+}
+
+/* Check-in + hover: também continua branco */
+.day-cell.checked:not(.today):hover .num {
+    color: var(--chalk);
+}
+
+/* Somente o dia atual usa número escuro */
+.day-cell.today .num,
+.day-cell.today:hover .num {
+    color: #08111a;
 }
