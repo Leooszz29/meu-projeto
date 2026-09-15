@@ -967,9 +967,20 @@ h1{
     display: grid;
     grid-template-columns: repeat(7, minmax(0, 1fr));
 
-    gap: 8px;
-
+    gap: 1px;
     width: 100%;
+
+    padding: 1px;
+
+    background:
+        rgba(var(--accent-rgb), 0.25);
+
+    border:
+        1px solid rgba(var(--accent-rgb), 0.30);
+
+    border-radius: 16px;
+
+    overflow: hidden;
 }
 
 
