@@ -1185,11 +1185,11 @@ h1{
 }
 
 .legend .dot.checked {
-    background: #49e981;
-    border-color: #49e981;
+    background: #35e67a;
+    border-color: #35e67a;
 
     box-shadow:
-        0 0 8px rgba(73,233,129,0.35);
+        0 0 9px rgba(53, 230, 122, 0.45);
 }
 
 
@@ -1738,10 +1738,11 @@ h1{
 }
 
 .legend .dot.checked {
-    background: var(--accent);
+    background: #35e67a;
+    border-color: #35e67a;
 
     box-shadow:
-        0 0 10px rgba(var(--accent-rgb), 0.55);
+        0 0 9px rgba(53, 230, 122, 0.45);
 }
 
 
