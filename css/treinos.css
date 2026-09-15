@@ -892,66 +892,189 @@ h1{
     text-transform:uppercase;
 }
 
-.days-grid{
-    display:grid;
-    grid-template-columns:repeat(7, 1fr);
-    gap:3px;
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    width: 100%;
 }
-.day-cell{
-    position:relative;
-    aspect-ratio:1;
-    border-radius:6px;
-    border:1px solid rgba(255,255,255,0.06);
-    background:rgba(0,0,0,0.2);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    transition:all 0.2s ease;
-    overflow:hidden;
+/* =========================
+   DIAS DO CALENDÁRIO
+========================= */
+
+.day-cell {
+    position: relative;
+
+    aspect-ratio: 1 / 1;
+    min-width: 0;
+    min-height: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.045),
+            rgba(255,255,255,0.015)
+        );
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
 }
-.day-cell.empty{
-    visibility:hidden;
-    cursor:default;
+
+
+/* DIA VAZIO */
+
+.day-cell.empty {
+    visibility: hidden;
+    pointer-events: none;
 }
-.day-cell:hover:not(.empty){
-    border-color:rgba(var(--accent-rgb), 0.5);
+
+
+/* NÚMERO */
+
+.day-cell .num {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    color: var(--chalk);
+
+    font-size: 13px;
+    font-weight: 700;
+
+    line-height: 1;
 }
-.day-cell .num{
-    font-size:10.5px;
-    font-weight:600;
-    color:var(--chalk);
+
+
+/* HOVER */
+
+.day-cell:not(.empty):hover {
+    transform: translateY(-2px);
+
+    border-color:
+        rgba(var(--accent-rgb), 0.35);
+
+    background:
+        rgba(var(--accent-rgb), 0.05);
 }
-.day-cell.today .num{
-    color:var(--accent);
+
+
+/* =========================
+   DIA ATUAL
+========================= */
+
+.day-cell.today {
+    border-color: var(--accent);
+
+    background:
+        rgba(var(--accent-rgb), 0.07);
+
+    box-shadow:
+        0 0 18px
+        rgba(var(--accent-rgb), 0.10);
 }
-.day-cell.today{
-    border-color:rgba(var(--accent-rgb), 0.5);
+
+.day-cell.today .num {
+    background: var(--accent);
+
+    color: #08111a;
+
+    box-shadow:
+        0 4px 14px
+        rgba(var(--accent-rgb), 0.30);
 }
-.day-cell.checked{
-    background:linear-gradient(135deg, rgba(var(--accent-rgb),0.35) 0%, rgba(var(--accent-rgb),0.12) 100%);
-    border-color:var(--accent);
+
+
+/* =========================
+   CHECK-IN
+========================= */
+
+.day-cell.checked {
+    border-color:
+        rgba(var(--accent-rgb), 0.30);
 }
-.day-cell .check-badge{
-    position:absolute;
-    top:1px;
-    right:1px;
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    background:var(--accent);
-    color:var(--concrete-2);
-    font-size:7px;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    font-weight:bold;
+
+.day-cell .check-badge {
+    position: absolute;
+
+    top: 7px;
+    right: 7px;
+
+    width: 9px;
+    height: 9px;
+
+    display: none;
+
+    border-radius: 50%;
+
+    background: #49e981;
+
+    color: transparent;
+
+    font-size: 0;
+
+    box-shadow:
+        0 0 9px rgba(73, 233, 129, 0.55);
 }
-.day-cell.checked .check-badge{
-    display:flex;
+
+.day-cell.checked .check-badge {
+    display: block;
 }
-.day-cell .treino-label{
-    display:none;
+
+
+/* NOME DO TREINO */
+
+.day-cell .treino-label {
+    display: none;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 520px) {
+
+    .days-grid {
+        gap: 5px;
+    }
+
+    .day-cell {
+        border-radius: 9px;
+    }
+
+    .day-cell .num {
+        width: 27px;
+        height: 27px;
+
+        font-size: 11px;
+    }
+
+    .day-cell .check-badge {
+        top: 4px;
+        right: 4px;
+
+        width: 7px;
+        height: 7px;
+    }
 }
 
 
@@ -1425,8 +1548,8 @@ h1{
 .days-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-
-    gap: 6px;
+    gap: 8px;
+    width: 100%;
 }
 
 
@@ -1476,9 +1599,12 @@ h1{
         padding: 16px 12px;
     }
 
-    .days-grid {
-        gap: 4px;
-    }
+   .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    width: 100%;
+}
 
     .month-label {
         font-size: 15px;
@@ -1491,7 +1617,7 @@ h1{
 
 .days-grid {
     display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-template-columns: repeat(7, 1fr);
     gap: 8px;
     width: 100%;
 }
@@ -1650,8 +1776,11 @@ h1{
 @media (max-width: 520px) {
 
     .days-grid {
-        gap: 5px;
-    }
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    width: 100%;
+}
 
     .day-cell {
         border-radius: 9px;
