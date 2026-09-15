@@ -1091,7 +1091,7 @@ h1{
     color: #08111a;
 
     box-shadow:
-        0 5px 18px rgba(var(--accent-rgb), 0.40);
+        0 5px 16px rgba(var(--accent-rgb), 0.30);
 }
 
 /* CHECK-IN */
@@ -1136,9 +1136,20 @@ h1{
     display: flex;
 }
 
-.day-cell.checked .num {
-    border-color:
-        rgba(53, 230, 122, 0.28);
+/* CHECK-IN: mantém o número visível */
+
+.day-cell.checked:not(.today) .num {
+    background: transparent;
+    color: var(--chalk);
+
+    box-shadow: none;
+}
+
+/* SE O CHECK-IN FOR NO DIA ATUAL */
+
+.day-cell.checked.today .num {
+    background: var(--accent);
+    color: #08111a;
 }
 
 
@@ -1880,7 +1891,7 @@ h1{
     color: #08111a;
 
     box-shadow:
-        0 5px 18px rgba(var(--accent-rgb), 0.40);
+        0 5px 16px rgba(var(--accent-rgb), 0.30);
 }
 
 /* CHECK-IN */
