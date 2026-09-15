@@ -1097,39 +1097,41 @@ h1{
 /* CHECK-IN */
 
 .day-cell.checked {
-    border-color:
-        rgba(73, 233, 129, 0.40);
+    border-color: rgba(53, 230, 122, 0.45);
 }
 
 .day-cell .check-badge {
     position: absolute;
 
-    top: 9px;
-    right: 9px;
+    top: 7px;
+    right: 7px;
 
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
 
     display: none;
     align-items: center;
     justify-content: center;
 
-    z-index: 2;
+    z-index: 5;
 
     border-radius: 50%;
 
+    /* VERDE DO CHECK-IN */
     background: #35e67a;
 
-    color: #062b16;
+    /* COR DO ✓ */
+    color: #07351c;
 
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 900;
     line-height: 1;
 
+    /* BRILHO VERDE */
     box-shadow:
-        0 0 12px rgba(53, 230, 122, 0.55);
+        0 0 6px rgba(53, 230, 122, 0.65),
+        0 0 14px rgba(53, 230, 122, 0.30);
 }
-
 .day-cell.checked .check-badge {
     display: flex;
 }
@@ -1189,7 +1191,7 @@ h1{
     border-color: #35e67a;
 
     box-shadow:
-        0 0 9px rgba(53, 230, 122, 0.45);
+        0 0 8px rgba(53, 230, 122, 0.45);
 }
 
 
