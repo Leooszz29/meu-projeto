@@ -152,10 +152,51 @@
 
 
     <div class="continue-section">
-        <a href="treinos.html" class="continue-link">
-            Ir para meus treinos →
-        </a>
+    <a href="treinos.html" class="continue-link">
+        Ir para meus treinos →
+    </a>
+</div>
+
+
+<!-- MODAL CONFIRMAR EXCLUSÃO DO HISTÓRICO -->
+<div class="history-modal-overlay" id="historyDeleteModal">
+
+    <div class="history-delete-modal">
+
+        <div class="history-delete-icon">
+            🗑
+        </div>
+
+        <h2>Excluir treino?</h2>
+
+        <p id="historyDeleteMessage">
+            Deseja realmente excluir este treino do histórico?
+        </p>
+
+        <div class="history-delete-actions">
+
+            <button
+                type="button"
+                class="history-modal-cancel"
+                id="historyDeleteCancel"
+            >
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="history-modal-confirm"
+                id="historyDeleteConfirm"
+            >
+                Excluir
+            </button>
+
+        </div>
+
     </div>
+
+</div>
+
 
 <script src="js/perfil.js"></script>
 </body>
