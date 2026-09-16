@@ -512,23 +512,39 @@ document.getElementById('nextMonth').addEventListener('click', () => {
 // ==================== FINALIZAR TREINO ====================
 document.getElementById('btnFinishWorkout').addEventListener('click', () => {
 
-    // Busca o histórico já existente
+    // Busca o treino selecionado
+    const treinoAtivo =
+        JSON.parse(localStorage.getItem('treinoAtivo'));
+
+    // Impede finalizar sem selecionar um treino
+    if (!treinoAtivo) {
+        alert('Selecione um treino antes de finalizar.');
+        return;
+    }
+
+    // Busca o histórico existente
     const historico =
         JSON.parse(localStorage.getItem('historicoTreinos')) || [];
 
-    // Registra este treino como concluído
+    // Registra o treino concluído
     historico.push({
+        workoutId: treinoAtivo.id,
+        nome: treinoAtivo.nome,
         data: new Date().toISOString()
     });
 
-    // Salva novamente no navegador
+    // Salva o histórico atualizado
     localStorage.setItem(
         'historicoTreinos',
         JSON.stringify(historico)
     );
 
-    // Abre o modal de conclusão
-    document.getElementById('finishModalOverlay')
+    // Remove o treino ativo após a conclusão
+    localStorage.removeItem('treinoAtivo');
+
+    // Abre o modal de sucesso
+    document
+        .getElementById('finishModalOverlay')
         .classList.add('show');
 });
 
