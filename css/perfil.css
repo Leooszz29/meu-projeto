@@ -484,3 +484,152 @@ textarea::placeholder{
 .imc-classificacao.obesidade-3{
     color:#ec7063;
 }
+
+/* =========================================
+   RESUMO DE DESEMPENHO
+========================================= */
+
+.training-summary {
+    width: 100%;
+    margin-top: 30px;
+    padding: 26px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.16);
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.04),
+            rgba(255,255,255,0.012)
+        );
+
+    box-shadow: 0 14px 35px rgba(0,0,0,0.18);
+}
+
+
+/* CABEÇALHO */
+
+.summary-header {
+    margin-bottom: 20px;
+}
+
+.summary-eyebrow {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--accent);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.summary-header h2 {
+    margin: 0 0 5px;
+
+    color: var(--chalk);
+
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.summary-header p {
+    margin: 0;
+
+    color: var(--chalk-dim);
+
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+
+
+/* CARDS */
+
+.summary-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.summary-card {
+    min-width: 0;
+    padding: 18px 14px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 13px;
+
+    background: rgba(0,0,0,0.14);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-2px);
+
+    border-color: rgba(var(--accent-rgb), 0.25);
+
+    background: rgba(var(--accent-rgb), 0.04);
+}
+
+
+/* NÚMEROS */
+
+.summary-value {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--accent);
+
+    font-size: 25px;
+    font-weight: 850;
+    line-height: 1;
+}
+
+
+/* DESCRIÇÃO */
+
+.summary-label {
+    color: var(--chalk-dim);
+
+    font-size: 10.5px;
+    font-weight: 650;
+    line-height: 1.35;
+
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 520px) {
+
+    .training-summary {
+        padding: 22px 18px;
+    }
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+        min-height: 82px;
+    }
+}
