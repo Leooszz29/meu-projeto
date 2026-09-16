@@ -705,6 +705,13 @@ body:not(.theme-feminino):not(.theme-masculino)
     color: #111;
 }
 
+.active-series-btn:active {
+    transform: scale(0.92);
+}
+
+.active-series-btn.completed {
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
+}
 
 /* MOBILE */
 
