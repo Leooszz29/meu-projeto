@@ -216,6 +216,16 @@ function renderActiveTraining(workout) {
         return;
     }
 
+    // CARREGA O PROGRESSO DAS SÉRIES
+
+const progressoTreino =
+    JSON.parse(
+        localStorage.getItem('progressoTreino')
+    ) || {};
+
+const progressoAtual =
+    progressoTreino[workout.id] || {};
+    
 
     // NOME DO TREINO
 
@@ -340,6 +350,12 @@ seriesControls.className =
 const quantidadeSeries =
     parseInt(exercicio.series, 10) || 0;
 
+const exerciseKey =
+    exercicio.id || `exercise-${index}`;
+
+const seriesConcluidas =
+    progressoAtual[exerciseKey] || [];
+
 
 for (
     let numeroSerie = 1;
@@ -358,34 +374,88 @@ for (
     seriesButton.textContent =
         numeroSerie;
 
+    if (
+    seriesConcluidas.includes(numeroSerie)
+) {
+    seriesButton.classList.add('completed');
+}
+
     seriesButton.setAttribute(
         'aria-label',
         `Marcar série ${numeroSerie} como concluída`
     );
 
 
-    seriesButton.addEventListener(
-        'click',
-        () => {
+  seriesButton.addEventListener(
+    'click',
+    () => {
 
-            seriesButton.classList.toggle(
+        seriesButton.classList.toggle(
+            'completed'
+        );
+
+        const concluida =
+            seriesButton.classList.contains(
                 'completed'
             );
 
-            const concluida =
-                seriesButton.classList.contains(
-                    'completed'
-                );
 
-            seriesButton.setAttribute(
-                'aria-label',
-                concluida
-                    ? `Desmarcar série ${numeroSerie}`
-                    : `Marcar série ${numeroSerie} como concluída`
-            );
+        // BUSCA O PROGRESSO MAIS RECENTE
+
+        const progressoSalvo =
+            JSON.parse(
+                localStorage.getItem(
+                    'progressoTreino'
+                )
+            ) || {};
+
+
+        if (!progressoSalvo[workout.id]) {
+            progressoSalvo[workout.id] = {};
+        }
+
+
+        const seriesSalvas =
+            progressoSalvo[workout.id][exerciseKey] || [];
+
+
+        if (concluida) {
+
+            if (!seriesSalvas.includes(numeroSerie)) {
+                seriesSalvas.push(numeroSerie);
+            }
+
+        } else {
+
+            const indiceSerie =
+                seriesSalvas.indexOf(numeroSerie);
+
+            if (indiceSerie !== -1) {
+                seriesSalvas.splice(indiceSerie, 1);
+            }
 
         }
-    );
+
+
+        progressoSalvo[workout.id][exerciseKey] =
+            seriesSalvas;
+
+
+        localStorage.setItem(
+            'progressoTreino',
+            JSON.stringify(progressoSalvo)
+        );
+
+
+        seriesButton.setAttribute(
+            'aria-label',
+            concluida
+                ? `Desmarcar série ${numeroSerie}`
+                : `Marcar série ${numeroSerie} como concluída`
+        );
+
+    }
+);
 
 
     seriesControls.appendChild(
