@@ -633,19 +633,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     border-color:
         rgba(193,68,60,0.40);
 }
-.icon-btn:hover{
-    background:rgba(var(--accent-rgb), 0.15);
-}
-.icon-btn:active{
-    transform:scale(0.92);
-}
-.icon-btn.danger{
-    color:#e88a83;
-    border-color:rgba(193, 68, 60, 0.4);
-}
-.icon-btn.danger:hover{
-    background:rgba(193, 68, 60, 0.15);
-}
 
 .exercise-row {
     display: flex;
