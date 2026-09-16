@@ -251,60 +251,54 @@ h1{
 /* ATLETA */
 
 .empty-athlete {
+    width: 100%;
+    height: 100%;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: 100%;
-    height: 100%;
+    overflow: hidden;
 
-    font-size: 52px;
-    line-height: 1;
-
-    text-align: center;
-
-    transform: translateY(1px);
+    border-radius: inherit;
 }
+
 /* =========================
-   ILUSTRAÇÃO POR GÊNERO
+   ILUSTRAÇÃO DO ATLETA
 ========================= */
 
 .athlete-illustration {
     display: none;
 
-    width: 100%;
-    height: 100%;
+    width: 94px;
+    height: 94px;
 
-    align-items: center;
-    justify-content: center;
+    object-fit: contain;
 
-    font-size: 52px;
-    line-height: 1;
+    object-position: center;
 }
 
 
-/* TEMA MASCULINO */
+/* MASCULINO */
 
 body.theme-masculino .athlete-male {
-    display: flex;
+    display: block;
 }
 
 
-/* TEMA FEMININO */
+/* FEMININO */
 
 body.theme-feminino .athlete-female {
-    display: flex;
+    display: block;
 }
 
 
-/* SEGURANÇA:
-   caso nenhum tema esteja definido */
+/* PADRÃO */
 
 body:not(.theme-masculino):not(.theme-feminino)
 .athlete-male {
-    display: flex;
+    display: block;
 }
-
 
 /* TÍTULO */
 
@@ -380,8 +374,9 @@ body:not(.theme-masculino):not(.theme-feminino)
         border-radius: 21px;
     }
 
-    .athlete-illustration {
-    font-size: 44px;
+.athlete-illustration {
+    width: 80px;
+    height: 80px;
 }
 
     .empty-state strong {
