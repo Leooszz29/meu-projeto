@@ -136,7 +136,11 @@ if (
     treinoAtivo.id === workout.id
 ) {
     card.classList.add('active-workout');
-    startBtn.textContent = '✓ Treino selecionado';
+
+    startBtn.textContent =
+        '✓ Treino selecionado';
+
+    renderActiveTraining(workout);
 }
 
 startBtn.addEventListener('click', () => {
