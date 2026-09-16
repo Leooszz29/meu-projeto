@@ -836,39 +836,11 @@ deleteButton.addEventListener(
     'click',
     () => {
 
-        const confirmar =
-            confirm(
-                `Excluir ${
-                    treino.nome || 'Treino'
-                } realizado em ${
-                    data.textContent
-                }?`
-            );
-
-        if (!confirmar) {
-            return;
-        }
-
-        const historicoAtual =
-            JSON.parse(
-                localStorage.getItem(
-                    'historicoTreinos'
-                )
-            ) || [];
-
-        historicoAtual.splice(
+        openHistoryDeleteModal(
             treino.originalIndex,
-            1
+            treino.nome || 'Treino',
+            data.textContent
         );
-
-        localStorage.setItem(
-            'historicoTreinos',
-            JSON.stringify(historicoAtual)
-        );
-
-        // ATUALIZA O RESUMO E O HISTÓRICO
-        loadTrainingSummary();
-        loadWorkoutHistory();
 
     }
 );
@@ -918,6 +890,154 @@ monthContent.appendChild(item);
 
 }
 
+// ========================================
+// MODAL DE EXCLUSÃO DO HISTÓRICO
+// ========================================
+
+let historyDeleteIndex = null;
+
+
+function openHistoryDeleteModal(
+    index,
+    nome,
+    data
+) {
+
+    const modal =
+        document.getElementById(
+            'historyDeleteModal'
+        );
+
+    const message =
+        document.getElementById(
+            'historyDeleteMessage'
+        );
+
+    if (!modal || !message) {
+        return;
+    }
+
+    historyDeleteIndex = index;
+
+    message.textContent =
+        `Deseja excluir "${nome}" realizado em ${data}?`;
+
+    modal.classList.add('show');
+
+}
+
+
+function closeHistoryDeleteModal() {
+
+    const modal =
+        document.getElementById(
+            'historyDeleteModal'
+        );
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.remove('show');
+
+    historyDeleteIndex = null;
+
+}
+
+
+function initializeHistoryDeleteModal() {
+
+    const modal =
+        document.getElementById(
+            'historyDeleteModal'
+        );
+
+    const cancelButton =
+        document.getElementById(
+            'historyDeleteCancel'
+        );
+
+    const confirmButton =
+        document.getElementById(
+            'historyDeleteConfirm'
+        );
+
+    if (
+        !modal ||
+        !cancelButton ||
+        !confirmButton
+    ) {
+        return;
+    }
+
+
+    // CANCELAR
+
+    cancelButton.addEventListener(
+        'click',
+        closeHistoryDeleteModal
+    );
+
+
+    // CLICAR FORA DO MODAL
+
+    modal.addEventListener(
+        'click',
+        (event) => {
+
+            if (event.target === modal) {
+                closeHistoryDeleteModal();
+            }
+
+        }
+    );
+
+
+    // CONFIRMAR EXCLUSÃO
+
+    confirmButton.addEventListener(
+        'click',
+        () => {
+
+            if (historyDeleteIndex === null) {
+                return;
+            }
+
+            const historico =
+                JSON.parse(
+                    localStorage.getItem(
+                        'historicoTreinos'
+                    )
+                ) || [];
+
+            if (
+                historyDeleteIndex < 0 ||
+                historyDeleteIndex >= historico.length
+            ) {
+                closeHistoryDeleteModal();
+                return;
+            }
+
+            historico.splice(
+                historyDeleteIndex,
+                1
+            );
+
+            localStorage.setItem(
+                'historicoTreinos',
+                JSON.stringify(historico)
+            );
+
+            closeHistoryDeleteModal();
+
+            loadTrainingSummary();
+            loadWorkoutHistory();
+
+        }
+    );
+
+}
+
 function initializeProfile() {
 
     console.log('PERFIL.JS INICIADO');
@@ -928,11 +1048,13 @@ function initializeProfile() {
 
     initializeIMC();
 
-    initializeProfileActions();
+  initializeProfileActions();
 
-    loadTrainingSummary();
+loadTrainingSummary();
 
-    loadWorkoutHistory();
+loadWorkoutHistory();
+
+initializeHistoryDeleteModal();
 
 }
 
