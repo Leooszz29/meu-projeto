@@ -461,6 +461,168 @@ body:not(.theme-feminino):not(.theme-masculino)
     gap:18px;
 }
 
+/* =========================================
+   TREINO EM ANDAMENTO
+========================================= */
+
+.active-training {
+    width: 100%;
+    margin-top: 26px;
+    margin-bottom: 18px;
+    padding: 24px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(var(--accent-rgb), 0.05),
+            rgba(255,255,255,0.015)
+        );
+
+    box-shadow:
+        0 16px 38px rgba(0,0,0,0.22);
+}
+
+
+/* CABEÇALHO */
+
+.active-training-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+}
+
+
+.active-training-eyebrow {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--accent);
+
+    font-size: 9.5px;
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+
+.active-training-header h2 {
+    margin: 0;
+
+    color: var(--chalk);
+
+    font-size: 21px;
+    font-weight: 800;
+
+    line-height: 1.25;
+}
+
+
+/* STATUS */
+
+.active-training-status {
+    flex-shrink: 0;
+
+    padding: 6px 9px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
+    border-radius: 20px;
+
+    background: rgba(var(--accent-rgb), 0.08);
+
+    color: var(--accent);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+}
+
+
+/* ÁREA DOS EXERCÍCIOS */
+
+.active-training-exercises {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+/* ESTADO VAZIO */
+
+.active-training-empty {
+    width: 100%;
+
+    padding: 28px 18px;
+
+    text-align: center;
+
+    border: 1px dashed rgba(255,255,255,0.09);
+    border-radius: 12px;
+
+    background: rgba(0,0,0,0.12);
+}
+
+
+.active-training-empty strong {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--chalk);
+
+    font-size: 13px;
+    font-weight: 750;
+}
+
+
+.active-training-empty p {
+    max-width: 310px;
+
+    margin: 0 auto;
+
+    color: var(--chalk-dim);
+
+    font-size: 11.5px;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   TREINO EM ANDAMENTO - MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+
+    .active-training {
+        padding: 20px 16px;
+    }
+
+    .active-training-header {
+        align-items: flex-start;
+    }
+
+    .active-training-header h2 {
+        font-size: 19px;
+    }
+
+    .active-training-status {
+        font-size: 8px;
+        padding: 5px 8px;
+    }
+
+}
+
 /* =========================
    CARD DO TREINO
 ========================= */
