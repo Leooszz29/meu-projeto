@@ -971,3 +971,234 @@ textarea::placeholder{
         padding: 14px;
     }
 }
+
+/* =========================================
+   MODAL DE EXCLUSÃO DO HISTÓRICO
+========================================= */
+
+.history-modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(5, 6, 8, 0.78);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    z-index: 100;
+}
+
+
+/* QUANDO O MODAL ESTIVER ABERTO */
+
+.history-modal-overlay.show {
+    display: flex;
+}
+
+
+/* CAIXA DO MODAL */
+
+.history-delete-modal {
+    width: 100%;
+    max-width: 390px;
+
+    padding: 32px 28px 28px;
+
+    text-align: center;
+
+    border: 1px solid rgba(193, 68, 60, 0.25);
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.055),
+            rgba(255,255,255,0.015)
+        ),
+        var(--concrete-1);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,0.55),
+        0 0 35px rgba(193,68,60,0.07);
+}
+
+
+/* ÍCONE */
+
+.history-delete-icon {
+    width: 62px;
+    height: 62px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(193, 68, 60, 0.12);
+    border: 1px solid rgba(193, 68, 60, 0.25);
+
+    font-size: 25px;
+
+    box-shadow:
+        0 0 0 6px rgba(193,68,60,0.04);
+}
+
+
+/* TÍTULO */
+
+.history-delete-modal h2 {
+    margin: 0 0 10px;
+
+    color: var(--chalk);
+
+    font-size: 24px;
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+}
+
+
+/* MENSAGEM */
+
+.history-delete-modal p {
+    max-width: 310px;
+
+    margin: 0 auto 26px;
+
+    color: var(--chalk-dim);
+
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+
+/* BOTÕES */
+
+.history-delete-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.history-modal-cancel,
+.history-modal-confirm {
+    flex: 1;
+
+    min-height: 46px;
+
+    padding: 0 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    font-family: inherit;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* CANCELAR */
+
+.history-modal-cancel {
+    border: 1px solid rgba(255,255,255,0.11);
+
+    background: rgba(255,255,255,0.025);
+
+    color: var(--chalk-dim);
+}
+
+.history-modal-cancel:hover {
+    transform: translateY(-1px);
+
+    background: rgba(255,255,255,0.055);
+    border-color: rgba(255,255,255,0.22);
+
+    color: var(--chalk);
+}
+
+
+/* EXCLUIR */
+
+.history-modal-confirm {
+    border: 1px solid rgba(193,68,60,0.35);
+
+    background:
+        linear-gradient(
+            135deg,
+            #c1443c,
+            #9f312b
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 6px 18px rgba(193,68,60,0.20);
+}
+
+.history-modal-confirm:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 9px 24px rgba(193,68,60,0.30);
+}
+
+
+/* CLIQUE */
+
+.history-modal-cancel:active,
+.history-modal-confirm:active {
+    transform: translateY(0);
+}
+
+
+/* FOCO PELO TECLADO */
+
+.history-modal-cancel:focus-visible,
+.history-modal-confirm:focus-visible {
+    outline: none;
+
+    box-shadow:
+        0 0 0 3px rgba(var(--accent-rgb),0.16);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 520px) {
+
+    .history-delete-modal {
+        padding: 28px 20px 22px;
+    }
+
+    .history-delete-actions {
+        flex-direction: column-reverse;
+    }
+
+    .history-modal-cancel,
+    .history-modal-confirm {
+        width: 100%;
+    }
+}
