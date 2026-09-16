@@ -508,6 +508,79 @@ function initializeProfileActions() {
         );
     }
 }
+// ========================================
+// RESUMO DOS TREINOS
+// ========================================
+
+function loadTrainingSummary() {
+
+    const totalElement =
+        document.getElementById('totalWorkouts');
+
+    const monthElement =
+        document.getElementById('currentMonthWorkouts');
+
+    const lastElement =
+        document.getElementById('lastWorkout');
+
+    // Se os cards não existirem, encerra
+    if (!totalElement || !monthElement || !lastElement) {
+        return;
+    }
+
+    // Busca o histórico salvo
+    const historico =
+        JSON.parse(
+            localStorage.getItem('historicoTreinos')
+        ) || [];
+
+    // TOTAL DE TREINOS
+    totalElement.textContent = historico.length;
+
+    // DATA ATUAL
+    const agora = new Date();
+
+    const mesAtual = agora.getMonth();
+    const anoAtual = agora.getFullYear();
+
+    // TREINOS CONCLUÍDOS NESTE MÊS
+    const treinosDoMes = historico.filter((treino) => {
+
+        const dataTreino =
+            new Date(treino.data);
+
+        return (
+            dataTreino.getMonth() === mesAtual &&
+            dataTreino.getFullYear() === anoAtual
+        );
+    });
+
+    monthElement.textContent =
+        treinosDoMes.length;
+
+    // ÚLTIMO TREINO
+    if (historico.length > 0) {
+
+        const ultimoTreino =
+            historico[historico.length - 1];
+
+        const dataUltimoTreino =
+            new Date(ultimoTreino.data);
+
+        lastElement.textContent =
+            dataUltimoTreino.toLocaleDateString(
+                'pt-BR',
+                {
+                    day: '2-digit',
+                    month: '2-digit'
+                }
+            );
+
+    } else {
+
+        lastElement.textContent = '—';
+    }
+}
 function initializeProfile() {
 
     console.log('PERFIL.JS INICIADO');
@@ -519,6 +592,8 @@ function initializeProfile() {
     initializeIMC();
 
     initializeProfileActions();
+    
+    loadTrainingSummary();
 }
 
 // ========================================
