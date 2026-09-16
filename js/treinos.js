@@ -182,6 +182,8 @@ startBtn.addEventListener('click', () => {
     startBtn.textContent =
         '✓ Treino selecionado';
 
+    renderActiveTraining(workout);
+
 });
 
 
@@ -189,6 +191,154 @@ card.appendChild(startBtn);
 
 list.appendChild(card);
     });
+}
+
+// ========================================
+// TREINO EM ANDAMENTO
+// ========================================
+
+function renderActiveTraining(workout) {
+
+    const nameElement =
+        document.getElementById('activeTrainingName');
+
+    const statusElement =
+        document.getElementById('activeTrainingStatus');
+
+    const exercisesElement =
+        document.getElementById('activeTrainingExercises');
+
+    if (
+        !nameElement ||
+        !statusElement ||
+        !exercisesElement
+    ) {
+        return;
+    }
+
+
+    // NOME DO TREINO
+
+    nameElement.textContent =
+        workout.nome || 'Treino';
+
+
+    // STATUS
+
+    statusElement.textContent =
+        'EM ANDAMENTO';
+
+
+    // LIMPA A ÁREA
+
+    exercisesElement.innerHTML = '';
+
+
+    // VERIFICA SE EXISTEM EXERCÍCIOS
+
+    const exercicios =
+        workout.exercicios || [];
+
+    if (exercicios.length === 0) {
+
+        exercisesElement.innerHTML = `
+            <div class="active-training-empty">
+
+                <strong>
+                    Nenhum exercício cadastrado
+                </strong>
+
+                <p>
+                    Adicione exercícios a este treino
+                    antes de iniciá-lo.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    // CRIA OS EXERCÍCIOS
+
+    exercicios.forEach((exercicio, index) => {
+
+        const exerciseItem =
+            document.createElement('div');
+
+        exerciseItem.className =
+            'active-exercise-item';
+
+
+        const exerciseNumber =
+            document.createElement('span');
+
+        exerciseNumber.className =
+            'active-exercise-number';
+
+        exerciseNumber.textContent =
+            String(index + 1).padStart(2, '0');
+
+
+        const exerciseInfo =
+            document.createElement('div');
+
+        exerciseInfo.className =
+            'active-exercise-info';
+
+
+        const exerciseName =
+            document.createElement('strong');
+
+        exerciseName.className =
+            'active-exercise-name';
+
+        exerciseName.textContent =
+            exercicio.nome || 'Exercício';
+
+
+        const exerciseMeta =
+            document.createElement('span');
+
+        exerciseMeta.className =
+            'active-exercise-meta';
+
+        const series =
+            exercicio.series || '—';
+
+        const reps =
+            exercicio.repeticoes || '—';
+
+        const descanso =
+            exercicio.descanso || '0';
+
+        exerciseMeta.textContent =
+            `${series} séries × ${reps} repetições • ${descanso}s descanso`;
+
+
+        exerciseInfo.appendChild(
+            exerciseName
+        );
+
+        exerciseInfo.appendChild(
+            exerciseMeta
+        );
+
+        exerciseItem.appendChild(
+            exerciseNumber
+        );
+
+        exerciseItem.appendChild(
+            exerciseInfo
+        );
+
+        exercisesElement.appendChild(
+            exerciseItem
+        );
+
+    });
+
 }
 
 // ==================== MODAL TREINO ====================
