@@ -318,24 +318,99 @@ function renderActiveTraining(workout) {
 
 
         exerciseInfo.appendChild(
-            exerciseName
-        );
+    exerciseName
+);
 
-        exerciseInfo.appendChild(
-            exerciseMeta
-        );
+exerciseInfo.appendChild(
+    exerciseMeta
+);
 
-        exerciseItem.appendChild(
-            exerciseNumber
-        );
 
-        exerciseItem.appendChild(
-            exerciseInfo
-        );
+// ========================================
+// CONTROLE DAS SÉRIES
+// ========================================
 
-        exercisesElement.appendChild(
-            exerciseItem
-        );
+const seriesControls =
+    document.createElement('div');
+
+seriesControls.className =
+    'active-series-controls';
+
+
+const quantidadeSeries =
+    parseInt(exercicio.series, 10) || 0;
+
+
+for (
+    let numeroSerie = 1;
+    numeroSerie <= quantidadeSeries;
+    numeroSerie++
+) {
+
+    const seriesButton =
+        document.createElement('button');
+
+    seriesButton.type = 'button';
+
+    seriesButton.className =
+        'active-series-btn';
+
+    seriesButton.textContent =
+        numeroSerie;
+
+    seriesButton.setAttribute(
+        'aria-label',
+        `Marcar série ${numeroSerie} como concluída`
+    );
+
+
+    seriesButton.addEventListener(
+        'click',
+        () => {
+
+            seriesButton.classList.toggle(
+                'completed'
+            );
+
+            const concluida =
+                seriesButton.classList.contains(
+                    'completed'
+                );
+
+            seriesButton.setAttribute(
+                'aria-label',
+                concluida
+                    ? `Desmarcar série ${numeroSerie}`
+                    : `Marcar série ${numeroSerie} como concluída`
+            );
+
+        }
+    );
+
+
+    seriesControls.appendChild(
+        seriesButton
+    );
+
+}
+
+
+exerciseInfo.appendChild(
+    seriesControls
+);
+
+
+exerciseItem.appendChild(
+    exerciseNumber
+);
+
+exerciseItem.appendChild(
+    exerciseInfo
+);
+
+exercisesElement.appendChild(
+    exerciseItem
+);
 
     });
 
