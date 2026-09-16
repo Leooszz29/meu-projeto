@@ -3211,3 +3211,72 @@ body:not(.theme-feminino):not(.theme-masculino)
     color: var(--chalk);
 }
 
+/* =========================================
+   TIPO DE EXECUÇÃO - BADGE
+========================================= */
+
+.exercise-type-badge {
+    width: fit-content;
+    margin-top: 4px;
+    padding: 4px 8px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    font-size: 8px;
+    font-weight: 850;
+    letter-spacing: 0.8px;
+    line-height: 1;
+
+    text-transform: uppercase;
+}
+
+/* INDIVIDUAL */
+
+.exercise-type-badge.individual {
+    border: 1px solid rgba(255,255,255,0.10);
+
+    background:
+        rgba(255,255,255,0.04);
+
+    color:
+        var(--chalk-dim);
+}
+
+/* BI-SET */
+
+.exercise-type-badge.bisset {
+    border:
+        1px solid rgba(var(--accent-rgb),0.30);
+
+    background:
+        rgba(var(--accent-rgb),0.10);
+
+    color:
+        var(--accent);
+}
+
+/* TRI-SET */
+
+.exercise-type-badge.triset {
+    border:
+        1px solid rgba(var(--accent-rgb),0.45);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(var(--accent-rgb),0.14),
+            rgba(var(--accent-rgb),0.05)
+        );
+
+    color:
+        var(--accent);
+
+    box-shadow:
+        0 0 12px
+        rgba(var(--accent-rgb),0.08);
+}
+
