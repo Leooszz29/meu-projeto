@@ -593,14 +593,26 @@ function deleteWorkout(workoutId) {
 function openExerciseModal(workoutId, exerciseId) {
     editingExerciseCtx = { workoutId, exerciseId };
 
-    const title = document.getElementById('exerciseModalTitle');
-   const nameInput = document.getElementById('exerciseNameInput');
-const typeInput = document.getElementById('exerciseTypeInput');
+    const title =
+    document.getElementById('exerciseModalTitle');
+
+const nameInput =
+    document.getElementById('exerciseNameInput');
+
+const typeInput =
+    document.getElementById('exerciseTypeInput');
 
 const groupField =
     document.getElementById('exerciseGroupField');
 
-const seriesInput = document.getElementById('exerciseSeriesInput');
+const seriesInput =
+    document.getElementById('exerciseSeriesInput');
+
+const repsInput =
+    document.getElementById('exerciseRepsInput');
+
+const restInput =
+    document.getElementById('exerciseRestInput');
 
    if (exerciseId) {
     const workouts = loadWorkouts();
