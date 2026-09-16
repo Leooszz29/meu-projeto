@@ -160,7 +160,10 @@ startBtn.addEventListener('click', () => {
     startBtn.textContent = '✓ Treino selecionado';
 });
 
-        list.appendChild(card);
+
+card.appendChild(startBtn);
+
+list.appendChild(card);
     });
 }
 
