@@ -594,11 +594,13 @@ function openExerciseModal(workoutId, exerciseId) {
     editingExerciseCtx = { workoutId, exerciseId };
 
     const title = document.getElementById('exerciseModalTitle');
-    const nameInput = document.getElementById('exerciseNameInput');
-    const typeInput = document.getElementById('exerciseTypeInput');
-    const seriesInput = document.getElementById('exerciseSeriesInput');
-    const repsInput = document.getElementById('exerciseRepsInput');
-    const restInput = document.getElementById('exerciseRestInput');
+   const nameInput = document.getElementById('exerciseNameInput');
+const typeInput = document.getElementById('exerciseTypeInput');
+
+const groupField =
+    document.getElementById('exerciseGroupField');
+
+const seriesInput = document.getElementById('exerciseSeriesInput');
 
    if (exerciseId) {
     const workouts = loadWorkouts();
@@ -627,6 +629,22 @@ function openExerciseModal(workoutId, exerciseId) {
     repsInput.value = '';
     restInput.value = '';
 }
+    
+    // MOSTRA OU ESCONDE O CAMPO DE GRUPO
+
+function updateGroupField() {
+
+    const tipo =
+        typeInput.value;
+
+    groupField.hidden =
+        tipo === 'individual';
+}
+
+updateGroupField();
+
+typeInput.onchange =
+    updateGroupField;
 
     document.getElementById('exerciseModalOverlay').classList.add('show');
     nameInput.focus();
