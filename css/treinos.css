@@ -557,6 +557,136 @@ body:not(.theme-feminino):not(.theme-masculino)
     gap: 10px;
 }
 
+/* =========================================
+   EXERCÍCIOS DO TREINO EM ANDAMENTO
+========================================= */
+
+.active-exercise-item {
+    width: 100%;
+    min-height: 72px;
+
+    padding: 14px 16px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+
+    background: rgba(0,0,0,0.14);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.active-exercise-item:hover {
+    transform: translateX(2px);
+
+    border-color: rgba(var(--accent-rgb),0.25);
+
+    background: rgba(var(--accent-rgb),0.04);
+}
+
+
+/* NÚMERO DO EXERCÍCIO */
+
+.active-exercise-number {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(var(--accent-rgb),0.20);
+    border-radius: 10px;
+
+    background: rgba(var(--accent-rgb),0.08);
+
+    color: var(--accent);
+
+    font-size: 11px;
+    font-weight: 850;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* INFORMAÇÕES */
+
+.active-exercise-info {
+    min-width: 0;
+
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+/* NOME */
+
+.active-exercise-name {
+    overflow: hidden;
+
+    color: var(--chalk);
+
+    font-size: 13.5px;
+    font-weight: 800;
+
+    line-height: 1.3;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* SÉRIES, REPETIÇÕES E DESCANSO */
+
+.active-exercise-meta {
+    color: var(--chalk-dim);
+
+    font-size: 10.5px;
+    font-weight: 550;
+
+    line-height: 1.45;
+
+    letter-spacing: 0.15px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 520px) {
+
+    .active-exercise-item {
+        min-height: 68px;
+        padding: 12px;
+        gap: 11px;
+    }
+
+    .active-exercise-number {
+        width: 32px;
+        height: 32px;
+
+        font-size: 10px;
+    }
+
+    .active-exercise-name {
+        font-size: 12.5px;
+    }
+
+    .active-exercise-meta {
+        font-size: 10px;
+    }
+}
 
 /* ESTADO VAZIO */
 
