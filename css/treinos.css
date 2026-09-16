@@ -1128,6 +1128,20 @@ body:not(.theme-feminino):not(.theme-masculino)
     color: rgba(167,164,154,0.55);
 }
 
+/* REMOVE AS SETAS DOS CAMPOS NUMÉRICOS */
+
+/* Chrome, Edge e Safari */
+.modal input[type="number"]::-webkit-inner-spin-button,
+.modal input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.modal input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
 
 /* CAMPOS LADO A LADO */
 
