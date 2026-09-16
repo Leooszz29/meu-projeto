@@ -1912,20 +1912,48 @@ body:not(.theme-feminino):not(.theme-masculino)
     opacity:1;
     margin-top:14px;
 }
-.finish-modal{
-    text-align:center;
+.finish-modal {
+    max-width: 390px;
+
+    padding: 34px 28px 30px;
+
+    text-align: center;
 }
-.finish-modal h2{
-    margin-bottom:12px;
+
+
+/* TÍTULO */
+
+.finish-modal h2 {
+    margin: 0 0 10px;
+
+    color: var(--chalk);
+
+    font-size: 26px;
+    letter-spacing: 1.3px;
 }
-.finish-modal p{
-    color:var(--chalk-dim);
-    font-size:14px;
-    margin-bottom:26px;
-    line-height:1.5;
+
+
+/* MENSAGEM */
+
+.finish-modal p {
+    max-width: 320px;
+
+    margin: 0 auto 28px;
+
+    color: var(--chalk-dim);
+
+    font-size: 13.5px;
+    line-height: 1.7;
 }
-.finish-modal .btn-save{
-    width:100%;
+
+
+/* BOTÃO FECHAR */
+
+.finish-modal .btn-save {
+    width: 100%;
+    min-height: 48px;
+
+    margin-top: 2px;
 }
 .confirm-modal-text{
     color:var(--chalk-dim);
