@@ -141,6 +141,7 @@ if (
 
 startBtn.addEventListener('click', () => {
 
+    // SALVA O TREINO SELECIONADO
     localStorage.setItem(
         'treinoAtivo',
         JSON.stringify({
@@ -149,15 +150,38 @@ startBtn.addEventListener('click', () => {
         })
     );
 
+
+    // REMOVE A SELEÇÃO VISUAL DOS OUTROS CARDS
     document
         .querySelectorAll('.workout-card')
         .forEach(cardItem => {
-            cardItem.classList.remove('active-workout');
+
+            cardItem.classList.remove(
+                'active-workout'
+            );
+
         });
 
-    card.classList.add('active-workout');
 
-    startBtn.textContent = '✓ Treino selecionado';
+    // VOLTA TODOS OS BOTÕES AO TEXTO ORIGINAL
+    document
+        .querySelectorAll('.btn-start-workout')
+        .forEach(button => {
+
+            button.textContent =
+                '▶ Iniciar treino';
+
+        });
+
+
+    // MARCA SOMENTE O TREINO ATUAL
+    card.classList.add(
+        'active-workout'
+    );
+
+    startBtn.textContent =
+        '✓ Treino selecionado';
+
 });
 
 
