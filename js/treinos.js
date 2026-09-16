@@ -577,8 +577,10 @@ function deleteWorkout(workoutId) {
 // ==================== MODAL EXERCÍCIO ====================
 function openExerciseModal(workoutId, exerciseId) {
     editingExerciseCtx = { workoutId, exerciseId };
+
     const title = document.getElementById('exerciseModalTitle');
     const nameInput = document.getElementById('exerciseNameInput');
+    const typeInput = document.getElementById('exerciseTypeInput');
     const seriesInput = document.getElementById('exerciseSeriesInput');
     const repsInput = document.getElementById('exerciseRepsInput');
     const restInput = document.getElementById('exerciseRestInput');
