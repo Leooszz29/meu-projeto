@@ -469,7 +469,25 @@ document.getElementById('nextMonth').addEventListener('click', () => {
 
 // ==================== FINALIZAR TREINO ====================
 document.getElementById('btnFinishWorkout').addEventListener('click', () => {
-    document.getElementById('finishModalOverlay').classList.add('show');
+
+    // Busca o histórico já existente
+    const historico =
+        JSON.parse(localStorage.getItem('historicoTreinos')) || [];
+
+    // Registra este treino como concluído
+    historico.push({
+        data: new Date().toISOString()
+    });
+
+    // Salva novamente no navegador
+    localStorage.setItem(
+        'historicoTreinos',
+        JSON.stringify(historico)
+    );
+
+    // Abre o modal de conclusão
+    document.getElementById('finishModalOverlay')
+        .classList.add('show');
 });
 
 document.getElementById('finishOkBtn').addEventListener('click', () => {
