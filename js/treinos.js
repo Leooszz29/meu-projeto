@@ -85,8 +85,23 @@ function renderWorkouts() {
                 meta.className = 'exercise-meta';
                 meta.innerHTML = `<span>${ex.series}x${ex.repeticoes}</span> repetições · <span>${ex.descanso}s</span> descanso`;
 
+                const typeBadge = document.createElement('span');
+
+typeBadge.className =
+    `exercise-type-badge ${ex.tipoExecucao || 'individual'}`;
+
+const tiposExecucao = {
+    individual: 'INDIVIDUAL',
+    bisset: 'BI-SET',
+    triset: 'TRI-SET'
+};
+
+typeBadge.textContent =
+    tiposExecucao[ex.tipoExecucao] || 'INDIVIDUAL';
+
                 info.appendChild(name);
-                info.appendChild(meta);
+info.appendChild(meta);
+info.appendChild(typeBadge);
 
                 const exActions = document.createElement('div');
                 exActions.className = 'exercise-actions';
