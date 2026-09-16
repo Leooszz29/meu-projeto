@@ -631,6 +631,10 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
     if (!editingExerciseCtx) return;
 
     const nome = document.getElementById('exerciseNameInput').value.trim();
+
+    const tipoExecucao =
+        document.getElementById('exerciseTypeInput').value;
+
     const series = parseInt(document.getElementById('exerciseSeriesInput').value, 10);
     const repeticoes = parseInt(document.getElementById('exerciseRepsInput').value, 10);
     const descanso = parseInt(document.getElementById('exerciseRestInput').value, 10);
@@ -654,14 +658,22 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
 
     if (editingExerciseCtx.exerciseId) {
         const ex = workout.exercicios.find(e => e.id === editingExerciseCtx.exerciseId);
-        if (ex) {
-            ex.nome = nome;
-            ex.series = series;
-            ex.repeticoes = repeticoes;
-            ex.descanso = descanso;
-        }
+       if (ex) {
+    ex.nome = nome;
+    ex.tipoExecucao = tipoExecucao;
+    ex.series = series;
+    ex.repeticoes = repeticoes;
+    ex.descanso = descanso;
+}
     } else {
-        workout.exercicios.push({ id: uid(), nome, series, repeticoes, descanso });
+        workout.exercicios.push({
+    id: uid(),
+    nome,
+    tipoExecucao,
+    series,
+    repeticoes,
+    descanso
+});
     }
 
     saveWorkouts(workouts);
