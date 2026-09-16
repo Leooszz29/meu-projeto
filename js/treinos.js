@@ -117,6 +117,35 @@ function renderWorkouts() {
         addExBtn.textContent = '+ Adicionar exercício';
         addExBtn.addEventListener('click', () => openExerciseModal(workout.id, null));
         card.appendChild(addExBtn);
+        
+        // BOTÃO INICIAR TREINO
+
+const startBtn = document.createElement('button');
+
+startBtn.className = 'btn-start-workout';
+
+startBtn.textContent = '▶ Iniciar treino';
+
+startBtn.addEventListener('click', () => {
+
+    localStorage.setItem(
+        'treinoAtivo',
+        JSON.stringify({
+            id: workout.id,
+            nome: workout.nome
+        })
+    );
+
+    document
+        .querySelectorAll('.workout-card')
+        .forEach(cardItem => {
+            cardItem.classList.remove('active-workout');
+        });
+
+    card.classList.add('active-workout');
+
+    startBtn.textContent = '✓ Treino selecionado';
+});
 
         list.appendChild(card);
     });
