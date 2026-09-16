@@ -582,12 +582,96 @@ function loadTrainingSummary() {
         lastNameElement.textContent =
     ultimoTreino.nome || 'Treino';
 
-    } else {
+       } else {
 
         lastElement.textContent = '—';
-lastNameElement.textContent = '—';
+
+        lastNameElement.textContent = '—';
+
     }
+
 }
+
+
+// ========================================
+// HISTÓRICO DE TREINOS
+// ========================================
+
+function loadWorkoutHistory() {
+
+    const historyList =
+        document.getElementById('workoutHistoryList');
+
+    if (!historyList) {
+        return;
+    }
+
+    const historico =
+        JSON.parse(
+            localStorage.getItem('historicoTreinos')
+        ) || [];
+
+    // LIMPA O CONTEÚDO ATUAL
+    historyList.innerHTML = '';
+
+    // CASO NÃO EXISTA NENHUM TREINO
+    if (historico.length === 0) {
+
+        historyList.innerHTML = `
+            <div class="history-empty">
+                Nenhum treino concluído ainda.
+            </div>
+        `;
+
+        return;
+    }
+
+    // MAIS RECENTE PRIMEIRO
+    const historicoOrdenado =
+        [...historico].reverse();
+
+    historicoOrdenado.forEach((treino) => {
+
+        const item =
+            document.createElement('div');
+
+        item.className = 'history-item';
+
+        const nome =
+            document.createElement('span');
+
+        nome.className = 'history-workout-name';
+
+        nome.textContent =
+            treino.nome || 'Treino';
+
+        const data =
+            document.createElement('span');
+
+        data.className = 'history-date';
+
+        const dataTreino =
+            new Date(treino.data);
+
+        data.textContent =
+            dataTreino.toLocaleDateString(
+                'pt-BR',
+                {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                }
+            );
+
+        item.appendChild(nome);
+        item.appendChild(data);
+
+        historyList.appendChild(item);
+
+    });
+
+}
+
 function initializeProfile() {
 
     console.log('PERFIL.JS INICIADO');
@@ -599,8 +683,11 @@ function initializeProfile() {
     initializeIMC();
 
     initializeProfileActions();
-    
+
     loadTrainingSummary();
+
+    loadWorkoutHistory();
+
 }
 
 // ========================================
