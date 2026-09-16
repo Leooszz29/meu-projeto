@@ -96,15 +96,45 @@
             <button type="submit" class="btn-save-profile" id="btnSaveProfile">
             <span class="btn-label">Salvar perfil</span>
             </button>
-        </form>
+                </form>
+
+
+        <!-- RESUMO DOS TREINOS -->
+        <section class="training-summary">
+
+            <div class="summary-header">
+                <span class="summary-eyebrow">EVOLUÇÃO</span>
+                <h2>Meu desempenho</h2>
+                <p>Acompanhe sua consistência nos treinos.</p>
+            </div>
+
+            <div class="summary-grid">
+
+                <div class="summary-card">
+                    <span class="summary-value" id="totalWorkouts">0</span>
+                    <span class="summary-label">Treinos concluídos</span>
+                </div>
+
+                <div class="summary-card">
+                    <span class="summary-value" id="currentMonthWorkouts">0</span>
+                    <span class="summary-label">Neste mês</span>
+                </div>
+
+                <div class="summary-card">
+                    <span class="summary-value" id="lastWorkout">—</span>
+                    <span class="summary-label">Último treino</span>
+                </div>
+
+            </div>
+
+        </section>
+
 
         <div class="continue-section">
-            <a href="treinos.html" class="continue-link">Ir para meus treinos →</a>
+            <a href="treinos.html" class="continue-link">
+                Ir para meus treinos →
+            </a>
         </div>
-    </div>
-
-    <button class="btn-end-session" id="btnEndSession">Finalizar sessão</button>
-</div>
 
 <script src="js/perfil.js"></script>
 </body>
