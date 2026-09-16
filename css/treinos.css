@@ -3280,3 +3280,99 @@ body:not(.theme-feminino):not(.theme-masculino)
         rgba(var(--accent-rgb),0.08);
 }
 
+/* =========================================
+   ESPAÇAMENTO - TIPO DE EXECUÇÃO
+========================================= */
+
+#exerciseTypeInput {
+    margin-bottom: 18px;
+}
+
+
+/* =========================================
+   CAMPO DE GRUPO - BI-SET / TRI-SET
+========================================= */
+
+.exercise-group-field {
+    width: 100%;
+    margin: 4px 0 20px;
+}
+
+.exercise-group-field[hidden] {
+    display: none;
+}
+
+.exercise-group-field label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+
+/* SELECT DO GRUPO */
+
+#exerciseGroupInput {
+    width: 100%;
+    min-height: 46px;
+
+    display: block;
+
+    padding: 0 42px 0 14px;
+
+    border:
+        1px solid rgba(255,255,255,0.10);
+
+    border-radius: 10px;
+
+    background-color:
+        rgba(0,0,0,0.18);
+
+    color: var(--chalk);
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    outline: none;
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+#exerciseGroupInput:hover {
+    border-color:
+        rgba(var(--accent-rgb),0.30);
+}
+
+#exerciseGroupInput:focus {
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(var(--accent-rgb),0.10);
+}
+
+#exerciseGroupInput option {
+    background: var(--concrete-1);
+    color: var(--chalk);
+}
+
+
+/* TEXTO EXPLICATIVO */
+
+.exercise-group-field small {
+    display: block;
+
+    margin-top: 8px;
+
+    color: var(--chalk-dim);
+
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.5;
+}
