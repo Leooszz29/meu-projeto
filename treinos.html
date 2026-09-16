@@ -118,9 +118,61 @@
 
 </div>
     
-    <div class="workouts-list" id="workoutsList"></div>
+   <div class="workouts-list" id="workoutsList"></div>
 
-    <button class="btn-finish-workout" id="btnFinishWorkout">Finalizar Treino</button>
+
+<!-- TREINO EM ANDAMENTO -->
+<section class="active-training" id="activeTraining">
+
+    <div class="active-training-header">
+
+        <div>
+            <span class="active-training-eyebrow">
+                TREINO EM ANDAMENTO
+            </span>
+
+            <h2 id="activeTrainingName">
+                Nenhum treino iniciado
+            </h2>
+        </div>
+
+        <span
+            class="active-training-status"
+            id="activeTrainingStatus"
+        >
+            AGUARDANDO
+        </span>
+
+    </div>
+
+
+    <div
+        class="active-training-exercises"
+        id="activeTrainingExercises"
+    >
+
+        <div class="active-training-empty">
+
+            <strong>Selecione um treino</strong>
+
+            <p>
+                Clique em “Iniciar treino” para acompanhar
+                seus exercícios e séries.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<button
+    class="btn-finish-workout"
+    id="btnFinishWorkout"
+>
+    Finalizar Treino
+</button>
 </div>
 
 <!-- Modal Treino (criar/editar nome) -->
