@@ -3162,3 +3162,52 @@ body:not(.theme-feminino):not(.theme-masculino)
 .day-cell.today:hover .num {
     color: #08111a;
 }
+
+/* =========================================
+   TIPO DE EXECUÇÃO - SELECT
+========================================= */
+
+#exerciseTypeInput {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 42px 0 14px;
+
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 10px;
+
+    background-color: rgba(0,0,0,0.18);
+
+    color: var(--chalk);
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    outline: none;
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+#exerciseTypeInput:hover {
+    border-color: rgba(var(--accent-rgb), 0.30);
+}
+
+#exerciseTypeInput:focus {
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 3px rgba(var(--accent-rgb), 0.10);
+}
+
+#exerciseTypeInput option {
+    background: var(--concrete-1);
+    color: var(--chalk);
+}
+
