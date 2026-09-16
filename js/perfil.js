@@ -800,10 +800,87 @@ function loadWorkoutHistory() {
                 );
 
 
-            item.appendChild(nome);
-            item.appendChild(data);
+         // ÁREA DA DIREITA: DATA + EXCLUIR
 
-            monthContent.appendChild(item);
+const actions =
+    document.createElement('div');
+
+actions.className =
+    'history-item-actions';
+
+
+// BOTÃO EXCLUIR
+
+const deleteButton =
+    document.createElement('button');
+
+deleteButton.type = 'button';
+
+deleteButton.className =
+    'history-delete-btn';
+
+deleteButton.innerHTML = '🗑';
+
+deleteButton.title =
+    'Excluir este registro';
+
+deleteButton.setAttribute(
+    'aria-label',
+    'Excluir treino do histórico'
+);
+
+
+// EXCLUIR TREINO
+
+deleteButton.addEventListener(
+    'click',
+    () => {
+
+        const confirmar =
+            confirm(
+                `Excluir ${
+                    treino.nome || 'Treino'
+                } realizado em ${
+                    data.textContent
+                }?`
+            );
+
+        if (!confirmar) {
+            return;
+        }
+
+        const historicoAtual =
+            JSON.parse(
+                localStorage.getItem(
+                    'historicoTreinos'
+                )
+            ) || [];
+
+        historicoAtual.splice(
+            treino.originalIndex,
+            1
+        );
+
+        localStorage.setItem(
+            'historicoTreinos',
+            JSON.stringify(historicoAtual)
+        );
+
+        // ATUALIZA O RESUMO E O HISTÓRICO
+        loadTrainingSummary();
+        loadWorkoutHistory();
+
+    }
+);
+
+
+actions.appendChild(data);
+actions.appendChild(deleteButton);
+
+item.appendChild(nome);
+item.appendChild(actions);
+
+monthContent.appendChild(item);
 
         });
 
