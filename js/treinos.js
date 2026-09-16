@@ -520,10 +520,14 @@ document.getElementById('btnFinishWorkout').addEventListener('click', () => {
         JSON.parse(localStorage.getItem('treinoAtivo'));
 
     // Impede finalizar sem selecionar um treino
-    if (!treinoAtivo) {
-        alert('Selecione um treino antes de finalizar.');
-        return;
-    }
+   if (!treinoAtivo) {
+
+    document
+        .getElementById('selectWorkoutModalOverlay')
+        .classList.add('show');
+
+    return;
+}
 
     // Busca o histórico existente
     const historico =
@@ -561,6 +565,35 @@ document.getElementById('finishModalOverlay').addEventListener('click', (e) => {
         document.getElementById('finishModalOverlay').classList.remove('show');
     }
 });
+
+// ========================================
+// MODAL - SELECIONAR TREINO
+// ========================================
+
+document
+    .getElementById('selectWorkoutOkBtn')
+    .addEventListener('click', () => {
+
+        document
+            .getElementById('selectWorkoutModalOverlay')
+            .classList.remove('show');
+
+    });
+
+
+document
+    .getElementById('selectWorkoutModalOverlay')
+    .addEventListener('click', (e) => {
+
+        if (e.target.id === 'selectWorkoutModalOverlay') {
+
+            document
+                .getElementById('selectWorkoutModalOverlay')
+                .classList.remove('show');
+
+        }
+
+    });
 
 // ==================== INICIALIZAÇÃO ====================
 window.addEventListener('DOMContentLoaded', () => {
