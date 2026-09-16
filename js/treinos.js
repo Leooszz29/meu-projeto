@@ -125,6 +125,19 @@ const startBtn = document.createElement('button');
 startBtn.className = 'btn-start-workout';
 
 startBtn.textContent = '▶ Iniciar treino';
+        
+// VERIFICA SE ESTE TREINO JÁ ESTÁ SELECIONADO
+
+const treinoAtivo =
+    JSON.parse(localStorage.getItem('treinoAtivo'));
+
+if (
+    treinoAtivo &&
+    treinoAtivo.id === workout.id
+) {
+    card.classList.add('active-workout');
+    startBtn.textContent = '✓ Treino selecionado';
+}
 
 startBtn.addEventListener('click', () => {
 
