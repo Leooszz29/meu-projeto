@@ -79,35 +79,74 @@ header{
     margin-bottom:22px;
 }
 
-.character-preview{
-    position:relative;
-    width:100%;
-    display:flex;
-    justify-content:center;
-    margin-bottom:12px;
-    min-height:120px;
+.character-preview {
+    position: relative;
+
+    width: 100%;
+    min-height: 165px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 14px;
 }
-.character-preview::before{
-    content:"";
-    position:absolute;
-    top:-14px;
-    width:180px;
-    height:180px;
-    border-radius:50%;
-    background:radial-gradient(circle, rgba(var(--accent-rgb),0.28) 0%, transparent 70%);
-    transition:background 0.4s ease;
-    animation:glowPulse 3.5s ease-in-out infinite;
+
+
+/* GLOW ATRÁS DO ATLETA */
+
+.character-preview::before {
+    content: "";
+
+    position: absolute;
+
+    width: 210px;
+    height: 210px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(var(--accent-rgb), 0.24) 0%,
+            rgba(var(--accent-rgb), 0.10) 38%,
+            transparent 72%
+        );
+
+    filter: blur(2px);
+
+    animation: glowPulse 3.5s ease-in-out infinite;
+
+    pointer-events: none;
 }
-@keyframes glowPulse{
-    0%, 100%{opacity:1;}
-    50%{opacity:0.7;}
+@keyframes glowPulse {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
 }
-.character-preview img{
-    position:relative;
-    width:130px;
-    height:130px;
-    object-fit:contain;
-    filter:drop-shadow(0 10px 14px rgba(0,0,0,0.5));
+.character-preview img {
+    position: relative;
+    z-index: 2;
+
+    width: 165px;
+    height: 165px;
+
+    display: block;
+
+    object-fit: contain;
+    object-position: center;
+
+    filter:
+        drop-shadow(0 10px 16px rgba(0,0,0,0.48))
+        drop-shadow(0 0 10px rgba(var(--accent-rgb),0.12));
+
+    transition:
+        transform 0.25s ease,
+        filter 0.25s ease;
 }
 
 h1{
