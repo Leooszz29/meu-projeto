@@ -611,10 +611,8 @@ function loadWorkoutHistory() {
             localStorage.getItem('historicoTreinos')
         ) || [];
 
-    // LIMPA O CONTEÚDO ATUAL
     historyList.innerHTML = '';
 
-    // CASO NÃO EXISTA NENHUM TREINO
     if (historico.length === 0) {
 
         historyList.innerHTML = `
@@ -626,47 +624,218 @@ function loadWorkoutHistory() {
         return;
     }
 
-    // MAIS RECENTE PRIMEIRO
-    const historicoOrdenado =
-        [...historico].reverse();
 
-    historicoOrdenado.forEach((treino) => {
+    // ========================================
+    // AGRUPAR TREINOS POR MÊS
+    // ========================================
 
-        const item =
-            document.createElement('div');
+    const grupos = {};
 
-        item.className = 'history-item';
-
-        const nome =
-            document.createElement('span');
-
-        nome.className = 'history-workout-name';
-
-        nome.textContent =
-            treino.nome || 'Treino';
-
-        const data =
-            document.createElement('span');
-
-        data.className = 'history-date';
+    historico.forEach((treino, index) => {
 
         const dataTreino =
             new Date(treino.data);
 
-        data.textContent =
-            dataTreino.toLocaleDateString(
+        if (Number.isNaN(dataTreino.getTime())) {
+            return;
+        }
+
+        const chave =
+            `${dataTreino.getFullYear()}-${dataTreino.getMonth()}`;
+
+        if (!grupos[chave]) {
+
+            grupos[chave] = {
+                ano: dataTreino.getFullYear(),
+                mes: dataTreino.getMonth(),
+                treinos: []
+            };
+
+        }
+
+        grupos[chave].treinos.push({
+            ...treino,
+            originalIndex: index
+        });
+
+    });
+
+
+    // ========================================
+    // ORDENAR MESES
+    // MAIS RECENTE PRIMEIRO
+    // ========================================
+
+    const gruposOrdenados =
+        Object.values(grupos).sort((a, b) => {
+
+            const dataA =
+                new Date(a.ano, a.mes, 1);
+
+            const dataB =
+                new Date(b.ano, b.mes, 1);
+
+            return dataB - dataA;
+
+        });
+
+
+    // ========================================
+    // CRIAR CADA MÊS
+    // ========================================
+
+    gruposOrdenados.forEach((grupo, indiceGrupo) => {
+
+        const monthGroup =
+            document.createElement('div');
+
+        monthGroup.className = 'history-month';
+
+
+        // CABEÇALHO DO MÊS
+
+        const monthHeader =
+            document.createElement('button');
+
+        monthHeader.type = 'button';
+        monthHeader.className = 'history-month-header';
+
+
+        const nomeMes =
+            new Date(
+                grupo.ano,
+                grupo.mes,
+                1
+            )
+            .toLocaleDateString(
                 'pt-BR',
                 {
-                    day: '2-digit',
-                    month: '2-digit',
+                    month: 'long',
                     year: 'numeric'
                 }
-            );
+            )
+            .toUpperCase();
 
-        item.appendChild(nome);
-        item.appendChild(data);
 
-        historyList.appendChild(item);
+        const quantidade =
+            grupo.treinos.length;
+
+        monthHeader.innerHTML = `
+            <span class="history-month-title">
+                <span class="history-month-arrow">
+                    ${indiceGrupo === 0 ? '▼' : '▶'}
+                </span>
+
+                ${nomeMes}
+            </span>
+
+            <span class="history-month-count">
+                ${quantidade}
+                ${quantidade === 1 ? 'treino' : 'treinos'}
+            </span>
+        `;
+
+
+        // CONTEÚDO DO MÊS
+
+        const monthContent =
+            document.createElement('div');
+
+        monthContent.className =
+            'history-month-content';
+
+        if (indiceGrupo !== 0) {
+            monthContent.hidden = true;
+        }
+
+
+        // TREINOS MAIS RECENTES PRIMEIRO
+
+        const treinosOrdenados =
+            [...grupo.treinos].sort((a, b) => {
+
+                return (
+                    new Date(b.data) -
+                    new Date(a.data)
+                );
+
+            });
+
+
+        treinosOrdenados.forEach((treino) => {
+
+            const item =
+                document.createElement('div');
+
+            item.className = 'history-item';
+
+
+            const nome =
+                document.createElement('span');
+
+            nome.className =
+                'history-workout-name';
+
+            nome.textContent =
+                treino.nome || 'Treino';
+
+
+            const data =
+                document.createElement('span');
+
+            data.className =
+                'history-date';
+
+            const dataTreino =
+                new Date(treino.data);
+
+            data.textContent =
+                dataTreino.toLocaleDateString(
+                    'pt-BR',
+                    {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    }
+                );
+
+
+            item.appendChild(nome);
+            item.appendChild(data);
+
+            monthContent.appendChild(item);
+
+        });
+
+
+        // ABRIR / FECHAR O MÊS
+
+        monthHeader.addEventListener(
+            'click',
+            () => {
+
+                const fechado =
+                    monthContent.hidden;
+
+                monthContent.hidden =
+                    !fechado;
+
+                const arrow =
+                    monthHeader.querySelector(
+                        '.history-month-arrow'
+                    );
+
+                arrow.textContent =
+                    fechado ? '▼' : '▶';
+
+            }
+        );
+
+
+        monthGroup.appendChild(monthHeader);
+        monthGroup.appendChild(monthContent);
+
+        historyList.appendChild(monthGroup);
 
     });
 
