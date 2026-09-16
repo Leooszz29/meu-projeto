@@ -522,6 +522,9 @@ function loadTrainingSummary() {
 
     const lastElement =
         document.getElementById('lastWorkout');
+    
+    const lastNameElement =
+    document.getElementById('lastWorkoutName');
 
     // Se os cards não existirem, encerra
     if (!totalElement || !monthElement || !lastElement) {
@@ -575,10 +578,14 @@ function loadTrainingSummary() {
                     month: '2-digit'
                 }
             );
+        
+        lastNameElement.textContent =
+    ultimoTreino.nome || 'Treino';
 
     } else {
 
         lastElement.textContent = '—';
+lastNameElement.textContent = '—';
     }
 }
 function initializeProfile() {
