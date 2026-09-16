@@ -661,6 +661,50 @@ body:not(.theme-feminino):not(.theme-masculino)
     letter-spacing: 0.15px;
 }
 
+/* CONTROLE DAS SÉRIES */
+.active-series-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.active-series-btn {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--chalk);
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.active-series-btn:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.active-series-btn.completed {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #111;
+}
+
 
 /* MOBILE */
 
