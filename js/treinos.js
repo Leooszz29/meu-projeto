@@ -681,10 +681,11 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
     ex.descanso = descanso;
 }
     } else {
-        workout.exercicios.push({
+       workout.exercicios.push({
     id: uid(),
     nome,
     tipoExecucao,
+    grupoExecucao: null,
     series,
     repeticoes,
     descanso
