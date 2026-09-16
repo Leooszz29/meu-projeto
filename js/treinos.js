@@ -585,22 +585,33 @@ function openExerciseModal(workoutId, exerciseId) {
     const repsInput = document.getElementById('exerciseRepsInput');
     const restInput = document.getElementById('exerciseRestInput');
 
-    if (exerciseId) {
-        const workouts = loadWorkouts();
-        const workout = workouts.find(w => w.id === workoutId);
-        const ex = workout ? workout.exercicios.find(e => e.id === exerciseId) : null;
-        title.textContent = 'Editar exercício';
-        nameInput.value = ex ? ex.nome : '';
-        seriesInput.value = ex ? ex.series : '';
-        repsInput.value = ex ? ex.repeticoes : '';
-        restInput.value = ex ? ex.descanso : '';
-    } else {
-        title.textContent = 'Novo exercício';
-        nameInput.value = '';
-        seriesInput.value = '';
-        repsInput.value = '';
-        restInput.value = '';
-    }
+   if (exerciseId) {
+    const workouts = loadWorkouts();
+    const workout = workouts.find(w => w.id === workoutId);
+    const ex = workout ? workout.exercicios.find(e => e.id === exerciseId) : null;
+
+    title.textContent = 'Editar exercício';
+
+    nameInput.value = ex ? ex.nome : '';
+
+    typeInput.value =
+        ex ? (ex.tipoExecucao || 'individual') : 'individual';
+
+    seriesInput.value = ex ? ex.series : '';
+    repsInput.value = ex ? ex.repeticoes : '';
+    restInput.value = ex ? ex.descanso : '';
+
+} else {
+    title.textContent = 'Novo exercício';
+
+    nameInput.value = '';
+
+    typeInput.value = 'individual';
+
+    seriesInput.value = '';
+    repsInput.value = '';
+    restInput.value = '';
+}
 
     document.getElementById('exerciseModalOverlay').classList.add('show');
     nameInput.focus();
