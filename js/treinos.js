@@ -718,6 +718,76 @@ roundInfo.textContent =
             : 'RODADAS'
     }`;
 
+function atualizarRodadaGrupo() {
+
+    const exerciciosGrupo =
+        exercicios.filter(item =>
+            item.grupoExecucao === grupoExecucao &&
+            (item.tipoExecucao || 'individual') === tipoExecucao
+        );
+
+    let rodadasConcluidas = 0;
+
+    for (
+        let rodada = 1;
+        rodada <= quantidadeSeries;
+        rodada++
+    ) {
+
+        const rodadaCompleta =
+            exerciciosGrupo.every(item => {
+
+                const itemIndex =
+                    exercicios.indexOf(item);
+
+                const exerciseKey =
+                    item.id ||
+                    `exercise-${itemIndex}`;
+
+                const seriesConcluidas =
+                    progressoTreino[workout.id]?.[exerciseKey] || [];
+
+                /*
+                 * Se o exercício possui menos séries
+                 * que esta rodada, ele não impede
+                 * a conclusão da rodada.
+                 */
+                if (
+                    rodada >
+                    (Number(item.series) || 1)
+                ) {
+                    return true;
+                }
+
+                return seriesConcluidas.includes(
+                    rodada
+                );
+            });
+
+        if (rodadaCompleta) {
+            rodadasConcluidas++;
+        } else {
+            break;
+        }
+    }
+
+    if (
+        rodadasConcluidas >= quantidadeSeries
+    ) {
+
+        roundInfo.textContent =
+            'CONCLUÍDO ✓';
+
+        return;
+    }
+
+    const rodadaAtual =
+        rodadasConcluidas + 1;
+
+    roundInfo.textContent =
+        `RODADA ${rodadaAtual} DE ${quantidadeSeries}`;
+}
+
 groupHeader.appendChild(
     roundInfo
 );
