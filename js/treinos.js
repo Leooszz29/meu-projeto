@@ -791,16 +791,23 @@ function atualizarRodadaGrupo() {
         }
     }
 
-    if (
-        rodadasConcluidas >= quantidadeSeries
-    ) {
+   if (
+    rodadasConcluidas >= quantidadeSeries
+) {
 
-        roundInfo.textContent =
-            'CONCLUÍDO ✓';
+    roundInfo.textContent =
+        'CONCLUÍDO ✓';
 
-        return;
-    }
+    groupContainer.classList.add(
+        'completed'
+    );
 
+    return;
+}
+
+groupContainer.classList.remove(
+    'completed'
+);
     const rodadaAtual =
         rodadasConcluidas + 1;
 
