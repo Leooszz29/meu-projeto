@@ -3745,3 +3745,32 @@ body:not(.theme-feminino):not(.theme-masculino)
 .active-exercise-name {
     color: #35e67a;
 }
+
+/* =========================================
+   STATUS INDIVIDUAL CONCLUÍDO
+========================================= */
+
+.active-individual-status {
+    display: inline-flex;
+    align-items: center;
+
+    width: fit-content;
+    margin-top: 10px;
+    padding: 5px 9px;
+
+    border: 1px solid rgba(53, 230, 122, 0.30);
+    border-radius: 20px;
+
+    background: rgba(53, 230, 122, 0.08);
+    color: #35e67a;
+
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.7px;
+
+    text-transform: uppercase;
+}
+
+.active-individual-status[hidden] {
+    display: none;
+}
