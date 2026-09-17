@@ -706,6 +706,39 @@ if (
             'completed',
             concluido
         );
+        if (
+    concluido &&
+    !exerciseItem.dataset.autoCollapsed
+) {
+    exerciseItem.classList.add(
+        'collapsed-individual'
+    );
+
+    toggleIndividualBtn.textContent = '▼';
+
+    toggleIndividualBtn.setAttribute(
+        'aria-label',
+        'Mostrar detalhes do exercício'
+    );
+
+    exerciseItem.dataset.autoCollapsed =
+        'true';
+}
+        if (!concluido) {
+
+    exerciseItem.classList.remove(
+        'collapsed-individual'
+    );
+
+    toggleIndividualBtn.textContent = '▲';
+
+    toggleIndividualBtn.setAttribute(
+        'aria-label',
+        'Ocultar detalhes do exercício'
+    );
+
+    delete exerciseItem.dataset.autoCollapsed;
+}
         let statusIndividual =
     exerciseItem.querySelector(
         '.active-individual-status'
