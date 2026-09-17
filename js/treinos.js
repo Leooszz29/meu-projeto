@@ -667,6 +667,32 @@ if (
             'completed',
             concluido
         );
+        let statusIndividual =
+    exerciseItem.querySelector(
+        '.active-individual-status'
+    );
+
+if (!statusIndividual) {
+
+    statusIndividual =
+        document.createElement('span');
+
+    statusIndividual.className =
+        'active-individual-status';
+
+    exerciseItem.appendChild(
+        statusIndividual
+    );
+}
+
+statusIndividual.textContent =
+    concluido
+        ? 'CONCLUÍDO ✓'
+        : '';
+
+statusIndividual.hidden =
+    !concluido;
+        
     };
 
     atualizarStatusIndividual();
