@@ -739,6 +739,12 @@ function atualizarRodadaGrupo() {
             item.grupoExecucao === grupoExecucao &&
             (item.tipoExecucao || 'individual') === tipoExecucao
         );
+    const progressoAtual =
+    JSON.parse(
+        localStorage.getItem(
+            'progressoTreino'
+        )
+    ) || {};
 
     let rodadasConcluidas = 0;
 
@@ -759,7 +765,7 @@ function atualizarRodadaGrupo() {
                     `exercise-${itemIndex}`;
 
                 const seriesConcluidas =
-                    progressoTreino[workout.id]?.[exerciseKey] || [];
+    progressoAtual[workout.id]?.[exerciseKey] || [];
 
                 /*
                  * Se o exercício possui menos séries
