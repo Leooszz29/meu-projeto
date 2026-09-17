@@ -190,10 +190,39 @@ if (
             gruposUnicos.indexOf(grupoExecucao) + 1;
 
 
-        groupHeader.textContent =
-            tipoExecucao === 'bisset'
-                ? `BI-SET ${numeroGrupo}`
-                : `TRI-SET ${numeroGrupo}`;
+       const quantidadeNoGrupo =
+    workout.exercicios.filter(item =>
+        item.grupoExecucao === grupoExecucao &&
+        (item.tipoExecucao || 'individual') === tipoExecucao
+    ).length;
+
+const quantidadeEsperada =
+    tipoExecucao === 'bisset'
+        ? 2
+        : 3;
+
+const grupoCompleto =
+    quantidadeNoGrupo === quantidadeEsperada;
+
+groupHeader.textContent =
+    tipoExecucao === 'bisset'
+        ? `BI-SET ${numeroGrupo}`
+        : `TRI-SET ${numeroGrupo}`;
+
+const groupStatus =
+    document.createElement('span');
+
+groupStatus.className =
+    grupoCompleto
+        ? 'exercise-group-status complete'
+        : 'exercise-group-status incomplete';
+
+groupStatus.textContent =
+    grupoCompleto
+        ? `${quantidadeNoGrupo}/${quantidadeEsperada} ✓`
+        : `${quantidadeNoGrupo}/${quantidadeEsperada} • INCOMPLETO`;
+
+groupHeader.appendChild(groupStatus);
 
 
         groupContainer.appendChild(
