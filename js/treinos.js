@@ -702,10 +702,19 @@ const repsInput =
 const restInput =
     document.getElementById('exerciseRestInput');
 
-   if (exerciseId) {
+let exerciseEditing = null;
+
+if (exerciseId) {
     const workouts = loadWorkouts();
     const workout = workouts.find(w => w.id === workoutId);
-    const ex = workout ? workout.exercicios.find(e => e.id === exerciseId) : null;
+   const ex =
+    workout
+        ? workout.exercicios.find(
+            e => e.id === exerciseId
+        )
+        : null;
+
+exerciseEditing = ex;
 
     title.textContent = 'Editar exercício';
 
@@ -830,6 +839,14 @@ Array.from(gruposExistentes).forEach(
 
 
 updateGroupField();
+
+if (
+    exerciseEditing &&
+    exerciseEditing.grupoExecucao
+) {
+    groupInput.value =
+        exerciseEditing.grupoExecucao;
+}
 
 typeInput.onchange =
     updateGroupField;
