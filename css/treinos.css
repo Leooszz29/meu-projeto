@@ -3822,3 +3822,21 @@ body:not(.theme-feminino):not(.theme-masculino)
     background: rgba(53, 230, 122, 0.08);
     color: #35e67a;
 }
+
+/* =========================================
+   CONTEÚDO RECOLHIDO — EXERCÍCIO INDIVIDUAL
+========================================= */
+
+.active-exercise-item.collapsed-individual
+.active-exercise-meta {
+    display: none;
+}
+
+.active-exercise-item.collapsed-individual
+.active-series-controls {
+    display: none;
+}
+
+.active-exercise-item.collapsed-individual {
+    padding-bottom: 16px;
+}
