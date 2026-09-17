@@ -3728,3 +3728,20 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     color: #35e67a;
 }
+
+/* =========================================
+   EXERCÍCIO INDIVIDUAL CONCLUÍDO
+========================================= */
+
+.active-exercise-item.completed {
+    border-color: rgba(53, 230, 122, 0.38);
+
+    box-shadow:
+        inset 3px 0 0 #35e67a,
+        0 12px 28px rgba(0, 0, 0, 0.14);
+}
+
+.active-exercise-item.completed
+.active-exercise-name {
+    color: #35e67a;
+}
