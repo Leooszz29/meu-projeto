@@ -851,7 +851,7 @@ toggleGroupBtn.addEventListener(
         );
     }
 );
-
+    }
 groupHeader.appendChild(
     toggleGroupBtn
 );
