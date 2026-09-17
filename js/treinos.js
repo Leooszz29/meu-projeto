@@ -799,6 +799,19 @@ function atualizarRodadaGrupo() {
 }
         atualizarRodadaGrupo();
 
+document.addEventListener(
+    'progressoTreinoAtualizado',
+    (event) => {
+
+        if (
+            event.detail.workoutId === workout.id
+        ) {
+            atualizarRodadaGrupo();
+        }
+
+    }
+);
+
 groupHeader.appendChild(
     roundInfo
 );
