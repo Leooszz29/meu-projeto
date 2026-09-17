@@ -944,7 +944,7 @@ if (tipoExecucao !== 'individual') {
     }
 
 }
-    } else {
+     else {
       workout.exercicios.push({
     id: uid(),
     nome,
