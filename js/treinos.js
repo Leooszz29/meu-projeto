@@ -790,64 +790,30 @@ function updateGroupField() {
 
 
     // PROCURA GRUPOS JÁ EXISTENTES
-  const limiteGrupo =
-    tipoExecucao === 'bisset'
-        ? 2
-        : 3;
-
-const contagemGrupos = new Map();
+ const gruposExistentes = new Set();
 
 workout.exercicios.forEach(exercicio => {
-
     if (
         exercicio.tipoExecucao === tipoExecucao &&
         exercicio.grupoExecucao
     ) {
-
-        const quantidadeAtual =
-            contagemGrupos.get(
-                exercicio.grupoExecucao
-            ) || 0;
-
-        contagemGrupos.set(
-            exercicio.grupoExecucao,
-            quantidadeAtual + 1
-        );
+        gruposExistentes.add(exercicio.grupoExecucao);
     }
 });
 
-const gruposExistentes =
-    Array.from(contagemGrupos.entries());
-
-gruposExistentes.forEach(
-    ([grupoId, quantidade], index) => {
-
-        /*
-         * Durante a edição, o grupo atual
-         * precisa continuar disponível.
-         */
-        const grupoAtual =
-            exerciseEditing &&
-            exerciseEditing.grupoExecucao === grupoId;
-
-        if (
-            quantidade >= limiteGrupo &&
-            !grupoAtual
-        ) {
-            return;
-        }
-
-        const option =
-            document.createElement('option');
+Array.from(gruposExistentes).forEach(
+    (grupoId, index) => {
+        const option = document.createElement('option');
 
         option.value = grupoId;
 
         const numeroGrupo = index + 1;
 
-        option.textContent =
-            tipoExecucao === 'bisset'
-                ? `Bi-set ${numeroGrupo}`
-                : `Tri-set ${numeroGrupo}`;
+        if (tipoExecucao === 'bisset') {
+            option.textContent = `Bi-set ${numeroGrupo}`;
+        } else {
+            option.textContent = `Tri-set ${numeroGrupo}`;
+        }
 
         groupInput.appendChild(option);
     }
