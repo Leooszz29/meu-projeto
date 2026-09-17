@@ -605,6 +605,10 @@ seriesButton.setAttribute(
         : `Marcar série ${numeroSerie} como concluída`
 );
 
+    }
+);
+
+
 
     seriesControls.appendChild(
         seriesButton
