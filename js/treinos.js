@@ -810,6 +810,28 @@ const series =
     const workout = workouts.find(w => w.id === editingExerciseCtx.workoutId);
     if (!workout) return;
 
+    // DEFINE O GRUPO DE EXECUÇÃO
+
+let grupoExecucao = null;
+
+if (tipoExecucao !== 'individual') {
+
+    if (grupoSelecionado) {
+
+        // USA UM GRUPO JÁ EXISTENTE
+        grupoExecucao =
+            grupoSelecionado;
+
+    } else {
+
+        // CRIA UM NOVO GRUPO
+        grupoExecucao =
+            uid();
+
+    }
+
+}
+
     if (editingExerciseCtx.exerciseId) {
         const ex = workout.exercicios.find(e => e.id === editingExerciseCtx.exerciseId);
        if (ex) {
@@ -820,11 +842,11 @@ const series =
     ex.descanso = descanso;
 }
     } else {
-       workout.exercicios.push({
+      workout.exercicios.push({
     id: uid(),
     nome,
     tipoExecucao,
-    grupoExecucao: null,
+    grupoExecucao,
     series,
     repeticoes,
     descanso
