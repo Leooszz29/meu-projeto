@@ -739,30 +739,21 @@ updateGroupField();
 typeInput.onchange =
     updateGroupField;
 
-}
-    
-    // MOSTRA OU ESCONDE O CAMPO DE GRUPO
 
-function updateGroupField() {
+document
+    .getElementById('exerciseModalOverlay')
+    .classList.add('show');
 
-    const tipo =
-        typeInput.value;
+nameInput.focus();
 
-    groupField.hidden =
-        tipo === 'individual';
 }
 
-updateGroupField();
-
-typeInput.onchange =
-    updateGroupField;
-
-    document.getElementById('exerciseModalOverlay').classList.add('show');
-    nameInput.focus();
-}
 
 function closeExerciseModal() {
-    document.getElementById('exerciseModalOverlay').classList.remove('show');
+    document
+        .getElementById('exerciseModalOverlay')
+        .classList.remove('show');
+
     editingExerciseCtx = null;
 }
 
