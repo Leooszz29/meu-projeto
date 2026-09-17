@@ -3690,3 +3690,41 @@ body:not(.theme-feminino):not(.theme-masculino)
 .active-exercise-group.collapsed {
     padding-bottom: 16px;
 }
+
+/* =========================================
+   GRUPO ATIVO CONCLUÍDO
+========================================= */
+
+.active-exercise-group.completed {
+    border-color: rgba(53, 230, 122, 0.38);
+
+    box-shadow:
+        inset 3px 0 0 #35e67a,
+        0 14px 32px rgba(0, 0, 0, 0.16);
+}
+
+.active-exercise-group.completed
+.active-exercise-group-header {
+    border-color: rgba(53, 230, 122, 0.35);
+
+    background: rgba(53, 230, 122, 0.08);
+
+    color: #35e67a;
+}
+
+.active-exercise-group.completed
+.active-exercise-group-rounds {
+    color: #35e67a;
+
+    border-left-color:
+        rgba(53, 230, 122, 0.30);
+}
+
+.active-exercise-group.completed
+.active-exercise-group-toggle {
+    border-color: rgba(53, 230, 122, 0.30);
+
+    background: rgba(53, 230, 122, 0.08);
+
+    color: #35e67a;
+}
