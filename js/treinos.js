@@ -579,20 +579,30 @@ for (
             seriesSalvas;
 
 
-        localStorage.setItem(
-            'progressoTreino',
-            JSON.stringify(progressoSalvo)
-        );
+       localStorage.setItem(
+    'progressoTreino',
+    JSON.stringify(progressoSalvo)
+);
 
+const eventoProgresso =
+    new CustomEvent(
+        'progressoTreinoAtualizado',
+        {
+            detail: {
+                workoutId: workout.id
+            }
+        }
+    );}
 
-        seriesButton.setAttribute(
-            'aria-label',
-            concluida
-                ? `Desmarcar série ${numeroSerie}`
-                : `Marcar série ${numeroSerie} como concluída`
-        );
+document.dispatchEvent(
+    eventoProgresso
+);
 
-    }
+seriesButton.setAttribute(
+    'aria-label',
+    concluida
+        ? `Desmarcar série ${numeroSerie}`
+        : `Marcar série ${numeroSerie} como concluída`
 );
 
 
