@@ -3376,3 +3376,96 @@ body:not(.theme-feminino):not(.theme-masculino)
     font-weight: 500;
     line-height: 1.5;
 }
+
+/* =========================================
+   GRUPOS BI-SET / TRI-SET
+========================================= */
+
+.exercise-group {
+    position: relative;
+
+    margin: 14px 0 20px;
+    padding: 16px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(var(--accent-rgb), 0.055),
+            rgba(0,0,0,0.08)
+        );
+
+    box-shadow:
+        inset 3px 0 0 var(--accent),
+        0 12px 28px rgba(0,0,0,0.12);
+}
+
+
+/* CABEÇALHO DO GRUPO */
+
+.exercise-group-header {
+    width: fit-content;
+
+    margin-bottom: 2px;
+    padding: 5px 10px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.28);
+    border-radius: 20px;
+
+    background:
+        rgba(var(--accent-rgb), 0.10);
+
+    color: var(--accent);
+
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+
+/* EXERCÍCIOS DENTRO DO GRUPO */
+
+.exercise-group .exercise-row {
+    margin: 0;
+}
+
+
+/* CONEXÃO VISUAL ENTRE OS EXERCÍCIOS */
+
+.exercise-group .exercise-row + .exercise-row {
+    position: relative;
+}
+
+.exercise-group .exercise-row + .exercise-row::before {
+    content: "+";
+
+    position: absolute;
+
+    top: -17px;
+    left: 18px;
+
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--accent);
+    color: var(--concrete-2);
+
+    font-size: 14px;
+    font-weight: 900;
+
+    z-index: 2;
+}
