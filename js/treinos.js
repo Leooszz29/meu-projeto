@@ -917,13 +917,32 @@ if (tipoExecucao !== 'individual') {
 }
 
     if (editingExerciseCtx.exerciseId) {
-        const ex = workout.exercicios.find(e => e.id === editingExerciseCtx.exerciseId);
-       if (ex) {
-    ex.nome = nome;
-    ex.tipoExecucao = tipoExecucao;
-    ex.series = series;
-    ex.repeticoes = repeticoes;
-    ex.descanso = descanso;
+
+    const ex =
+        workout.exercicios.find(
+            e => e.id === editingExerciseCtx.exerciseId
+        );
+
+    if (ex) {
+
+        ex.nome = nome;
+
+        ex.tipoExecucao =
+            tipoExecucao;
+
+        ex.grupoExecucao =
+            grupoExecucao;
+
+        ex.series =
+            series;
+
+        ex.repeticoes =
+            repeticoes;
+
+        ex.descanso =
+            descanso;
+    }
+
 }
     } else {
       workout.exercicios.push({
