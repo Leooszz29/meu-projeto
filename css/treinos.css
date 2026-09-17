@@ -3605,3 +3605,31 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     z-index: 2;
 }
+
+/* =========================================
+   SEPARAÇÃO BI-SET / RODADAS
+========================================= */
+
+.active-exercise-group-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.active-exercise-group-rounds {
+    display: inline-flex;
+    align-items: center;
+
+    padding-left: 12px;
+
+    border-left: 1px solid
+        rgba(255, 255, 255, 0.30);
+
+    color: var(--chalk-dim);
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+
+    white-space: nowrap;
+}
