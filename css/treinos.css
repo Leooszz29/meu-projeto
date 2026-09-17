@@ -3469,3 +3469,35 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     z-index: 2;
 }
+
+/* =========================================
+   STATUS DO GRUPO
+========================================= */
+
+.exercise-group-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.exercise-group-status {
+    display: inline-flex;
+    align-items: center;
+
+    padding-left: 10px;
+
+    border-left: 1px solid rgba(var(--accent-rgb), 0.25);
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.exercise-group-status.complete {
+    color: #35e67a;
+}
+
+.exercise-group-status.incomplete {
+    color: #f0b84b;
+}
