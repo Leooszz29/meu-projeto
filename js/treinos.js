@@ -787,6 +787,7 @@ function atualizarRodadaGrupo() {
     roundInfo.textContent =
         `RODADA ${rodadaAtual} DE ${quantidadeSeries}`;
 }
+        atualizarRodadaGrupo();
 
 groupHeader.appendChild(
     roundInfo
