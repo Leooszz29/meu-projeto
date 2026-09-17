@@ -803,6 +803,29 @@ workout.exercicios.forEach(exercicio => {
 
 Array.from(gruposExistentes).forEach(
     (grupoId, index) => {
+
+        const quantidadeNoGrupo =
+            workout.exercicios.filter(exercicio =>
+                exercicio.grupoExecucao === grupoId &&
+                exercicio.tipoExecucao === tipoExecucao
+            ).length;
+
+        const limiteGrupo =
+            tipoExecucao === 'bisset'
+                ? 2
+                : 3;
+
+        const ehGrupoAtual =
+            exerciseEditing &&
+            exerciseEditing.grupoExecucao === grupoId;
+
+        if (
+            quantidadeNoGrupo >= limiteGrupo &&
+            !ehGrupoAtual
+        ) {
+            return;
+        }
+
         const option = document.createElement('option');
 
         option.value = grupoId;
