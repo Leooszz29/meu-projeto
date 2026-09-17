@@ -685,10 +685,13 @@ if (
             ) + 1;
 
 
-        groupHeader.textContent =
+        const nomeTreino =
+    workout.nome || 'TREINO';
+
+groupHeader.textContent =
     tipoExecucao === 'bisset'
-        ? `BI-SET ${numeroGrupo}`
-        : `TRI-SET ${numeroGrupo}`;
+        ? `${nomeTreino} · BI-SET ${numeroGrupo}`
+        : `${nomeTreino} · TRI-SET ${numeroGrupo}`;
 
 const quantidadeSeries =
     Math.max(
