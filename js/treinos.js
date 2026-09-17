@@ -636,6 +636,54 @@ const tipoExecucao =
 const grupoExecucao =
     exercicio.grupoExecucao || null;
 
+    // ========================================
+// STATUS DO EXERCÍCIO INDIVIDUAL
+// ========================================
+
+if (
+    tipoExecucao === 'individual' ||
+    !grupoExecucao
+) {
+
+    const atualizarStatusIndividual = () => {
+
+        const progressoAtual =
+            JSON.parse(
+                localStorage.getItem(
+                    'progressoTreino'
+                )
+            ) || {};
+
+        const seriesConcluidas =
+            progressoAtual[workout.id]?.[exerciseKey] || [];
+
+        const totalSeries =
+            Number(exercicio.series) || 1;
+
+        const concluido =
+            seriesConcluidas.length >= totalSeries;
+
+        exerciseItem.classList.toggle(
+            'completed',
+            concluido
+        );
+    };
+
+    atualizarStatusIndividual();
+
+    document.addEventListener(
+        'progressoTreinoAtualizado',
+        (event) => {
+
+            if (
+                event.detail.workoutId === workout.id
+            ) {
+                atualizarStatusIndividual();
+            }
+        }
+    );
+}
+
 
 // EXERCÍCIO INDIVIDUAL
 
