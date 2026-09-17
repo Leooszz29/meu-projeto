@@ -3501,3 +3501,107 @@ body:not(.theme-feminino):not(.theme-masculino)
 .exercise-group-status.incomplete {
     color: #f0b84b;
 }
+
+/* =========================================
+   BI-SET / TRI-SET — TREINO EM ANDAMENTO
+========================================= */
+
+.active-exercise-group {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    margin: 16px 0;
+    padding: 16px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(var(--accent-rgb), 0.06),
+            rgba(0, 0, 0, 0.10)
+        );
+
+    box-shadow:
+        inset 3px 0 0 var(--accent),
+        0 14px 32px rgba(0, 0, 0, 0.16);
+}
+
+
+/* TÍTULO DO GRUPO */
+
+.active-exercise-group-header {
+    width: fit-content;
+
+    margin-bottom: 4px;
+    padding: 5px 10px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.30);
+    border-radius: 20px;
+
+    background:
+        rgba(var(--accent-rgb), 0.10);
+
+    color: var(--accent);
+
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+
+/* REMOVE ESPAÇAMENTO EXTERNO DOS EXERCÍCIOS
+   QUANDO ESTÃO DENTRO DO GRUPO */
+
+.active-exercise-group .active-exercise-item {
+    margin: 0;
+}
+
+
+/* EXERCÍCIOS A PARTIR DO SEGUNDO */
+
+.active-exercise-group
+.active-exercise-item +
+.active-exercise-item {
+    position: relative;
+}
+
+
+/* SÍMBOLO + ENTRE OS EXERCÍCIOS */
+
+.active-exercise-group
+.active-exercise-item +
+.active-exercise-item::before {
+    content: "+";
+
+    position: absolute;
+
+    top: -17px;
+    left: 18px;
+
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--accent);
+    color: var(--concrete-2);
+
+    font-size: 14px;
+    font-weight: 900;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.30);
+
+    z-index: 2;
+}
