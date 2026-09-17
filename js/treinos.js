@@ -472,6 +472,45 @@ exercicios.forEach((exercicio, index) => {
 exerciseInfo.appendChild(
     exerciseMeta
 );
+    const toggleIndividualBtn =
+    document.createElement('button');
+
+toggleIndividualBtn.type = 'button';
+
+toggleIndividualBtn.className =
+    'active-individual-toggle';
+
+toggleIndividualBtn.textContent = '▲';
+
+toggleIndividualBtn.setAttribute(
+    'aria-label',
+    'Ocultar detalhes do exercício'
+);
+
+toggleIndividualBtn.addEventListener(
+    'click',
+    () => {
+
+        const isCollapsed =
+            exerciseItem.classList.toggle(
+                'collapsed-individual'
+            );
+
+        toggleIndividualBtn.textContent =
+            isCollapsed ? '▼' : '▲';
+
+        toggleIndividualBtn.setAttribute(
+            'aria-label',
+            isCollapsed
+                ? 'Mostrar detalhes do exercício'
+                : 'Ocultar detalhes do exercício'
+        );
+    }
+);
+
+exerciseInfo.appendChild(
+    toggleIndividualBtn
+);
 
 
 // ========================================
