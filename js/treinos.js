@@ -790,52 +790,68 @@ function updateGroupField() {
 
 
     // PROCURA GRUPOS JÁ EXISTENTES
-    const gruposExistentes =
-        new Set();
+  const limiteGrupo =
+    tipoExecucao === 'bisset'
+        ? 2
+        : 3;
 
-    workout.exercicios.forEach(exercicio => {
+const contagemGrupos = new Map();
+
+workout.exercicios.forEach(exercicio => {
+
+    if (
+        exercicio.tipoExecucao === tipoExecucao &&
+        exercicio.grupoExecucao
+    ) {
+
+        const quantidadeAtual =
+            contagemGrupos.get(
+                exercicio.grupoExecucao
+            ) || 0;
+
+        contagemGrupos.set(
+            exercicio.grupoExecucao,
+            quantidadeAtual + 1
+        );
+    }
+});
+
+const gruposExistentes =
+    Array.from(contagemGrupos.entries());
+
+gruposExistentes.forEach(
+    ([grupoId, quantidade], index) => {
+
+        /*
+         * Durante a edição, o grupo atual
+         * precisa continuar disponível.
+         */
+        const grupoAtual =
+            exerciseEditing &&
+            exerciseEditing.grupoExecucao === grupoId;
 
         if (
-            exercicio.tipoExecucao === tipoExecucao &&
-            exercicio.grupoExecucao
+            quantidade >= limiteGrupo &&
+            !grupoAtual
         ) {
-            gruposExistentes.add(
-                exercicio.grupoExecucao
-            );
+            return;
         }
-
-    });
-
-
-    // ADICIONA OS GRUPOS AO SELECT
-Array.from(gruposExistentes).forEach(
-    (grupoId, index) => {
 
         const option =
             document.createElement('option');
 
         option.value = grupoId;
 
-        const numeroGrupo =
-            index + 1;
+        const numeroGrupo = index + 1;
 
-        if (tipoExecucao === 'bisset') {
-
-            option.textContent =
-                `Bi-set ${numeroGrupo}`;
-
-        } else {
-
-            option.textContent =
-                `Tri-set ${numeroGrupo}`;
-
-        }
+        option.textContent =
+            tipoExecucao === 'bisset'
+                ? `Bi-set ${numeroGrupo}`
+                : `Tri-set ${numeroGrupo}`;
 
         groupInput.appendChild(option);
-
     }
 );
-}
 
 
 updateGroupField();
