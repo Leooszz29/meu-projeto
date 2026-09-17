@@ -831,22 +831,8 @@ Array.from(gruposExistentes).forEach(
 
 updateGroupField();
 
-
-// SE ESTIVER EDITANDO, SELECIONA O GRUPO ATUAL
-
-if (
-    exerciseId &&
-    ex &&
-    ex.grupoExecucao
-) {
-    groupInput.value =
-        ex.grupoExecucao;
-}
-
-
 typeInput.onchange =
     updateGroupField;
-
 
 document
     .getElementById('exerciseModalOverlay')
