@@ -686,14 +686,42 @@ if (
 
 
         groupHeader.textContent =
-            tipoExecucao === 'bisset'
-                ? `BI-SET ${numeroGrupo}`
-                : `TRI-SET ${numeroGrupo}`;
+    tipoExecucao === 'bisset'
+        ? `BI-SET ${numeroGrupo}`
+        : `TRI-SET ${numeroGrupo}`;
 
+const quantidadeSeries =
+    Math.max(
+        ...exercicios
+            .filter(item =>
+                item.grupoExecucao === grupoExecucao &&
+                (item.tipoExecucao || 'individual') === tipoExecucao
+            )
+            .map(item =>
+                Number(item.series) || 1
+            )
+    );
 
-        groupContainer.appendChild(
-            groupHeader
-        );
+const roundInfo =
+    document.createElement('span');
+
+roundInfo.className =
+    'active-exercise-group-rounds';
+
+roundInfo.textContent =
+    `${quantidadeSeries} ${
+        quantidadeSeries === 1
+            ? 'RODADA'
+            : 'RODADAS'
+    }`;
+
+groupHeader.appendChild(
+    roundInfo
+);
+
+groupContainer.appendChild(
+    groupHeader
+);
 
         exercisesElement.appendChild(
             groupContainer
