@@ -788,8 +788,6 @@ const series =
         document.getElementById('exerciseSeriesInput').value,
         10
     );
-
-    const series = parseInt(document.getElementById('exerciseSeriesInput').value, 10);
     const repeticoes = parseInt(document.getElementById('exerciseRepsInput').value, 10);
     const descanso = parseInt(document.getElementById('exerciseRestInput').value, 10);
 
