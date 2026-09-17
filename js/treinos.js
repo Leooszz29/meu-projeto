@@ -932,6 +932,50 @@ if (tipoExecucao !== 'individual') {
 
 }
 
+    // ========================================
+// LIMITE DE EXERCÍCIOS POR GRUPO
+// ========================================
+
+if (
+    tipoExecucao !== 'individual' &&
+    grupoSelecionado
+) {
+
+    const limiteGrupo =
+        tipoExecucao === 'bisset'
+            ? 2
+            : 3;
+
+    const exerciciosNoGrupo =
+        workout.exercicios.filter(exercicio => {
+
+            // AO EDITAR, NÃO CONTA O PRÓPRIO EXERCÍCIO
+            if (
+                editingExerciseCtx.exerciseId &&
+                exercicio.id === editingExerciseCtx.exerciseId
+            ) {
+                return false;
+            }
+
+            return (
+                exercicio.grupoExecucao === grupoExecucao &&
+                exercicio.tipoExecucao === tipoExecucao
+            );
+
+        });
+
+    if (exerciciosNoGrupo.length >= limiteGrupo) {
+
+        alert(
+            tipoExecucao === 'bisset'
+                ? 'Este Bi-set já possui 2 exercícios.'
+                : 'Este Tri-set já possui 3 exercícios.'
+        );
+
+        return;
+    }
+}
+
     if (editingExerciseCtx.exerciseId) {
 
     const ex =
