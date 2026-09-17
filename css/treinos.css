@@ -3774,3 +3774,51 @@ body:not(.theme-feminino):not(.theme-masculino)
 .active-individual-status[hidden] {
     display: none;
 }
+
+/* =========================================
+   RECOLHER EXERCÍCIO INDIVIDUAL
+========================================= */
+
+.active-exercise-info {
+    position: relative;
+}
+
+.active-individual-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
+    border-radius: 8px;
+
+    background: rgba(var(--accent-rgb), 0.08);
+    color: var(--accent);
+
+    font-size: 11px;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.active-individual-toggle:hover {
+    background: rgba(var(--accent-rgb), 0.16);
+    border-color: rgba(var(--accent-rgb), 0.45);
+}
+
+.active-exercise-item.completed
+.active-individual-toggle {
+    border-color: rgba(53, 230, 122, 0.30);
+    background: rgba(53, 230, 122, 0.08);
+    color: #35e67a;
+}
