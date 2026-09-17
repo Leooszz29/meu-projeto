@@ -722,6 +722,46 @@ groupHeader.appendChild(
     roundInfo
 );
 
+const toggleGroupBtn =
+    document.createElement('button');
+
+toggleGroupBtn.type = 'button';
+
+toggleGroupBtn.className =
+    'active-exercise-group-toggle';
+
+toggleGroupBtn.setAttribute(
+    'aria-label',
+    'Ocultar exercícios'
+);
+
+toggleGroupBtn.textContent = '▲';
+
+toggleGroupBtn.addEventListener(
+    'click',
+    () => {
+
+        const isCollapsed =
+            groupContainer.classList.toggle(
+                'collapsed'
+            );
+
+        toggleGroupBtn.textContent =
+            isCollapsed ? '▼' : '▲';
+
+        toggleGroupBtn.setAttribute(
+            'aria-label',
+            isCollapsed
+                ? 'Mostrar exercícios'
+                : 'Ocultar exercícios'
+        );
+    }
+);
+
+groupHeader.appendChild(
+    toggleGroupBtn
+);
+
 groupContainer.appendChild(
     groupHeader
 );
