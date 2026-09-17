@@ -3633,3 +3633,60 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     white-space: nowrap;
 }
+
+/* =========================================
+   OCULTAR / MOSTRAR GRUPO ATIVO
+========================================= */
+
+.active-exercise-group-header {
+    width: 100%;
+}
+
+.active-exercise-group-toggle {
+    margin-left: auto;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
+    border-radius: 8px;
+
+    background: rgba(var(--accent-rgb), 0.08);
+    color: var(--accent);
+
+    font-size: 11px;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.active-exercise-group-toggle:hover {
+    background: rgba(var(--accent-rgb), 0.16);
+    border-color: rgba(var(--accent-rgb), 0.45);
+}
+
+
+/* ESCONDE SOMENTE OS EXERCÍCIOS */
+
+.active-exercise-group.collapsed
+.active-exercise-item {
+    display: none;
+}
+
+
+/* GRUPO RECOLHIDO FICA MAIS COMPACTO */
+
+.active-exercise-group.collapsed {
+    padding-bottom: 16px;
+}
