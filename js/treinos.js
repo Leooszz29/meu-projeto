@@ -408,7 +408,9 @@ const progressoAtual =
 
     // CRIA OS EXERCÍCIOS
 
-    exercicios.forEach((exercicio, index) => {
+const gruposAtivosCriados = new Map();
+
+exercicios.forEach((exercicio, index) => {
 
         const exerciseItem =
             document.createElement('div');
@@ -614,9 +616,100 @@ exerciseItem.appendChild(
     exerciseInfo
 );
 
-exercisesElement.appendChild(
-    exerciseItem
-);
+const tipoExecucao =
+    exercicio.tipoExecucao || 'individual';
+
+const grupoExecucao =
+    exercicio.grupoExecucao || null;
+
+
+// EXERCÍCIO INDIVIDUAL
+
+if (
+    tipoExecucao === 'individual' ||
+    !grupoExecucao
+) {
+
+    exercisesElement.appendChild(
+        exerciseItem
+    );
+
+} else {
+
+    let groupContainer =
+        gruposAtivosCriados.get(
+            grupoExecucao
+        );
+
+
+    // CRIA O GRUPO SOMENTE UMA VEZ
+
+    if (!groupContainer) {
+
+        groupContainer =
+            document.createElement('div');
+
+        groupContainer.className =
+            `active-exercise-group ${tipoExecucao}`;
+
+        groupContainer.dataset.exerciseGroup =
+            grupoExecucao;
+
+
+        const groupHeader =
+            document.createElement('div');
+
+        groupHeader.className =
+            'active-exercise-group-header';
+
+
+        // DESCOBRE O NÚMERO DO GRUPO
+
+        const gruposDoMesmoTipo =
+            exercicios
+                .filter(item =>
+                    (item.tipoExecucao || 'individual') ===
+                        tipoExecucao &&
+                    item.grupoExecucao
+                )
+                .map(item =>
+                    item.grupoExecucao
+                );
+
+        const gruposUnicos =
+            [...new Set(gruposDoMesmoTipo)];
+
+        const numeroGrupo =
+            gruposUnicos.indexOf(
+                grupoExecucao
+            ) + 1;
+
+
+        groupHeader.textContent =
+            tipoExecucao === 'bisset'
+                ? `BI-SET ${numeroGrupo}`
+                : `TRI-SET ${numeroGrupo}`;
+
+
+        groupContainer.appendChild(
+            groupHeader
+        );
+
+        exercisesElement.appendChild(
+            groupContainer
+        );
+
+        gruposAtivosCriados.set(
+            grupoExecucao,
+            groupContainer
+        );
+    }
+
+
+    groupContainer.appendChild(
+        exerciseItem
+    );
+}
 
     });
 
