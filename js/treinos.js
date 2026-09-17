@@ -818,7 +818,7 @@ Array.from(gruposExistentes).forEach(
         groupInput.appendChild(option);
     }
 );
-
+}
 
 updateGroupField();
 
