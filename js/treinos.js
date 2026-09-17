@@ -70,6 +70,7 @@ function renderWorkouts() {
             noEx.textContent = 'Nenhum exercício adicionado ainda.';
             card.appendChild(noEx);
         } else {
+            const gruposRenderizados = new Set();
             workout.exercicios.forEach(ex => {
                 const row = document.createElement('div');
                 row.className = 'exercise-row';
@@ -123,7 +124,94 @@ info.appendChild(typeBadge);
 
                 row.appendChild(info);
                 row.appendChild(exActions);
-                card.appendChild(row);
+                // ========================================
+// AGRUPAMENTO VISUAL BI-SET / TRI-SET
+// ========================================
+
+const tipoExecucao =
+    ex.tipoExecucao || 'individual';
+
+const grupoExecucao =
+    ex.grupoExecucao || null;
+
+
+// EXERCÍCIO INDIVIDUAL
+if (
+    tipoExecucao === 'individual' ||
+    !grupoExecucao
+) {
+
+    card.appendChild(row);
+
+} else {
+
+    // PROCURA UM GRUPO QUE JÁ FOI CRIADO
+    let groupContainer =
+        card.querySelector(
+            `[data-exercise-group="${grupoExecucao}"]`
+        );
+
+
+    // SE AINDA NÃO EXISTE, CRIA O GRUPO
+    if (!groupContainer) {
+
+        groupContainer =
+            document.createElement('div');
+
+        groupContainer.className =
+            `exercise-group ${tipoExecucao}`;
+
+        groupContainer.dataset.exerciseGroup =
+            grupoExecucao;
+
+
+        const groupHeader =
+            document.createElement('div');
+
+        groupHeader.className =
+            'exercise-group-header';
+
+
+        const gruposDoMesmoTipo =
+            workout.exercicios
+                .filter(item =>
+                    (item.tipoExecucao || 'individual') ===
+                        tipoExecucao &&
+                    item.grupoExecucao
+                )
+                .map(item => item.grupoExecucao);
+
+
+        const gruposUnicos =
+            [...new Set(gruposDoMesmoTipo)];
+
+
+        const numeroGrupo =
+            gruposUnicos.indexOf(grupoExecucao) + 1;
+
+
+        groupHeader.textContent =
+            tipoExecucao === 'bisset'
+                ? `BI-SET ${numeroGrupo}`
+                : `TRI-SET ${numeroGrupo}`;
+
+
+        groupContainer.appendChild(
+            groupHeader
+        );
+
+        card.appendChild(
+            groupContainer
+        );
+
+        gruposRenderizados.add(
+            grupoExecucao
+        );
+    }
+
+
+    groupContainer.appendChild(row);
+}
             });
         }
 
