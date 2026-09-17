@@ -948,18 +948,52 @@ function atualizarRodadaGrupo() {
         'completed'
     );
 
+    if (
+        !groupContainer.dataset.autoCollapsed
+    ) {
+
+        groupContainer.classList.add(
+            'collapsed'
+        );
+
+        toggleGroupBtn.textContent = '▼';
+
+        toggleGroupBtn.setAttribute(
+            'aria-label',
+            'Mostrar exercícios'
+        );
+
+        groupContainer.dataset.autoCollapsed =
+            'true';
+    }
+
     return;
 }
 
 groupContainer.classList.remove(
     'completed'
 );
-    const rodadaAtual =
-        rodadasConcluidas + 1;
 
-    roundInfo.textContent =
-        `RODADA ${rodadaAtual} DE ${quantidadeSeries}`;
+groupContainer.classList.remove(
+    'collapsed'
+);
+
+toggleGroupBtn.textContent = '▲';
+
+toggleGroupBtn.setAttribute(
+    'aria-label',
+    'Ocultar exercícios'
+);
+
+delete groupContainer.dataset.autoCollapsed;
+
+const rodadaAtual =
+    rodadasConcluidas + 1;
+
+roundInfo.textContent =
+    `RODADA ${rodadaAtual} DE ${quantidadeSeries}`;
 }
+        
         atualizarRodadaGrupo();
 
 document.addEventListener(
