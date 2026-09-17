@@ -711,26 +711,33 @@ function updateGroupField() {
 
 
     // ADICIONA OS GRUPOS AO SELECT
-    gruposExistentes.forEach(
-        (grupoId, index) => {
+Array.from(gruposExistentes).forEach(
+    (grupoId, index) => {
 
-            const option =
-                document.createElement('option');
+        const option =
+            document.createElement('option');
 
-            option.value =
-                grupoId;
+        option.value = grupoId;
+
+        const numeroGrupo =
+            index + 1;
+
+        if (tipoExecucao === 'bisset') {
 
             option.textContent =
-                tipoExecucao === 'bisset'
-                    ? `Bi-set ${index + 1}`
-                    : `Tri-set ${index + 1}`;
+                `Bi-set ${numeroGrupo}`;
 
-            groupInput.appendChild(
-                option
-            );
+        } else {
+
+            option.textContent =
+                `Tri-set ${numeroGrupo}`;
 
         }
-    );
+
+        groupInput.appendChild(option);
+
+    }
+);
 }
 
 
