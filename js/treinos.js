@@ -641,6 +641,105 @@ const restInput =
     repsInput.value = '';
     restInput.value = '';
 }
+
+    // ========================================
+// CAMPO DE GRUPO - BI-SET / TRI-SET
+// ========================================
+
+const groupInput =
+    document.getElementById('exerciseGroupInput');
+
+function updateGroupField() {
+
+    const tipoExecucao =
+        typeInput.value;
+
+    // INDIVIDUAL NÃO USA GRUPO
+    if (tipoExecucao === 'individual') {
+
+        groupField.hidden = true;
+        groupInput.innerHTML = `
+            <option value="">
+                Novo grupo
+            </option>
+        `;
+
+        return;
+    }
+
+
+    // BI-SET / TRI-SET
+    groupField.hidden = false;
+
+    const workouts =
+        loadWorkouts();
+
+    const workout =
+        workouts.find(
+            w => w.id === workoutId
+        );
+
+
+    groupInput.innerHTML = `
+        <option value="">
+            Novo grupo
+        </option>
+    `;
+
+
+    if (!workout) {
+        return;
+    }
+
+
+    // PROCURA GRUPOS JÁ EXISTENTES
+    const gruposExistentes =
+        new Set();
+
+    workout.exercicios.forEach(exercicio => {
+
+        if (
+            exercicio.tipoExecucao === tipoExecucao &&
+            exercicio.grupoExecucao
+        ) {
+            gruposExistentes.add(
+                exercicio.grupoExecucao
+            );
+        }
+
+    });
+
+
+    // ADICIONA OS GRUPOS AO SELECT
+    gruposExistentes.forEach(
+        (grupoId, index) => {
+
+            const option =
+                document.createElement('option');
+
+            option.value =
+                grupoId;
+
+            option.textContent =
+                tipoExecucao === 'bisset'
+                    ? `Bi-set ${index + 1}`
+                    : `Tri-set ${index + 1}`;
+
+            groupInput.appendChild(
+                option
+            );
+
+        }
+    );
+}
+
+
+updateGroupField();
+
+typeInput.onchange =
+    updateGroupField;
+
+}
     
     // MOSTRA OU ESCONDE O CAMPO DE GRUPO
 
@@ -675,10 +774,20 @@ document.getElementById('exerciseModalOverlay').addEventListener('click', (e) =>
 document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
     if (!editingExerciseCtx) return;
 
-    const nome = document.getElementById('exerciseNameInput').value.trim();
+    const nome =
+    document.getElementById('exerciseNameInput').value.trim();
 
-    const tipoExecucao =
-        document.getElementById('exerciseTypeInput').value;
+const tipoExecucao =
+    document.getElementById('exerciseTypeInput').value;
+
+const grupoSelecionado =
+    document.getElementById('exerciseGroupInput').value;
+
+const series =
+    parseInt(
+        document.getElementById('exerciseSeriesInput').value,
+        10
+    );
 
     const series = parseInt(document.getElementById('exerciseSeriesInput').value, 10);
     const repeticoes = parseInt(document.getElementById('exerciseRepsInput').value, 10);
