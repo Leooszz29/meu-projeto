@@ -592,7 +592,7 @@ const eventoProgresso =
                 workoutId: workout.id
             }
         }
-    );}
+    );    
 
 document.dispatchEvent(
     eventoProgresso
