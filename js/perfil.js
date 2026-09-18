@@ -845,8 +845,38 @@ deleteButton.addEventListener(
     }
 );
 
+// BOTÃO VER DETALHES
+const detailsButton =
+    document.createElement('button');
+
+detailsButton.type = 'button';
+
+detailsButton.className =
+    'history-details-btn';
+
+detailsButton.textContent =
+    'Ver detalhes';
+
+detailsButton.setAttribute(
+    'aria-label',
+    `Ver detalhes do treino ${
+        treino.nome || 'Treino'
+    }`
+);
+
+// Registros antigos ainda não possuem
+// o resumo detalhado dos exercícios
+if (
+    !Array.isArray(treino.exercicios)
+) {
+    detailsButton.disabled = true;
+
+    detailsButton.title =
+        'Detalhes não disponíveis para este registro';
+}
 
 actions.appendChild(data);
+actions.appendChild(detailsButton);
 actions.appendChild(deleteButton);
 
 item.appendChild(nome);
