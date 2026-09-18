@@ -1228,45 +1228,44 @@ if (document.readyState === 'loading') {
 // MODAL — DETALHES DO HISTÓRICO
 // ========================================
 
-const historyDetailsCloseBtn =
-    document.getElementById(
-        'historyDetailsCloseBtn'
-    );
+document.addEventListener(
+    'click',
+    (event) => {
 
-const historyDetailsModalOverlay =
-    document.getElementById(
-        'historyDetailsModalOverlay'
-    );
+        const modalOverlay =
+            document.getElementById(
+                'historyDetailsModalOverlay'
+            );
 
-if (
-    historyDetailsCloseBtn &&
-    historyDetailsModalOverlay
-) {
-
-    historyDetailsCloseBtn.addEventListener(
-        'click',
-        () => {
-
-            historyDetailsModalOverlay
-                .classList.remove('show');
-
+        if (!modalOverlay) {
+            return;
         }
-    );
 
 
-    historyDetailsModalOverlay.addEventListener(
-        'click',
-        (event) => {
+        // Fecha pelo botão X
+        if (
+            event.target.closest(
+                '#historyDetailsCloseBtn'
+            )
+        ) {
 
-            if (
-                event.target ===
-                historyDetailsModalOverlay
-            ) {
+            modalOverlay.classList.remove(
+                'show'
+            );
 
-                historyDetailsModalOverlay
-                    .classList.remove('show');
-            }
-
+            return;
         }
-    );
-}
+
+
+        // Fecha clicando fora da janela
+        if (
+            event.target === modalOverlay
+        ) {
+
+            modalOverlay.classList.remove(
+                'show'
+            );
+        }
+
+    }
+);
