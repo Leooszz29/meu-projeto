@@ -1745,6 +1745,48 @@ document.getElementById(
     'finishExerciseCount'
 ).textContent =
     workoutFinalizado?.exercicios?.length || 0;
+    
+    // Calcula o total de séries
+// e quantas foram concluídas
+const progressoTreino =
+    JSON.parse(
+        localStorage.getItem(
+            'progressoTreino'
+        )
+    ) || {};
+
+let totalSeries = 0;
+let seriesConcluidas = 0;
+
+const exerciciosFinalizados =
+    workoutFinalizado?.exercicios || [];
+
+exerciciosFinalizados.forEach(
+    (exercicio, index) => {
+
+        const quantidadeSeries =
+            Number(exercicio.series) || 0;
+
+        totalSeries += quantidadeSeries;
+
+        const exerciseKey =
+            exercicio.id ||
+            `exercise-${index}`;
+
+        const progressoExercicio =
+            progressoTreino[
+                treinoAtivo.id
+            ]?.[exerciseKey] || [];
+
+        seriesConcluidas +=
+            progressoExercicio.length;
+    }
+);
+
+document.getElementById(
+    'finishSeriesCount'
+).textContent =
+    `${seriesConcluidas} de ${totalSeries}`;
 
     
     // Busca o histórico existente
