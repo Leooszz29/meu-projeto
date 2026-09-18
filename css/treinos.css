@@ -3979,3 +3979,87 @@ body:not(.theme-feminino):not(.theme-masculino)
 .finish-incomplete-count[hidden] {
     display: none;
 }
+
+/* =========================================
+   RESUMO FINAL — CARDS
+========================================= */
+
+.finish-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.finish-summary-item {
+    min-width: 0;
+    padding: 14px 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    text-align: center;
+}
+
+.finish-summary-label {
+    color: var(--chalk-dim);
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+
+    text-transform: uppercase;
+}
+
+.finish-summary-item strong {
+    max-width: 100%;
+
+    color: var(--chalk);
+
+    font-size: 15px;
+    font-weight: 900;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* TODAS AS SÉRIES CONCLUÍDAS */
+
+.finish-summary-item.complete {
+    border-color:
+        rgba(53, 230, 122, 0.30);
+
+    background:
+        rgba(53, 230, 122, 0.06);
+}
+
+.finish-summary-item.complete strong {
+    color: #35e67a;
+}
+
+
+/* EXISTEM SÉRIES PENDENTES */
+
+.finish-summary-item.incomplete {
+    border-color:
+        rgba(255, 87, 87, 0.30);
+
+    background:
+        rgba(255, 87, 87, 0.06);
+}
+
+.finish-summary-item.incomplete strong {
+    color: #ff6868;
+}
