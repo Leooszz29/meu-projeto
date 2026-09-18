@@ -199,5 +199,71 @@
 
 
 <script src="js/perfil.js"></script>
+        
+        <!-- Modal Detalhes do Treino -->
+<div class="modal-overlay" id="historyDetailsModalOverlay">
+
+    <div class="modal history-details-modal">
+
+        <button
+            type="button"
+            class="history-details-close"
+            id="historyDetailsCloseBtn"
+            aria-label="Fechar detalhes"
+        >
+            ×
+        </button>
+
+        <div class="history-details-icon">
+            ✓
+        </div>
+
+        <h2 id="historyDetailsName">
+            Detalhes do treino
+        </h2>
+
+        <p
+            class="history-details-date"
+            id="historyDetailsDate"
+        >
+        </p>
+
+        <div class="history-details-summary">
+
+            <div class="history-details-stat">
+                <span>Exercícios</span>
+
+                <strong id="historyDetailsExercises">
+                    0
+                </strong>
+            </div>
+
+            <div class="history-details-stat">
+                <span>Séries concluídas</span>
+
+                <strong id="historyDetailsSeries">
+                    0 de 0
+                </strong>
+            </div>
+
+        </div>
+
+        <div class="history-details-section">
+
+            <div class="history-details-section-title">
+                Exercícios realizados
+            </div>
+
+            <div
+                class="history-details-exercise-list"
+                id="historyDetailsExerciseList"
+            >
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 </body>
 </html>
