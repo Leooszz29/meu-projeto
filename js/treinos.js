@@ -1935,12 +1935,63 @@ if (exerciciosIncompletos > 0) {
     const historico =
         JSON.parse(localStorage.getItem('historicoTreinos')) || [];
 
+    // Monta o resumo detalhado dos exercícios
+const resumoExercicios =
+    exerciciosFinalizados.map(
+        (exercicio, index) => {
+
+            const total =
+                Number(exercicio.series) || 0;
+
+            const exerciseKey =
+                exercicio.id ||
+                `exercise-${index}`;
+
+            const progressoExercicio =
+                progressoTreino[
+                    treinoAtivo.id
+                ]?.[exerciseKey] || [];
+
+            const concluidas =
+                progressoExercicio.length;
+
+            return {
+                id: exercicio.id || null,
+                nome:
+                    exercicio.nome ||
+                    'Exercício',
+
+                seriesConcluidas:
+                    concluidas,
+
+                seriesTotal:
+                    total,
+
+                completo:
+                    total > 0 &&
+                    concluidas >= total
+            };
+        }
+    );
+
     // Registra o treino concluído
     historico.push({
-        workoutId: treinoAtivo.id,
-        nome: treinoAtivo.nome,
-        data: new Date().toISOString()
-    });
+    workoutId: treinoAtivo.id,
+    nome: treinoAtivo.nome,
+    data: new Date().toISOString(),
+
+    exercicios:
+        resumoExercicios,
+
+    totalExercicios:
+        exerciciosFinalizados.length,
+
+    seriesConcluidas:
+        seriesConcluidas,
+
+    seriesTotal:
+        totalSeries
+});
 
     // Salva o histórico atualizado
     localStorage.setItem(
