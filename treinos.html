@@ -290,13 +290,77 @@
 <!-- Modal Treino Finalizado -->
 <div class="modal-overlay" id="finishModalOverlay">
     <div class="modal finish-modal">
+
         <div class="success-icon">✓</div>
+
         <h2>Treino concluído!</h2>
-        <p>
-    Mais um treino concluído com sucesso.<br>
-    Continue evoluindo. O próximo começa com a disciplina de hoje. 💪
-</p>
-        <button class="btn btn-save" id="finishOkBtn">Fechar</button>
+
+        <p class="finish-message">
+            Parabéns! Você finalizou o seu treino.
+        </p>
+
+        <!-- Resumo do treino -->
+        <div class="finish-summary">
+
+            <div class="finish-summary-item">
+                <span class="finish-summary-label">
+                    Treino
+                </span>
+
+                <strong id="finishWorkoutName">
+                    —
+                </strong>
+            </div>
+
+            <div class="finish-summary-item">
+                <span class="finish-summary-label">
+                    Exercícios
+                </span>
+
+                <strong id="finishExerciseCount">
+                    0
+                </strong>
+            </div>
+
+            <div class="finish-summary-item">
+                <span class="finish-summary-label">
+                    Séries concluídas
+                </span>
+
+                <strong id="finishSeriesCount">
+                    0 de 0
+                </strong>
+            </div>
+
+        </div>
+
+        <!-- Lista de exercícios -->
+        <div class="finish-exercises">
+
+            <div class="finish-exercises-title">
+                <span>✓</span>
+                Exercícios realizados
+            </div>
+
+            <div
+                class="finish-exercises-list"
+                id="finishExercisesList"
+            >
+            </div>
+
+        </div>
+
+        <div class="finish-motivation">
+            🏆 Disciplina hoje, resultados amanhã!
+        </div>
+
+        <button
+            class="btn btn-save"
+            id="finishOkBtn"
+        >
+            Continuar
+        </button>
+
     </div>
 </div>
     
