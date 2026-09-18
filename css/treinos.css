@@ -4063,3 +4063,194 @@ body:not(.theme-feminino):not(.theme-masculino)
 .finish-summary-item.incomplete strong {
     color: #ff6868;
 }
+
+/* =========================================
+   MODAL FINAL — ACABAMENTO PROFISSIONAL
+========================================= */
+
+.finish-modal {
+    width: 100%;
+    max-width: 520px;
+    padding: 30px;
+
+    text-align: center;
+
+    border:
+        1px solid rgba(var(--accent-rgb), 0.24);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.055),
+            rgba(255, 255, 255, 0.015)
+        ),
+        var(--concrete-1);
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.60),
+        0 0 45px rgba(var(--accent-rgb), 0.06);
+}
+
+
+/* ÍCONE DE SUCESSO */
+
+.finish-modal .success-icon {
+    width: 64px;
+    height: 64px;
+
+    margin: 0 auto 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        2px solid rgba(53, 230, 122, 0.45);
+
+    border-radius: 50%;
+
+    background:
+        rgba(53, 230, 122, 0.10);
+
+    color: #35e67a;
+
+    font-size: 32px;
+    font-weight: 900;
+
+    box-shadow:
+        0 0 25px rgba(53, 230, 122, 0.18);
+}
+
+
+/* TÍTULO */
+
+.finish-modal h2 {
+    margin: 0;
+
+    color: var(--chalk);
+
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 0.3px;
+}
+
+
+/* SUBTÍTULO */
+
+.finish-message {
+    margin: 8px 0 0;
+
+    color: var(--chalk-dim);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* ÁREA DOS EXERCÍCIOS */
+
+.finish-exercises {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.finish-exercises-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    color: var(--chalk);
+
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.6px;
+
+    text-transform: uppercase;
+}
+
+.finish-exercises-title > span {
+    color: #35e67a;
+}
+
+
+/* FRASE MOTIVACIONAL */
+
+.finish-motivation {
+    margin-top: 18px;
+    padding: 12px 14px;
+
+    border:
+        1px solid rgba(53, 230, 122, 0.18);
+
+    border-radius: 10px;
+
+    background:
+        rgba(53, 230, 122, 0.055);
+
+    color: #35e67a;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+
+    text-align: center;
+}
+
+
+/* BOTÃO CONTINUAR */
+
+.finish-modal #finishOkBtn {
+    width: 100%;
+
+    margin-top: 18px;
+    min-height: 46px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+}
+
+
+/* RESPONSIVO */
+
+@media (max-width: 560px) {
+
+    .finish-modal {
+        padding: 24px 18px;
+    }
+
+    .finish-summary {
+        gap: 6px;
+    }
+
+    .finish-summary-item {
+        padding: 12px 6px;
+    }
+
+    .finish-summary-item strong {
+        font-size: 13px;
+    }
+
+    .finish-exercises-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .finish-exercise-row {
+        grid-template-columns:
+            28px minmax(0, 1fr) auto;
+    }
+
+    .finish-exercise-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
