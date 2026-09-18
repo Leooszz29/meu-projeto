@@ -1786,6 +1786,30 @@ document.getElementById(
 ).textContent =
     `${seriesConcluidas} de ${totalSeries}`;
 
+const finishSeriesCount =
+    document.getElementById(
+        'finishSeriesCount'
+    );
+
+const finishSeriesItem =
+    finishSeriesCount.closest(
+        '.finish-summary-item'
+    );
+
+const todasSeriesConcluidas =
+    totalSeries > 0 &&
+    seriesConcluidas >= totalSeries;
+
+finishSeriesItem.classList.toggle(
+    'complete',
+    todasSeriesConcluidas
+);
+
+finishSeriesItem.classList.toggle(
+    'incomplete',
+    !todasSeriesConcluidas
+);
+
     // Preenche a lista de exercícios realizados
 const finishExercisesList =
     document.getElementById(
