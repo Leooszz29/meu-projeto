@@ -3944,3 +3944,38 @@ body:not(.theme-feminino):not(.theme-masculino)
 .finish-exercise-series {
     color: #ff6868;
 }
+
+/* =========================================
+   EXERCÍCIOS INCOMPLETOS — RESUMO
+========================================= */
+
+.finish-exercises-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+.finish-incomplete-count {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 10px;
+
+    border: 1px solid rgba(255, 87, 87, 0.40);
+    border-radius: 20px;
+
+    background: rgba(255, 87, 87, 0.08);
+    color: #ff6868;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.finish-incomplete-count[hidden] {
+    display: none;
+}
