@@ -1723,16 +1723,14 @@ document.getElementById('btnFinishWorkout').addEventListener('click', () => {
     
 // Busca os dados completos do treino
 const workouts =
-    JSON.parse(
-        localStorage.getItem('workouts')
-    ) || [];
+    loadWorkouts();
 
 const workoutFinalizado =
     workouts.find(
         workout =>
             workout.id === treinoAtivo.id
     );
-
+    
 // Preenche o resumo do modal
 document.getElementById(
     'finishWorkoutName'
