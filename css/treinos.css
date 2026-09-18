@@ -3840,3 +3840,107 @@ body:not(.theme-feminino):not(.theme-masculino)
 .active-exercise-item.collapsed-individual {
     padding-bottom: 16px;
 }
+
+/* =========================================
+   RESUMO FINAL — LISTA DE EXERCÍCIOS
+========================================= */
+
+.finish-exercises-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+.finish-exercise-row {
+    display: grid;
+    grid-template-columns: 30px 1fr auto;
+    align-items: center;
+    gap: 10px;
+
+    min-height: 48px;
+    padding: 9px 12px;
+
+    background: rgba(255, 255, 255, 0.025);
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.07);
+}
+
+.finish-exercise-row:last-child {
+    border-bottom: none;
+}
+
+
+/* ÍCONE */
+
+.finish-exercise-status {
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 13px;
+    font-weight: 900;
+}
+
+
+/* NOME */
+
+.finish-exercise-name {
+    color: var(--chalk);
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-align: left;
+}
+
+
+/* CONTAGEM DAS SÉRIES */
+
+.finish-exercise-series {
+    color: var(--chalk-dim);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* EXERCÍCIO COMPLETO */
+
+.finish-exercise-row.complete
+.finish-exercise-status {
+    background: #35e67a;
+    color: #08130c;
+
+    box-shadow:
+        0 0 14px rgba(53, 230, 122, 0.20);
+}
+
+
+/* EXERCÍCIO INCOMPLETO */
+
+.finish-exercise-row.incomplete
+.finish-exercise-status {
+    background: #ff5757;
+    color: #1a0808;
+
+    box-shadow:
+        0 0 14px rgba(255, 87, 87, 0.18);
+}
+
+.finish-exercise-row.incomplete
+.finish-exercise-series {
+    color: #ff6868;
+}
