@@ -1720,7 +1720,33 @@ document.getElementById('btnFinishWorkout').addEventListener('click', () => {
 
     return;
 }
+    
+// Busca os dados completos do treino
+const workouts =
+    JSON.parse(
+        localStorage.getItem('workouts')
+    ) || [];
 
+const workoutFinalizado =
+    workouts.find(
+        workout =>
+            workout.id === treinoAtivo.id
+    );
+
+// Preenche o resumo do modal
+document.getElementById(
+    'finishWorkoutName'
+).textContent =
+    workoutFinalizado?.nome ||
+    treinoAtivo.nome ||
+    'Treino';
+
+document.getElementById(
+    'finishExerciseCount'
+).textContent =
+    workoutFinalizado?.exercicios?.length || 0;
+
+    
     // Busca o histórico existente
     const historico =
         JSON.parse(localStorage.getItem('historicoTreinos')) || [];
