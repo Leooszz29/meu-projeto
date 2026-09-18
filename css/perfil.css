@@ -1394,3 +1394,102 @@ textarea::placeholder{
 
     overflow: hidden;
 }
+
+/* =========================================
+   DETALHES DO HISTÓRICO — EXERCÍCIOS
+========================================= */
+
+.history-details-exercise {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+
+    min-height: 48px;
+    padding: 9px 12px;
+
+    background: rgba(255, 255, 255, 0.025);
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.07);
+}
+
+.history-details-exercise:last-child {
+    border-bottom: none;
+}
+
+
+/* ÍCONE */
+
+.history-details-exercise-status {
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 13px;
+    font-weight: 900;
+}
+
+
+/* NOME */
+
+.history-details-exercise-name {
+    min-width: 0;
+
+    color: var(--chalk);
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-align: left;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* SÉRIES */
+
+.history-details-exercise-series {
+    color: var(--chalk-dim);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* EXERCÍCIO COMPLETO */
+
+.history-details-exercise.complete
+.history-details-exercise-status {
+    background: #35e67a;
+    color: #08130c;
+
+    box-shadow:
+        0 0 14px rgba(53, 230, 122, 0.20);
+}
+
+
+/* EXERCÍCIO INCOMPLETO */
+
+.history-details-exercise.incomplete
+.history-details-exercise-status {
+    background: #ff5757;
+    color: #1a0808;
+
+    box-shadow:
+        0 0 14px rgba(255, 87, 87, 0.18);
+}
+
+.history-details-exercise.incomplete
+.history-details-exercise-series {
+    color: #ff6868;
+}
