@@ -948,13 +948,28 @@ function atualizarRodadaGrupo() {
         'completed'
     );
 
-    if (
+   if (
     !groupContainer.dataset.autoCollapsed
 ) {
 
     groupContainer.classList.add(
         'collapsed'
     );
+
+    const toggleBtn =
+        groupContainer.querySelector(
+            '.active-exercise-group-toggle'
+        );
+
+    if (toggleBtn) {
+
+        toggleBtn.textContent = '▼';
+
+        toggleBtn.setAttribute(
+            'aria-label',
+            'Mostrar exercícios'
+        );
+    }
 
     groupContainer.dataset.autoCollapsed =
         'true';
@@ -970,6 +985,21 @@ groupContainer.classList.remove(
 groupContainer.classList.remove(
     'collapsed'
 );
+
+const toggleBtn =
+    groupContainer.querySelector(
+        '.active-exercise-group-toggle'
+    );
+
+if (toggleBtn) {
+
+    toggleBtn.textContent = '▲';
+
+    toggleBtn.setAttribute(
+        'aria-label',
+        'Ocultar exercícios'
+    );
+}
 
 delete groupContainer.dataset.autoCollapsed;
 
