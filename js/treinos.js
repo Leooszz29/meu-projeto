@@ -1793,6 +1793,8 @@ const finishExercisesList =
     );
 
 finishExercisesList.innerHTML = '';
+    
+    let exerciciosIncompletos = 0;
 
 exerciciosFinalizados.forEach(
     (exercicio, index) => {
@@ -1816,7 +1818,10 @@ exerciciosFinalizados.forEach(
             totalSeriesExercicio > 0 &&
             concluidasExercicio >=
                 totalSeriesExercicio;
-
+        
+        if (!exercicioCompleto) {
+    exerciciosIncompletos++;
+}
 
         // Linha do exercício
         const exerciseRow =
@@ -1881,6 +1886,25 @@ exerciciosFinalizados.forEach(
         );
     }
 );
+
+    const finishIncompleteCount =
+    document.getElementById(
+        'finishIncompleteCount'
+    );
+
+if (exerciciosIncompletos > 0) {
+
+    finishIncompleteCount.hidden = false;
+
+    finishIncompleteCount.textContent =
+        exerciciosIncompletos === 1
+            ? '✕ 1 exercício incompleto'
+            : `✕ ${exerciciosIncompletos} exercícios incompletos`;
+
+} else {
+
+    finishIncompleteCount.hidden = true;
+}
 
     
     // Busca o histórico existente
