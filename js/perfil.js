@@ -875,6 +875,126 @@ if (
         'Detalhes não disponíveis para este registro';
 }
 
+    detailsButton.addEventListener(
+    'click',
+    () => {
+
+        if (
+            !Array.isArray(treino.exercicios)
+        ) {
+            return;
+        }
+
+        // Nome do treino
+        document.getElementById(
+            'historyDetailsName'
+        ).textContent =
+            treino.nome || 'Treino';
+
+
+        // Data
+        const dataDetalhes =
+            new Date(treino.data);
+
+        document.getElementById(
+            'historyDetailsDate'
+        ).textContent =
+            dataDetalhes.toLocaleDateString(
+                'pt-BR',
+                {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                }
+            );
+
+
+        // Quantidade de exercícios
+        document.getElementById(
+            'historyDetailsExercises'
+        ).textContent =
+            treino.totalExercicios ??
+            treino.exercicios.length;
+
+
+        // Séries
+        document.getElementById(
+            'historyDetailsSeries'
+        ).textContent =
+            `${treino.seriesConcluidas ?? 0} de ${treino.seriesTotal ?? 0}`;
+
+
+        // Lista de exercícios
+        const exerciseList =
+            document.getElementById(
+                'historyDetailsExerciseList'
+            );
+
+        exerciseList.innerHTML = '';
+
+
+        treino.exercicios.forEach(
+            (exercicio) => {
+
+                const row =
+                    document.createElement('div');
+
+                row.className =
+                    exercicio.completo
+                        ? 'history-details-exercise complete'
+                        : 'history-details-exercise incomplete';
+
+
+                const status =
+                    document.createElement('span');
+
+                status.className =
+                    'history-details-exercise-status';
+
+                status.textContent =
+                    exercicio.completo
+                        ? '✓'
+                        : '✕';
+
+
+                const name =
+                    document.createElement('strong');
+
+                name.className =
+                    'history-details-exercise-name';
+
+                name.textContent =
+                    exercicio.nome ||
+                    'Exercício';
+
+
+                const series =
+                    document.createElement('span');
+
+                series.className =
+                    'history-details-exercise-series';
+
+                series.textContent =
+                    `${exercicio.seriesConcluidas ?? 0} de ${exercicio.seriesTotal ?? 0} séries`;
+
+
+                row.appendChild(status);
+                row.appendChild(name);
+                row.appendChild(series);
+
+                exerciseList.appendChild(row);
+            }
+        );
+
+
+        // Abre o modal
+        document.getElementById(
+            'historyDetailsModalOverlay'
+        ).classList.add('show');
+
+    }
+);
+
 actions.appendChild(data);
 actions.appendChild(detailsButton);
 actions.appendChild(deleteButton);
@@ -1102,4 +1222,51 @@ if (document.readyState === 'loading') {
 } else {
 
     initializeProfile();
+}
+
+// ========================================
+// MODAL — DETALHES DO HISTÓRICO
+// ========================================
+
+const historyDetailsCloseBtn =
+    document.getElementById(
+        'historyDetailsCloseBtn'
+    );
+
+const historyDetailsModalOverlay =
+    document.getElementById(
+        'historyDetailsModalOverlay'
+    );
+
+if (
+    historyDetailsCloseBtn &&
+    historyDetailsModalOverlay
+) {
+
+    historyDetailsCloseBtn.addEventListener(
+        'click',
+        () => {
+
+            historyDetailsModalOverlay
+                .classList.remove('show');
+
+        }
+    );
+
+
+    historyDetailsModalOverlay.addEventListener(
+        'click',
+        (event) => {
+
+            if (
+                event.target ===
+                historyDetailsModalOverlay
+            ) {
+
+                historyDetailsModalOverlay
+                    .classList.remove('show');
+            }
+
+        }
+    );
 }
