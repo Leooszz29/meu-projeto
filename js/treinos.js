@@ -1786,6 +1786,102 @@ document.getElementById(
 ).textContent =
     `${seriesConcluidas} de ${totalSeries}`;
 
+    // Preenche a lista de exercícios realizados
+const finishExercisesList =
+    document.getElementById(
+        'finishExercisesList'
+    );
+
+finishExercisesList.innerHTML = '';
+
+exerciciosFinalizados.forEach(
+    (exercicio, index) => {
+
+        const totalSeriesExercicio =
+            Number(exercicio.series) || 0;
+
+        const exerciseKey =
+            exercicio.id ||
+            `exercise-${index}`;
+
+        const progressoExercicio =
+            progressoTreino[
+                treinoAtivo.id
+            ]?.[exerciseKey] || [];
+
+        const concluidasExercicio =
+            progressoExercicio.length;
+
+        const exercicioCompleto =
+            totalSeriesExercicio > 0 &&
+            concluidasExercicio >=
+                totalSeriesExercicio;
+
+
+        // Linha do exercício
+        const exerciseRow =
+            document.createElement('div');
+
+        exerciseRow.className =
+            exercicioCompleto
+                ? 'finish-exercise-row complete'
+                : 'finish-exercise-row incomplete';
+
+
+        // Ícone ✓ ou ✕
+        const exerciseStatus =
+            document.createElement('span');
+
+        exerciseStatus.className =
+            'finish-exercise-status';
+
+        exerciseStatus.textContent =
+            exercicioCompleto
+                ? '✓'
+                : '✕';
+
+
+        // Nome
+        const exerciseName =
+            document.createElement('strong');
+
+        exerciseName.className =
+            'finish-exercise-name';
+
+        exerciseName.textContent =
+            exercicio.nome ||
+            'Exercício';
+
+
+        // Séries
+        const exerciseSeries =
+            document.createElement('span');
+
+        exerciseSeries.className =
+            'finish-exercise-series';
+
+        exerciseSeries.textContent =
+            `${concluidasExercicio} de ${totalSeriesExercicio} séries`;
+
+
+        exerciseRow.appendChild(
+            exerciseStatus
+        );
+
+        exerciseRow.appendChild(
+            exerciseName
+        );
+
+        exerciseRow.appendChild(
+            exerciseSeries
+        );
+
+        finishExercisesList.appendChild(
+            exerciseRow
+        );
+    }
+);
+
     
     // Busca o histórico existente
     const historico =
