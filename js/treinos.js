@@ -1962,6 +1962,16 @@ document.getElementById('finishOkBtn').addEventListener('click', () => {
     window.location.href = 'perfil.html';
 });
 
+document
+    .getElementById('finishCloseBtn')
+    .addEventListener('click', () => {
+
+        document
+            .getElementById('finishModalOverlay')
+            .classList.remove('show');
+
+    });
+
 document.getElementById('finishModalOverlay').addEventListener('click', (e) => {
     if (e.target.id === 'finishModalOverlay') {
         document.getElementById('finishModalOverlay').classList.remove('show');
