@@ -4254,3 +4254,47 @@ body:not(.theme-feminino):not(.theme-masculino)
         white-space: nowrap;
     }
 }
+
+/* =========================================
+   FECHAR MODAL DE TREINO CONCLUÍDO
+========================================= */
+
+.finish-modal {
+    position: relative;
+}
+
+.finish-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 9px;
+
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--chalk-dim);
+
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.finish-modal-close:hover {
+    color: #ff6868;
+    background: rgba(255, 87, 87, 0.08);
+    border-color: rgba(255, 87, 87, 0.30);
+}
