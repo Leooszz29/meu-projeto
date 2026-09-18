@@ -1243,3 +1243,154 @@ textarea::placeholder{
     opacity: 0.35;
     cursor: not-allowed;
 }
+
+/* =========================================
+   MODAL — DETALHES DO HISTÓRICO
+========================================= */
+
+.history-details-modal {
+    position: relative;
+
+    width: 100%;
+    max-width: 500px;
+
+    padding: 30px;
+
+    text-align: center;
+}
+
+.history-details-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 9px;
+
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--chalk-dim);
+
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.history-details-close:hover {
+    color: #ff6868;
+
+    border-color:
+        rgba(255, 87, 87, 0.30);
+
+    background:
+        rgba(255, 87, 87, 0.08);
+}
+
+.history-details-icon {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid
+        rgba(53, 230, 122, 0.40);
+
+    border-radius: 50%;
+
+    background:
+        rgba(53, 230, 122, 0.08);
+
+    color: #35e67a;
+
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.history-details-modal h2 {
+    margin: 0;
+
+    color: var(--chalk);
+
+    font-size: 22px;
+}
+
+.history-details-date {
+    margin: 7px 0 0;
+
+    color: var(--chalk-dim);
+    font-size: 12px;
+}
+
+.history-details-summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.history-details-stat {
+    padding: 13px 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 11px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.history-details-stat span {
+    color: var(--chalk-dim);
+
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.history-details-stat strong {
+    color: var(--chalk);
+
+    font-size: 15px;
+}
+
+.history-details-section {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.history-details-section-title {
+    margin-bottom: 10px;
+
+    color: var(--chalk);
+
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.history-details-exercise-list {
+    display: flex;
+    flex-direction: column;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
