@@ -1594,3 +1594,91 @@ textarea::placeholder{
         padding: 24px 18px;
     }
 }
+
+/* =========================================
+   DETALHES DO TREINO — CABEÇALHO
+========================================= */
+
+.history-details-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding-right: 45px;
+
+    text-align: left;
+}
+
+.history-details-header
+.history-details-icon {
+    width: 70px;
+    height: 70px;
+
+    margin: 0;
+
+    flex-shrink: 0;
+
+    border: 2px solid #35e67a;
+
+    background:
+        rgba(53, 230, 122, 0.08);
+
+    box-shadow:
+        0 0 24px rgba(53, 230, 122, 0.14);
+}
+
+.history-details-heading {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.history-details-heading h2 {
+    margin: 0;
+
+    font-size: 25px;
+    font-weight: 900;
+
+    text-transform: capitalize;
+}
+
+.history-details-heading
+.history-details-date {
+    margin: 4px 0 0;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.history-details-subtitle {
+    margin-top: 5px;
+
+    color: var(--chalk-dim);
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* CELULAR */
+
+@media (max-width: 560px) {
+
+    .history-details-header {
+        gap: 13px;
+        padding-right: 38px;
+    }
+
+    .history-details-header
+    .history-details-icon {
+        width: 58px;
+        height: 58px;
+
+        font-size: 26px;
+    }
+
+    .history-details-heading h2 {
+        font-size: 21px;
+    }
+}
