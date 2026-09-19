@@ -1859,3 +1859,52 @@ textarea::placeholder{
         font-size: 15px;
     }
 }
+
+/* =========================================
+   DETALHES DO TREINO — BOTÃO FECHAR
+========================================= */
+
+.history-details-footer-btn {
+    min-width: 180px;
+    min-height: 44px;
+
+    margin: 24px auto 0;
+    padding: 10px 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid
+        rgba(var(--accent-rgb), 0.55);
+
+    border-radius: 10px;
+
+    background:
+        rgba(var(--accent-rgb), 0.08);
+
+    color: var(--accent);
+
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.6px;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.history-details-footer-btn:hover {
+    background:
+        rgba(var(--accent-rgb), 0.16);
+
+    border-color:
+        rgba(var(--accent-rgb), 0.80);
+
+    transform: translateY(-1px);
+}
