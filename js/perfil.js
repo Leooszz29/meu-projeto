@@ -1355,19 +1355,22 @@ document.addEventListener(
         }
 
 
-        // Fecha pelo botão X
-        if (
-            event.target.closest(
-                '#historyDetailsCloseBtn'
-            )
-        ) {
+       // Fecha pelo X ou pelo botão inferior
+if (
+    event.target.closest(
+        '#historyDetailsCloseBtn'
+    ) ||
+    event.target.closest(
+        '#historyDetailsFooterBtn'
+    )
+) {
 
-            modalOverlay.classList.remove(
-                'show'
-            );
+    modalOverlay.classList.remove(
+        'show'
+    );
 
-            return;
-        }
+    return;
+}
 
 
         // Fecha clicando fora da janela
