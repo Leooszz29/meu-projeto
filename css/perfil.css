@@ -2408,3 +2408,108 @@ textarea::placeholder{
 
     line-height: 1;
 }
+
+/* =========================================
+   HISTÓRICO — CARD ORGANIZADO
+========================================= */
+
+.history-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+        "name actions"
+        "status actions";
+
+    align-items: center;
+    gap: 7px 20px;
+
+    padding: 16px 18px;
+}
+
+
+/* NOME DO TREINO */
+
+.history-workout-name {
+    grid-area: name;
+
+    min-width: 0;
+
+    font-size: 14px;
+    font-weight: 900;
+
+    color: var(--chalk);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* STATUS */
+
+.history-workout-status {
+    grid-area: status;
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 5px;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+
+/* COMPLETO */
+
+.history-workout-status.complete {
+    color: #35e67a;
+}
+
+
+/* INCOMPLETO */
+
+.history-workout-status.incomplete {
+    color: #ff6868;
+}
+
+
+/* REGISTROS ANTIGOS */
+
+.history-workout-status.legacy {
+    color: var(--chalk-dim);
+}
+
+
+/* ÍCONE */
+
+.history-status-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 900;
+}
+
+
+/* SEPARADOR */
+
+.history-status-separator {
+    opacity: 0.55;
+}
+
+
+/* ÁREA DA DIREITA */
+
+.history-item-actions {
+    grid-area: actions;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    flex-shrink: 0;
+}
