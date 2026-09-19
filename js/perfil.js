@@ -1046,58 +1046,161 @@ if (treinoCompleto) {
         exerciseList.innerHTML = '';
 
 
-        treino.exercicios.forEach(
-            (exercicio) => {
+        const criarLinhaExercicio = (exercicio) => {
 
-                const row =
+    const row =
+        document.createElement('div');
+
+    row.className =
+        exercicio.completo
+            ? 'history-details-exercise complete'
+            : 'history-details-exercise incomplete';
+
+
+    const status =
+        document.createElement('span');
+
+    status.className =
+        'history-details-exercise-status';
+
+    status.textContent =
+        exercicio.completo ? '✓' : '✕';
+
+
+    const name =
+        document.createElement('strong');
+
+    name.className =
+        'history-details-exercise-name';
+
+    name.textContent =
+        exercicio.nome || 'Exercício';
+
+
+    const series =
+        document.createElement('span');
+
+    series.className =
+        'history-details-exercise-series';
+
+    series.textContent =
+        `${exercicio.seriesConcluidas ?? 0} de ${exercicio.seriesTotal ?? 0} séries`;
+
+
+    row.appendChild(status);
+    row.appendChild(name);
+    row.appendChild(series);
+
+    return row;
+};
+
+
+const gruposRenderizados = new Set();
+
+
+treino.exercicios.forEach((exercicio) => {
+
+    const tipo =
+        exercicio.tipoExecucao ||
+        'individual';
+
+    const grupo =
+        exercicio.grupoExecucao;
+
+
+    // Exercício individual
+    if (
+        tipo === 'individual' ||
+        !grupo
+    ) {
+
+        exerciseList.appendChild(
+            criarLinhaExercicio(exercicio)
+        );
+
+        return;
+    }
+
+
+    // Evita desenhar o mesmo grupo duas vezes
+    const chaveGrupo =
+        `${tipo}-${grupo}`;
+
+    if (
+        gruposRenderizados.has(chaveGrupo)
+    ) {
+        return;
+    }
+
+    gruposRenderizados.add(chaveGrupo);
+
+
+    // Exercícios pertencentes ao mesmo grupo
+    const exerciciosDoGrupo =
+        treino.exercicios.filter(
+            item =>
+                item.tipoExecucao === tipo &&
+                item.grupoExecucao === grupo
+        );
+
+
+    const groupBox =
+        document.createElement('div');
+
+    groupBox.className =
+        `history-details-group ${tipo}`;
+
+
+    const groupTitle =
+        document.createElement('div');
+
+    groupTitle.className =
+        'history-details-group-title';
+
+
+    const nomeTipo =
+        tipo === 'triset'
+            ? 'TRI-SET'
+            : 'BI-SET';
+
+    groupTitle.textContent =
+        `${nomeTipo} ${grupo}`;
+
+
+    groupBox.appendChild(groupTitle);
+
+
+    exerciciosDoGrupo.forEach(
+        (item, index) => {
+
+            groupBox.appendChild(
+                criarLinhaExercicio(item)
+            );
+
+
+            // Separador entre exercícios do grupo
+            if (
+                index <
+                exerciciosDoGrupo.length - 1
+            ) {
+
+                const plus =
                     document.createElement('div');
 
-                row.className =
-                    exercicio.completo
-                        ? 'history-details-exercise complete'
-                        : 'history-details-exercise incomplete';
+                plus.className =
+                    'history-details-group-plus';
 
+                plus.textContent = '+';
 
-                const status =
-                    document.createElement('span');
-
-                status.className =
-                    'history-details-exercise-status';
-
-                status.textContent =
-                    exercicio.completo
-                        ? '✓'
-                        : '✕';
-
-
-                const name =
-                    document.createElement('strong');
-
-                name.className =
-                    'history-details-exercise-name';
-
-                name.textContent =
-                    exercicio.nome ||
-                    'Exercício';
-
-
-                const series =
-                    document.createElement('span');
-
-                series.className =
-                    'history-details-exercise-series';
-
-                series.textContent =
-                    `${exercicio.seriesConcluidas ?? 0} de ${exercicio.seriesTotal ?? 0} séries`;
-
-
-                row.appendChild(status);
-                row.appendChild(name);
-                row.appendChild(series);
-
-                exerciseList.appendChild(row);
+                groupBox.appendChild(plus);
             }
-        );
+        }
+    );
+
+
+    exerciseList.appendChild(groupBox);
+
+});
 
 
         // Abre o modal
