@@ -2615,3 +2615,36 @@ textarea::placeholder{
 .history-details-btn:hover svg {
     transform: scale(1.08);
 }
+
+/* =========================================
+   HISTÓRICO — DATA COM CALENDÁRIO
+========================================= */
+
+.history-date {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    white-space: nowrap;
+}
+
+.history-date svg {
+    width: 15px;
+    height: 15px;
+
+    flex-shrink: 0;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    opacity: 0.75;
+}
+
+.history-date span {
+    line-height: 1;
+}
