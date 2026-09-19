@@ -1790,3 +1790,46 @@ textarea::placeholder{
 .history-details-status-text strong {
     color: #ff6868;
 }
+
+/* =========================================
+   DETALHES DO TREINO — CONCLUSÃO
+========================================= */
+
+.history-details-summary {
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+}
+
+.history-details-completion strong {
+    font-size: 18px;
+}
+
+
+/* 100% CONCLUÍDO */
+
+.history-details-completion.complete {
+    border-color:
+        rgba(53, 230, 122, 0.30);
+
+    background:
+        rgba(53, 230, 122, 0.06);
+}
+
+.history-details-completion.complete strong {
+    color: #35e67a;
+}
+
+
+/* TREINO PARCIAL */
+
+.history-details-completion.incomplete {
+    border-color:
+        rgba(255, 87, 87, 0.28);
+
+    background:
+        rgba(255, 87, 87, 0.05);
+}
+
+.history-details-completion.incomplete strong {
+    color: #ff6868;
+}
