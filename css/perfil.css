@@ -1833,3 +1833,29 @@ textarea::placeholder{
 .history-details-completion.incomplete strong {
     color: #ff6868;
 }
+
+@media (max-width: 560px) {
+
+    .history-details-summary {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 6px;
+    }
+
+    .history-details-stat {
+        padding: 11px 5px;
+    }
+
+    .history-details-stat span {
+        font-size: 8px;
+    }
+
+    .history-details-stat strong {
+        font-size: 13px;
+    }
+
+    .history-details-completion strong {
+        font-size: 15px;
+    }
+}
