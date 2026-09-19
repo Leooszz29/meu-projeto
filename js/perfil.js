@@ -952,6 +952,31 @@ document.getElementById(
 ).textContent =
     `${porcentagemConclusao}%`;
 
+const progressIcon =
+    document.getElementById(
+        'historyDetailsProgressIcon'
+    );
+
+if (progressIcon) {
+
+    const porcentagemVisual =
+        Math.max(
+            0,
+            Math.min(
+                porcentagemConclusao,
+                100
+            )
+        );
+
+    const graus =
+        (porcentagemVisual / 100) * 360;
+
+    progressIcon.style.setProperty(
+        '--progress',
+        `${graus}deg`
+    );
+}
+
 const completionCard =
     document.getElementById(
         'historyDetailsCompletionCard'
