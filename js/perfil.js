@@ -919,8 +919,23 @@ detailsButton.type = 'button';
 detailsButton.className =
     'history-details-btn';
 
-detailsButton.textContent =
-    'Ver detalhes';
+detailsButton.innerHTML = `
+    <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+    >
+        <path
+            d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
+        />
+        <circle
+            cx="12"
+            cy="12"
+            r="2.5"
+        />
+    </svg>
+
+    <span>Ver detalhes</span>
+`;
 
 detailsButton.setAttribute(
     'aria-label',
