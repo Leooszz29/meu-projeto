@@ -2214,3 +2214,34 @@ textarea::placeholder{
         font-size: 16px;
     }
 }
+
+/* =========================================
+   MODAL DETALHES — SCROLLBAR
+========================================= */
+
+.history-details-modal {
+    scrollbar-width: thin;
+    scrollbar-color:
+        rgba(var(--accent-rgb), 0.35)
+        transparent;
+}
+
+.history-details-modal::-webkit-scrollbar {
+    width: 6px;
+}
+
+.history-details-modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.history-details-modal::-webkit-scrollbar-thumb {
+    background:
+        rgba(var(--accent-rgb), 0.30);
+
+    border-radius: 20px;
+}
+
+.history-details-modal::-webkit-scrollbar-thumb:hover {
+    background:
+        rgba(var(--accent-rgb), 0.50);
+}
