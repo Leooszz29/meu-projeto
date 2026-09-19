@@ -2580,3 +2580,38 @@ textarea::placeholder{
 .history-delete-btn svg {
     transition: transform 0.2s ease;
 }
+
+/* =========================================
+   HISTÓRICO — BOTÃO VER DETALHES
+========================================= */
+
+.history-details-btn {
+    min-height: 36px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 12px;
+}
+
+.history-details-btn svg {
+    width: 16px;
+    height: 16px;
+
+    flex-shrink: 0;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    transition: transform 0.2s ease;
+}
+
+.history-details-btn:hover svg {
+    transform: scale(1.08);
+}
