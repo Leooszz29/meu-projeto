@@ -779,6 +779,60 @@ function loadWorkoutHistory() {
             nome.textContent =
                 treino.nome || 'Treino';
 
+            // ========================================
+// STATUS DO TREINO
+// ========================================
+
+const statusResumo =
+    document.createElement('div');
+
+statusResumo.className =
+    'history-workout-status';
+
+
+if (Array.isArray(treino.exercicios)) {
+
+    const concluidas =
+        Number(treino.seriesConcluidas) || 0;
+
+    const total =
+        Number(treino.seriesTotal) || 0;
+
+    const completo =
+        total > 0 &&
+        concluidas >= total;
+
+
+    statusResumo.classList.add(
+        completo
+            ? 'complete'
+            : 'incomplete'
+    );
+
+
+    statusResumo.innerHTML =
+        completo
+            ? `
+                <span class="history-status-icon">✓</span>
+                <span>Completo</span>
+                <span class="history-status-separator">·</span>
+                <span>${concluidas} de ${total} séries</span>
+              `
+            : `
+                <span class="history-status-icon">●</span>
+                <span>Parcial</span>
+                <span class="history-status-separator">·</span>
+                <span>${concluidas} de ${total} séries</span>
+              `;
+
+} else {
+
+    statusResumo.classList.add('legacy');
+
+    statusResumo.textContent =
+        'Registro anterior';
+}
+
 
             const data =
                 document.createElement('span');
@@ -1308,6 +1362,7 @@ actions.appendChild(detailsButton);
 actions.appendChild(deleteButton);
 
 item.appendChild(nome);
+item.appendChild(statusResumo);
 item.appendChild(actions);
 
 monthContent.appendChild(item);
