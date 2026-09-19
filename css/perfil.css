@@ -2332,3 +2332,79 @@ textarea::placeholder{
 
     background: var(--concrete-1);
 }
+
+/* =========================================
+   DETALHES — CARDS CENTRALIZADOS
+========================================= */
+
+.history-details-stat-with-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    text-align: center;
+}
+
+
+/* ÍCONES */
+
+.history-details-stat-icon,
+.history-details-progress-icon {
+    width: 30px;
+    height: 30px;
+
+    margin: 0 auto;
+
+    flex-shrink: 0;
+}
+
+
+/* CONTEÚDO */
+
+.history-details-stat-content {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    text-align: center;
+}
+
+
+/* TÍTULO */
+
+.history-details-stat-content span {
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    text-transform: uppercase;
+}
+
+
+/* VALORES */
+
+.history-details-stat-content strong {
+    width: 100%;
+
+    display: block;
+
+    text-align: center;
+
+    font-size: 18px;
+    font-weight: 900;
+
+    line-height: 1;
+}
