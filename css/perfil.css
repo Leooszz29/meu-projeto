@@ -2655,13 +2655,16 @@ textarea::placeholder{
 
 .history-workout-status {
     width: fit-content;
+    max-width: 100%;
 
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
 
     gap: 6px;
 
-    padding: 5px 9px;
+    padding: 6px 10px;
 
     border-radius: 999px;
 
@@ -2670,8 +2673,9 @@ textarea::placeholder{
     line-height: 1;
 
     letter-spacing: 0.25px;
-}
 
+    white-space: nowrap;
+}
 
 /* TREINO COMPLETO */
 
