@@ -922,7 +922,73 @@ if (
             'historyDetailsSeries'
         ).textContent =
             `${treino.seriesConcluidas ?? 0} de ${treino.seriesTotal ?? 0}`;
+        
+        
+    // ========================================
+// STATUS GERAL DO TREINO
+// ========================================
 
+const exerciciosIncompletos =
+    treino.exercicios.filter(
+        exercicio =>
+            !exercicio.completo
+    ).length;
+
+const treinoCompleto =
+    exerciciosIncompletos === 0;
+
+const statusBox =
+    document.getElementById(
+        'historyDetailsStatus'
+    );
+
+const statusIcon =
+    document.getElementById(
+        'historyDetailsStatusIcon'
+    );
+
+const statusTitle =
+    document.getElementById(
+        'historyDetailsStatusTitle'
+    );
+
+const statusMessage =
+    document.getElementById(
+        'historyDetailsStatusMessage'
+    );
+
+statusBox.classList.toggle(
+    'complete',
+    treinoCompleto
+);
+
+statusBox.classList.toggle(
+    'incomplete',
+    !treinoCompleto
+);
+
+if (treinoCompleto) {
+
+    statusIcon.textContent = '✓';
+
+    statusTitle.textContent =
+        'Treino completo!';
+
+    statusMessage.textContent =
+        'Todos os exercícios foram realizados.';
+
+} else {
+
+    statusIcon.textContent = '✕';
+
+    statusTitle.textContent =
+        'Treino incompleto';
+
+    statusMessage.textContent =
+        exerciciosIncompletos === 1
+            ? '1 exercício ficou incompleto.'
+            : `${exerciciosIncompletos} exercícios ficaram incompletos.`;
+}
 
         // Lista de exercícios
         const exerciseList =
