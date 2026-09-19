@@ -843,15 +843,36 @@ if (Array.isArray(treino.exercicios)) {
             const dataTreino =
                 new Date(treino.data);
 
-            data.textContent =
-                dataTreino.toLocaleDateString(
-                    'pt-BR',
-                    {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric'
-                    }
-                );
+           const dataFormatada =
+    dataTreino.toLocaleDateString(
+        'pt-BR',
+        {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }
+    );
+
+data.innerHTML = `
+    <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+    >
+        <rect
+            x="3"
+            y="5"
+            width="18"
+            height="16"
+            rx="2"
+        />
+
+        <path d="M16 3v4" />
+        <path d="M8 3v4" />
+        <path d="M3 10h18" />
+    </svg>
+
+    <span>${dataFormatada}</span>
+`;
 
 
          // ÁREA DA DIREITA: DATA + EXCLUIR
