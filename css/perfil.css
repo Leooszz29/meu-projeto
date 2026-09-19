@@ -2513,3 +2513,28 @@ textarea::placeholder{
 
     flex-shrink: 0;
 }
+@media (max-width: 600px) {
+
+    .history-item {
+        grid-template-columns: 1fr;
+
+        grid-template-areas:
+            "name"
+            "status"
+            "actions";
+
+        gap: 9px;
+
+        padding: 15px;
+    }
+
+    .history-item-actions {
+        width: 100%;
+
+        justify-content: flex-start;
+
+        flex-wrap: wrap;
+
+        padding-top: 4px;
+    }
+}
