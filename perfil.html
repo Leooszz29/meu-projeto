@@ -200,120 +200,129 @@
 
 <script src="js/perfil.js"></script>
         
-        <!-- Modal Detalhes do Treino -->
+       <!-- Modal Detalhes do Treino -->
 <div class="modal-overlay" id="historyDetailsModalOverlay">
 
     <div class="modal history-details-modal">
 
+        <!-- Fechar -->
         <button
-    type="button"
-    class="history-details-close"
-    id="historyDetailsCloseBtn"
-    aria-label="Fechar detalhes"
->
-    ×
-</button>
-
-<div class="history-details-header">
-
-    <div class="history-details-icon">
-        ✓
-    </div>
-
-    <div class="history-details-heading">
-
-        <h2 id="historyDetailsName">
-            Detalhes do treino
-        </h2>
-
-        <p
-            class="history-details-date"
-            id="historyDetailsDate"
+            type="button"
+            class="history-details-close"
+            id="historyDetailsCloseBtn"
+            aria-label="Fechar detalhes"
         >
-        </p>
+            ×
+        </button>
 
-        <span class="history-details-subtitle">
-            Detalhes do treino
-        </span>
 
-    </div>
+        <!-- Cabeçalho -->
+        <div class="history-details-header">
 
-</div>
-        <!-- Status geral do treino -->
-<div
-    class="history-details-status"
-    id="historyDetailsStatus"
->
-    <div
-        class="history-details-status-icon"
-        id="historyDetailsStatusIcon"
-    >
-        ✓
-    </div>
-
-    <div class="history-details-status-text">
-
-        <strong id="historyDetailsStatusTitle">
-            Treino completo!
-        </strong>
-
-        <span id="historyDetailsStatusMessage">
-            Todos os exercícios foram realizados.
-        </span>
-
-    </div>
-</div>
-
-       <div class="history-details-summary">
-
-    <!-- Exercícios -->
-    <div class="history-details-stat">
-        <span>Exercícios</span>
-
-        <strong id="historyDetailsExercises">
-            0
-        </strong>
-    </div>
-
-    <!-- Séries concluídas -->
-    <div class="history-details-stat">
-        <span>Séries concluídas</span>
-
-        <strong id="historyDetailsSeries">
-            0 de 0
-        </strong>
-    </div>
-
-    <!-- Conclusão -->
-    <div
-        class="history-details-stat history-details-completion"
-        id="historyDetailsCompletionCard"
-    >
-        <span>Conclusão</span>
-
-        <strong id="historyDetailsCompletion">
-            0%
-        </strong>
-    </div>
-
-</div>
-
-            <div class="history-details-stat">
-
-                <strong id="historyDetailsExercises">
-                    0
-                </strong>
+            <div class="history-details-icon">
+                ✓
             </div>
 
-            <div class="history-details-stat">
+            <div class="history-details-heading">
 
-                <strong id="historyDetailsSeries">
-                    0 de 0
-                </strong>
+                <h2 id="historyDetailsName">
+                    Detalhes do treino
+                </h2>
+
+                <p
+                    class="history-details-date"
+                    id="historyDetailsDate"
+                >
+                </p>
+
+                <span class="history-details-subtitle">
+                    Detalhes do treino
+                </span>
+
             </div>
 
         </div>
 
+
+        <!-- Status geral do treino -->
+        <div
+            class="history-details-status"
+            id="historyDetailsStatus"
+        >
+
+            <div
+                class="history-details-status-icon"
+                id="historyDetailsStatusIcon"
+            >
+                ✓
+            </div>
+
+            <div class="history-details-status-text">
+
+                <strong id="historyDetailsStatusTitle">
+                    Treino completo!
+                </strong>
+
+                <span id="historyDetailsStatusMessage">
+                    Todos os exercícios foram realizados.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Resumo -->
+        <div class="history-details-summary">
+
+            <!-- Exercícios -->
+            <div class="history-details-stat">
+
+                <span>
+                    Exercícios
+                </span>
+
+                <strong id="historyDetailsExercises">
+                    0
+                </strong>
+
+            </div>
+
+
+            <!-- Séries concluídas -->
+            <div class="history-details-stat">
+
+                <span>
+                    Séries concluídas
+                </span>
+
+                <strong id="historyDetailsSeries">
+                    0 de 0
+                </strong>
+
+            </div>
+
+
+            <!-- Conclusão -->
+            <div
+                class="history-details-stat history-details-completion"
+                id="historyDetailsCompletionCard"
+            >
+
+                <span>
+                    Conclusão
+                </span>
+
+                <strong id="historyDetailsCompletion">
+                    0%
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Exercícios realizados -->
         <div class="history-details-section">
 
             <div class="history-details-section-title">
