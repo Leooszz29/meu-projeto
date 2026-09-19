@@ -1955,22 +1955,31 @@ const resumoExercicios =
             const concluidas =
                 progressoExercicio.length;
 
-            return {
-                id: exercicio.id || null,
-                nome:
-                    exercicio.nome ||
-                    'Exercício',
+           return {
+    id: exercicio.id || null,
 
-                seriesConcluidas:
-                    concluidas,
+    nome:
+        exercicio.nome ||
+        'Exercício',
 
-                seriesTotal:
-                    total,
+    seriesConcluidas:
+        concluidas,
 
-                completo:
-                    total > 0 &&
-                    concluidas >= total
-            };
+    seriesTotal:
+        total,
+
+    completo:
+        total > 0 &&
+        concluidas >= total,
+
+    tipoExecucao:
+        exercicio.tipoExecucao ||
+        'individual',
+
+    grupoExecucao:
+        exercicio.grupoExecucao ||
+        null
+};
         }
     );
 
