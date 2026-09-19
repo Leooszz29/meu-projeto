@@ -2292,3 +2292,43 @@ textarea::placeholder{
 
     gap: 3px;
 }
+
+/* =========================================
+   DETALHES — ÍCONE DE CONCLUSÃO
+========================================= */
+
+.history-details-progress-icon {
+    --progress: 0deg;
+
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    position: relative;
+
+    border-radius: 50%;
+
+    background:
+        conic-gradient(
+            #35e67a var(--progress),
+            rgba(255, 255, 255, 0.12) 0
+        );
+
+    box-shadow:
+        0 0 12px rgba(53, 230, 122, 0.10);
+}
+
+
+/* cria o centro vazio do círculo */
+
+.history-details-progress-icon::after {
+    content: '';
+
+    position: absolute;
+    inset: 4px;
+
+    border-radius: 50%;
+
+    background: var(--concrete-1);
+}
