@@ -2648,3 +2648,111 @@ textarea::placeholder{
 .history-date span {
     line-height: 1;
 }
+
+/* =========================================
+   HISTÓRICO — BADGE DE STATUS
+========================================= */
+
+.history-workout-status {
+    width: fit-content;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+
+    letter-spacing: 0.25px;
+}
+
+
+/* TREINO COMPLETO */
+
+.history-workout-status.complete {
+    color: #35e67a;
+
+    background:
+        rgba(53, 230, 122, 0.08);
+
+    border:
+        1px solid rgba(53, 230, 122, 0.22);
+}
+
+
+/* TREINO PARCIAL */
+
+.history-workout-status.incomplete {
+    color: #ff6868;
+
+    background:
+        rgba(255, 104, 104, 0.07);
+
+    border:
+        1px solid rgba(255, 104, 104, 0.20);
+}
+
+
+/* REGISTROS ANTIGOS */
+
+.history-workout-status.legacy {
+    color: var(--chalk-dim);
+
+    background:
+        rgba(255, 255, 255, 0.04);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.09);
+}
+
+
+/* ÍCONE */
+
+.history-status-icon {
+    width: 17px;
+    height: 17px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    font-size: 10px;
+    font-weight: 900;
+}
+
+
+/* ÍCONE COMPLETO */
+
+.history-workout-status.complete
+.history-status-icon {
+    color: #07140c;
+
+    background: #35e67a;
+}
+
+
+/* ÍCONE PARCIAL */
+
+.history-workout-status.incomplete
+.history-status-icon {
+    color: #190808;
+
+    background: #ff6868;
+}
+
+
+/* SEPARADOR */
+
+.history-status-separator {
+    opacity: 0.45;
+}
