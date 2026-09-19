@@ -2245,3 +2245,50 @@ textarea::placeholder{
     background:
         rgba(var(--accent-rgb), 0.50);
 }
+
+/* =========================================
+   DETALHES — ÍCONE DOS CARDS
+========================================= */
+
+.history-details-stat-with-icon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+
+    text-align: left;
+}
+
+.history-details-stat-icon {
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--accent);
+}
+
+.history-details-stat-icon svg {
+    width: 28px;
+    height: 28px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.history-details-stat-content {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 3px;
+}
