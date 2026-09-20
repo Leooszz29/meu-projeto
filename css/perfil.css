@@ -2827,3 +2827,66 @@ textarea::placeholder{
 
     align-self: center;
 }
+
+/* =========================================
+   HISTÓRICO — RESPONSIVO
+========================================= */
+
+@media (max-width: 700px) {
+
+    .history-item {
+        grid-template-columns: 1fr;
+
+        grid-template-areas:
+            "name"
+            "status"
+            "actions";
+
+        row-gap: 10px;
+        column-gap: 0;
+    }
+
+    .history-workout-name {
+        grid-area: name;
+    }
+
+    .history-workout-status {
+        grid-area: status;
+    }
+
+    .history-item-actions {
+        grid-area: actions;
+
+        width: 100%;
+
+        justify-content: flex-start;
+
+        gap: 10px;
+
+        margin-top: 2px;
+    }
+}
+@media (max-width: 430px) {
+
+    .history-item {
+        padding: 14px;
+    }
+
+    .history-item-actions {
+        flex-wrap: wrap;
+    }
+
+    .history-details-btn {
+        min-height: 34px;
+        padding: 0 10px;
+    }
+
+    .history-delete-btn {
+        width: 34px;
+        height: 34px;
+    }
+
+    .history-date {
+        font-size: 11px;
+    }
+}
