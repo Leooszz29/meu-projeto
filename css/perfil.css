@@ -3004,3 +3004,100 @@ textarea::placeholder{
 .history-month-arrow {
     background: rgba(var(--accent-rgb), 0.18);
 }
+
+/* =========================================
+   HISTÓRICO — ACABAMENTO DOS CARDS
+========================================= */
+
+.history-item {
+    position: relative;
+
+    min-height: 82px;
+
+    padding: 16px 18px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.025),
+            rgba(0, 0, 0, 0.10)
+        );
+
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.10);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* DETALHE LATERAL */
+
+.history-item::before {
+    content: '';
+
+    position: absolute;
+
+    top: 12px;
+    bottom: 12px;
+    left: 0;
+
+    width: 3px;
+
+    border-radius: 0 3px 3px 0;
+
+    background: var(--accent);
+
+    opacity: 0.45;
+
+    transition:
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* HOVER */
+
+.history-item:hover {
+    transform: translateY(-1px);
+
+    border-color:
+        rgba(var(--accent-rgb), 0.22);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(var(--accent-rgb), 0.045),
+            rgba(0, 0, 0, 0.10)
+        );
+
+    box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.16);
+}
+
+.history-item:hover::before {
+    opacity: 0.9;
+
+    box-shadow:
+        0 0 10px rgba(var(--accent-rgb), 0.30);
+}
+
+
+/* NOME DO TREINO */
+
+.history-workout-name {
+    font-size: 14px;
+    font-weight: 900;
+
+    letter-spacing: 0.25px;
+}
