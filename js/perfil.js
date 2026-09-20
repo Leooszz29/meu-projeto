@@ -720,6 +720,25 @@ function loadWorkoutHistory() {
         const quantidade =
             grupo.treinos.length;
 
+        const completos =
+    grupo.treinos.filter(
+        treino =>
+            Array.isArray(treino.exercicios) &&
+            Number(treino.seriesTotal) > 0 &&
+            Number(treino.seriesConcluidas) >=
+                Number(treino.seriesTotal)
+    ).length;
+
+
+const parciais =
+    grupo.treinos.filter(
+        treino =>
+            Array.isArray(treino.exercicios) &&
+            Number(treino.seriesTotal) > 0 &&
+            Number(treino.seriesConcluidas) <
+                Number(treino.seriesTotal)
+    ).length;
+
         monthHeader.innerHTML = `
             <span class="history-month-title">
                 <span class="history-month-arrow">
