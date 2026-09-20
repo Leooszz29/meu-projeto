@@ -1340,69 +1340,6 @@ treino.exercicios.forEach((exercicio) => {
 // ========================================
 // RESUMO DE CONCLUSÃO NO HISTÓRICO
 // ========================================
-
-if (Array.isArray(treino.exercicios)) {
-
-    const historyProgress =
-        document.createElement('div');
-
-    historyProgress.className =
-        'history-progress';
-
-
-    const concluidas =
-        Number(treino.seriesConcluidas) || 0;
-
-    const total =
-        Number(treino.seriesTotal) || 0;
-
-    const completo =
-        total > 0 &&
-        concluidas >= total;
-
-
-    historyProgress.classList.add(
-        completo
-            ? 'complete'
-            : 'incomplete'
-    );
-
-
-    const historyProgressIcon =
-        document.createElement('span');
-
-    historyProgressIcon.className =
-        'history-progress-icon';
-
-    historyProgressIcon.textContent =
-        completo ? '✓' : '●';
-
-
-    const historyProgressText =
-        document.createElement('span');
-
-    historyProgressText.className =
-        'history-progress-text';
-
-    historyProgressText.textContent =
-        completo
-            ? `Completo · ${concluidas} de ${total} séries`
-            : `Parcial · ${concluidas} de ${total} séries`;
-
-
-    historyProgress.appendChild(
-        historyProgressIcon
-    );
-
-    historyProgress.appendChild(
-        historyProgressText
-    );
-
-
-    item.appendChild(
-        historyProgress
-    );
-}
             
 actions.appendChild(data);
 actions.appendChild(detailsButton);
