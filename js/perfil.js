@@ -739,20 +739,46 @@ const parciais =
                 Number(treino.seriesTotal)
     ).length;
 
-        monthHeader.innerHTML = `
-            <span class="history-month-title">
-                <span class="history-month-arrow">
-                    ${indiceGrupo === 0 ? '▼' : '▶'}
-                </span>
+       monthHeader.innerHTML = `
+    <span class="history-month-title">
+        <span class="history-month-arrow">
+            ${indiceGrupo === 0 ? '▼' : '▶'}
+        </span>
 
-                ${nomeMes}
-            </span>
+        ${nomeMes}
+    </span>
 
-            <span class="history-month-count">
-                ${quantidade}
-                ${quantidade === 1 ? 'treino' : 'treinos'}
-            </span>
-        `;
+    <span class="history-month-summary">
+
+        <span class="history-month-count">
+            ${quantidade}
+            ${quantidade === 1 ? 'treino' : 'treinos'}
+        </span>
+
+        ${
+            completos > 0
+                ? `
+                    <span class="history-month-complete">
+                        <span>✓</span>
+                        ${completos}
+                    </span>
+                  `
+                : ''
+        }
+
+        ${
+            parciais > 0
+                ? `
+                    <span class="history-month-partial">
+                        <span>●</span>
+                        ${parciais}
+                    </span>
+                  `
+                : ''
+        }
+
+    </span>
+`;
 
 
         // CONTEÚDO DO MÊS
