@@ -2760,3 +2760,43 @@ textarea::placeholder{
 .history-status-separator {
     opacity: 0.45;
 }
+
+/* =========================================
+   CORREÇÃO FINAL — STATUS DO HISTÓRICO
+========================================= */
+
+.history-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+        "name actions"
+        "status actions";
+
+    align-items: center;
+}
+
+.history-workout-name {
+    grid-area: name;
+}
+
+.history-workout-status {
+    grid-area: status;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: max-content;
+    max-width: 100%;
+
+    margin: 0;
+
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+.history-item-actions {
+    grid-area: actions;
+
+    align-self: center;
+}
