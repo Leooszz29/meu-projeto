@@ -2762,41 +2762,68 @@ textarea::placeholder{
 }
 
 /* =========================================
-   CORREÇÃO FINAL — STATUS DO HISTÓRICO
+   CORREÇÃO FINAL — LAYOUT DO HISTÓRICO
 ========================================= */
 
 .history-item {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+
+    grid-template-columns:
+        minmax(150px, 1fr)
+        auto;
+
     grid-template-areas:
         "name actions"
         "status actions";
 
     align-items: center;
+
+    column-gap: 24px;
+    row-gap: 8px;
 }
+
+
+/* NOME */
 
 .history-workout-name {
     grid-area: name;
+
+    min-width: 0;
 }
+
+
+/* STATUS */
 
 .history-workout-status {
     grid-area: status;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-start;
 
     width: max-content;
     max-width: 100%;
 
     margin: 0;
 
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+
     flex-wrap: nowrap;
+
     white-space: nowrap;
 }
 
+
+/* DATA + DETALHES + EXCLUIR */
+
 .history-item-actions {
     grid-area: actions;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    flex-shrink: 0;
 
     align-self: center;
 }
