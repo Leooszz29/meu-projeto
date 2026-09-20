@@ -2890,3 +2890,117 @@ textarea::placeholder{
         font-size: 11px;
     }
 }
+
+/* =========================================
+   HISTÓRICO — CABEÇALHO DO MÊS
+========================================= */
+
+.history-month-header {
+    min-height: 54px;
+
+    padding: 0 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 14px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(var(--accent-rgb), 0.08),
+            rgba(0, 0, 0, 0.14)
+        );
+
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.12);
+}
+
+
+/* MÊS + SETA */
+
+.history-month-title {
+    min-width: 0;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 10px;
+
+    color: var(--chalk);
+
+    font-size: 12px;
+    font-weight: 900;
+
+    letter-spacing: 0.8px;
+}
+
+
+/* SETA */
+
+.history-month-arrow {
+    width: 24px;
+    height: 24px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 7px;
+
+    background: rgba(var(--accent-rgb), 0.10);
+
+    color: var(--accent);
+
+    font-size: 9px;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* CONTADOR */
+
+.history-month-count {
+    flex-shrink: 0;
+
+    padding: 6px 10px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    border-radius: 999px;
+
+    background: rgba(var(--accent-rgb), 0.08);
+
+    color: var(--accent);
+
+    font-size: 10px;
+    font-weight: 900;
+
+    letter-spacing: 0.35px;
+}
+
+
+/* HOVER */
+
+.history-month-header:hover {
+    border-color: rgba(var(--accent-rgb), 0.32);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(var(--accent-rgb), 0.12),
+            rgba(0, 0, 0, 0.14)
+        );
+}
+
+.history-month-header:hover
+.history-month-arrow {
+    background: rgba(var(--accent-rgb), 0.18);
+}
