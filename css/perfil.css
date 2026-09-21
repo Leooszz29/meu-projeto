@@ -1681,11 +1681,6 @@ textarea::placeholder{
    DETALHES DO TREINO — CONCLUSÃO
 ========================================= */
 
-.history-details-summary {
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-}
-
 .history-details-completion strong {
     font-size: 18px;
 }
