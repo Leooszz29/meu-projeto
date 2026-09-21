@@ -330,14 +330,6 @@ textarea::placeholder{
     box-shadow:
         0 4px 12px rgba(var(--accent-rgb), 0.25);
 }
-.btn-save-profile:hover{
-    box-shadow:0 8px 22px rgba(var(--accent-rgb), 0.45);
-    transform:translateY(-2px);
-}
-.btn-save-profile:active{
-    transform:translateY(0) scale(0.98);
-    box-shadow:0 3px 10px rgba(var(--accent-rgb), 0.3);
-}
 
 .success-message{
     display:none;
