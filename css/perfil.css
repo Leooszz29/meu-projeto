@@ -2336,14 +2336,9 @@ textarea::placeholder{
     }
 
     .history-item-actions {
-        width: 100%;
-
-        justify-content: flex-start;
-
-        flex-wrap: wrap;
-
-        padding-top: 4px;
-    }
+    flex-wrap: wrap;
+    padding-top: 4px;
+}
 }
 
 /* =========================================
