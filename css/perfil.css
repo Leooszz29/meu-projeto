@@ -2238,14 +2238,28 @@ textarea::placeholder{
 .history-workout-status {
     grid-area: status;
 
-    display: flex;
+    width: fit-content;
+    max-width: 100%;
+
+    margin: 0;
+
+    display: inline-flex;
     align-items: center;
-    flex-wrap: wrap;
+    justify-content: flex-start;
 
-    gap: 5px;
+    gap: 8px;
 
-    font-size: 11px;
+    padding: 7px 11px;
+
+    flex-wrap: nowrap;
+    white-space: normal;
+
+    border-radius: 999px;
+
+    font-size: 10px;
     font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.25px;
 }
 
 
