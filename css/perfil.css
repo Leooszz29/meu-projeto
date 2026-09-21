@@ -2296,10 +2296,19 @@ textarea::placeholder{
 /* ÍCONE */
 
 .history-status-icon {
+    width: 22px;
+    height: 22px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
+    flex: 0 0 22px;
+    align-self: center;
+
+    border-radius: 50%;
+
+    font-size: 10px;
     font-weight: 900;
 }
 
