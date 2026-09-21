@@ -2671,16 +2671,9 @@ textarea::placeholder{
 @media (max-width: 700px) {
 
     .history-item {
-        grid-template-columns: 1fr;
-
-        grid-template-areas:
-            "name"
-            "status"
-            "actions";
-
-        row-gap: 10px;
-        column-gap: 0;
-    }
+    row-gap: 10px;
+    column-gap: 0;
+}
 
     .history-workout-name {
         grid-area: name;
