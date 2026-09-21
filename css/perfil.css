@@ -3271,3 +3271,22 @@ textarea::placeholder{
 .history-month-partial > span {
     font-size: 8px;
 }
+@media (max-width: 600px) {
+
+    .history-month-header {
+        align-items: flex-start;
+        flex-direction: column;
+
+        padding: 13px 14px;
+
+        gap: 10px;
+    }
+
+    .history-month-summary {
+        width: 100%;
+
+        justify-content: flex-start;
+
+        flex-wrap: wrap;
+    }
+}
