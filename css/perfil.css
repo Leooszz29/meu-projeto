@@ -3290,3 +3290,116 @@ textarea::placeholder{
         flex-wrap: wrap;
     }
 }
+/* =========================================
+   HISTÓRICO — RESUMO GERAL
+========================================= */
+
+.history-overview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin: 18px 0 20px;
+}
+
+
+/* CARD */
+
+.history-overview-item {
+    min-height: 74px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    padding: 12px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.16);
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(var(--accent-rgb), 0.06),
+            rgba(0, 0, 0, 0.12)
+        );
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.10);
+}
+
+
+/* NÚMERO */
+
+.history-overview-value {
+    color: var(--accent);
+
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+
+/* TEXTO */
+
+.history-overview-label {
+    color: var(--chalk-dim);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+}
+
+
+/* COMPLETOS */
+
+.history-overview-item.complete {
+    border-color:
+        rgba(53, 230, 122, 0.18);
+}
+
+.history-overview-item.complete
+.history-overview-value {
+    color: #35e67a;
+}
+
+
+/* PARCIAIS */
+
+.history-overview-item.partial {
+    border-color:
+        rgba(255, 104, 104, 0.18);
+}
+
+.history-overview-item.partial
+.history-overview-value {
+    color: #ff6868;
+}
+
+@media (max-width: 520px) {
+
+    .history-overview {
+        gap: 7px;
+    }
+
+    .history-overview-item {
+        min-height: 66px;
+
+        padding: 10px 5px;
+    }
+
+    .history-overview-value {
+        font-size: 19px;
+    }
+
+    .history-overview-label {
+        font-size: 8px;
+        letter-spacing: 0.4px;
+    }
+}
