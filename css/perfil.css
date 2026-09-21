@@ -2453,11 +2453,17 @@ textarea::placeholder{
 ========================================= */
 
 .history-date {
+    min-height: 32px;
+
+    padding: 0 8px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
     gap: 6px;
+
+    color: var(--chalk-dim);
 
     white-space: nowrap;
 }
