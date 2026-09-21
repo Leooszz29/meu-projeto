@@ -2961,7 +2961,7 @@ textarea::placeholder{
     box-shadow:
         0 8px 22px rgba(0, 0, 0, 0.10);
 
-overflow: visible;
+overflow: hidden;
     
     transition:
         transform 0.2s ease,
