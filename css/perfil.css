@@ -2179,23 +2179,6 @@ textarea::placeholder{
     flex-shrink: 0;
 }
 
-
-/* CONTEÚDO */
-
-.history-details-stat-content {
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    gap: 4px;
-
-    text-align: center;
-}
-
-
 /* TÍTULO */
 
 .history-details-stat-content span {
