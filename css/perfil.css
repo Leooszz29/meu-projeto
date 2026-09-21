@@ -2613,31 +2613,6 @@ textarea::placeholder{
         box-shadow 0.2s ease;
 }
 
-/* STATUS */
-
-.history-workout-status {
-    grid-area: status;
-
-    width: fit-content;
-    max-width: 100%;
-
-    margin: 0;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-start;
-
-    gap: 12px;
-
-    padding: 9px 16px 9px 12px;
-
-    flex-wrap: nowrap;
-    white-space: normal;
-
-    border-radius: 999px;
-}
-
-
 /* DATA + DETALHES + EXCLUIR */
 
 .history-item-actions {
