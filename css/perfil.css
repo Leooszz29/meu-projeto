@@ -2429,18 +2429,6 @@ textarea::placeholder{
    HISTÓRICO — BOTÃO VER DETALHES
 ========================================= */
 
-.history-details-btn {
-    min-height: 36px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 7px;
-
-    padding: 0 12px;
-}
-
 .history-details-btn svg {
     width: 16px;
     height: 16px;
