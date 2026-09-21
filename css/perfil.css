@@ -2624,22 +2624,6 @@ textarea::placeholder{
         box-shadow 0.2s ease;
 }
 
-/* DATA + DETALHES + EXCLUIR */
-
-.history-item-actions {
-    grid-area: actions;
-
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-    gap: 12px;
-
-    flex-shrink: 0;
-
-    align-self: center;
-}
-
 /* =========================================
    HISTÓRICO — RESPONSIVO
 ========================================= */
