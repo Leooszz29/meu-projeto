@@ -3088,16 +3088,6 @@ flex-shrink: 0;
     transform: translateY(-1px);
 }
 
-
-/* EXCLUIR */
-
-.history-delete-btn {
-    width: 32px;
-    height: 32px;
-
-    border-radius: 8px;
-}
-
 /* =========================================
    HISTÓRICO — RESUMO DO MÊS
 ========================================= */
