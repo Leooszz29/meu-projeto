@@ -2306,6 +2306,7 @@ textarea::placeholder{
 
     font-size: 14px;
     font-weight: 900;
+    letter-spacing: 0.25px;
 
     color: var(--chalk);
 
@@ -2686,16 +2687,6 @@ textarea::placeholder{
     row-gap: 8px;
 }
 
-
-/* NOME */
-
-.history-workout-name {
-    grid-area: name;
-
-    min-width: 0;
-}
-
-
 /* STATUS */
 
 .history-workout-status {
@@ -2999,16 +2990,6 @@ overflow: hidden;
 
     box-shadow:
         0 0 10px rgba(var(--accent-rgb), 0.30);
-}
-
-
-/* NOME DO TREINO */
-
-.history-workout-name {
-    font-size: 14px;
-    font-weight: 900;
-
-    letter-spacing: 0.25px;
 }
 
 /* =========================================
