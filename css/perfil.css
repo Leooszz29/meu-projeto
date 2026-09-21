@@ -2640,11 +2640,7 @@ textarea::placeholder{
     .history-item {
         padding: 14px;
     }
-
-    .history-item-actions {
-        flex-wrap: wrap;
-    }
-
+    
     .history-details-btn {
         min-height: 34px;
         padding: 0 10px;
