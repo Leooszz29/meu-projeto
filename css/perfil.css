@@ -2727,7 +2727,7 @@ textarea::placeholder{
 .history-workout-status {
     grid-area: status;
 
-    width: max-content;
+    width: fit-content;
     max-width: 100%;
 
     margin: 0;
@@ -2736,9 +2736,9 @@ textarea::placeholder{
     align-items: center;
     justify-content: flex-start;
 
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
 
-    white-space: nowrap;
+    white-space: normal;
 }
 
 
