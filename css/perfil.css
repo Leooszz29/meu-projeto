@@ -809,15 +809,6 @@ textarea::placeholder{
 
 /* AÇÕES DO ITEM DO HISTÓRICO */
 
-.history-item-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    flex-shrink: 0;
-}
-
-
 /* BOTÃO EXCLUIR */
 
 .history-delete-btn {
