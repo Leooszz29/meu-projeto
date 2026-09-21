@@ -765,7 +765,8 @@ textarea::placeholder{
 }
 
 .history-month-arrow {
-    width: 16px;
+    width: 24px;
+    height: 24px;
 
     display: inline-flex;
     align-items: center;
@@ -773,9 +774,17 @@ textarea::placeholder{
 
     flex-shrink: 0;
 
+    border-radius: 7px;
+
+    background: rgba(var(--accent-rgb), 0.10);
+
     color: var(--accent);
 
-    font-size: 10px;
+    font-size: 9px;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
 .history-month-count {
