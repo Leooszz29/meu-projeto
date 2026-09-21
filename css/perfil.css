@@ -807,23 +807,6 @@ textarea::placeholder{
 
 /* ITEM DO HISTÓRICO */
 
-/* NOME DO TREINO */
-
-.history-workout-name {
-    min-width: 0;
-
-    overflow: hidden;
-
-    color: var(--chalk);
-
-    font-size: 13.5px;
-    font-weight: 750;
-
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-
 /* DATA */
 
 .history-date {
