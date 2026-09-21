@@ -3097,7 +3097,8 @@ textarea::placeholder{
     white-space: nowrap;
 }
 
-.history-item .history-status-series {
+.history-status-series {
     font-size: 10px;
     font-weight: 800;
+    white-space: nowrap;
 }
