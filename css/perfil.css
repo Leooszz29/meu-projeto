@@ -2741,19 +2741,6 @@ textarea::placeholder{
 ========================================= */
 /* DATA */
 
-.history-date {
-    min-height: 32px;
-
-    padding: 0 8px;
-
-    display: inline-flex;
-    align-items: center;
-
-    gap: 6px;
-
-    color: var(--chalk-dim);
-}
-
 .history-date svg {
     color: var(--accent);
     opacity: 1;
