@@ -2306,15 +2306,7 @@ textarea::placeholder{
 @media (max-width: 600px) {
 
     .history-item {
-        grid-template-columns: 1fr;
-
-        grid-template-areas:
-            "name"
-            "status"
-            "actions";
-
         gap: 9px;
-
         padding: 15px;
     }
 
