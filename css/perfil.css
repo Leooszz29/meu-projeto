@@ -704,23 +704,27 @@ textarea::placeholder{
 
 .history-month-header {
     width: 100%;
-    min-height: 52px;
+    min-height: 54px;
+
     padding: 0 16px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 14px;
 
-    border: 1px solid rgba(var(--accent-rgb), 0.16);
-    border-radius: 11px;
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    border-radius: 12px;
 
     background:
         linear-gradient(
             135deg,
             rgba(var(--accent-rgb), 0.08),
-            rgba(0, 0, 0, 0.12)
+            rgba(0, 0, 0, 0.14)
         );
+
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.12);
 
     color: var(--chalk);
 
