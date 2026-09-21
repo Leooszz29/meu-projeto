@@ -3092,10 +3092,6 @@ textarea::placeholder{
 /* =========================================
    AJUSTE FINAL — BADGE DO HISTÓRICO
 ========================================= */
-.history-item .history-status-title,
-.history-item .history-status-series {
-    white-space: nowrap;
-}
 
 .history-status-series {
     font-size: 10px;
