@@ -611,6 +611,57 @@ function loadWorkoutHistory() {
             localStorage.getItem('historicoTreinos')
         ) || [];
 
+    // RESUMO GERAL DO HISTÓRICO
+
+const historyTotal =
+    document.getElementById('historyTotal');
+
+const historyComplete =
+    document.getElementById('historyComplete');
+
+const historyPartial =
+    document.getElementById('historyPartial');
+
+
+const totalTreinos =
+    historico.length;
+
+
+const totalCompletos =
+    historico.filter(
+        treino =>
+            Array.isArray(treino.exercicios) &&
+            Number(treino.seriesTotal) > 0 &&
+            Number(treino.seriesConcluidas) >=
+                Number(treino.seriesTotal)
+    ).length;
+
+
+const totalParciais =
+    historico.filter(
+        treino =>
+            Array.isArray(treino.exercicios) &&
+            Number(treino.seriesTotal) > 0 &&
+            Number(treino.seriesConcluidas) <
+                Number(treino.seriesTotal)
+    ).length;
+
+
+if (historyTotal) {
+    historyTotal.textContent =
+        totalTreinos;
+}
+
+if (historyComplete) {
+    historyComplete.textContent =
+        totalCompletos;
+}
+
+if (historyPartial) {
+    historyPartial.textContent =
+        totalParciais;
+}
+
     historyList.innerHTML = '';
 
     if (historico.length === 0) {
