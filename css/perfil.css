@@ -2699,8 +2699,8 @@ textarea::placeholder{
     display: grid;
 
     grid-template-columns:
-        minmax(150px, 1fr)
-        auto;
+    minmax(0, 1fr)
+    auto;;
 
     grid-template-areas:
         "name actions"
