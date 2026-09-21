@@ -2214,20 +2214,6 @@ textarea::placeholder{
    HISTÓRICO — CARD ORGANIZADO
 ========================================= */
 
-.history-item {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-        "name actions"
-        "status actions";
-
-    align-items: center;
-    gap: 7px 20px;
-
-    padding: 16px 18px;
-}
-
-
 /* NOME DO TREINO */
 
 .history-workout-name {
