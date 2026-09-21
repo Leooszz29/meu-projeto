@@ -3048,18 +3048,6 @@ textarea::placeholder{
     transition: width 0.6s ease;
 }
 
-/* ÍCONE */
-
-.history-status-icon {
-    flex: 0 0 22px;
-
-    width: 22px;
-    height: 22px;
-
-    align-self: center;
-}
-
-
 /* BLOCO DE TEXTO */
 
 .history-status-content {
