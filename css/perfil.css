@@ -3051,7 +3051,7 @@ textarea::placeholder{
 /* BLOCO DE TEXTO */
 
 .history-status-content {
-    min-width: max-content;
+    min-width: 90px;
 
     display: flex;
     flex-direction: column;
@@ -3060,7 +3060,7 @@ textarea::placeholder{
 
     gap: 3px;
 
-    padding-right: 2px;
+    padding-right: 4px;
 
     line-height: 1.1;
 }
