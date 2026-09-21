@@ -807,19 +807,6 @@ textarea::placeholder{
 
 /* ITEM DO HISTÓRICO */
 
-/* DATA */
-
-.history-date {
-    flex-shrink: 0;
-
-    color: var(--accent);
-
-    font-size: 12px;
-    font-weight: 750;
-
-    letter-spacing: 0.4px;
-}
-
 /* AÇÕES DO ITEM DO HISTÓRICO */
 
 .history-item-actions {
