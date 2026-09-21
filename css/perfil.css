@@ -3131,22 +3131,6 @@ flex-shrink: 0;
     transition: width 0.6s ease;
 }
 
-.history-workout-status {
-    display: inline-flex;
-    align-items: center;
-
-    width: fit-content;
-    max-width: 100%;
-
-    padding: 7px 11px;
-
-    gap: 8px;
-
-    flex-wrap: nowrap;
-    white-space: normal;
-}
-
-
 /* ÍCONE */
 
 .history-status-icon {
