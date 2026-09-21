@@ -2589,19 +2589,46 @@ textarea::placeholder{
 ========================================= */
 
 .history-item {
-    display: grid;
+    position: relative;
 
+    display: grid;
     grid-template-columns: 1fr;
 
     grid-template-areas:
-    "name name"
-    "status status"
-    "actions actions";;
+        "name"
+        "status"
+        "actions";
 
     align-items: center;
 
     column-gap: 24px;
     row-gap: 8px;
+
+    min-height: 82px;
+    padding: 16px 18px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.025),
+            rgba(0, 0, 0, 0.10)
+        );
+
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.10);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 /* STATUS */
