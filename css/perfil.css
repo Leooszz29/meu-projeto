@@ -2247,18 +2247,19 @@ textarea::placeholder{
 .history-workout-status {
     grid-area: status;
 
-    width: fit-content;
-    max-width: 100%;
+    width: max-content;
+    min-width: 145px;
+    max-width: none;
 
     margin: 0;
+
+    padding: 9px 18px 9px 12px;
 
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
 
-    gap: 8px;
-
-    padding: 7px 11px;
+    gap: 12px;
 
     flex-wrap: nowrap;
     white-space: normal;
@@ -2270,7 +2271,6 @@ textarea::placeholder{
     line-height: 1;
     letter-spacing: 0.25px;
 }
-
 
 /* COMPLETO */
 
