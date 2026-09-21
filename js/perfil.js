@@ -941,13 +941,21 @@ if (Array.isArray(treino.exercicios)) {
 
 
     statusResumo.innerHTML =
-        completo
-            ? `
-                <span class="history-status-icon">✓</span>
-                <span>Completo</span>
+completo
+    ? `
+        <span class="history-status-icon">✓</span>
+
+        <span class="history-status-content">
+            <span class="history-status-title">
+                Completo
                 <span class="history-status-separator">·</span>
-                <span>${concluidas} de ${total} séries</span>
-              `
+            </span>
+
+            <span class="history-status-series">
+                ${concluidas} de ${total} séries
+            </span>
+        </span>
+      `
             : `
                 <span class="history-status-icon">●</span>
                 <span>Parcial</span>
