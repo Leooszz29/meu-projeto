@@ -2807,33 +2807,6 @@ textarea::placeholder{
 /* =========================================
    HISTÓRICO — CABEÇALHO DO MÊS
 ========================================= */
-
-/* SETA */
-
-.history-month-arrow {
-    width: 24px;
-    height: 24px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    border-radius: 7px;
-
-    background: rgba(var(--accent-rgb), 0.10);
-
-    color: var(--accent);
-
-    font-size: 9px;
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-}
-
-
 /* CONTADOR */
 
 .history-month-count {
