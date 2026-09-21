@@ -1270,15 +1270,18 @@ textarea::placeholder{
 }
 
 .history-details-exercise-list {
+    max-height: 245px;
+
     display: flex;
     flex-direction: column;
 
-    border:
-        1px solid rgba(255, 255, 255, 0.08);
+    overflow-y: auto;
+    overflow-x: hidden;
 
+    border: 1px solid rgba(255, 255, 255, 0.09);
     border-radius: 12px;
 
-    overflow: hidden;
+    background: rgba(0, 0, 0, 0.08);
 }
 
 /* =========================================
