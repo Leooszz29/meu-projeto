@@ -1809,25 +1809,6 @@ textarea::placeholder{
     text-transform: uppercase;
 }
 
-
-/* CONTAINER */
-
-.history-details-exercise-list {
-    max-height: 245px;
-
-    display: flex;
-    flex-direction: column;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 12px;
-
-    background: rgba(0, 0, 0, 0.08);
-}
-
-
 /* LINHA */
 
 .history-details-exercise {
