@@ -3092,21 +3092,6 @@ textarea::placeholder{
 /* =========================================
    AJUSTE FINAL — BADGE DO HISTÓRICO
 ========================================= */
-.history-item .history-status-content {
-    min-width: 90px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-
-    gap: 3px;
-
-    padding-right: 4px;
-
-    line-height: 1.1;
-}
-
 .history-item .history-status-title,
 .history-item .history-status-series {
     white-space: nowrap;
