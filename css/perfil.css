@@ -2674,11 +2674,6 @@ textarea::placeholder{
     row-gap: 10px;
     column-gap: 0;
 }
-    
-    .history-workout-status {
-        grid-area: status;
-    }
-
     .history-item-actions {
         grid-area: actions;
 
