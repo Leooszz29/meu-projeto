@@ -1444,6 +1444,8 @@ textarea::placeholder{
 
     padding: 30px;
 
+    text-align: center;
+
     border: 1px solid
         rgba(var(--accent-rgb), 0.25);
 
