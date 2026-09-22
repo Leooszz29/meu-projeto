@@ -1543,15 +1543,6 @@ textarea::placeholder{
     flex-direction: column;
 }
 
-.history-details-heading h2 {
-    margin: 0;
-
-    font-size: 25px;
-    font-weight: 900;
-
-    text-transform: capitalize;
-}
-
 .history-details-heading
 .history-details-subtitle {
     margin-top: 5px;
