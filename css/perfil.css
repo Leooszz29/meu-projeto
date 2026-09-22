@@ -1550,13 +1550,6 @@ textarea::placeholder{
 }
 
 .history-details-heading
-.history-details-date {
-    margin: 4px 0 0;
-
-    font-size: 12px;
-    font-weight: 700;
-}
-
 .history-details-subtitle {
     margin-top: 5px;
 
