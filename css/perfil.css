@@ -1838,15 +1838,6 @@ textarea::placeholder{
 /* INCOMPLETO */
 
 .history-details-exercise.incomplete
-.history-details-exercise-status {
-    background: #ff5757;
-    color: #190808;
-
-    box-shadow:
-        0 0 15px rgba(255, 87, 87, 0.18);
-}
-
-.history-details-exercise.incomplete
 .history-details-exercise-series {
     color: #ff6868;
 }
