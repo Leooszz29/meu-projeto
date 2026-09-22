@@ -1348,7 +1348,7 @@ textarea::placeholder{
     color: var(--chalk);
 
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 750;
 
     text-align: left;
 
