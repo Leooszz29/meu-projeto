@@ -2557,13 +2557,6 @@ textarea::placeholder{
     background: #ff6868;
 }
 
-
-/* SEPARADOR */
-
-.history-status-separator {
-    opacity: 0.45;
-}
-
 /* =========================================
    CORREÇÃO FINAL — LAYOUT DO HISTÓRICO
 ========================================= */
