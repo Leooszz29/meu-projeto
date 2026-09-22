@@ -2369,7 +2369,8 @@ textarea::placeholder{
     stroke-linecap: round;
     stroke-linejoin: round;
 
-    opacity: 0.75;
+    color: var(--accent);
+    opacity: 1;
 }
 
 .history-date span {
