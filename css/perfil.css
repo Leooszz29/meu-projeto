@@ -1824,22 +1824,6 @@ textarea::placeholder{
     text-transform: uppercase;
 }
 
-/* ÍCONE */
-
-.history-details-exercise-status {
-    width: 27px;
-    height: 27px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    font-size: 14px;
-    font-weight: 900;
-}
-
 /* SÉRIES */
 
 .history-details-exercise-series {
