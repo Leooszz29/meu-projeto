@@ -2167,13 +2167,6 @@ textarea::placeholder{
     letter-spacing: 0.25px;
 }
 
-/* INCOMPLETO */
-
-.history-workout-status.incomplete {
-    color: #ff6868;
-}
-
-
 /* REGISTROS ANTIGOS */
 
 .history-workout-status.legacy {
