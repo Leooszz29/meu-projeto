@@ -2167,13 +2167,6 @@ textarea::placeholder{
     letter-spacing: 0.25px;
 }
 
-/* COMPLETO */
-
-.history-workout-status.complete {
-    color: #35e67a;
-}
-
-
 /* INCOMPLETO */
 
 .history-workout-status.incomplete {
