@@ -1835,14 +1835,6 @@ textarea::placeholder{
     white-space: nowrap;
 }
 
-/* INCOMPLETO */
-
-.history-details-exercise.incomplete
-.history-details-exercise-series {
-    color: #ff6868;
-}
-
-
 /* SCROLLBAR */
 
 .history-details-exercise-list::-webkit-scrollbar {
