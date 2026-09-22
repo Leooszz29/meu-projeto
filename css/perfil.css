@@ -2591,13 +2591,6 @@ textarea::placeholder{
 /* =========================================
    HISTÓRICO — GRUPO DE AÇÕES
 ========================================= */
-/* DATA */
-
-.history-date svg {
-    color: var(--accent);
-    opacity: 1;
-}
-
 
 /* VER DETALHES */
 
