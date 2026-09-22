@@ -1840,25 +1840,6 @@ textarea::placeholder{
     font-weight: 900;
 }
 
-
-/* NOME */
-
-.history-details-exercise-name {
-    min-width: 0;
-
-    color: var(--chalk);
-
-    font-size: 13px;
-    font-weight: 750;
-
-    text-align: left;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-
 /* SÉRIES */
 
 .history-details-exercise-series {
