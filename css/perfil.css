@@ -1824,17 +1824,6 @@ textarea::placeholder{
     text-transform: uppercase;
 }
 
-/* SÉRIES */
-
-.history-details-exercise-series {
-    color: var(--chalk-dim);
-
-    font-size: 11px;
-    font-weight: 800;
-
-    white-space: nowrap;
-}
-
 /* SCROLLBAR */
 
 .history-details-exercise-list::-webkit-scrollbar {
