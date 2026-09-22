@@ -2591,21 +2591,6 @@ textarea::placeholder{
 }
 
 /* =========================================
-   HISTÓRICO — GRUPO DE AÇÕES
-========================================= */
-
-/* VER DETALHES */
-
-.history-details-btn:hover {
-    background: rgba(var(--accent-rgb), 0.09);
-
-    border-color:
-        rgba(var(--accent-rgb), 0.18);
-
-    transform: translateY(-1px);
-}
-
-/* =========================================
    HISTÓRICO — RESUMO DO MÊS
 ========================================= */
 
