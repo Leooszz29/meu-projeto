@@ -1813,19 +1813,6 @@ textarea::placeholder{
 /* =========================================
    DETALHES — LISTA DE EXERCÍCIOS REFINADA
 ========================================= */
-
-.history-details-section-title {
-    margin-bottom: 10px;
-
-    color: var(--chalk);
-
-    font-size: 12px;
-    font-weight: 900;
-    letter-spacing: 0.5px;
-
-    text-transform: uppercase;
-}
-
 /* SCROLLBAR */
 
 .history-details-exercise-list::-webkit-scrollbar {
