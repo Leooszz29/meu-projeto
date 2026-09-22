@@ -1140,18 +1140,6 @@ textarea::placeholder{
 /* =========================================
    MODAL — DETALHES DO HISTÓRICO
 ========================================= */
-
-.history-details-modal {
-    position: relative;
-
-    width: 100%;
-    max-width: 500px;
-
-    padding: 30px;
-
-    text-align: center;
-}
-
 .history-details-close {
     position: absolute;
     top: 14px;
