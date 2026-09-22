@@ -1364,7 +1364,7 @@ textarea::placeholder{
     color: var(--chalk-dim);
 
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
 
     white-space: nowrap;
 }
