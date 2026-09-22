@@ -1326,8 +1326,8 @@ textarea::placeholder{
 /* ÍCONE */
 
 .history-details-exercise-status {
-    width: 25px;
-    height: 25px;
+    width: 27px;
+    height: 27px;
 
     display: flex;
     align-items: center;
@@ -1335,7 +1335,7 @@ textarea::placeholder{
 
     border-radius: 50%;
 
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 900;
 }
 
