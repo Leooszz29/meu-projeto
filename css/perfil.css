@@ -739,7 +739,13 @@ textarea::placeholder{
 }
 
 .history-month-header:hover {
-    background: rgba(var(--accent-rgb), 0.12);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(var(--accent-rgb), 0.12),
+            rgba(0, 0, 0, 0.14)
+        );
+
     border-color: rgba(var(--accent-rgb), 0.32);
     transform: translateY(-1px);
 }
@@ -2520,17 +2526,6 @@ textarea::placeholder{
 ========================================= */
 
 /* HOVER */
-
-.history-month-header:hover {
-    border-color: rgba(var(--accent-rgb), 0.32);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(var(--accent-rgb), 0.12),
-            rgba(0, 0, 0, 0.14)
-        );
-}
 
 .history-month-header:hover
 .history-month-arrow {
