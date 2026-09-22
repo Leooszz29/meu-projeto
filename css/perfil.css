@@ -1835,19 +1835,6 @@ textarea::placeholder{
     white-space: nowrap;
 }
 
-
-/* COMPLETO */
-
-.history-details-exercise.complete
-.history-details-exercise-status {
-    background: #35e67a;
-    color: #08130c;
-
-    box-shadow:
-        0 0 15px rgba(53, 230, 122, 0.20);
-}
-
-
 /* INCOMPLETO */
 
 .history-details-exercise.incomplete
