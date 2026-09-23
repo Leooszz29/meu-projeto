@@ -338,6 +338,63 @@ verifyRecoveryCodeBtn.addEventListener('click', () => {
     newPassword.focus();
 });
 
+saveNewPasswordBtn.addEventListener('click', () => {
+
+    const novaSenha =
+        newPassword.value;
+
+    const confirmarSenha =
+        confirmNewPassword.value;
+
+    newPasswordError.classList.remove('show');
+
+    if (!novaSenha || !confirmarSenha) {
+        newPasswordError.textContent =
+            'Preencha os dois campos de senha.';
+
+        newPasswordError.classList.add('show');
+        return;
+    }
+
+    if (novaSenha.length < 6) {
+        newPasswordError.textContent =
+            'A senha deve ter no mínimo 6 caracteres.';
+
+        newPasswordError.classList.add('show');
+        return;
+    }
+
+    if (novaSenha !== confirmarSenha) {
+        newPasswordError.textContent =
+            'As senhas não coincidem.';
+
+        newPasswordError.classList.add('show');
+        return;
+    }
+
+    const usuarioSalvo =
+        carregarUsuarioSalvo();
+
+    if (!usuarioSalvo) {
+        newPasswordError.textContent =
+            'Não foi possível localizar o usuário.';
+
+        newPasswordError.classList.add('show');
+        return;
+    }
+
+    usuarioSalvo.senha = novaSenha;
+
+    localStorage.setItem(
+        'usuario',
+        JSON.stringify(usuarioSalvo)
+    );
+
+    console.log(
+        'Senha atualizada com sucesso.'
+    );
+});
+
 form.addEventListener('submit', handleLogin);
 emailInput.addEventListener('input', clearError);
 passwordInput.addEventListener('input', clearError);
