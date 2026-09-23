@@ -51,6 +51,12 @@ let recoveryCodeGenerated = null;
 
 // ==================== FUNÇÕES AUXILIARES ====================
 
+function gerarCodigoRecuperacao() {
+    return Math.floor(
+        100000 + Math.random() * 900000
+    ).toString();
+}
+
 function resetLoginButton() {
     submitBtn.disabled = false;
     submitBtn.classList.remove('loading');
