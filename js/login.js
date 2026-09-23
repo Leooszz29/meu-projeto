@@ -58,6 +58,12 @@ const newPassword =
 const confirmNewPassword =
     document.getElementById('confirmNewPassword');
 
+const toggleNewPassword =
+    document.getElementById('toggleNewPassword');
+
+const toggleConfirmNewPassword =
+    document.getElementById('toggleConfirmNewPassword');
+
 const newPasswordError =
     document.getElementById('newPasswordError');
 
