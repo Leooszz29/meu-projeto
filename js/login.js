@@ -174,6 +174,18 @@ passwordRecoveryClose.addEventListener('click', () => {
     );
 });
 
+recoveryCodeClose.addEventListener('click', () => {
+
+    recoveryCodeOverlay.classList.remove('show');
+
+    recoveryCodeOverlay.setAttribute(
+        'aria-hidden',
+        'true'
+    );
+
+    recoveryCode.value = '';
+    recoveryCodeError.classList.remove('show');
+});
 
 recoveryContinueBtn.addEventListener('click', () => {
 
