@@ -46,6 +46,8 @@ const recoveryCodeError =
 const verifyRecoveryCodeBtn =
     document.getElementById('verifyRecoveryCodeBtn');
 
+let recoveryCodeGenerated = null;
+
 
 // ==================== FUNÇÕES AUXILIARES ====================
 
