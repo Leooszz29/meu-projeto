@@ -219,6 +219,35 @@ recoveryCodeClose.addEventListener('click', () => {
     recoveryCodeError.classList.remove('show');
 });
 
+toggleNewPassword.addEventListener('click', () => {
+
+    const isHidden =
+        newPassword.type === 'password';
+
+    newPassword.type =
+        isHidden ? 'text' : 'password';
+
+    toggleNewPassword.setAttribute(
+        'aria-pressed',
+        String(isHidden)
+    );
+
+    toggleNewPassword.setAttribute(
+        'aria-label',
+        isHidden
+            ? 'Ocultar nova senha'
+            : 'Mostrar nova senha'
+    );
+
+    toggleNewPassword
+        .querySelector('.icon-eye')
+        .classList.toggle('is-hidden', isHidden);
+
+    toggleNewPassword
+        .querySelector('.icon-eye-off')
+        .classList.toggle('is-hidden', !isHidden);
+});
+
 newPasswordClose.addEventListener('click', () => {
 
     newPasswordOverlay.classList.remove('show');
