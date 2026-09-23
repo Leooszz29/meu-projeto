@@ -31,6 +31,21 @@ const recoveryContinueBtn =
 const recoveryError =
     document.getElementById('recoveryError');
 
+const recoveryCodeOverlay =
+    document.getElementById('recoveryCodeOverlay');
+
+const recoveryCodeClose =
+    document.getElementById('recoveryCodeClose');
+
+const recoveryCode =
+    document.getElementById('recoveryCode');
+
+const recoveryCodeError =
+    document.getElementById('recoveryCodeError');
+
+const verifyRecoveryCodeBtn =
+    document.getElementById('verifyRecoveryCodeBtn');
+
 
 // ==================== FUNÇÕES AUXILIARES ====================
 
