@@ -137,6 +137,67 @@
     </div>
 </div>
     </div>
+    
+    <!-- Modal Código de Recuperação -->
+<div
+    class="password-recovery-overlay"
+    id="recoveryCodeOverlay"
+    aria-hidden="true"
+>
+    <div
+        class="password-recovery-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="recoveryCodeTitle"
+    >
+        <button
+            type="button"
+            class="password-recovery-close"
+            id="recoveryCodeClose"
+            aria-label="Fechar"
+        >
+            ×
+        </button>
+
+        <h2 id="recoveryCodeTitle">
+            Verifique seu e-mail
+        </h2>
+
+        <p>
+            Enviamos um código de recuperação para o e-mail informado.
+            Digite o código abaixo para continuar.
+        </p>
+
+        <div class="form-group">
+            <label for="recoveryCode">
+                Código de recuperação
+            </label>
+
+            <input
+                type="text"
+                id="recoveryCode"
+                inputmode="numeric"
+                maxlength="6"
+                placeholder="000000"
+                autocomplete="one-time-code"
+            >
+        </div>
+
+        <div
+            class="error-message"
+            id="recoveryCodeError"
+            role="alert"
+        ></div>
+
+        <button
+            type="button"
+            class="btn-login"
+            id="verifyRecoveryCodeBtn"
+        >
+            Verificar código
+        </button>
+    </div>
+</div>
 
     <script src="js/login.js"></script>
 </body>
