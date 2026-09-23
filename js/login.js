@@ -390,9 +390,26 @@ saveNewPasswordBtn.addEventListener('click', () => {
         JSON.stringify(usuarioSalvo)
     );
 
-    console.log(
-        'Senha atualizada com sucesso.'
-    );
+    newPasswordOverlay.classList.remove('show');
+
+newPasswordOverlay.setAttribute(
+    'aria-hidden',
+    'true'
+);
+
+recoveryCodeGenerated = null;
+
+newPassword.value = '';
+confirmNewPassword.value = '';
+recoveryCode.value = '';
+
+passwordInput.value = '';
+
+showSuccess(
+    'Senha alterada com sucesso! Faça login com sua nova senha.'
+);
+
+passwordInput.focus();
 });
 
 form.addEventListener('submit', handleLogin);
