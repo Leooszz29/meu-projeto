@@ -4355,3 +4355,19 @@ body:not(.theme-feminino):not(.theme-masculino)
     font-size: 16px;
     line-height: 1;
 }
+
+@media (max-width: 520px) {
+
+    .btn-back-profile {
+        min-height: 36px;
+        padding: 0 11px;
+
+        margin-bottom: 8px;
+
+        font-size: 10px;
+    }
+
+    .btn-back-profile span:first-child {
+        font-size: 15px;
+    }
+}
