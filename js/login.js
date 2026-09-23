@@ -13,6 +13,18 @@ const togglePassword =
 const rememberCheckbox =
     document.getElementById('remember');
 
+const forgotPasswordBtn =
+    document.getElementById('forgotPasswordBtn');
+
+const passwordRecoveryOverlay =
+    document.getElementById('passwordRecoveryOverlay');
+
+const passwordRecoveryClose =
+    document.getElementById('passwordRecoveryClose');
+
+const recoveryEmail =
+    document.getElementById('recoveryEmail');
+
 
 // ==================== FUNÇÕES AUXILIARES ====================
 
@@ -114,6 +126,32 @@ function alternarVisibilidadeSenha() {
 }
 
      // ==================== EVENT LISTENERS ====================
+
+forgotPasswordBtn.addEventListener('click', () => {
+
+    passwordRecoveryOverlay.classList.add('show');
+
+    passwordRecoveryOverlay.setAttribute(
+        'aria-hidden',
+        'false'
+    );
+
+    recoveryEmail.value =
+        emailInput.value.trim();
+
+    recoveryEmail.focus();
+});
+
+
+passwordRecoveryClose.addEventListener('click', () => {
+
+    passwordRecoveryOverlay.classList.remove('show');
+
+    passwordRecoveryOverlay.setAttribute(
+        'aria-hidden',
+        'true'
+    );
+});
 
 form.addEventListener('submit', handleLogin);
 emailInput.addEventListener('input', clearError);
