@@ -301,9 +301,26 @@ verifyRecoveryCodeBtn.addEventListener('click', () => {
         return;
     }
 
-    console.log(
-        'Código de recuperação confirmado.'
+        recoveryCodeOverlay.classList.remove('show');
+
+    recoveryCodeOverlay.setAttribute(
+        'aria-hidden',
+        'true'
     );
+
+    newPasswordOverlay.classList.add('show');
+
+    newPasswordOverlay.setAttribute(
+        'aria-hidden',
+        'false'
+    );
+
+    newPassword.value = '';
+    confirmNewPassword.value = '';
+
+    newPasswordError.classList.remove('show');
+
+    newPassword.focus();
 });
 
 form.addEventListener('submit', handleLogin);
