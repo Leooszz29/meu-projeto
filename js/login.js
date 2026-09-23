@@ -248,6 +248,35 @@ toggleNewPassword.addEventListener('click', () => {
         .classList.toggle('is-hidden', !isHidden);
 });
 
+toggleConfirmNewPassword.addEventListener('click', () => {
+
+    const isHidden =
+        confirmNewPassword.type === 'password';
+
+    confirmNewPassword.type =
+        isHidden ? 'text' : 'password';
+
+    toggleConfirmNewPassword.setAttribute(
+        'aria-pressed',
+        String(isHidden)
+    );
+
+    toggleConfirmNewPassword.setAttribute(
+        'aria-label',
+        isHidden
+            ? 'Ocultar confirmação da senha'
+            : 'Mostrar confirmação da senha'
+    );
+
+    toggleConfirmNewPassword
+        .querySelector('.icon-eye')
+        .classList.toggle('is-hidden', isHidden);
+
+    toggleConfirmNewPassword
+        .querySelector('.icon-eye-off')
+        .classList.toggle('is-hidden', !isHidden);
+});
+
 newPasswordClose.addEventListener('click', () => {
 
     newPasswordOverlay.classList.remove('show');
