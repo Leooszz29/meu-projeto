@@ -224,6 +224,14 @@ recoveryContinueBtn.addEventListener('click', () => {
         return;
     }
 
+        recoveryCodeGenerated =
+        gerarCodigoRecuperacao();
+
+    console.log(
+        'Código de recuperação (TESTE):',
+        recoveryCodeGenerated
+    );
+
     passwordRecoveryOverlay.classList.remove('show');
 
 passwordRecoveryOverlay.setAttribute(
