@@ -4298,3 +4298,60 @@ body:not(.theme-feminino):not(.theme-masculino)
     background: rgba(255, 87, 87, 0.08);
     border-color: rgba(255, 87, 87, 0.30);
 }
+
+/* =========================================
+   NAVEGAÇÃO — VOLTAR AO PERFIL
+========================================= */
+
+.btn-back-profile {
+    width: max-content;
+    min-height: 38px;
+
+    margin-bottom: 18px;
+    padding: 0 13px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
+    border-radius: 9px;
+
+    background: rgba(var(--accent-rgb), 0.06);
+
+    color: var(--accent);
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-back-profile:hover {
+    transform: translateY(-1px);
+
+    background: rgba(var(--accent-rgb), 0.12);
+    border-color: rgba(var(--accent-rgb), 0.38);
+
+    box-shadow:
+        0 6px 18px rgba(var(--accent-rgb), 0.10);
+}
+
+.btn-back-profile:active {
+    transform: translateY(0);
+}
+
+.btn-back-profile span:first-child {
+    font-size: 16px;
+    line-height: 1;
+}
