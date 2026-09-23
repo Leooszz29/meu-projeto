@@ -46,6 +46,24 @@ const recoveryCodeError =
 const verifyRecoveryCodeBtn =
     document.getElementById('verifyRecoveryCodeBtn');
 
+const newPasswordOverlay =
+    document.getElementById('newPasswordOverlay');
+
+const newPasswordClose =
+    document.getElementById('newPasswordClose');
+
+const newPassword =
+    document.getElementById('newPassword');
+
+const confirmNewPassword =
+    document.getElementById('confirmNewPassword');
+
+const newPasswordError =
+    document.getElementById('newPasswordError');
+
+const saveNewPasswordBtn =
+    document.getElementById('saveNewPasswordBtn');
+
 let recoveryCodeGenerated = null;
 
 
