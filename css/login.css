@@ -688,3 +688,111 @@ a:focus-visible {
         transform: rotate(360deg);
     }
 }
+
+/* =========================================
+   RECUPERAÇÃO DE SENHA
+========================================= */
+
+.password-recovery-overlay {
+    position: fixed;
+    inset: 0;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(5, 6, 8, 0.78);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    z-index: 100;
+}
+
+.password-recovery-overlay.show {
+    display: flex;
+}
+
+.password-recovery-modal {
+    position: relative;
+
+    width: 100%;
+    max-width: 400px;
+
+    padding: 28px 26px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.055),
+            rgba(255, 255, 255, 0.015)
+        ),
+        var(--concrete-1);
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.55),
+        0 0 40px rgba(var(--accent-rgb), 0.08);
+}
+
+.password-recovery-modal h2 {
+    margin: 0 40px 8px 0;
+
+    color: var(--chalk);
+
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.password-recovery-modal > p {
+    margin: 0 0 24px;
+
+    color: var(--chalk-dim);
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.password-recovery-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 9px;
+
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--chalk-dim);
+
+    font-family: inherit;
+    font-size: 22px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.password-recovery-close:hover {
+    color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.08);
+    border-color: rgba(var(--accent-rgb), 0.30);
+}
+
+.password-recovery-modal .btn-login {
+    margin-top: 8px;
+}
