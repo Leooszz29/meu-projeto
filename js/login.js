@@ -25,6 +25,12 @@ const passwordRecoveryClose =
 const recoveryEmail =
     document.getElementById('recoveryEmail');
 
+const recoveryContinueBtn =
+    document.getElementById('recoveryContinueBtn');
+
+const recoveryError =
+    document.getElementById('recoveryError');
+
 
 // ==================== FUNÇÕES AUXILIARES ====================
 
@@ -150,6 +156,42 @@ passwordRecoveryClose.addEventListener('click', () => {
     passwordRecoveryOverlay.setAttribute(
         'aria-hidden',
         'true'
+    );
+});
+
+
+recoveryContinueBtn.addEventListener('click', () => {
+
+    const email =
+        recoveryEmail.value.trim().toLowerCase();
+
+    recoveryError.classList.remove('show');
+
+    if (!email) {
+        recoveryError.textContent =
+            'Informe o seu e-mail.';
+
+        recoveryError.classList.add('show');
+        return;
+    }
+
+    const usuarioSalvo =
+        carregarUsuarioSalvo();
+
+    if (
+        !usuarioSalvo ||
+        usuarioSalvo.email.toLowerCase() !== email
+    ) {
+        recoveryError.textContent =
+            'E-mail não cadastrado.';
+
+        recoveryError.classList.add('show');
+        return;
+    }
+
+    console.log(
+        'E-mail cadastrado encontrado:',
+        email
     );
 });
 
