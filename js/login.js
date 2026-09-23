@@ -204,10 +204,24 @@ recoveryContinueBtn.addEventListener('click', () => {
         return;
     }
 
-    console.log(
-        'E-mail cadastrado encontrado:',
-        email
-    );
+    passwordRecoveryOverlay.classList.remove('show');
+
+passwordRecoveryOverlay.setAttribute(
+    'aria-hidden',
+    'true'
+);
+
+recoveryCodeOverlay.classList.add('show');
+
+recoveryCodeOverlay.setAttribute(
+    'aria-hidden',
+    'false'
+);
+
+recoveryCode.value = '';
+recoveryCodeError.classList.remove('show');
+
+recoveryCode.focus();
 });
 
 form.addEventListener('submit', handleLogin);
