@@ -195,11 +195,82 @@
             class="btn-login"
             id="verifyRecoveryCodeBtn"
         >
-            Verificar código
-        </button>
+                Verificar código
+            </button>
+        </div>
     </div>
-</div>
-
-    <script src="js/login.js"></script>
-</body>
-</html>
+    
+        <!-- Modal Nova Senha -->
+    <div
+        class="password-recovery-overlay"
+        id="newPasswordOverlay"
+        aria-hidden="true"
+    >
+        <div
+            class="password-recovery-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="newPasswordTitle"
+        >
+            <button
+                type="button"
+                class="password-recovery-close"
+                id="newPasswordClose"
+                aria-label="Fechar"
+            >
+                ×
+            </button>
+    
+            <h2 id="newPasswordTitle">
+                Definir nova senha
+            </h2>
+    
+            <p>
+                Crie uma nova senha para acessar sua conta.
+            </p>
+    
+            <div class="form-group">
+                <label for="newPassword">
+                    Nova senha
+                </label>
+    
+                <input
+                    type="password"
+                    id="newPassword"
+                    placeholder="Digite a nova senha"
+                    autocomplete="new-password"
+                >
+            </div>
+    
+            <div class="form-group">
+                <label for="confirmNewPassword">
+                    Confirmar nova senha
+                </label>
+    
+                <input
+                    type="password"
+                    id="confirmNewPassword"
+                    placeholder="Digite novamente"
+                    autocomplete="new-password"
+                >
+            </div>
+    
+            <div
+                class="error-message"
+                id="newPasswordError"
+                role="alert"
+            ></div>
+    
+            <button
+                type="button"
+                class="btn-login"
+                id="saveNewPasswordBtn"
+            >
+                Salvar nova senha
+            </button>
+        </div>
+    </div>
+    
+        <script src="js/login.js"></script>
+    </body>
+    </html>
