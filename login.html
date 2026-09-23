@@ -79,6 +79,63 @@
         <div class="signup-section">
             Ainda não tem conta? <a href="cadastro.html">Cadastre-se aqui</a>
         </div>
+        <!-- Modal Recuperar Senha -->
+<div
+    class="password-recovery-overlay"
+    id="passwordRecoveryOverlay"
+    aria-hidden="true"
+>
+    <div
+        class="password-recovery-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="passwordRecoveryTitle"
+    >
+        <button
+            type="button"
+            class="password-recovery-close"
+            id="passwordRecoveryClose"
+            aria-label="Fechar"
+        >
+            ×
+        </button>
+
+        <h2 id="passwordRecoveryTitle">
+            Recuperar senha
+        </h2>
+
+        <p>
+            Informe o e-mail utilizado no seu cadastro.
+        </p>
+
+        <div class="form-group">
+            <label for="recoveryEmail">
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="recoveryEmail"
+                placeholder="seu@email.com"
+                autocomplete="email"
+            >
+        </div>
+
+        <div
+            class="error-message"
+            id="recoveryError"
+            role="alert"
+        ></div>
+
+        <button
+            type="button"
+            class="btn-login"
+            id="recoveryContinueBtn"
+        >
+            Continuar
+        </button>
+    </div>
+</div>
     </div>
 
     <script src="js/login.js"></script>
