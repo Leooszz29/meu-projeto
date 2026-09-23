@@ -4352,8 +4352,14 @@ body:not(.theme-feminino):not(.theme-masculino)
 }
 
 .btn-back-profile span:first-child {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     font-size: 16px;
     line-height: 1;
+
+    transform: translateY(-1px);
 }
 
 @media (max-width: 520px) {
