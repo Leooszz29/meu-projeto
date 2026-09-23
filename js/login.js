@@ -213,6 +213,21 @@ recoveryCodeClose.addEventListener('click', () => {
     recoveryCodeError.classList.remove('show');
 });
 
+newPasswordClose.addEventListener('click', () => {
+
+    newPasswordOverlay.classList.remove('show');
+
+    newPasswordOverlay.setAttribute(
+        'aria-hidden',
+        'true'
+    );
+
+    newPassword.value = '';
+    confirmNewPassword.value = '';
+
+    newPasswordError.classList.remove('show');
+});
+
 recoveryContinueBtn.addEventListener('click', () => {
 
     const email =
