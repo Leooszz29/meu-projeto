@@ -252,6 +252,42 @@ recoveryCodeError.classList.remove('show');
 recoveryCode.focus();
 });
 
+verifyRecoveryCodeBtn.addEventListener('click', () => {
+
+    const codigoDigitado =
+        recoveryCode.value.trim();
+
+    recoveryCodeError.classList.remove('show');
+
+    if (!codigoDigitado) {
+        recoveryCodeError.textContent =
+            'Informe o código de recuperação.';
+
+        recoveryCodeError.classList.add('show');
+        return;
+    }
+
+    if (codigoDigitado.length !== 6) {
+        recoveryCodeError.textContent =
+            'O código deve ter 6 dígitos.';
+
+        recoveryCodeError.classList.add('show');
+        return;
+    }
+
+    if (codigoDigitado !== recoveryCodeGenerated) {
+        recoveryCodeError.textContent =
+            'Código de recuperação inválido.';
+
+        recoveryCodeError.classList.add('show');
+        return;
+    }
+
+    console.log(
+        'Código de recuperação confirmado.'
+    );
+});
+
 form.addEventListener('submit', handleLogin);
 emailInput.addEventListener('input', clearError);
 passwordInput.addEventListener('input', clearError);
