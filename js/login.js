@@ -361,6 +361,14 @@ recoveryContinueBtn.addEventListener('click', () => {
         return;
     }
 
+    if (!validateEmail(email)) {
+    recoveryError.textContent =
+        'Digite um e-mail válido.';
+
+    recoveryError.classList.add('show');
+    return;
+}
+
     const usuarioSalvo =
         carregarUsuarioSalvo();
 
