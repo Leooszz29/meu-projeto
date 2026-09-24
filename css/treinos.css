@@ -4384,8 +4384,8 @@ body:not(.theme-feminino):not(.theme-masculino)
 
 .btn-end-session {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 0;
+right: 0;
 
     min-width: 72px;
     min-height: 38px;
@@ -4438,8 +4438,8 @@ body:not(.theme-feminino):not(.theme-masculino)
 @media (max-width: 520px) {
 
     .btn-end-session {
-        top: 20px;
-        right: 20px;
+        top: 0;
+        right: 0;
 
         min-width: 64px;
         min-height: 36px;
