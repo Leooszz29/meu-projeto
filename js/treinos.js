@@ -2079,6 +2079,24 @@ if (!sessao || sessao.autenticado !== true) {
     window.location.href = 'login.html';
     return;
 }
+    const btnEndSession =
+    document.getElementById('btnEndSession');
+
+if (btnEndSession) {
+
+    btnEndSession.addEventListener(
+        'click',
+        () => {
+
+            localStorage.removeItem(
+                'fitzoneSessao'
+            );
+
+            window.location.href =
+                'login.html';
+        }
+    );
+}
 
     const genero = localStorage.getItem('generoFitZone');
 
