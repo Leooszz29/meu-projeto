@@ -1,5 +1,26 @@
 const PROFILE_STORAGE_KEY = 'fitzonePerfil';
 
+function carregarSessao() {
+
+    try {
+
+        const sessaoJSON =
+            localStorage.getItem('fitzoneSessao');
+
+        return sessaoJSON
+            ? JSON.parse(sessaoJSON)
+            : null;
+
+    } catch (error) {
+
+        console.warn(
+            'Não foi possível carregar a sessão:',
+            error
+        );
+
+        return null;
+    }
+}
 
 // ========================================
 // CARREGAR PERFIL SALVO
@@ -1667,9 +1688,7 @@ function initializeProfile() {
     console.log('PERFIL.JS INICIADO');
 
     const sessao =
-    JSON.parse(
-        localStorage.getItem('fitzoneSessao')
-    );
+    carregarSessao();
 
 if (!sessao || sessao.autenticado !== true) {
     window.location.href = 'login.html';
