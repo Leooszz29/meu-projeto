@@ -278,32 +278,21 @@ function handleSaveProfile() {
 
 function handleEndSession() {
 
-    // IMPORTANTE:
-    // Não apagamos fitzonePerfil.
-    //
-    // Assim, quando o usuário entrar novamente,
-    // o perfil continuará salvo.
-
     try {
 
         localStorage.removeItem(
-            'generoFitZone'
-        );
-
-        localStorage.removeItem(
-            'rememberedEmail'
+            'fitzoneSessao'
         );
 
     } catch (error) {
 
         console.warn(
-            'Não foi possível limpar os dados da sessão:',
+            'Não foi possível encerrar a sessão:',
             error
         );
     }
 
-
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
 }
 
 
