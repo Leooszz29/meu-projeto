@@ -507,8 +507,8 @@ newPasswordOverlay.setAttribute(
 
 recoveryCodeGenerated = null;
 
-newPassword.value = '';
-confirmNewPassword.value = '';
+resetarCamposNovaSenha();
+    
 recoveryCode.value = '';
 
 passwordInput.value = '';
