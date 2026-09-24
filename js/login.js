@@ -634,6 +634,14 @@ setTimeout(() => {
    // Armazenar ou remover preferência de lembrar
 atualizarPreferenciaEmail(email);
 
+    localStorage.setItem(
+    'fitzoneSessao',
+    JSON.stringify({
+        autenticado: true,
+        email: email
+    })
+);
+
     // Redirecionar para o perfil
     setTimeout(() => {
         window.location.href = 'perfil.html';
