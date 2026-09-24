@@ -244,6 +244,9 @@ function alternarVisibilidadeSenha() {
 
 forgotPasswordBtn.addEventListener('click', () => {
 
+    recoveryError.classList.remove('show');
+recoveryError.textContent = '';
+
     passwordRecoveryOverlay.classList.add('show');
 
     passwordRecoveryOverlay.setAttribute(
