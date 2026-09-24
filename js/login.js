@@ -148,11 +148,6 @@ function resetarCamposNovaSenha() {
     );
 }
 
-function resetLoginButton() {
-    submitBtn.disabled = false;
-    submitBtn.classList.remove('loading');
-}
-
 function validarCredenciais(usuarioSalvo, email, password) {
     return (
         usuarioSalvo &&
