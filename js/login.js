@@ -251,6 +251,16 @@ passwordRecoveryClose.addEventListener('click', () => {
     );
 });
 
+recoveryCode.addEventListener('input', () => {
+
+    recoveryCode.value =
+        recoveryCode.value
+            .replace(/\D/g, '')
+            .slice(0, 6);
+
+    recoveryCodeError.classList.remove('show');
+});
+
 recoveryCodeClose.addEventListener('click', () => {
 
     recoveryCodeOverlay.classList.remove('show');
