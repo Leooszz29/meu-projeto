@@ -134,7 +134,7 @@ function resetLoginButton() {
 function validarCredenciais(usuarioSalvo, email, password) {
     return (
         usuarioSalvo &&
-        usuarioSalvo.email === email &&
+        usuarioSalvo.email.toLowerCase() === email &&
         usuarioSalvo.senha === password
     );
 }
@@ -578,7 +578,8 @@ togglePassword.addEventListener(
         return;
     }
 
-    const email = emailInput.value.trim();
+    const email =
+    emailInput.value.trim().toLowerCase();
     const password = passwordInput.value;
 
             // Validação
