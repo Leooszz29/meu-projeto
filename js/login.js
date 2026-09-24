@@ -331,37 +331,7 @@ newPasswordClose.addEventListener('click', () => {
         'true'
     );
 
-    newPassword.value = '';
-    confirmNewPassword.value = '';
-
-    newPassword.type = 'password';
-confirmNewPassword.type = 'password';
-
-toggleNewPassword
-    .querySelector('.icon-eye')
-    .classList.remove('is-hidden');
-
-toggleNewPassword
-    .querySelector('.icon-eye-off')
-    .classList.add('is-hidden');
-
-toggleConfirmNewPassword
-    .querySelector('.icon-eye')
-    .classList.remove('is-hidden');
-
-toggleConfirmNewPassword
-    .querySelector('.icon-eye-off')
-    .classList.add('is-hidden');
-
-toggleNewPassword.setAttribute(
-    'aria-pressed',
-    'false'
-);
-
-toggleConfirmNewPassword.setAttribute(
-    'aria-pressed',
-    'false'
-);
+    resetarCamposNovaSenha();
 
     newPasswordError.classList.remove('show');
 });
