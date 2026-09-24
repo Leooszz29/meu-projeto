@@ -81,6 +81,51 @@ function gerarCodigoRecuperacao() {
     ).toString();
 }
 
+function resetarCamposNovaSenha() {
+
+    newPassword.value = '';
+    confirmNewPassword.value = '';
+
+    newPassword.type = 'password';
+    confirmNewPassword.type = 'password';
+
+    toggleNewPassword
+        .querySelector('.icon-eye')
+        .classList.remove('is-hidden');
+
+    toggleNewPassword
+        .querySelector('.icon-eye-off')
+        .classList.add('is-hidden');
+
+    toggleConfirmNewPassword
+        .querySelector('.icon-eye')
+        .classList.remove('is-hidden');
+
+    toggleConfirmNewPassword
+        .querySelector('.icon-eye-off')
+        .classList.add('is-hidden');
+
+    toggleNewPassword.setAttribute(
+        'aria-pressed',
+        'false'
+    );
+
+    toggleConfirmNewPassword.setAttribute(
+        'aria-pressed',
+        'false'
+    );
+
+    toggleNewPassword.setAttribute(
+        'aria-label',
+        'Mostrar nova senha'
+    );
+
+    toggleConfirmNewPassword.setAttribute(
+        'aria-label',
+        'Mostrar confirmação da senha'
+    );
+}
+
 function resetLoginButton() {
     submitBtn.disabled = false;
     submitBtn.classList.remove('loading');
