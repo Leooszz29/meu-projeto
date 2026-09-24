@@ -655,6 +655,16 @@ atualizarPreferenciaEmail(email);
 
 function inicializarLogin() {
 
+    const sessao =
+    JSON.parse(
+        localStorage.getItem('fitzoneSessao')
+    );
+
+if (sessao && sessao.autenticado === true) {
+    window.location.href = 'perfil.html';
+    return;
+}
+
     carregarEmailLembrado();
 
     // Aplicar tema de acordo com o gênero escolhido no Duelo de Ferro
