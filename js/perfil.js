@@ -1677,6 +1677,16 @@ function initializeProfile() {
 
     console.log('PERFIL.JS INICIADO');
 
+    const sessao =
+    JSON.parse(
+        localStorage.getItem('fitzoneSessao')
+    );
+
+if (!sessao || sessao.autenticado !== true) {
+    window.location.href = 'login.html';
+    return;
+}
+
     fillForm();
 
     loadCharacter();
