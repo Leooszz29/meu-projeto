@@ -2070,6 +2070,16 @@ document
 // ==================== INICIALIZAÇÃO ====================
 window.addEventListener('DOMContentLoaded', () => {
 
+    const sessao =
+    JSON.parse(
+        localStorage.getItem('fitzoneSessao')
+    );
+
+if (!sessao || sessao.autenticado !== true) {
+    window.location.href = 'login.html';
+    return;
+}
+
     const genero = localStorage.getItem('generoFitZone');
 
     const characterImg = document.getElementById('characterImg');
