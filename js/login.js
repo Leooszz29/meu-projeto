@@ -288,6 +288,9 @@ recoveryCodeClose.addEventListener('click', () => {
     );
 
     recoveryCode.value = '';
+    
+    recoveryCodeGenerated = null;
+    
     recoveryCodeError.classList.remove('show');
 });
 
