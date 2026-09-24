@@ -75,6 +75,28 @@ let recoveryCodeGenerated = null;
 
 // ==================== FUNÇÕES AUXILIARES ====================
 
+function carregarSessao() {
+
+    try {
+
+        const sessaoJSON =
+            localStorage.getItem('fitzoneSessao');
+
+        return sessaoJSON
+            ? JSON.parse(sessaoJSON)
+            : null;
+
+    } catch (error) {
+
+        console.warn(
+            'Não foi possível carregar a sessão:',
+            error
+        );
+
+        return null;
+    }
+}
+
 function gerarCodigoRecuperacao() {
     return Math.floor(
         100000 + Math.random() * 900000
@@ -655,10 +677,8 @@ atualizarPreferenciaEmail(email);
 
 function inicializarLogin() {
 
-    const sessao =
-    JSON.parse(
-        localStorage.getItem('fitzoneSessao')
-    );
+   const sessao =
+    carregarSessao();
 
 if (sessao && sessao.autenticado === true) {
     window.location.href = 'perfil.html';
