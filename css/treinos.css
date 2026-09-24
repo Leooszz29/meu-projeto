@@ -4377,3 +4377,75 @@ body:not(.theme-feminino):not(.theme-masculino)
         font-size: 15px;
     }
 }
+
+/* =========================================
+   NAVEGAÇÃO — SAIR
+========================================= */
+
+.btn-end-session {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+    min-width: 72px;
+    min-height: 38px;
+    padding: 0 14px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(193, 68, 60, 0.35);
+    border-radius: 9px;
+
+    background: rgba(193, 68, 60, 0.06);
+    color: #e88a83;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.1px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+    z-index: 10;
+}
+
+.btn-end-session:hover {
+    background: rgba(193, 68, 60, 0.12);
+    border-color: rgba(232, 138, 131, 0.65);
+    color: #ffaaa3;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 16px rgba(193, 68, 60, 0.12);
+}
+
+.btn-end-session:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: none;
+}
+
+@media (max-width: 520px) {
+
+    .btn-end-session {
+        top: 20px;
+        right: 20px;
+
+        min-width: 64px;
+        min-height: 36px;
+
+        padding: 0 11px;
+
+        font-size: 10px;
+    }
+}
