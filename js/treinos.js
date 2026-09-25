@@ -748,12 +748,8 @@ if (
     const atualizarStatusIndividual = () => {
 
         const progressoAtual =
-            JSON.parse(
-                localStorage.getItem(
-                    'progressoTreino'
-                )
-            ) || {};
-
+    carregarProgressoTreino();
+           
         const seriesConcluidas =
             progressoAtual[workout.id]?.[exerciseKey] || [];
 
