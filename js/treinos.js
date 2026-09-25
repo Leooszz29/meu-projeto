@@ -106,7 +106,9 @@ function obterChaveTreinos() {
 
 function loadWorkouts() {
     try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        return JSON.parse(
+            localStorage.getItem(obterChaveTreinos())
+        ) || [];
     } catch (e) {
         return [];
     }
