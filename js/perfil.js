@@ -380,12 +380,22 @@ function loadCharacter() {
 
     let genero = null;
 
-    try {
+try {
 
+    const sessao =
+        carregarSessao();
+
+    if (
+        sessao &&
+        sessao.email
+    ) {
         genero =
-            localStorage.getItem('generoFitZone');
+            localStorage.getItem(
+                `generoFitZone:${sessao.email.toLowerCase()}`
+            );
+    }
 
-    } catch (error) {
+} catch (error) {
 
     console.warn(
         'Não foi possível carregar o gênero:',
