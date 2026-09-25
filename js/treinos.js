@@ -306,7 +306,7 @@ startBtn.textContent = '▶ Iniciar treino';
 // VERIFICA SE ESTE TREINO JÁ ESTÁ SELECIONADO
 
 const treinoAtivo =
-    JSON.parse(localStorage.getItem('treinoAtivo'));
+    carregarTreinoAtivo();
 
 if (
     treinoAtivo &&
