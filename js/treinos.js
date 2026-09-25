@@ -119,7 +119,9 @@ function carregarHistoricoTreinos() {
     try {
 
         const historicoJSON =
-            localStorage.getItem('historicoTreinos');
+            localStorage.getItem(
+    obterChaveHistoricoTreinos()
+);
 
         return historicoJSON
             ? JSON.parse(historicoJSON)
