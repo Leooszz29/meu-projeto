@@ -2146,9 +2146,9 @@ const resumoExercicios =
 
     // Salva o histórico atualizado
     localStorage.setItem(
-        'historicoTreinos',
-        JSON.stringify(historico)
-    );
+    obterChaveHistoricoTreinos(),
+    JSON.stringify(historico)
+);
 
     // Remove o treino ativo após a conclusão
 localStorage.removeItem(
