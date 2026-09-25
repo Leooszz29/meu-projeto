@@ -400,7 +400,7 @@ recoveryContinueBtn.addEventListener('click', () => {
 }
 
     const usuarioSalvo =
-        carregarUsuarioSalvo();
+    carregarUsuarioSalvo(email);
 
     if (
         !usuarioSalvo ||
