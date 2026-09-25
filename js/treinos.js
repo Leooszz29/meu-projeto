@@ -21,6 +21,28 @@ function carregarSessao() {
     }
 }
 
+function carregarTreinoAtivo() {
+
+    try {
+
+        const treinoAtivoJSON =
+            localStorage.getItem('treinoAtivo');
+
+        return treinoAtivoJSON
+            ? JSON.parse(treinoAtivoJSON)
+            : null;
+
+    } catch (error) {
+
+        console.warn(
+            'Não foi possível carregar o treino ativo:',
+            error
+        );
+
+        return null;
+    }
+}
+
 const STORAGE_KEY = 'fitzoneTreinos';
 
 function loadWorkouts() {
