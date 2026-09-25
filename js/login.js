@@ -583,6 +583,10 @@ newPasswordOverlay.setAttribute(
 
 recoveryCodeGenerated = null;
 
+localStorage.removeItem(
+    'emailRecuperacao'
+);
+
 resetarCamposNovaSenha();
     
 recoveryCode.value = '';
