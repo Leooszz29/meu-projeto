@@ -2132,7 +2132,9 @@ const resumoExercicios =
     );
 
     // Remove o treino ativo após a conclusão
-    localStorage.removeItem('treinoAtivo');
+localStorage.removeItem(
+    obterChaveTreinoAtivo()
+);
 
     // Abre o modal de sucesso
     document
