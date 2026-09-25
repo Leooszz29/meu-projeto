@@ -485,8 +485,7 @@ verifyRecoveryCodeBtn.addEventListener('click', () => {
         'false'
     );
 
-    newPassword.value = '';
-    confirmNewPassword.value = '';
+    resetarCamposNovaSenha();
 
     newPasswordError.classList.remove('show');
 
