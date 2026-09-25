@@ -419,13 +419,13 @@ if (
 startBtn.addEventListener('click', () => {
 
     // SALVA O TREINO SELECIONADO
-    localStorage.setItem(
-        'treinoAtivo',
-        JSON.stringify({
-            id: workout.id,
-            nome: workout.nome
-        })
-    );
+localStorage.setItem(
+    obterChaveTreinoAtivo(),
+    JSON.stringify({
+        id: workout.id,
+        nome: workout.nome
+    })
+);
 
 
     // REMOVE A SELEÇÃO VISUAL DOS OUTROS CARDS
