@@ -943,13 +943,9 @@ function atualizarRodadaGrupo() {
             (item.tipoExecucao || 'individual') === tipoExecucao
         );
     const progressoAtual =
-    JSON.parse(
-        localStorage.getItem(
-            'progressoTreino'
-        )
-    ) || {};
+    carregarProgressoTreino();
 
-    let rodadasConcluidas = 0;
+let rodadasConcluidas = 0;
 
     for (
         let rodada = 1;
