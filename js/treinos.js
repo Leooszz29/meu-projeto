@@ -115,7 +115,10 @@ function loadWorkouts() {
 }
 
 function saveWorkouts(workouts) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(workouts));
+    localStorage.setItem(
+        obterChaveTreinos(),
+        JSON.stringify(workouts)
+    );
 }
 
 function uid() {
