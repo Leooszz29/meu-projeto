@@ -1800,11 +1800,7 @@ document.getElementById(
     // Calcula o total de séries
 // e quantas foram concluídas
 const progressoTreino =
-    JSON.parse(
-        localStorage.getItem(
-            'progressoTreino'
-        )
-    ) || {};
+    carregarProgressoTreino();
 
 let totalSeries = 0;
 let seriesConcluidas = 0;
