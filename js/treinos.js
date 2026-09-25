@@ -89,6 +89,21 @@ function carregarHistoricoTreinos() {
 
 const STORAGE_KEY = 'fitzoneTreinos';
 
+function obterChaveTreinos() {
+
+    const sessao =
+        carregarSessao();
+
+    if (
+        !sessao ||
+        !sessao.email
+    ) {
+        return STORAGE_KEY;
+    }
+
+    return `${STORAGE_KEY}:${sessao.email.toLowerCase()}`;
+}
+
 function loadWorkouts() {
     try {
         return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
