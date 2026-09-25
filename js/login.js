@@ -704,6 +704,10 @@ atualizarPreferenciaEmail(email);
     })
 );
     const generoSelecionado =
+    usuarioSalvo.genero ||
+    localStorage.getItem(
+        `generoFitZone:${email.toLowerCase()}`
+    ) ||
     localStorage.getItem(
         'generoFitZone'
     );
