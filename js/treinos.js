@@ -422,9 +422,7 @@ function renderActiveTraining(workout) {
     // CARREGA O PROGRESSO DAS SÉRIES
 
 const progressoTreino =
-    JSON.parse(
-        localStorage.getItem('progressoTreino')
-    ) || {};
+    carregarProgressoTreino();
 
 const progressoAtual =
     progressoTreino[workout.id] || {};
