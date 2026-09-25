@@ -44,7 +44,7 @@ function obterChavePerfil() {
 
 function loadProfile() {
     try {
-        const saved = localStorage.getItem(PROFILE_STORAGE_KEY);
+        const saved = localStorage.getItem(obterChavePerfil());
 
         if (!saved) {
             return {};
