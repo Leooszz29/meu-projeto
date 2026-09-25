@@ -99,6 +99,21 @@ function carregarProgressoTreino() {
     }
 }
 
+function obterChaveHistoricoTreinos() {
+
+    const sessao =
+        carregarSessao();
+
+    if (
+        !sessao ||
+        !sessao.email
+    ) {
+        return 'historicoTreinos';
+    }
+
+    return `historicoTreinos:${sessao.email.toLowerCase()}`;
+}
+
 function carregarHistoricoTreinos() {
 
     try {
