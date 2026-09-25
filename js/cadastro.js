@@ -105,12 +105,25 @@
             }
             // Salvar dados do usuário no navegador
             const usuario = {
-            nome: name,
-            email: email,
-            senha: password
+    nome: name,
+    email: email,
+    senha: password
 };
-                
-localStorage.setItem('usuario', JSON.stringify(usuario));
+
+// Busca as contas já cadastradas
+const usuarios =
+    JSON.parse(
+        localStorage.getItem('usuarios')
+    ) || [];
+
+// Adiciona a nova conta sem apagar as anteriores
+usuarios.push(usuario);
+
+// Salva novamente a lista completa
+localStorage.setItem(
+    'usuarios',
+    JSON.stringify(usuarios)
+);
 
             // Desabilitar botão durante envio
             submitBtn.disabled = true;
