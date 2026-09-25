@@ -1684,6 +1684,20 @@ function deleteExercise(workoutId, exerciseId) {
 
 // ==================== CALENDÁRIO DE CHECK-IN ====================
 const CHECKIN_STORAGE_KEY = 'fitzoneCheckins';
+function obterChaveCheckins() {
+
+    const sessao =
+        carregarSessao();
+
+    if (
+        !sessao ||
+        !sessao.email
+    ) {
+        return CHECKIN_STORAGE_KEY;
+    }
+
+    return `${CHECKIN_STORAGE_KEY}:${sessao.email.toLowerCase()}`;
+}
 const weekdayHeaders = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 const monthNames = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
