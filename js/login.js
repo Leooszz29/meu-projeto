@@ -158,24 +158,25 @@ function validarCredenciais(usuarioSalvo, email, password) {
 
 
 // Adicione daqui para baixo
-function carregarUsuarioSalvo() {
+function carregarUsuarioSalvo(email) {
 
     try {
 
-        const usuarioJSON =
-            localStorage.getItem('usuario');
+        const usuariosJSON =
+            localStorage.getItem('usuarios');
 
-        return usuarioJSON
-            ? JSON.parse(usuarioJSON)
-            : null;
+        const usuarios =
+            usuariosJSON
+                ? JSON.parse(usuariosJSON)
+                : [];
+
+        return usuarios.find(
+            usuario =>
+                usuario.email.toLowerCase() ===
+                email.toLowerCase()
+        ) || null;
 
     } catch (error) {
-
-        console.error(
-            'Erro ao carregar usuário:',
-            error
-        );
-
         return null;
     }
 }
