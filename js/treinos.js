@@ -1717,7 +1717,11 @@ document.getElementById('btnToggleCalendar').addEventListener('click', function 
 
 function loadCheckins() {
     try {
-        return JSON.parse(localStorage.getItem(CHECKIN_STORAGE_KEY)) || {};
+        return JSON.parse(
+    localStorage.getItem(
+        obterChaveCheckins()
+    )
+) || {};
     } catch (e) {
         return {};
     }
