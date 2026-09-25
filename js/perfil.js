@@ -37,6 +37,20 @@ function obterChavePerfil() {
     return `${PROFILE_STORAGE_KEY}:${sessao.email.toLowerCase()}`;
 }
 
+function obterChaveHistoricoTreinos() {
+
+    const sessao =
+        carregarSessao();
+
+    if (
+        !sessao ||
+        !sessao.email
+    ) {
+        return 'historicoTreinos';
+    }
+
+    return `historicoTreinos:${sessao.email.toLowerCase()}`;
+}
 
 // ========================================
 // CARREGAR PERFIL SALVO
