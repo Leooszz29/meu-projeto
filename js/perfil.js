@@ -1700,11 +1700,11 @@ function initializeHistoryDeleteModal() {
             }
 
             const historico =
-                JSON.parse(
-                    localStorage.getItem(
-                        'historicoTreinos'
-                    )
-                ) || [];
+    JSON.parse(
+        localStorage.getItem(
+            obterChaveHistoricoTreinos()
+        )
+    ) || [];
 
             if (
                 historyDeleteIndex < 0 ||
