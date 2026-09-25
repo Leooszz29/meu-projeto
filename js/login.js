@@ -629,7 +629,7 @@ togglePassword.addEventListener(
                 
            // Buscar usuário cadastrado
 const usuarioSalvo =
-    carregarUsuarioSalvo();
+    carregarUsuarioSalvo(email);
             
 // Validar credenciais
 if (
