@@ -1720,9 +1720,9 @@ function initializeHistoryDeleteModal() {
             );
 
             localStorage.setItem(
-                'historicoTreinos',
-                JSON.stringify(historico)
-            );
+    obterChaveHistoricoTreinos(),
+    JSON.stringify(historico)
+);
 
             closeHistoryDeleteModal();
 
