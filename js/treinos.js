@@ -43,6 +43,28 @@ function carregarTreinoAtivo() {
     }
 }
 
+function carregarProgressoTreino() {
+
+    try {
+
+        const progressoJSON =
+            localStorage.getItem('progressoTreino');
+
+        return progressoJSON
+            ? JSON.parse(progressoJSON)
+            : {};
+
+    } catch (error) {
+
+        console.warn(
+            'Não foi possível carregar o progresso do treino:',
+            error
+        );
+
+        return {};
+    }
+}
+
 const STORAGE_KEY = 'fitzoneTreinos';
 
 function loadWorkouts() {
