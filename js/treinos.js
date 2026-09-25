@@ -756,7 +756,7 @@ for (
 
 
        localStorage.setItem(
-    'progressoTreino',
+    obterChaveProgressoTreino(),
     JSON.stringify(progressoSalvo)
 );
 
