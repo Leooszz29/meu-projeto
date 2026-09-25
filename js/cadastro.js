@@ -116,6 +116,20 @@ const usuarios =
         localStorage.getItem('usuarios')
     ) || [];
 
+const emailJaCadastrado =
+    usuarios.some(
+        usuarioCadastrado =>
+            usuarioCadastrado.email.toLowerCase() ===
+            email
+    );
+
+if (emailJaCadastrado) {
+    showError(
+        'Este e-mail já está cadastrado.'
+    );
+    return;
+}
+
 // Adiciona a nova conta sem apagar as anteriores
 usuarios.push(usuario);
 
