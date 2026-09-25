@@ -68,7 +68,7 @@ function loadProfile() {
 function saveProfile(data) {
     try {
         localStorage.setItem(
-            PROFILE_STORAGE_KEY,
+            obterChavePerfil(),
             JSON.stringify(data)
         );
 
