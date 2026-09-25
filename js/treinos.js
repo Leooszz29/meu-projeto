@@ -1754,7 +1754,7 @@ document.getElementById('btnFinishWorkout').addEventListener('click', () => {
 
     // Busca o treino selecionado
     const treinoAtivo =
-        JSON.parse(localStorage.getItem('treinoAtivo'));
+    carregarTreinoAtivo();
 
     // Impede finalizar sem selecionar um treino
    if (!treinoAtivo) {
