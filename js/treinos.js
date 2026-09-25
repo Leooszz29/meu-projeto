@@ -645,11 +645,7 @@ for (
         // BUSCA O PROGRESSO MAIS RECENTE
 
         const progressoSalvo =
-            JSON.parse(
-                localStorage.getItem(
-                    'progressoTreino'
-                )
-            ) || {};
+    carregarProgressoTreino();
 
 
         if (!progressoSalvo[workout.id]) {
