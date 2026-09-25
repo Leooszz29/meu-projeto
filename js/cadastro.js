@@ -107,7 +107,8 @@
             const usuario = {
     nome: name,
     email: email,
-    senha: password
+    senha: password,
+    genero: localStorage.getItem('generoFitZone')
 };
 
 // Busca as contas já cadastradas
