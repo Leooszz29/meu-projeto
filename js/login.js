@@ -552,10 +552,27 @@ const usuarioSalvo =
 
     usuarioSalvo.senha = novaSenha;
 
-    localStorage.setItem(
-        'usuario',
-        JSON.stringify(usuarioSalvo)
+const usuarios =
+    JSON.parse(
+        localStorage.getItem('usuarios')
+    ) || [];
+
+const indiceUsuario =
+    usuarios.findIndex(
+        usuario =>
+            usuario.email.toLowerCase() ===
+            emailRecuperacao.toLowerCase()
     );
+
+if (indiceUsuario !== -1) {
+    usuarios[indiceUsuario] =
+        usuarioSalvo;
+
+    localStorage.setItem(
+        'usuarios',
+        JSON.stringify(usuarios)
+    );
+}
 
     newPasswordOverlay.classList.remove('show');
 
