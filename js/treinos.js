@@ -1728,7 +1728,10 @@ function loadCheckins() {
 }
 
 function saveCheckins(data) {
-    localStorage.setItem(CHECKIN_STORAGE_KEY, JSON.stringify(data));
+    localStorage.setItem(
+        obterChaveCheckins(),
+        JSON.stringify(data)
+    );
 }
 
 function calDateKey(y, m, d) {
