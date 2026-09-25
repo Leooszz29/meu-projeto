@@ -65,6 +65,28 @@ function carregarProgressoTreino() {
     }
 }
 
+function carregarHistoricoTreinos() {
+
+    try {
+
+        const historicoJSON =
+            localStorage.getItem('historicoTreinos');
+
+        return historicoJSON
+            ? JSON.parse(historicoJSON)
+            : [];
+
+    } catch (error) {
+
+        console.warn(
+            'Não foi possível carregar o histórico de treinos:',
+            error
+        );
+
+        return [];
+    }
+}
+
 const STORAGE_KEY = 'fitzoneTreinos';
 
 function loadWorkouts() {
