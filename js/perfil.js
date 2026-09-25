@@ -666,9 +666,11 @@ function loadWorkoutHistory() {
     }
 
     const historico =
-        JSON.parse(
-            localStorage.getItem('historicoTreinos')
-        ) || [];
+    JSON.parse(
+        localStorage.getItem(
+            obterChaveHistoricoTreinos()
+        )
+    ) || [];
 
     // RESUMO GERAL DO HISTÓRICO
 
