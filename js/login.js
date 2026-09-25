@@ -269,6 +269,12 @@ passwordRecoveryClose.addEventListener('click', () => {
         'aria-hidden',
         'true'
     );
+
+    recoveryEmail.value = '';
+
+recoveryError.classList.remove('show');
+recoveryError.textContent = '';
+    
 });
 
 recoveryCode.addEventListener('input', () => {
