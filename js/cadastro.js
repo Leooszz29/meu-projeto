@@ -71,7 +71,10 @@
             clearError();
 
             const name = nameInput.value.trim();
-            const email = emailInput.value.trim();
+                
+            const email =
+    emailInput.value.trim().toLowerCase();
+                
             const password = passwordInput.value;
             const confirmPassword = confirmPasswordInput.value;
 
