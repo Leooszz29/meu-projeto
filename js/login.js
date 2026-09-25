@@ -403,18 +403,23 @@ recoveryContinueBtn.addEventListener('click', () => {
     carregarUsuarioSalvo(email);
 
     if (
-        !usuarioSalvo ||
-        usuarioSalvo.email.toLowerCase() !== email
-    ) {
-        recoveryError.textContent =
-            'E-mail não cadastrado.';
+    !usuarioSalvo ||
+    usuarioSalvo.email.toLowerCase() !== email
+) {
+    recoveryError.textContent =
+        'E-mail não cadastrado.';
 
-        recoveryError.classList.add('show');
-        return;
-    }
+    recoveryError.classList.add('show');
+    return;
+}
 
-        recoveryCodeGenerated =
-        gerarCodigoRecuperacao();
+localStorage.setItem(
+    'emailRecuperacao',
+    email
+);
+
+recoveryCodeGenerated =
+    gerarCodigoRecuperacao();
 
     console.log(
         'Código de recuperação (TESTE):',
