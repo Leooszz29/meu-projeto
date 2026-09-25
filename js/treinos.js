@@ -80,7 +80,9 @@ function carregarProgressoTreino() {
     try {
 
         const progressoJSON =
-            localStorage.getItem('progressoTreino');
+            localStorage.getItem(
+    obterChaveProgressoTreino()
+);
 
         return progressoJSON
             ? JSON.parse(progressoJSON)
