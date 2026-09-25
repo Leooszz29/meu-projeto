@@ -21,6 +21,21 @@ function carregarSessao() {
     }
 }
 
+function obterChaveTreinoAtivo() {
+
+    const sessao =
+        carregarSessao();
+
+    if (
+        !sessao ||
+        !sessao.email
+    ) {
+        return 'treinoAtivo';
+    }
+
+    return `treinoAtivo:${sessao.email.toLowerCase()}`;
+}
+
 function carregarTreinoAtivo() {
 
     try {
