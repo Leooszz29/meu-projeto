@@ -60,6 +60,21 @@ function carregarTreinoAtivo() {
     }
 }
 
+function obterChaveProgressoTreino() {
+
+    const sessao =
+        carregarSessao();
+
+    if (
+        !sessao ||
+        !sessao.email
+    ) {
+        return 'progressoTreino';
+    }
+
+    return `progressoTreino:${sessao.email.toLowerCase()}`;
+}
+
 function carregarProgressoTreino() {
 
     try {
