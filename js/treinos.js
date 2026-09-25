@@ -2003,8 +2003,8 @@ if (exerciciosIncompletos > 0) {
 
     
     // Busca o histórico existente
-    const historico =
-        JSON.parse(localStorage.getItem('historicoTreinos')) || [];
+const historico =
+    carregarHistoricoTreinos();
 
     // Monta o resumo detalhado dos exercícios
 const resumoExercicios =
