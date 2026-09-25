@@ -703,6 +703,17 @@ atualizarPreferenciaEmail(email);
         email: email
     })
 );
+    const generoSelecionado =
+    localStorage.getItem(
+        'generoFitZone'
+    );
+
+if (generoSelecionado) {
+    localStorage.setItem(
+        `generoFitZone:${email.toLowerCase()}`,
+        generoSelecionado
+    );
+}
 
     // Redirecionar para o perfil
     setTimeout(() => {
