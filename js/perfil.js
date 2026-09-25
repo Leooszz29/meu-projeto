@@ -22,6 +22,22 @@ function carregarSessao() {
     }
 }
 
+function obterChavePerfil() {
+
+    const sessao =
+        carregarSessao();
+
+    if (
+        !sessao ||
+        !sessao.email
+    ) {
+        return PROFILE_STORAGE_KEY;
+    }
+
+    return `${PROFILE_STORAGE_KEY}:${sessao.email.toLowerCase()}`;
+}
+
+
 // ========================================
 // CARREGAR PERFIL SALVO
 // ========================================
