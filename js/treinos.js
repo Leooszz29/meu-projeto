@@ -40,8 +40,10 @@ function carregarTreinoAtivo() {
 
     try {
 
-        const treinoAtivoJSON =
-            localStorage.getItem('treinoAtivo');
+       const treinoAtivoJSON =
+    localStorage.getItem(
+        obterChaveTreinoAtivo()
+    );
 
         return treinoAtivoJSON
             ? JSON.parse(treinoAtivoJSON)
