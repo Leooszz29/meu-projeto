@@ -532,8 +532,15 @@ saveNewPasswordBtn.addEventListener('click', () => {
         return;
     }
 
-    const usuarioSalvo =
-        carregarUsuarioSalvo();
+    const emailRecuperacao =
+    localStorage.getItem(
+        'emailRecuperacao'
+    );
+
+const usuarioSalvo =
+    carregarUsuarioSalvo(
+        emailRecuperacao
+    );
 
     if (!usuarioSalvo) {
         newPasswordError.textContent =
