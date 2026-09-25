@@ -104,14 +104,31 @@ function fillForm() {
 
     const perfil = loadProfile();
 
-    let usuario = {};
+   let usuario = {};
 
-    try {
+try {
+    const sessao =
+        carregarSessao();
+
+    const usuarios =
+        JSON.parse(
+            localStorage.getItem('usuarios')
+        ) || [];
+
+    if (sessao && sessao.email) {
         usuario =
-            JSON.parse(localStorage.getItem('usuario')) || {};
-    } catch (error) {
-        console.warn('Não foi possível carregar o usuário:', error);
+            usuarios.find(
+                usuarioCadastrado =>
+                    usuarioCadastrado.email.toLowerCase() ===
+                    sessao.email.toLowerCase()
+            ) || {};
     }
+} catch (error) {
+    console.warn(
+        'Não foi possível carregar o usuário:',
+        error
+    );
+}
 
 
     // Nome:
