@@ -1310,6 +1310,19 @@ textarea::placeholder{
     transform: translateY(-1px);
 }
 
+.history-details-btn:focus-visible {
+    outline: none;
+
+    background:
+        rgba(var(--accent-rgb), 0.09);
+
+    border-color:
+        rgba(var(--accent-rgb), 0.28);
+
+    box-shadow:
+        0 0 0 3px rgba(var(--accent-rgb), 0.12);
+}
+
 .history-details-btn:disabled {
     opacity: 0.35;
     cursor: not-allowed;
