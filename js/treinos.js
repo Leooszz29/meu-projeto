@@ -1264,6 +1264,17 @@ function closeWorkoutModal() {
 }
 
 document.getElementById('btnNewWorkout').addEventListener('click', () => openWorkoutModal(null));
+
+const btnEmptyNewWorkout =
+    document.getElementById('btnEmptyNewWorkout');
+
+if (btnEmptyNewWorkout) {
+    btnEmptyNewWorkout.addEventListener(
+        'click',
+        () => openWorkoutModal(null)
+    );
+}
+
 document.getElementById('workoutCancelBtn').addEventListener('click', closeWorkoutModal);
 document.getElementById('workoutModalOverlay').addEventListener('click', (e) => {
     if (e.target.id === 'workoutModalOverlay') closeWorkoutModal();
