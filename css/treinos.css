@@ -435,6 +435,59 @@ body:not(.theme-feminino):not(.theme-masculino)
     text-align:center;
 }
 
+/* AÇÃO DO ESTADO VAZIO */
+
+.empty-state-action {
+    min-height: 44px;
+
+    margin-top: 22px;
+    padding: 0 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.32);
+    border-radius: 11px;
+
+    background: rgba(var(--accent-rgb), 0.10);
+    color: var(--accent);
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.empty-state-action span {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.empty-state-action:hover {
+    transform: translateY(-2px);
+
+    background: rgba(var(--accent-rgb), 0.16);
+    border-color: rgba(var(--accent-rgb), 0.55);
+
+    box-shadow:
+        0 8px 24px rgba(var(--accent-rgb), 0.12);
+}
+
+.empty-state-action:active {
+    transform: translateY(0) scale(0.98);
+}
 
 /* HOVER */
 
