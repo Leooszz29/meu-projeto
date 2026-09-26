@@ -3008,10 +3008,26 @@ textarea::placeholder{
 }
 
 .history-completion-info strong {
+    min-width: 48px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 5px 9px;
+
+    border: 1px solid rgba(53, 230, 122, 0.22);
+    border-radius: 999px;
+
+    background: rgba(53, 230, 122, 0.08);
+
     color: #35e67a;
 
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 900;
+    line-height: 1;
+
+    letter-spacing: 0.3px;
 }
 
 
