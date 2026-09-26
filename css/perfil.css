@@ -632,16 +632,27 @@ textarea::placeholder{
 }
 
 .summary-eyebrow {
-    display: block;
+    width: max-content;
 
-    margin-bottom: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 8px;
+    padding: 5px 9px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.20);
+    border-radius: 999px;
+
+    background: rgba(var(--accent-rgb), 0.06);
 
     color: var(--accent);
 
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 800;
+    line-height: 1;
 
-    letter-spacing: 1.5px;
+    letter-spacing: 1.4px;
     text-transform: uppercase;
 }
 
