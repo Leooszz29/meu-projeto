@@ -2261,9 +2261,6 @@ if (btnEndSession) {
     );
 }
 
-    const sessao =
-    carregarSessao();
-
 const genero =
     sessao && sessao.email
         ? localStorage.getItem(
