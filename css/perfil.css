@@ -231,15 +231,45 @@ h1{
 }
 
 .form-section-title{
+    position:relative;
+
+    display:flex;
+    align-items:center;
+    gap:9px;
+
     font-size:11px;
-    font-weight:700;
+    font-weight:800;
     color:var(--accent);
+
     text-transform:uppercase;
     letter-spacing:1.5px;
-    margin:22px 0 14px;
-    padding-bottom:8px;
+
+    margin:24px 0 16px;
+    padding-bottom:10px;
+
     border-bottom:1px solid rgba(var(--accent-rgb), 0.15);
 }
+
+.form-section-title::before{
+    content:"";
+
+    width:4px;
+    height:16px;
+
+    flex-shrink:0;
+
+    border-radius:999px;
+
+    background:linear-gradient(
+        180deg,
+        var(--accent),
+        var(--accent-alt)
+    );
+
+    box-shadow:
+        0 0 10px rgba(var(--accent-rgb), 0.28);
+}
+
 .form-section-title:first-child{
     margin-top:0;
 }
