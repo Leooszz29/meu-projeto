@@ -12,7 +12,28 @@
 <body>
 
 <div class="page">
-    <header>
+    <nav class="app-nav" aria-label="Navegação principal">
+
+    <div class="app-nav-brand">
+        FITZONE
+    </div>
+
+    <div class="app-nav-actions">
+
+        <a
+            href="perfil.html"
+            class="app-nav-link active"
+            aria-current="page"
+        >
+            Perfil
+        </a>
+
+        <a
+            href="treinos.html"
+            class="app-nav-link"
+        >
+            Treinos
+        </a>
 
         <button
             type="button"
@@ -22,7 +43,13 @@
             Sair
         </button>
 
-        <div class="character-preview">
+    </div>
+
+</nav>
+
+<header>
+
+    <div class="character-preview">
             <img id="characterImg" src="" alt="Personagem selecionado" style="display:none;">
         </div>
 
