@@ -1721,6 +1721,12 @@ document.getElementById('btnToggleCalendar').addEventListener('click', function 
     const wrapper = document.getElementById('calendarWrapper');
     const isOpen = wrapper.classList.toggle('show');
     this.classList.toggle('open', isOpen);
+
+    this.setAttribute(
+    'aria-expanded',
+    String(isOpen)
+);
+    
     document.getElementById('toggleCalendarLabel').textContent = isOpen
         ? 'Ocultar calendário de check-in'
         : 'Mostrar calendário de check-in';
