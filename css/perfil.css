@@ -397,6 +397,49 @@ textarea::placeholder{
         0 4px 12px rgba(var(--accent-rgb), 0.25);
 }
 
+/* ESTADO DE PERFIL SALVO */
+
+.btn-save-profile.saved {
+    cursor: default;
+
+    background: linear-gradient(
+        135deg,
+        #2e9d68,
+        #48b97d
+    );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 6px 20px rgba(46, 157, 104, 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.18);
+
+    transform: none;
+    filter: none;
+}
+
+.btn-save-profile.saved .check-icon {
+    display: inline-block;
+    margin-right: 5px;
+
+    font-size: 16px;
+    font-weight: 900;
+
+    animation: saveCheckIn 0.28s ease-out;
+}
+
+@keyframes saveCheckIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 .success-message{
     display:none;
     background:rgba(var(--accent-rgb), 0.10);
