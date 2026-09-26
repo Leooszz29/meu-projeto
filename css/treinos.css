@@ -1334,6 +1334,14 @@ body:not(.theme-feminino):not(.theme-masculino)
     transform: translateY(0);
 }
 
+.btn-start-workout:focus-visible {
+    outline: none;
+
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 3px rgba(var(--accent-rgb), 0.14);
+}
 
 /* TREINO SELECIONADO */
 
