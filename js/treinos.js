@@ -207,15 +207,27 @@ function renderWorkouts() {
         actionsEl.className = 'workout-actions';
 
         const editBtn = document.createElement('button');
-        editBtn.className = 'icon-btn';
-        editBtn.title = 'Editar nome do treino';
-        editBtn.innerHTML = '✎';
+
+editBtn.type = 'button';
+editBtn.className = 'icon-btn';
+editBtn.title = 'Editar nome do treino';
+editBtn.setAttribute(
+    'aria-label',
+    'Editar nome do treino'
+);
+editBtn.innerHTML = '✎';
         editBtn.addEventListener('click', () => openWorkoutModal(workout.id));
 
         const delBtn = document.createElement('button');
-        delBtn.className = 'icon-btn danger';
-        delBtn.title = 'Excluir treino';
-        delBtn.innerHTML = '🗑';
+
+delBtn.type = 'button';
+delBtn.className = 'icon-btn danger';
+delBtn.title = 'Excluir treino';
+delBtn.setAttribute(
+    'aria-label',
+    'Excluir treino'
+);
+delBtn.innerHTML = '🗑';
         delBtn.addEventListener('click', () => deleteWorkout(workout.id));
 
         actionsEl.appendChild(editBtn);
