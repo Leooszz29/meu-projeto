@@ -2042,8 +2042,20 @@ cell.setAttribute(
         grid.appendChild(cell);
     }
 
-    document.getElementById('statMes').textContent = checkinsNoMes;
+       document.getElementById('statMes').textContent = checkinsNoMes;
     document.getElementById('statSequencia').textContent = calcularSequencia(data);
+
+    const calendarWrapper =
+        document.getElementById('calendarWrapper');
+
+    const calendarIsOpen =
+        calendarWrapper.classList.contains('show');
+
+    calendarWrapper
+        .querySelectorAll('button, [tabindex]')
+        .forEach((element) => {
+            element.tabIndex = calendarIsOpen ? 0 : -1;
+        });
 }
 
 function calcularSequencia(data) {
