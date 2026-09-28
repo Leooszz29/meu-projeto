@@ -417,6 +417,8 @@ groupHeader.appendChild(groupStatus);
 
 const startBtn = document.createElement('button');
 
+        startBtn.type = 'button';
+
 startBtn.className = 'btn-start-workout';
 
 startBtn.textContent = '▶ Iniciar treino';
