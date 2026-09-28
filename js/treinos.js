@@ -2011,6 +2011,8 @@ document.getElementById('btnFinishWorkout').addEventListener('click', () => {
         .getElementById('selectWorkoutModalOverlay')
         .classList.add('show');
 
+    document.getElementById('selectWorkoutOkBtn').focus();
+
     return;
 }
     
