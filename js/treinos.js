@@ -2303,9 +2303,11 @@ localStorage.removeItem(
 );
 
     // Abre o modal de sucesso
-    document
-        .getElementById('finishModalOverlay')
-        .classList.add('show');
+document
+    .getElementById('finishModalOverlay')
+    .classList.add('show');
+
+document.getElementById('finishOkBtn').focus();
 });
 
 document.getElementById('finishOkBtn').addEventListener('click', () => {
