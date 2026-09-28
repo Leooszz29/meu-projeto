@@ -1942,6 +1942,12 @@ document.getElementById('btnToggleCalendar').addEventListener('click', function 
     document.getElementById('toggleCalendarLabel').textContent = isOpen
         ? 'Ocultar calendário de check-in'
         : 'Mostrar calendário de check-in';
+
+        wrapper
+        .querySelectorAll('button, [tabindex]')
+        .forEach((element) => {
+            element.tabIndex = isOpen ? 0 : -1;
+        });
 });
 
 function loadCheckins() {
