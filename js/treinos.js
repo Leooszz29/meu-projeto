@@ -1836,8 +1836,19 @@ function openCheckinModal(key, dayNum) {
     document.getElementById('checkinModalDate').textContent = `${weekday}, ${d} de ${monthNames[m - 1]}`;
 
     const toggle = document.getElementById('checkinToggle');
-    toggle.classList.toggle('active', !!entry.checked);
-    toggle.dataset.checked = entry.checked ? 'true' : 'false';
+
+toggle.classList.toggle(
+    'active',
+    !!entry.checked
+);
+
+toggle.dataset.checked =
+    entry.checked ? 'true' : 'false';
+
+toggle.setAttribute(
+    'aria-checked',
+    entry.checked ? 'true' : 'false'
+);
 
     document.getElementById('checkinTreinoInput').value = entry.treino || '';
 
