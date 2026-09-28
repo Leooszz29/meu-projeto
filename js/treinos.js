@@ -1292,6 +1292,19 @@ function closeWorkoutModal() {
     editingWorkoutId = null;
 }
 
+document.addEventListener('keydown', (event) => {
+
+    if (
+        event.key === 'Escape' &&
+        document
+            .getElementById('workoutModalOverlay')
+            .classList.contains('show')
+    ) {
+        closeWorkoutModal();
+    }
+
+});
+
 document.getElementById('btnNewWorkout').addEventListener('click', () => openWorkoutModal(null));
 
 const btnEmptyNewWorkout =
