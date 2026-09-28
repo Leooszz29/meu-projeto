@@ -405,6 +405,9 @@ groupHeader.appendChild(groupStatus);
         }
 
         const addExBtn = document.createElement('button');
+
+        addExBtn.type = 'button';
+        
         addExBtn.className = 'btn-add-exercise';
         addExBtn.textContent = '+ Adicionar exercício';
         addExBtn.addEventListener('click', () => openExerciseModal(workout.id, null));
