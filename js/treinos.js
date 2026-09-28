@@ -1357,6 +1357,19 @@ function closeConfirmModal() {
     pendingDeleteAction = null;
 }
 
+document.addEventListener('keydown', (event) => {
+
+    if (
+        event.key === 'Escape' &&
+        document
+            .getElementById('confirmModalOverlay')
+            .classList.contains('show')
+    ) {
+        closeConfirmModal();
+    }
+
+});
+
 document.getElementById('confirmCancelBtn').addEventListener('click', closeConfirmModal);
 document.getElementById('confirmModalOverlay').addEventListener('click', (e) => {
     if (e.target.id === 'confirmModalOverlay') closeConfirmModal();
