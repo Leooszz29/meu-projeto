@@ -360,7 +360,13 @@
 
 <!-- Modal Confirmação de exclusão -->
 <div class="modal-overlay" id="confirmModalOverlay">
-    <div class="modal">
+    <div
+        class="modal"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="confirmModalTitle"
+        aria-describedby="confirmModalText"
+    >
         <h2 id="confirmModalTitle">Confirmar exclusão</h2>
         <p id="confirmModalText" class="confirm-modal-text"></p>
         <div class="modal-actions">
