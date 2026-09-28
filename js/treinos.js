@@ -2521,6 +2521,16 @@ document
 document.getElementById('finishOkBtn').focus();
 });
 
+function closeFinishModal() {
+    document
+        .getElementById('finishModalOverlay')
+        .classList.remove('show');
+
+    document
+        .getElementById('btnFinishWorkout')
+        .focus();
+}
+
 document.getElementById('finishOkBtn').addEventListener('click', () => {
     document.getElementById('finishModalOverlay').classList.remove('show');
     window.location.href = 'perfil.html';
@@ -2528,17 +2538,11 @@ document.getElementById('finishOkBtn').addEventListener('click', () => {
 
 document
     .getElementById('finishCloseBtn')
-    .addEventListener('click', () => {
-
-        document
-            .getElementById('finishModalOverlay')
-            .classList.remove('show');
-
-    });
+    .addEventListener('click', closeFinishModal);
 
 document.getElementById('finishModalOverlay').addEventListener('click', (e) => {
     if (e.target.id === 'finishModalOverlay') {
-        document.getElementById('finishModalOverlay').classList.remove('show');
+        closeFinishModal();
     }
 });
 
@@ -2550,9 +2554,7 @@ document.addEventListener('keydown', (event) => {
             .getElementById('finishModalOverlay')
             .classList.contains('show')
     ) {
-        document
-            .getElementById('finishModalOverlay')
-            .classList.remove('show');
+        closeFinishModal();
     }
 
 });
