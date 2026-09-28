@@ -2600,15 +2600,19 @@ document.addEventListener('keydown', (event) => {
 // MODAL - SELECIONAR TREINO
 // ========================================
 
+function closeSelectWorkoutModal() {
+    document
+        .getElementById('selectWorkoutModalOverlay')
+        .classList.remove('show');
+
+    document
+        .getElementById('btnFinishWorkout')
+        .focus();
+}
+
 document
     .getElementById('selectWorkoutOkBtn')
-    .addEventListener('click', () => {
-
-        document
-            .getElementById('selectWorkoutModalOverlay')
-            .classList.remove('show');
-
-    });
+    .addEventListener('click', closeSelectWorkoutModal);
 
 
 document
@@ -2617,9 +2621,7 @@ document
 
         if (e.target.id === 'selectWorkoutModalOverlay') {
 
-            document
-                .getElementById('selectWorkoutModalOverlay')
-                .classList.remove('show');
+            closeSelectWorkoutModal();
 
         }
 
@@ -2633,9 +2635,7 @@ document.addEventListener('keydown', (event) => {
             .getElementById('selectWorkoutModalOverlay')
             .classList.contains('show')
     ) {
-        document
-            .getElementById('selectWorkoutModalOverlay')
-            .classList.remove('show');
+        closeSelectWorkoutModal();
     }
 
 });
