@@ -1860,10 +1860,23 @@ function closeCheckinModal() {
     calSelectedDateKey = null;
 }
 
-document.getElementById('checkinToggle').addEventListener('click', function () {
-    const isActive = this.classList.toggle('active');
-    this.dataset.checked = isActive ? 'true' : 'false';
-});
+document
+    .getElementById('checkinToggle')
+    .addEventListener('click', function () {
+
+        const isActive =
+            this.classList.toggle('active');
+
+        const checked =
+            isActive ? 'true' : 'false';
+
+        this.dataset.checked = checked;
+
+        this.setAttribute(
+            'aria-checked',
+            checked
+        );
+    });
 
 document.getElementById('checkinCancelBtn').addEventListener('click', closeCheckinModal);
 document.getElementById('checkinModalOverlay').addEventListener('click', (e) => {
