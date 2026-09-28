@@ -2369,6 +2369,21 @@ document
 
     });
 
+document.addEventListener('keydown', (event) => {
+
+    if (
+        event.key === 'Escape' &&
+        document
+            .getElementById('selectWorkoutModalOverlay')
+            .classList.contains('show')
+    ) {
+        document
+            .getElementById('selectWorkoutModalOverlay')
+            .classList.remove('show');
+    }
+
+});
+
 // ==================== INICIALIZAÇÃO ====================
 window.addEventListener('DOMContentLoaded', () => {
 
