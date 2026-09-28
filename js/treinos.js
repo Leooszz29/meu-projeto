@@ -1921,6 +1921,8 @@ toggle.setAttribute(
     document.getElementById('checkinTreinoInput').value = entry.treino || '';
 
     document.getElementById('checkinModalOverlay').classList.add('show');
+
+document.getElementById('checkinToggle').focus();
 }
 
 function closeCheckinModal() {
