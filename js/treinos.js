@@ -1571,6 +1571,19 @@ function closeExerciseModal() {
     editingExerciseCtx = null;
 }
 
+document.addEventListener('keydown', (event) => {
+
+    if (
+        event.key === 'Escape' &&
+        document
+            .getElementById('exerciseModalOverlay')
+            .classList.contains('show')
+    ) {
+        closeExerciseModal();
+    }
+
+});
+
 document.getElementById('exerciseCancelBtn').addEventListener('click', closeExerciseModal);
 document.getElementById('exerciseModalOverlay').addEventListener('click', (e) => {
     if (e.target.id === 'exerciseModalOverlay') closeExerciseModal();
