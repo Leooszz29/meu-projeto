@@ -280,15 +280,27 @@ info.appendChild(typeBadge);
                 exActions.className = 'exercise-actions';
 
                 const exEditBtn = document.createElement('button');
-                exEditBtn.className = 'icon-btn';
-                exEditBtn.title = 'Editar exercício';
-                exEditBtn.innerHTML = '✎';
+
+exEditBtn.type = 'button';
+exEditBtn.className = 'icon-btn';
+exEditBtn.title = 'Editar exercício';
+exEditBtn.setAttribute(
+    'aria-label',
+    'Editar exercício'
+);
+exEditBtn.innerHTML = '✎';
                 exEditBtn.addEventListener('click', () => openExerciseModal(workout.id, ex.id));
 
                 const exDelBtn = document.createElement('button');
-                exDelBtn.className = 'icon-btn danger';
-                exDelBtn.title = 'Remover exercício';
-                exDelBtn.innerHTML = '🗑';
+
+exDelBtn.type = 'button';
+exDelBtn.className = 'icon-btn danger';
+exDelBtn.title = 'Remover exercício';
+exDelBtn.setAttribute(
+    'aria-label',
+    'Remover exercício'
+);
+exDelBtn.innerHTML = '🗑';
                 exDelBtn.addEventListener('click', () => deleteExercise(workout.id, ex.id));
 
                 exActions.appendChild(exEditBtn);
