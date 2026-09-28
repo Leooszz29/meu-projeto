@@ -1474,6 +1474,9 @@ function deleteWorkout(workoutId) {
 }
 
 // ==================== MODAL EXERCÍCIO ====================
+
+let exerciseModalTrigger = null;
+
 function openExerciseModal(workoutId, exerciseId) {
     editingExerciseCtx = { workoutId, exerciseId };
 
@@ -1652,6 +1655,8 @@ if (
 typeInput.onchange =
     updateGroupField;
 
+    exerciseModalTrigger = document.activeElement;
+
 document
     .getElementById('exerciseModalOverlay')
     .classList.add('show');
@@ -1667,6 +1672,11 @@ function closeExerciseModal() {
         .classList.remove('show');
 
     editingExerciseCtx = null;
+
+    if (exerciseModalTrigger) {
+        exerciseModalTrigger.focus();
+        exerciseModalTrigger = null;
+    }
 }
 
 document.addEventListener('keydown', (event) => {
@@ -1685,7 +1695,7 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('keydown', (event) => {
 
     const modal =
-        document.getElementById('exerciseModalOverlay');
+        document;
 
     if (
         event.key !== 'Tab' ||
