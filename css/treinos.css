@@ -1284,6 +1284,15 @@ body:not(.theme-feminino):not(.theme-masculino)
     transform: scale(0.99);
 }
 
+.btn-add-exercise:focus-visible {
+    outline: none;
+
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 3px rgba(var(--accent-rgb), 0.14);
+}
+
 /* =========================================
    INICIAR TREINO
 ========================================= */
