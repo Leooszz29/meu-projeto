@@ -243,7 +243,12 @@
 
 <!-- Modal Treino (criar/editar nome) -->
 <div class="modal-overlay" id="workoutModalOverlay">
-    <div class="modal">
+    <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="workoutModalTitle"
+    >
         <h2 id="workoutModalTitle">Novo treino</h2>
         <label for="workoutNameInput">Nome do treino</label>
         <input type="text" id="workoutNameInput" placeholder="Ex: Peito e Tríceps">
