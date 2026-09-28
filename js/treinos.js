@@ -2022,6 +2022,17 @@ cell.setAttribute(
 );
 
         cell.addEventListener('click', () => openCheckinModal(key, d));
+
+        cell.addEventListener('keydown', (event) => {
+    if (
+        event.key === 'Enter' ||
+        event.key === ' '
+    ) {
+        event.preventDefault();
+        openCheckinModal(key, d);
+    }
+});
+        
         grid.appendChild(cell);
     }
 
