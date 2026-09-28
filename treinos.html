@@ -537,13 +537,18 @@
     <!-- MODAL SELECIONAR TREINO -->
 <div class="modal-overlay" id="selectWorkoutModalOverlay">
 
-    <div class="modal select-workout-modal">
+    <div
+    class="modal select-workout-modal"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="selectWorkoutModalTitle"
+>
 
         <div class="warning-icon">
             !
         </div>
 
-        <h2>Selecione um treino</h2>
+        <h2 id="selectWorkoutModalTitle">Selecione um treino</h2>
 
         <p>
             Antes de finalizar, escolha qual treino
