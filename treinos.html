@@ -402,10 +402,16 @@
         <h2 id="checkinModalTitle">Registrar dia</h2>
         <div class="modal-date" id="checkinModalDate">—</div>
 
-        <div class="checkin-toggle" id="checkinToggle">
-            <span>Fiz check-in hoje</span>
-            <div class="switch"></div>
-        </div>
+        <button
+    type="button"
+    class="checkin-toggle"
+    id="checkinToggle"
+    role="switch"
+    aria-checked="false"
+>
+    <span>Fiz check-in hoje</span>
+    <span class="switch" aria-hidden="true"></span>
+</button>
 
         <label for="checkinTreinoInput">Nome do treino</label>
         <input type="text" id="checkinTreinoInput" placeholder="Ex: Peito e tríceps">
