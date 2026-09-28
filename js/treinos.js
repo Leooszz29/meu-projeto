@@ -1283,13 +1283,22 @@ function openWorkoutModal(workoutId) {
         input.value = '';
     }
 
+    workoutModalTrigger = document.activeElement;
+
     document.getElementById('workoutModalOverlay').classList.add('show');
     input.focus();
 }
 
+let workoutModalTrigger = null;
+
 function closeWorkoutModal() {
     document.getElementById('workoutModalOverlay').classList.remove('show');
     editingWorkoutId = null;
+
+    if (workoutModalTrigger) {
+        workoutModalTrigger.focus();
+        workoutModalTrigger = null;
+    }
 }
 
 document.addEventListener('keydown', (event) => {
