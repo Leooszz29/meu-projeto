@@ -434,7 +434,12 @@
 
 <!-- Modal Treino Finalizado -->
 <div class="modal-overlay" id="finishModalOverlay">
-    <div class="modal finish-modal">
+    <div
+        class="modal finish-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="finishModalTitle"
+    >
         
         <button
     type="button"
@@ -447,7 +452,7 @@
 
         <div class="success-icon">✓</div>
 
-        <h2>Treino concluído!</h2>
+        <h2 id="finishModalTitle">Treino concluído!</h2>
 
         <p class="finish-message">
             Parabéns! Você finalizou o seu treino.
