@@ -1928,6 +1928,19 @@ function closeCheckinModal() {
     calSelectedDateKey = null;
 }
 
+document.addEventListener('keydown', (event) => {
+
+    if (
+        event.key === 'Escape' &&
+        document
+            .getElementById('checkinModalOverlay')
+            .classList.contains('show')
+    ) {
+        closeCheckinModal();
+    }
+
+});
+
 document
     .getElementById('checkinToggle')
     .addEventListener('click', function () {
