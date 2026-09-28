@@ -2325,6 +2325,21 @@ document.getElementById('finishModalOverlay').addEventListener('click', (e) => {
     }
 });
 
+document.addEventListener('keydown', (event) => {
+
+    if (
+        event.key === 'Escape' &&
+        document
+            .getElementById('finishModalOverlay')
+            .classList.contains('show')
+    ) {
+        document
+            .getElementById('finishModalOverlay')
+            .classList.remove('show');
+    }
+
+});
+
 // ========================================
 // MODAL - SELECIONAR TREINO
 // ========================================
