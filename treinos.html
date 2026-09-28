@@ -393,8 +393,13 @@
 
 <!-- Modal Check-in do dia -->
 <div class="modal-overlay" id="checkinModalOverlay">
-    <div class="modal">
-        <h2>Registrar dia</h2>
+    <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="checkinModalTitle"
+    >
+        <h2 id="checkinModalTitle">Registrar dia</h2>
         <div class="modal-date" id="checkinModalDate">—</div>
 
         <div class="checkin-toggle" id="checkinToggle">
