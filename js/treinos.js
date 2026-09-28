@@ -1350,6 +1350,8 @@ function askConfirm(text, onConfirm) {
     document.getElementById('confirmModalText').textContent = text;
     pendingDeleteAction = onConfirm;
     document.getElementById('confirmModalOverlay').classList.add('show');
+
+    document.getElementById('confirmCancelBtn').focus();
 }
 
 function closeConfirmModal() {
