@@ -2018,7 +2018,7 @@ function renderCalendar() {
 cell.setAttribute('role', 'button');
 cell.setAttribute(
     'aria-label',
-    `Registrar treino do dia ${d} de ${monthNames[calMonth]}`
+    `Registrar treino do dia ${d} de ${monthNames[calViewMonth]}`
 );
 
         cell.addEventListener('click', () => openCheckinModal(key, d));
