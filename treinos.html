@@ -261,7 +261,12 @@
 
 <!-- Modal Exercício (criar/editar) -->
 <div class="modal-overlay" id="exerciseModalOverlay">
-    <div class="modal">
+    <div
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="exerciseModalTitle"
+>
         <h2 id="exerciseModalTitle">Novo exercício</h2>
         <label for="exerciseNameInput">Nome do exercício</label>
         <input type="text" id="exerciseNameInput" placeholder="Ex: Supino reto">
