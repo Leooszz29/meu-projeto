@@ -2055,7 +2055,10 @@ function calcularSequencia(data) {
     return streak;
 }
 
+let checkinModalTrigger = null;
+
 function openCheckinModal(key, dayNum) {
+    checkinModalTrigger = document.activeElement;
     calSelectedDateKey = key;
     const data = loadCheckins();
     const entry = data[key] || { checked: false, treino: '' };
@@ -2090,6 +2093,15 @@ document.getElementById('checkinToggle').focus();
 function closeCheckinModal() {
     document.getElementById('checkinModalOverlay').classList.remove('show');
     calSelectedDateKey = null;
+
+    if (
+        checkinModalTrigger &&
+        document.contains(checkinModalTrigger)
+    ) {
+        checkinModalTrigger.focus();
+    }
+
+    checkinModalTrigger = null;
 }
 
 document.addEventListener('keydown', (event) => {
