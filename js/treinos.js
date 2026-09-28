@@ -2056,6 +2056,43 @@ document.addEventListener('keydown', (event) => {
 
 });
 
+document.addEventListener('keydown', (event) => {
+
+    const modal =
+        document.getElementById('checkinModalOverlay');
+
+    if (
+        event.key !== 'Tab' ||
+        !modal.classList.contains('show')
+    ) {
+        return;
+    }
+
+    const focusableElements =
+        modal.querySelectorAll(
+            'input, button, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+
+    const firstElement = focusableElements[0];
+    const lastElement =
+        focusableElements[focusableElements.length - 1];
+
+    if (
+        event.shiftKey &&
+        document.activeElement === firstElement
+    ) {
+        event.preventDefault();
+        lastElement.focus();
+    } else if (
+        !event.shiftKey &&
+        document.activeElement === lastElement
+    ) {
+        event.preventDefault();
+        firstElement.focus();
+    }
+
+});
+
 document
     .getElementById('checkinToggle')
     .addEventListener('click', function () {
