@@ -1391,8 +1391,11 @@ document.getElementById('workoutSaveBtn').addEventListener('click', () => {
 
 // ==================== MODAL DE CONFIRMAÇÃO ====================
 let pendingDeleteAction = null;
+let confirmModalTrigger = null;
 
 function askConfirm(text, onConfirm) {
+    confirmModalTrigger = document.activeElement;
+    
     document.getElementById('confirmModalText').textContent = text;
     pendingDeleteAction = onConfirm;
     document.getElementById('confirmModalOverlay').classList.add('show');
@@ -1403,6 +1406,15 @@ function askConfirm(text, onConfirm) {
 function closeConfirmModal() {
     document.getElementById('confirmModalOverlay').classList.remove('show');
     pendingDeleteAction = null;
+
+    if (
+        confirmModalTrigger &&
+        document.contains(confirmModalTrigger)
+    ) {
+        confirmModalTrigger.focus();
+    }
+
+    confirmModalTrigger = null;
 }
 
 document.addEventListener('keydown', (event) => {
