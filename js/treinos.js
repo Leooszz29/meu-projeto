@@ -1977,6 +1977,18 @@ function closeCalendar() {
     toggleButton.focus();
 }
 
+document.addEventListener('keydown', (event) => {
+    const wrapper =
+        document.getElementById('calendarWrapper');
+
+    if (
+        event.key === 'Escape' &&
+        wrapper.classList.contains('show')
+    ) {
+        closeCalendar();
+    }
+});
+
 function loadCheckins() {
     try {
         return JSON.parse(
