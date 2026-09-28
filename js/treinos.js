@@ -2014,6 +2014,13 @@ function renderCalendar() {
         badge.textContent = '✓';
         cell.appendChild(badge);
 
+        cell.setAttribute('tabindex', '0');
+cell.setAttribute('role', 'button');
+cell.setAttribute(
+    'aria-label',
+    `Registrar treino do dia ${d} de ${monthNames[calMonth]}`
+);
+
         cell.addEventListener('click', () => openCheckinModal(key, d));
         grid.appendChild(cell);
     }
