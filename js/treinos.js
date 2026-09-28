@@ -1950,6 +1950,33 @@ document.getElementById('btnToggleCalendar').addEventListener('click', function 
         });
 });
 
+function closeCalendar() {
+    const wrapper =
+        document.getElementById('calendarWrapper');
+
+    const toggleButton =
+        document.getElementById('btnToggleCalendar');
+
+    wrapper.classList.remove('show');
+    toggleButton.classList.remove('open');
+
+    toggleButton.setAttribute(
+        'aria-expanded',
+        'false'
+    );
+
+    document.getElementById('toggleCalendarLabel').textContent =
+        'Mostrar calendário de check-in';
+
+    wrapper
+        .querySelectorAll('button, [tabindex]')
+        .forEach((element) => {
+            element.tabIndex = -1;
+        });
+
+    toggleButton.focus();
+}
+
 function loadCheckins() {
     try {
         return JSON.parse(
