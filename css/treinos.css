@@ -4610,6 +4610,15 @@ right: 0;
     z-index: 10;
 }
 
+.btn-end-session:focus-visible {
+    outline: none;
+
+    border-color: #e88a83;
+
+    box-shadow:
+        0 0 0 3px rgba(193, 68, 60, 0.18);
+}
+
 .btn-end-session:hover {
     background: rgba(193, 68, 60, 0.12);
     border-color: rgba(232, 138, 131, 0.65);
