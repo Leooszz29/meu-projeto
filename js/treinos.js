@@ -1273,7 +1273,9 @@ function openWorkoutModal(workoutId) {
     const title = document.getElementById('workoutModalTitle');
     const input = document.getElementById('workoutNameInput');
 
-    if (workoutId) {
+input.style.borderColor = '';
+
+if (workoutId) {
         const workouts = loadWorkouts();
         const workout = workouts.find(w => w.id === workoutId);
         title.textContent = 'Editar treino';
