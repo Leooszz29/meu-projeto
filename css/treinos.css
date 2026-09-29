@@ -2464,6 +2464,16 @@ body:not(.theme-feminino):not(.theme-masculino)
     margin-bottom:18px;
     cursor:pointer;
 }
+
+.checkin-toggle:focus-visible {
+    outline: none;
+
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 3px rgba(var(--accent-rgb), 0.14);
+}
+
 .checkin-toggle span{
     font-size:13px;
     font-weight:600;
