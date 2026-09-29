@@ -4494,6 +4494,15 @@ body:not(.theme-feminino):not(.theme-masculino)
         border-color 0.2s ease;
 }
 
+.finish-modal-close:focus-visible {
+    outline: none;
+
+    border-color: rgba(255, 104, 104, 0.65);
+
+    box-shadow:
+        0 0 0 3px rgba(255, 87, 87, 0.14);
+}
+
 .finish-modal-close:hover {
     color: #ff6868;
     background: rgba(255, 87, 87, 0.08);
