@@ -1371,9 +1371,14 @@ document.getElementById('workoutModalOverlay').addEventListener('click', (e) => 
 document.getElementById('workoutSaveBtn').addEventListener('click', () => {
     const nome = document.getElementById('workoutNameInput').value.trim();
     if (!nome) {
-        document.getElementById('workoutNameInput').focus();
-        return;
-    }
+    const input =
+        document.getElementById('workoutNameInput');
+
+    input.style.borderColor = '#c1443c';
+    input.focus();
+
+    return;
+}
 
     const workouts = loadWorkouts();
 
