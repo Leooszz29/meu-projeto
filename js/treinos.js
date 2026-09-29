@@ -1522,6 +1522,17 @@ const restInput =
     input.style.borderColor = '';
 });
 
+    [
+    nameInput,
+    seriesInput,
+    repsInput,
+    restInput
+].forEach(input => {
+    input.oninput = () => {
+        input.style.borderColor = '';
+    };
+});
+
 let exerciseEditing = null;
 
 if (exerciseId) {
