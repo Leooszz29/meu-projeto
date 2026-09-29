@@ -1275,6 +1275,10 @@ function openWorkoutModal(workoutId) {
 
 input.style.borderColor = '';
 
+input.oninput = () => {
+    input.style.borderColor = '';
+};
+
 if (workoutId) {
         const workouts = loadWorkouts();
         const workout = workouts.find(w => w.id === workoutId);
