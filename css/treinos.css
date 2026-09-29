@@ -4715,6 +4715,15 @@ right: 0;
         transform 0.2s ease;
 }
 
+.app-nav-link:focus-visible {
+    outline: none;
+
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 3px rgba(var(--accent-rgb), 0.14);
+}
+
 .app-nav-link:hover {
     color: var(--chalk);
     background: rgba(var(--accent-rgb), 0.08);
