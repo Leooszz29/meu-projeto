@@ -1522,7 +1522,7 @@ const restInput =
     input.style.borderColor = '';
 });
 
-let exerciseEditing = null;;
+let exerciseEditing = null;
 
 if (exerciseId) {
     const workouts = loadWorkouts();
