@@ -1775,12 +1775,12 @@ const series =
     const repeticoes = parseInt(document.getElementById('exerciseRepsInput').value, 10);
     const descanso = parseInt(document.getElementById('exerciseRestInput').value, 10);
 
-    if (!nome || isNaN(series) || series < 1 || isNaN(repeticoes) || repeticoes < 1 || isNaN(descanso)) {
+    if (!nome || isNaN(series) || series < 1 || isNaN(repeticoes) || repeticoes < 1 || isNaN(descanso) || descanso < 0) {
         [
             ['exerciseNameInput', !nome],
             ['exerciseSeriesInput', isNaN(series) || series < 1],
             ['exerciseRepsInput', isNaN(repeticoes) || repeticoes < 1],
-            ['exerciseRestInput', isNaN(descanso)]
+            ['exerciseRestInput', isNaN(descanso) || descanso < 0]
         ].forEach(([id, invalid]) => {
             const el = document.getElementById(id);
             el.style.borderColor = invalid ? '#c1443c' : '';
