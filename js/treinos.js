@@ -1707,7 +1707,7 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('keydown', (event) => {
 
     const modal =
-        document;
+    document.getElementById('exerciseModalOverlay');
 
     if (
         event.key !== 'Tab' ||
