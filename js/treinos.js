@@ -1766,10 +1766,10 @@ const series =
     const repeticoes = parseInt(document.getElementById('exerciseRepsInput').value, 10);
     const descanso = parseInt(document.getElementById('exerciseRestInput').value, 10);
 
-    if (!nome || isNaN(series) || isNaN(repeticoes) || isNaN(descanso)) {
+    if (!nome || isNaN(series) || series < 1 || isNaN(repeticoes) || isNaN(descanso)) {
         [
             ['exerciseNameInput', !nome],
-            ['exerciseSeriesInput', isNaN(series)],
+            ['exerciseSeriesInput', isNaN(series) || series < 1],
             ['exerciseRepsInput', isNaN(repeticoes)],
             ['exerciseRestInput', isNaN(descanso)]
         ].forEach(([id, invalid]) => {
