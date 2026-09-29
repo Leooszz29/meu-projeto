@@ -1513,7 +1513,16 @@ const repsInput =
 const restInput =
     document.getElementById('exerciseRestInput');
 
-let exerciseEditing = null;
+[
+    nameInput,
+    seriesInput,
+    repsInput,
+    restInput
+].forEach(input => {
+    input.style.borderColor = '';
+});
+
+let exerciseEditing = null;;
 
 if (exerciseId) {
     const workouts = loadWorkouts();
