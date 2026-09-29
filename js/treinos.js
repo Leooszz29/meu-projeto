@@ -1279,6 +1279,13 @@ input.oninput = () => {
     input.style.borderColor = '';
 };
 
+input.onkeydown = (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        document.getElementById('workoutSaveBtn').click();
+    }
+};
+
 if (workoutId) {
         const workouts = loadWorkouts();
         const workout = workouts.find(w => w.id === workoutId);
