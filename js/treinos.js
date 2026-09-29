@@ -1374,8 +1374,8 @@ document.getElementById('workoutSaveBtn').addEventListener('click', () => {
     const input =
         document.getElementById('workoutNameInput');
 
-    input.style.borderColor = '#c1443c';
     input.focus();
+input.style.borderColor = '#c1443c';
 
     return;
 }
