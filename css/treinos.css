@@ -1759,7 +1759,8 @@ body:not(.theme-feminino):not(.theme-masculino)
 /* HOVER DOS CAMPOS */
 
 .modal input[type="text"]:hover,
-.modal input[type="number"]:hover {
+.modal input[type="number"]:hover,
+.modal-select:hover {
     border-color:
         rgba(var(--accent-rgb), 0.25);
 }
