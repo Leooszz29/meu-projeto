@@ -1756,6 +1756,18 @@ body:not(.theme-feminino):not(.theme-masculino)
         box-shadow 0.2s ease;
 }
 
+.exercise-group-field small {
+    display: block;
+
+    margin-top: -8px;
+    margin-bottom: 18px;
+
+    color: rgba(167, 164, 154, 0.72);
+
+    font-size: 11px;
+    line-height: 1.5;
+}
+
 /* HOVER DOS CAMPOS */
 
 .modal input[type="text"]:hover,
