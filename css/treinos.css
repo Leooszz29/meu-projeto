@@ -3141,6 +3141,11 @@ body:not(.theme-feminino):not(.theme-masculino)
         transform 0.2s ease;
 }
 
+.day-cell:not(.empty):focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+}
+
 /* HOVER */
 
 .day-cell:not(.empty):hover {
