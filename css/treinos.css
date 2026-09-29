@@ -2974,6 +2974,15 @@ body:not(.theme-feminino):not(.theme-masculino)
         transform 0.2s ease;
 }
 
+.month-nav button:focus-visible {
+    outline: none;
+
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 3px rgba(var(--accent-rgb), 0.14);
+}
+
 .month-nav button:hover {
     background:
         rgba(var(--accent-rgb), 0.15);
