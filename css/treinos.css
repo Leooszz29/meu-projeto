@@ -1803,6 +1803,14 @@ body:not(.theme-feminino):not(.theme-masculino)
         0 0 0 3px rgba(var(--accent-rgb), 0.14);
 }
 
+.modal input.input-error,
+.modal input.input-error:focus {
+    border-color: #c1443c;
+
+    box-shadow:
+        0 0 0 3px rgba(193, 68, 60, 0.14);
+}
+
 
 /* PLACEHOLDER */
 
