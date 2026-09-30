@@ -1273,7 +1273,7 @@ function openWorkoutModal(workoutId) {
     const title = document.getElementById('workoutModalTitle');
     const input = document.getElementById('workoutNameInput');
 
-input.style.borderColor = '';
+input.classList.remove('input-error');
 
 input.oninput = () => {
     input.style.borderColor = '';
