@@ -1903,14 +1903,14 @@ if (
 
     if (exerciciosNoGrupo.length >= limiteGrupo) {
 
-        alert(
-            tipoExecucao === 'bisset'
-                ? 'Este Bi-set já possui 2 exercícios.'
-                : 'Este Tri-set já possui 3 exercícios.'
-        );
+    showWarningModal(
+        tipoExecucao === 'bisset'
+            ? 'Este Bi-set já possui 2 exercícios.'
+            : 'Este Tri-set já possui 3 exercícios.'
+    );
 
-        return;
-    }
+    return;
+}
 }
 
     if (editingExerciseCtx.exerciseId) {
