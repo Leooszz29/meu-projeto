@@ -2187,7 +2187,8 @@ function openCheckinModal(key, dayNum) {
     const [y, m, d] = key.split('-').map(Number);
     const dateObj = new Date(y, m - 1, d);
     const weekday = weekdayHeaders[dateObj.getDay()];
-    document.getElementById('checkinModalDate').textContent = `${weekday}, ${d} de ${monthNames[m - 1]}`;
+    document.getElementById('checkinModalDate').textContent =
+    `${weekday}, ${d} de ${monthNames[m - 1]} de ${y}`;
 
     const toggle = document.getElementById('checkinToggle');
 
