@@ -1276,7 +1276,7 @@ function openWorkoutModal(workoutId) {
 input.classList.remove('input-error');
 
 input.oninput = () => {
-    input.style.borderColor = '';
+    input.classList.remove('input-error');
 };
 
 input.onkeydown = (event) => {
