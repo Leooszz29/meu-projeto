@@ -1551,6 +1551,13 @@ const restInput =
     };
 });
 
+    nameInput.onkeydown = (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        document.getElementById('exerciseSaveBtn').click();
+    }
+};
+
 let exerciseEditing = null;
 
 if (exerciseId) {
