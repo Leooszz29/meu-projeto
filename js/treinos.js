@@ -1537,7 +1537,7 @@ const restInput =
     repsInput,
     restInput
 ].forEach(input => {
-    input.style.borderColor = '';
+    input.classList.remove('input-error');
 });
 
     [
