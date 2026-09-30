@@ -1675,12 +1675,9 @@ Array.from(gruposExistentes).forEach(
             exerciseEditing &&
             exerciseEditing.grupoExecucao === grupoId;
 
-        if (
-            quantidadeNoGrupo >= limiteGrupo &&
-            !ehGrupoAtual
-        ) {
-            return;
-        }
+        const grupoCompleto =
+    quantidadeNoGrupo >= limiteGrupo &&
+    !ehGrupoAtual;
 
         const option = document.createElement('option');
 
