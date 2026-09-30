@@ -4859,3 +4859,29 @@ right: 0;
         font-size: 9px;
     }
 }
+
+/* =========================
+   MODAL DE AVISO
+========================= */
+
+#warningModalOverlay .modal {
+    text-align: center;
+}
+
+#warningModalTitle {
+    margin-bottom: 10px;
+}
+
+#warningModalMessage {
+    margin: 0 0 22px;
+    line-height: 1.5;
+    color: var(--chalk-dim);
+}
+
+#warningModalOverlay .modal-actions {
+    justify-content: center;
+}
+
+#warningModalOkBtn {
+    min-width: 120px;
+}
