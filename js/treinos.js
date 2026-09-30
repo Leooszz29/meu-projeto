@@ -2867,3 +2867,29 @@ const genero =
     renderWorkouts();
     renderCalendar();
 });
+
+function showWarningModal(message) {
+    const overlay =
+        document.getElementById('warningModalOverlay');
+
+    const messageElement =
+        document.getElementById('warningModalMessage');
+
+    messageElement.textContent = message;
+
+    overlay.classList.add('show');
+
+    document
+        .getElementById('warningModalOkBtn')
+        .focus();
+}
+
+function closeWarningModal() {
+    document
+        .getElementById('warningModalOverlay')
+        .classList.remove('show');
+}
+
+document
+    .getElementById('warningModalOkBtn')
+    .addEventListener('click', closeWarningModal);
