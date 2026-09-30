@@ -1821,6 +1821,21 @@ const series =
             const el = document.getElementById(id);
             el.style.borderColor = invalid ? '#c1443c' : '';
         });
+
+        const firstInvalidInput =
+    [
+        ['exerciseNameInput', !nome],
+        ['exerciseSeriesInput', isNaN(series) || series < 1],
+        ['exerciseRepsInput', isNaN(repeticoes) || repeticoes < 1],
+        ['exerciseRestInput', isNaN(descanso) || descanso < 0]
+    ].find(([, invalid]) => invalid);
+
+if (firstInvalidInput) {
+    document
+        .getElementById(firstInvalidInput[0])
+        .focus();
+}
+        
         return;
     }
 
