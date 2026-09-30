@@ -1818,9 +1818,13 @@ const series =
             ['exerciseRepsInput', isNaN(repeticoes) || repeticoes < 1],
             ['exerciseRestInput', isNaN(descanso) || descanso < 0]
         ].forEach(([id, invalid]) => {
-            const el = document.getElementById(id);
-            el.style.borderColor = invalid ? '#c1443c' : '';
-        });
+    const el = document.getElementById(id);
+
+    el.classList.toggle(
+        'input-error',
+        invalid
+    );
+});
 
         const firstInvalidInput =
     [
