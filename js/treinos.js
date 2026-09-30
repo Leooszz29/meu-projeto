@@ -1686,12 +1686,18 @@ Array.from(gruposExistentes).forEach(
         const numeroGrupo = index + 1;
 
         if (tipoExecucao === 'bisset') {
-            option.textContent = `Bi-set ${numeroGrupo}`;
-        } else {
-            option.textContent = `Tri-set ${numeroGrupo}`;
-        }
+    option.textContent =
+        `Bi-set ${numeroGrupo}${grupoCompleto ? ' — completo' : ''}`;
+} else {
+    option.textContent =
+        `Tri-set ${numeroGrupo}${grupoCompleto ? ' — completo' : ''}`;
+}
 
-        groupInput.appendChild(option);
+if (grupoCompleto) {
+    option.disabled = true;
+}
+
+groupInput.appendChild(option);
     }
 );
 }
