@@ -2293,6 +2293,18 @@ document
         );
     });
 
+document
+    .getElementById('checkinTreinoInput')
+    .addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+
+            document
+                .getElementById('checkinSaveBtn')
+                .click();
+        }
+    });
+
 document.getElementById('checkinCancelBtn').addEventListener('click', closeCheckinModal);
 document.getElementById('checkinModalOverlay').addEventListener('click', (e) => {
     if (e.target.id === 'checkinModalOverlay') closeCheckinModal();
