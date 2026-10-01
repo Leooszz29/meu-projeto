@@ -1500,6 +1500,38 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
     closeConfirmModal();
 });
 
+function resetActiveTraining() {
+    const nameElement =
+        document.getElementById('activeTrainingName');
+
+    const statusElement =
+        document.getElementById('activeTrainingStatus');
+
+    const exercisesElement =
+        document.getElementById('activeTrainingExercises');
+
+    const finishButton =
+        document.getElementById('btnFinishWorkout');
+
+    nameElement.textContent =
+        'Nenhum treino iniciado';
+
+    statusElement.textContent =
+        'AGUARDANDO';
+
+    exercisesElement.innerHTML = `
+        <div class="active-training-empty">
+            <strong>Selecione um treino</strong>
+            <p>
+                Clique em “Iniciar treino” para acompanhar
+                seus exercícios e séries.
+            </p>
+        </div>
+    `;
+
+    finishButton.disabled = true;
+}
+
 function deleteWorkout(workoutId) {
     askConfirm('Excluir este treino e todos os seus exercícios?', () => {
         
