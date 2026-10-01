@@ -2919,3 +2919,22 @@ document
         }
 
     });
+
+document.addEventListener('keydown', (event) => {
+
+    const overlay =
+        document.getElementById('warningModalOverlay');
+
+    if (
+        event.key === 'Tab' &&
+        overlay.classList.contains('show')
+    ) {
+        event.preventDefault();
+
+        document
+            .getElementById('warningModalOkBtn')
+            .focus();
+    }
+
+});
+
