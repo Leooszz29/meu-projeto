@@ -2718,6 +2718,8 @@ function closeFinishModal() {
     document
         .getElementById('finishModalOverlay')
         .classList.remove('show');
+
+    resetActiveTraining();
 }
 
 document.getElementById('finishOkBtn').addEventListener('click', () => {
