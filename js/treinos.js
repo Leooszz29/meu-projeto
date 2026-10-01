@@ -1502,6 +1502,18 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
 
 function deleteWorkout(workoutId) {
     askConfirm('Excluir este treino e todos os seus exercícios?', () => {
+        
+        const treinoAtivo =
+    carregarTreinoAtivo();
+
+if (
+    treinoAtivo &&
+    treinoAtivo.id === workoutId
+) {
+    localStorage.removeItem(
+        obterChaveTreinoAtivo()
+    );
+}        
         let workouts = loadWorkouts();
         workouts = workouts.filter(w => w.id !== workoutId);
         saveWorkouts(workouts);
