@@ -2656,6 +2656,10 @@ localStorage.removeItem(
     obterChaveTreinoAtivo()
 );
 
+    document
+    .getElementById('btnFinishWorkout')
+    .disabled = true;
+
     // Abre o modal de sucesso
 document
     .getElementById('finishModalOverlay')
