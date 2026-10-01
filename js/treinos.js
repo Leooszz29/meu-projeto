@@ -2871,6 +2871,8 @@ const genero =
     renderCalendar();
 });
 
+let warningModalPreviousFocus = null;
+
 function showWarningModal(message) {
     const overlay =
         document.getElementById('warningModalOverlay');
