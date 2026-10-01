@@ -2672,10 +2672,6 @@ function closeFinishModal() {
     document
         .getElementById('finishModalOverlay')
         .classList.remove('show');
-
-    document
-        .getElementById('btnFinishWorkout')
-        .focus();
 }
 
 document.getElementById('finishOkBtn').addEventListener('click', () => {
