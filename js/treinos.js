@@ -2896,3 +2896,16 @@ function closeWarningModal() {
 document
     .getElementById('warningModalOkBtn')
     .addEventListener('click', closeWarningModal);
+
+document.addEventListener('keydown', (event) => {
+
+    if (
+        event.key === 'Escape' &&
+        document
+            .getElementById('warningModalOverlay')
+            .classList.contains('show')
+    ) {
+        closeWarningModal();
+    }
+
+});
