@@ -533,13 +533,19 @@ function renderActiveTraining(workout) {
     const exercisesElement =
         document.getElementById('activeTrainingExercises');
 
+    const finishButton =
+    document.getElementById('btnFinishWorkout');
+
     if (
-        !nameElement ||
-        !statusElement ||
-        !exercisesElement
-    ) {
-        return;
-    }
+    !nameElement ||
+    !statusElement ||
+    !exercisesElement ||
+    !finishButton
+) {
+    return;
+}
+
+finishButton.disabled = false;
 
     // CARREGA O PROGRESSO DAS SÉRIES
 
