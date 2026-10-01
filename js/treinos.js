@@ -1545,6 +1545,8 @@ if (
     localStorage.removeItem(
         obterChaveTreinoAtivo()
     );
+
+    resetActiveTraining();
 }        
         let workouts = loadWorkouts();
         workouts = workouts.filter(w => w.id !== workoutId);
