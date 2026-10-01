@@ -2879,7 +2879,19 @@ const treinoAtivo =
     carregarTreinoAtivo();
 
 if (treinoAtivo) {
-    renderActiveTraining(treinoAtivo);
+
+    const workouts =
+        loadWorkouts();
+
+    const workoutAtivo =
+        workouts.find(
+            workout =>
+                workout.id === treinoAtivo.id
+        );
+
+    if (workoutAtivo) {
+        renderActiveTraining(workoutAtivo);
+    }
 }
 
 renderCalendar();
