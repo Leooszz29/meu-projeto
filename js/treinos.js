@@ -2874,7 +2874,15 @@ const genero =
     }
 
     renderWorkouts();
-    renderCalendar();
+
+const treinoAtivo =
+    carregarTreinoAtivo();
+
+if (treinoAtivo) {
+    renderActiveTraining(treinoAtivo);
+}
+
+renderCalendar();
 });
 
 let warningModalPreviousFocus = null;
