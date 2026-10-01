@@ -2890,8 +2890,12 @@ if (treinoAtivo) {
         );
 
     if (workoutAtivo) {
-        renderActiveTraining(workoutAtivo);
-    }
+    renderActiveTraining(workoutAtivo);
+} else {
+    localStorage.removeItem(
+        obterChaveTreinoAtivo()
+    );
+}
 }
 
 renderCalendar();
