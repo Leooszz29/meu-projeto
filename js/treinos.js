@@ -2874,6 +2874,8 @@ const genero =
 let warningModalPreviousFocus = null;
 
 function showWarningModal(message) {
+    warningModalPreviousFocus = document.activeElement;
+    
     const overlay =
         document.getElementById('warningModalOverlay');
 
