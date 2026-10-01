@@ -4885,3 +4885,19 @@ right: 0;
 #warningModalOkBtn {
     min-width: 120px;
 }
+/* =========================================
+   FINALIZAR TREINO - ESTADO DESABILITADO
+========================================= */
+
+.btn-finish-workout:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    filter: grayscale(0.35);
+}
+
+.btn-finish-workout:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
