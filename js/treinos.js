@@ -2895,6 +2895,15 @@ function closeWarningModal() {
     document
         .getElementById('warningModalOverlay')
         .classList.remove('show');
+
+    if (
+        warningModalPreviousFocus &&
+        typeof warningModalPreviousFocus.focus === 'function'
+    ) {
+        warningModalPreviousFocus.focus();
+    }
+
+    warningModalPreviousFocus = null;
 }
 
 document
