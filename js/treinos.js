@@ -2909,3 +2909,13 @@ document.addEventListener('keydown', (event) => {
     }
 
 });
+
+document
+    .getElementById('warningModalOverlay')
+    .addEventListener('click', (event) => {
+
+        if (event.target.id === 'warningModalOverlay') {
+            closeWarningModal();
+        }
+
+    });
