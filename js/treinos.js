@@ -3108,7 +3108,7 @@ document
                 )
             );
 
-                document
+            document
                 .getElementById(
                     'btnFinishWorkout'
                 )
