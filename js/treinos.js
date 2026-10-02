@@ -2673,22 +2673,50 @@ document
         }
     );
 
-document.getElementById('checkinSaveBtn').addEventListener('click', () => {
-    if (!calSelectedDateKey) return;
-    const data = loadCheckins();
-    const checked = document.getElementById('checkinToggle').dataset.checked === 'true';
-    const treino = document.getElementById('checkinTreinoInput').value.trim();
+document
+    .getElementById('checkinSaveBtn')
+    .addEventListener(
+        'click',
+        () => {
+            if (!calSelectedDateKey) {
+                return;
+            }
 
-    if (!checked && !treino) {
-        delete data[calSelectedDateKey];
-    } else {
-        data[calSelectedDateKey] = { checked, treino };
-    }
+            const data =
+                loadCheckins();
 
-    saveCheckins(data);
-    closeCheckinModal();
-    renderCalendar();
-});
+            const checked =
+                document
+                    .getElementById('checkinToggle')
+                    .dataset.checked === 'true';
+
+            const treino =
+                document
+                    .getElementById('checkinTreinoInput')
+                    .value
+                    .trim();
+
+            if (
+                !checked &&
+                !treino
+            ) {
+                delete data[
+                    calSelectedDateKey
+                ];
+            } else {
+                data[
+                    calSelectedDateKey
+                ] = {
+                    checked,
+                    treino
+                };
+            }
+
+            saveCheckins(data);
+            closeCheckinModal();
+            renderCalendar();
+        }
+    );
 
 document.getElementById('prevMonth').addEventListener('click', () => {
     calViewMonth--;
