@@ -3128,7 +3128,10 @@ document
                     'finishOkBtn'
                 )
                 .focus();
-});
+        }
+    );
+
+function closeFinishModal() {
 
 function closeFinishModal() {
     document
