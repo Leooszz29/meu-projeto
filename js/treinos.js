@@ -2302,53 +2302,114 @@ function renderCalendar() {
 
     let checkinsNoMes = 0;
 
-    for (let d = 1; d <= daysInMonth; d++) {
-        const key = calDateKey(calViewYear, calViewMonth, d);
-        const entry = data[key];
-        const cell = document.createElement('div');
+        for (
+        let day = 1;
+        day <= daysInMonth;
+        day++
+    ) {
+        const key =
+            calDateKey(
+                calViewYear,
+                calViewMonth,
+                day
+            );
+
+        const entry =
+            data[key];
+
+        const cell =
+            document.createElement('div');
+
         cell.className = 'day-cell';
-        if (key === todayKey) cell.classList.add('today');
-        if (entry && entry.checked) {
+
+        if (key === todayKey) {
+            cell.classList.add('today');
+        }
+
+        if (
+            entry &&
+            entry.checked
+        ) {
             cell.classList.add('checked');
             checkinsNoMes++;
         }
 
-        const num = document.createElement('div');
-        num.className = 'num';
-        num.textContent = d;
-        cell.appendChild(num);
+        const dayNumber =
+            document.createElement('div');
 
-        if (entry && entry.treino) {
-            const label = document.createElement('div');
-            label.className = 'treino-label';
-            label.textContent = entry.treino;
+        dayNumber.className = 'num';
+        dayNumber.textContent = day;
+
+        cell.appendChild(dayNumber);
+
+        if (
+            entry &&
+            entry.treino
+        ) {
+            const label =
+                document.createElement('div');
+
+            label.className =
+                'treino-label';
+
+            label.textContent =
+                entry.treino;
+
             cell.appendChild(label);
         }
 
-        const badge = document.createElement('div');
-        badge.className = 'check-badge';
+        const badge =
+            document.createElement('div');
+
+        badge.className =
+            'check-badge';
+
         badge.textContent = '✓';
+
         cell.appendChild(badge);
 
-        cell.setAttribute('tabindex', '0');
-cell.setAttribute('role', 'button');
-cell.setAttribute(
-    'aria-label',
-    `Registrar treino do dia ${d} de ${monthNames[calViewMonth]}`
-);
+        cell.setAttribute(
+            'tabindex',
+            '0'
+        );
 
-        cell.addEventListener('click', () => openCheckinModal(key, d));
+        cell.setAttribute(
+            'role',
+            'button'
+        );
 
-        cell.addEventListener('keydown', (event) => {
-    if (
-        event.key === 'Enter' ||
-        event.key === ' '
-    ) {
-        event.preventDefault();
-        openCheckinModal(key, d);
-    }
-});
-        
+        cell.setAttribute(
+            'aria-label',
+            `Registrar treino do dia ${day} de ${monthNames[calViewMonth]}`
+        );
+
+        cell.addEventListener(
+            'click',
+            () => {
+                openCheckinModal(
+                    key,
+                    day
+                );
+            }
+        );
+
+        cell.addEventListener(
+            'keydown',
+            (event) => {
+                if (
+                    event.key === 'Enter' ||
+                    event.key === ' '
+                ) {
+                    event.preventDefault();
+
+                    openCheckinModal(
+                        key,
+                        day
+                    );
+                }
+            }
+        );
+
         grid.appendChild(cell);
     }
 
