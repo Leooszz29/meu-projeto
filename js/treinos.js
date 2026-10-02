@@ -1980,7 +1980,7 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
 
     if (!workout) return;
 
-        // DEFINE O GRUPO DE EXECUÇÃO
+    // DEFINE O GRUPO DE EXECUÇÃO
     let grupoExecucao = null;
 
     if (tipoExecucao !== 'individual') {
