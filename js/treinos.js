@@ -3284,16 +3284,20 @@ document
     );
 
 document
-    .getElementById('selectWorkoutModalOverlay')
-    .addEventListener('click', (e) => {
-
-        if (e.target.id === 'selectWorkoutModalOverlay') {
-
-            closeSelectWorkoutModal();
-
+    .getElementById(
+        'selectWorkoutModalOverlay'
+    )
+    .addEventListener(
+        'click',
+        (event) => {
+            if (
+                event.target.id ===
+                'selectWorkoutModalOverlay'
+            ) {
+                closeSelectWorkoutModal();
+            }
         }
-
-    });
+    );
 
 document.addEventListener('keydown', (event) => {
 
