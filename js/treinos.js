@@ -2984,32 +2984,30 @@ document
                 }
             );
 
-    const finishIncompleteCount =
-    document.getElementById(
-        'finishIncompleteCount'
-    );
+               const finishIncompleteCount =
+                document.getElementById(
+                    'finishIncompleteCount'
+                );
 
-if (exerciciosIncompletos > 0) {
+            if (exerciciosIncompletos > 0) {
+                finishIncompleteCount.hidden =
+                    false;
 
-    finishIncompleteCount.hidden = false;
+                finishIncompleteCount.textContent =
+                    exerciciosIncompletos === 1
+                        ? '✕ 1 exercício incompleto'
+                        : `✕ ${exerciciosIncompletos} exercícios incompletos`;
+            } else {
+                finishIncompleteCount.hidden =
+                    true;
+            }
 
-    finishIncompleteCount.textContent =
-        exerciciosIncompletos === 1
-            ? '✕ 1 exercício incompleto'
-            : `✕ ${exerciciosIncompletos} exercícios incompletos`;
-
-} else {
-
-    finishIncompleteCount.hidden = true;
-}
-
-    
     // Busca o histórico existente
-const historico =
+    const historico =
     carregarHistoricoTreinos();
 
     // Monta o resumo detalhado dos exercícios
-const resumoExercicios =
+    const resumoExercicios =
     exerciciosFinalizados.map(
         (exercicio, index) => {
 
@@ -3082,7 +3080,7 @@ const resumoExercicios =
 );
 
     // Remove o treino ativo após a conclusão
-localStorage.removeItem(
+    localStorage.removeItem(
     obterChaveTreinoAtivo()
 );
     const progressoAtual =
@@ -3100,11 +3098,11 @@ localStorage.setItem(
     .disabled = true;
 
     // Abre o modal de sucesso
-document
+    document
     .getElementById('finishModalOverlay')
     .classList.add('show');
 
-document.getElementById('finishOkBtn').focus();
+    document.getElementById('finishOkBtn').focus();
 });
 
 function closeFinishModal() {
