@@ -2701,6 +2701,15 @@ const resumoExercicios =
 localStorage.removeItem(
     obterChaveTreinoAtivo()
 );
+    const progressoAtual =
+    carregarProgressoTreino();
+
+delete progressoAtual[treinoAtivo.id];
+
+localStorage.setItem(
+    obterChaveProgressoTreino(),
+    JSON.stringify(progressoAtual)
+);
 
     document
     .getElementById('btnFinishWorkout')
