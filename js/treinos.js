@@ -1320,18 +1320,24 @@ function closeWorkoutModal() {
     }
 }
 
-document.addEventListener('keydown', (event) => {
-
-    if (
-        event.key === 'Escape' &&
-        document
-            .getElementById('workoutModalOverlay')
-            .classList.contains('show')
-    ) {
-        closeWorkoutModal();
-    }
-
-});
+document
+    .addEventListener(
+        'keydown',
+        (event) => {
+            if (
+                event.key === 'Escape' &&
+                document
+                    .getElementById(
+                        'selectWorkoutModalOverlay'
+                    )
+                    .classList.contains(
+                        'show'
+                    )
+            ) {
+                closeSelectWorkoutModal();
+            }
+        }
+    );
 
 document.addEventListener('keydown', (event) => {
 
