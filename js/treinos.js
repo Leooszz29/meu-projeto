@@ -3081,11 +3081,13 @@ document
                     totalSeries
             });
 
-    // Salva o histórico atualizado
-    localStorage.setItem(
-    obterChaveHistoricoTreinos(),
-    JSON.stringify(historico)
-);
+            // Salva o histórico atualizado
+            localStorage.setItem(
+                obterChaveHistoricoTreinos(),
+                JSON.stringify(
+                    historico
+                )
+            );
 
     // Remove o treino ativo após a conclusão
     localStorage.removeItem(
