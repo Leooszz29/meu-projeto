@@ -3417,10 +3417,12 @@ window.addEventListener(
                 'characterImg'
             );
 
-    const imagens = {
-        masculino: 'img/atleta-masculino.png',
-        feminino: 'img/atleta-feminino.png'
-    };
+        const imagens = {
+            masculino:
+                'img/atleta-masculino.png',
+            feminino:
+                'img/atleta-feminino.png'
+        };
 
     if (genero === 'masculino') {
         document.body.classList.add('theme-masculino');
