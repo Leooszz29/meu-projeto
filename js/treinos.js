@@ -3168,11 +3168,21 @@ document
         closeFinishModal
     );
 
-document.getElementById('finishModalOverlay').addEventListener('click', (e) => {
-    if (e.target.id === 'finishModalOverlay') {
-        closeFinishModal();
-    }
-});
+document
+    .getElementById(
+        'finishModalOverlay'
+    )
+    .addEventListener(
+        'click',
+        (event) => {
+            if (
+                event.target.id ===
+                'finishModalOverlay'
+            ) {
+                closeFinishModal();
+            }
+        }
+    );
 
 document.addEventListener('keydown', (event) => {
 
