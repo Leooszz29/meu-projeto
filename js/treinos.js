@@ -1679,135 +1679,133 @@ function openExerciseModal(workoutId, exerciseId) {
     }
 
     // ========================================
-// CAMPO DE GRUPO - BI-SET / TRI-SET
-// ========================================
+    // CAMPO DE GRUPO - BI-SET / TRI-SET
+    // ========================================
 
-const groupInput =
-    document.getElementById('exerciseGroupInput');
+    const groupInput =
+        document.getElementById('exerciseGroupInput');
 
-function updateGroupField() {
+    function updateGroupField() {
+        const tipoExecucao =
+            typeInput.value;
 
-    const tipoExecucao =
-        typeInput.value;
+        // INDIVIDUAL NÃO USA GRUPO
+        if (tipoExecucao === 'individual') {
+            groupField.hidden = true;
 
-    // INDIVIDUAL NÃO USA GRUPO
-    if (tipoExecucao === 'individual') {
+            groupInput.innerHTML = `
+                <option value="">
+                    Novo grupo
+                </option>
+            `;
 
-        groupField.hidden = true;
+            return;
+        }
+
+        // BI-SET / TRI-SET
+        groupField.hidden = false;
+
+        const workouts =
+            loadWorkouts();
+
+        const workout =
+            workouts.find(
+                workout => workout.id === workoutId
+            );
+
         groupInput.innerHTML = `
             <option value="">
                 Novo grupo
             </option>
         `;
 
-        return;
-    }
+        if (!workout) {
+            return;
+        }
 
+        // PROCURA GRUPOS JÁ EXISTENTES
+        const gruposExistentes = new Set();
 
-    // BI-SET / TRI-SET
-    groupField.hidden = false;
+        workout.exercicios.forEach(exercicio => {
+            if (
+                exercicio.tipoExecucao === tipoExecucao &&
+                exercicio.grupoExecucao
+            ) {
+                gruposExistentes.add(
+                    exercicio.grupoExecucao
+                );
+            }
+        });
 
-    const workouts =
-        loadWorkouts();
+        Array.from(gruposExistentes).forEach(
+            (grupoId, index) => {
+                const quantidadeNoGrupo =
+                    workout.exercicios.filter(
+                        exercicio =>
+                            exercicio.grupoExecucao === grupoId &&
+                            exercicio.tipoExecucao === tipoExecucao
+                    ).length;
 
-    const workout =
-        workouts.find(
-            w => w.id === workoutId
+                const limiteGrupo =
+                    tipoExecucao === 'bisset'
+                        ? 2
+                        : 3;
+
+                const ehGrupoAtual =
+                    exerciseEditing &&
+                    exerciseEditing.grupoExecucao === grupoId;
+
+                const grupoCompleto =
+                    quantidadeNoGrupo >= limiteGrupo &&
+                    !ehGrupoAtual;
+
+                const option =
+                    document.createElement('option');
+
+                option.value = grupoId;
+
+                const numeroGrupo =
+                    index + 1;
+
+                if (tipoExecucao === 'bisset') {
+                    option.textContent =
+                        `Bi-set ${numeroGrupo}${grupoCompleto ? ' — completo' : ''}`;
+                } else {
+                    option.textContent =
+                        `Tri-set ${numeroGrupo}${grupoCompleto ? ' — completo' : ''}`;
+                }
+
+                if (grupoCompleto) {
+                    option.disabled = true;
+                }
+
+                groupInput.appendChild(option);
+            }
         );
-
-
-    groupInput.innerHTML = `
-        <option value="">
-            Novo grupo
-        </option>
-    `;
-
-
-    if (!workout) {
-        return;
     }
 
+    updateGroupField();
 
-    // PROCURA GRUPOS JÁ EXISTENTES
- const gruposExistentes = new Set();
-
-workout.exercicios.forEach(exercicio => {
     if (
-        exercicio.tipoExecucao === tipoExecucao &&
-        exercicio.grupoExecucao
+        exerciseEditing &&
+        exerciseEditing.grupoExecucao
     ) {
-        gruposExistentes.add(exercicio.grupoExecucao);
+        groupInput.value =
+            exerciseEditing.grupoExecucao;
     }
-});
 
-Array.from(gruposExistentes).forEach(
-    (grupoId, index) => {
+    typeInput.onchange =
+        updateGroupField;
 
-        const quantidadeNoGrupo =
-            workout.exercicios.filter(exercicio =>
-                exercicio.grupoExecucao === grupoId &&
-                exercicio.tipoExecucao === tipoExecucao
-            ).length;
+    exerciseModalTrigger =
+        document.activeElement;
 
-        const limiteGrupo =
-            tipoExecucao === 'bisset'
-                ? 2
-                : 3;
+    document
+        .getElementById('exerciseModalOverlay')
+        .classList.add('show');
 
-        const ehGrupoAtual =
-            exerciseEditing &&
-            exerciseEditing.grupoExecucao === grupoId;
-
-        const grupoCompleto =
-    quantidadeNoGrupo >= limiteGrupo &&
-    !ehGrupoAtual;
-
-        const option = document.createElement('option');
-
-        option.value = grupoId;
-
-        const numeroGrupo = index + 1;
-
-        if (tipoExecucao === 'bisset') {
-    option.textContent =
-        `Bi-set ${numeroGrupo}${grupoCompleto ? ' — completo' : ''}`;
-} else {
-    option.textContent =
-        `Tri-set ${numeroGrupo}${grupoCompleto ? ' — completo' : ''}`;
+    nameInput.focus();
 }
-
-if (grupoCompleto) {
-    option.disabled = true;
-}
-
-groupInput.appendChild(option);
-    }
-);
-}
-
-updateGroupField();
-
-if (
-    exerciseEditing &&
-    exerciseEditing.grupoExecucao
-) {
-    groupInput.value =
-        exerciseEditing.grupoExecucao;
-}
-
-typeInput.onchange =
-    updateGroupField;
-
-    exerciseModalTrigger = document.activeElement;
-
-document
-    .getElementById('exerciseModalOverlay')
-    .classList.add('show');
-
-nameInput.focus();
-
-}
-
 
 function closeExerciseModal() {
     document
