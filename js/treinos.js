@@ -2302,7 +2302,7 @@ function renderCalendar() {
 
     let checkinsNoMes = 0;
 
-        for (
+    for (
         let day = 1;
         day <= daysInMonth;
         day++
