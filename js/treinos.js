@@ -2777,31 +2777,38 @@ document
                 return;
             }
     
-// Busca os dados completos do treino
-const workouts =
-    loadWorkouts();
+            // Busca os dados completos do treino
+            const workouts =
+                loadWorkouts();
 
-const workoutFinalizado =
-    workouts.find(
-        workout =>
-            workout.id === treinoAtivo.id
-    );
-    
-// Preenche o resumo do modal
-document.getElementById(
-    'finishWorkoutName'
-).textContent =
-    workoutFinalizado?.nome ||
-    treinoAtivo.nome ||
-    'Treino';
+            const workoutFinalizado =
+                workouts.find(
+                    workout =>
+                        workout.id ===
+                        treinoAtivo.id
+                );
 
-document.getElementById(
-    'finishExerciseCount'
-).textContent =
-    workoutFinalizado?.exercicios?.length || 0;
-    
-    // Calcula o total de séries
-// e quantas foram concluídas
+            // Preenche o resumo do modal
+            document
+                .getElementById(
+                    'finishWorkoutName'
+                )
+                .textContent =
+                    workoutFinalizado?.nome ||
+                    treinoAtivo.nome ||
+                    'Treino';
+
+            document
+                .getElementById(
+                    'finishExerciseCount'
+                )
+                .textContent =
+                    workoutFinalizado
+                        ?.exercicios
+                        ?.length || 0;
+
+            // Calcula o total de séries
+            // e quantas foram concluídas
 const progressoTreino =
     carregarProgressoTreino();
 
