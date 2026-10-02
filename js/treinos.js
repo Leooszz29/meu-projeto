@@ -3275,9 +3275,13 @@ function closeSelectWorkoutModal() {
 }
 
 document
-    .getElementById('selectWorkoutOkBtn')
-    .addEventListener('click', closeSelectWorkoutModal);
-
+    .getElementById(
+        'selectWorkoutOkBtn'
+    )
+    .addEventListener(
+        'click',
+        closeSelectWorkoutModal
+    );
 
 document
     .getElementById('selectWorkoutModalOverlay')
