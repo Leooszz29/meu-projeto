@@ -3386,24 +3386,24 @@ window.addEventListener(
             return;
         }
         
-    const btnEndSession =
-    document.getElementById('btnEndSession');
-
-if (btnEndSession) {
-
-    btnEndSession.addEventListener(
-        'click',
-        () => {
-
-            localStorage.removeItem(
-                'fitzoneSessao'
+        const btnEndSession =
+            document.getElementById(
+                'btnEndSession'
             );
 
-            window.location.href =
-                'login.html';
+        if (btnEndSession) {
+            btnEndSession.addEventListener(
+                'click',
+                () => {
+                    localStorage.removeItem(
+                        'fitzoneSessao'
+                    );
+
+                    window.location.href =
+                        'login.html';
+                }
+            );
         }
-    );
-}
 
 const genero =
     sessao && sessao.email
