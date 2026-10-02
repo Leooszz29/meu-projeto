@@ -2472,38 +2472,77 @@ function calcularSequencia(data) {
 
 let checkinModalTrigger = null;
 
-function openCheckinModal(key, dayNum) {
-    checkinModalTrigger = document.activeElement;
+function openCheckinModal(key) {
+    checkinModalTrigger =
+        document.activeElement;
+
     calSelectedDateKey = key;
-    const data = loadCheckins();
-    const entry = data[key] || { checked: false, treino: '' };
 
-    const [y, m, d] = key.split('-').map(Number);
-    const dateObj = new Date(y, m - 1, d);
-    const weekday = weekdayHeaders[dateObj.getDay()];
-    document.getElementById('checkinModalDate').textContent =
-    `${weekday}, ${d} de ${monthNames[m - 1]} de ${y}`;
+    const data =
+        loadCheckins();
 
-    const toggle = document.getElementById('checkinToggle');
+    const entry =
+        data[key] || {
+            checked: false,
+            treino: ''
+        };
 
-toggle.classList.toggle(
-    'active',
-    !!entry.checked
-);
+    const [
+        year,
+        month,
+        day
+    ] =
+        key
+            .split('-')
+            .map(Number);
 
-toggle.dataset.checked =
-    entry.checked ? 'true' : 'false';
+    const date =
+        new Date(
+            year,
+            month - 1,
+            day
+        );
 
-toggle.setAttribute(
-    'aria-checked',
-    entry.checked ? 'true' : 'false'
-);
+    const weekday =
+        weekdayHeaders[
+            date.getDay()
+        ];
 
-    document.getElementById('checkinTreinoInput').value = entry.treino || '';
+    document
+        .getElementById('checkinModalDate')
+        .textContent =
+            `${weekday}, ${day} de ${monthNames[month - 1]} de ${year}`;
 
-    document.getElementById('checkinModalOverlay').classList.add('show');
+    const toggle =
+        document.getElementById('checkinToggle');
 
-document.getElementById('checkinToggle').focus();
+    toggle.classList.toggle(
+        'active',
+        !!entry.checked
+    );
+
+    toggle.dataset.checked =
+        entry.checked
+            ? 'true'
+            : 'false';
+
+    toggle.setAttribute(
+        'aria-checked',
+        entry.checked
+            ? 'true'
+            : 'false'
+    );
+
+    document
+        .getElementById('checkinTreinoInput')
+        .value =
+            entry.treino || '';
+
+    document
+        .getElementById('checkinModalOverlay')
+        .classList.add('show');
+
+    toggle.focus();
 }
 
 function closeCheckinModal() {
