@@ -3108,16 +3108,26 @@ document
                 )
             );
 
-    document
-    .getElementById('btnFinishWorkout')
-    .disabled = true;
+                document
+                .getElementById(
+                    'btnFinishWorkout'
+                )
+                .disabled = true;
 
-    // Abre o modal de sucesso
-    document
-    .getElementById('finishModalOverlay')
-    .classList.add('show');
+            // Abre o modal de sucesso
+            document
+                .getElementById(
+                    'finishModalOverlay'
+                )
+                .classList.add(
+                    'show'
+                );
 
-    document.getElementById('finishOkBtn').focus();
+            document
+                .getElementById(
+                    'finishOkBtn'
+                )
+                .focus();
 });
 
 function closeFinishModal() {
