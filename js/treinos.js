@@ -1878,7 +1878,7 @@ document.getElementById('exerciseModalOverlay').addEventListener('click', (e) =>
 document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
     if (!editingExerciseCtx) return;
 
-        const nome =
+    const nome =
         document
             .getElementById('exerciseNameInput')
             .value
