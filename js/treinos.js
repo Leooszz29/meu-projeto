@@ -2878,7 +2878,7 @@ document
                     !todasSeriesConcluidas
                 );
 
-                // Preenche a lista de exercícios realizados
+            // Preenche a lista de exercícios realizados
             const finishExercisesList =
                 document.getElementById(
                     'finishExercisesList'
