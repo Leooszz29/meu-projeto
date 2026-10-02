@@ -3260,11 +3260,17 @@ document
 
 function closeSelectWorkoutModal() {
     document
-        .getElementById('selectWorkoutModalOverlay')
-        .classList.remove('show');
+        .getElementById(
+            'selectWorkoutModalOverlay'
+        )
+        .classList.remove(
+            'show'
+        );
 
     document
-        .getElementById('btnFinishWorkout')
+        .getElementById(
+            'btnFinishWorkout'
+        )
         .focus();
 }
 
