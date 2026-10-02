@@ -3139,10 +3139,25 @@ function closeFinishModal() {
     resetActiveTraining();
 }
 
-document.getElementById('finishOkBtn').addEventListener('click', () => {
-    document.getElementById('finishModalOverlay').classList.remove('show');
-    window.location.href = 'perfil.html';
-});
+document
+    .getElementById(
+        'finishOkBtn'
+    )
+    .addEventListener(
+        'click',
+        () => {
+            document
+                .getElementById(
+                    'finishModalOverlay'
+                )
+                .classList.remove(
+                    'show'
+                );
+
+            window.location.href =
+                'perfil.html';
+        }
+    );
 
 document
     .getElementById('finishCloseBtn')
