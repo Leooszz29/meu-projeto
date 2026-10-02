@@ -2152,26 +2152,41 @@ let calViewYear = calCurrentDate.getFullYear();
 let calViewMonth = calCurrentDate.getMonth();
 let calSelectedDateKey = null;
 
-document.getElementById('btnToggleCalendar').addEventListener('click', function () {
-    const wrapper = document.getElementById('calendarWrapper');
-    const isOpen = wrapper.classList.toggle('show');
-    this.classList.toggle('open', isOpen);
+document
+    .getElementById('btnToggleCalendar')
+    .addEventListener('click', function () {
+        const wrapper =
+            document.getElementById('calendarWrapper');
 
-    this.setAttribute(
-    'aria-expanded',
-    String(isOpen)
-);
-    
-    document.getElementById('toggleCalendarLabel').textContent = isOpen
-        ? 'Ocultar calendário de check-in'
-        : 'Mostrar calendário de check-in';
+        const isOpen =
+            wrapper.classList.toggle('show');
+
+        this.classList.toggle(
+            'open',
+            isOpen
+        );
+
+        this.setAttribute(
+            'aria-expanded',
+            String(isOpen)
+        );
+
+        document
+            .getElementById('toggleCalendarLabel')
+            .textContent =
+                isOpen
+                    ? 'Ocultar calendário de check-in'
+                    : 'Mostrar calendário de check-in';
 
         wrapper
-        .querySelectorAll('button, [tabindex]')
-        .forEach((element) => {
-            element.tabIndex = isOpen ? 0 : -1;
-        });
-});
+            .querySelectorAll(
+                'button, [tabindex]'
+            )
+            .forEach(element => {
+                element.tabIndex =
+                    isOpen ? 0 : -1;
+            });
+    });
 
 function closeCalendar() {
     const wrapper =
