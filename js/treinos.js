@@ -3370,15 +3370,22 @@ document
     );
 
 // ==================== INICIALIZAÇÃO ====================
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener(
+    'DOMContentLoaded',
+    () => {
+        const sessao =
+            carregarSessao();
 
-    const sessao =
-    carregarSessao();
+        if (
+            !sessao ||
+            sessao.autenticado !== true
+        ) {
+            window.location.href =
+                'login.html';
 
-if (!sessao || sessao.autenticado !== true) {
-    window.location.href = 'login.html';
-    return;
-}
+            return;
+        }
+        
     const btnEndSession =
     document.getElementById('btnEndSession');
 
