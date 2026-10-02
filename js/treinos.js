@@ -3002,57 +3002,60 @@ document
                     true;
             }
 
-    // Busca o histórico existente
-    const historico =
-    carregarHistoricoTreinos();
+            // Busca o histórico existente
+            const historico =
+                carregarHistoricoTreinos();
 
-    // Monta o resumo detalhado dos exercícios
-    const resumoExercicios =
-    exerciciosFinalizados.map(
-        (exercicio, index) => {
+            // Monta o resumo detalhado dos exercícios
+            const resumoExercicios =
+                exerciciosFinalizados.map(
+                    (exercicio, index) => {
+                        const total =
+                            Number(
+                                exercicio.series
+                            ) || 0;
 
-            const total =
-                Number(exercicio.series) || 0;
+                        const exerciseKey =
+                            exercicio.id ||
+                            `exercise-${index}`;
 
-            const exerciseKey =
-                exercicio.id ||
-                `exercise-${index}`;
+                        const progressoExercicio =
+                            progressoTreino[
+                                treinoAtivo.id
+                            ]?.[exerciseKey] || [];
 
-            const progressoExercicio =
-                progressoTreino[
-                    treinoAtivo.id
-                ]?.[exerciseKey] || [];
+                        const concluidas =
+                            progressoExercicio.length;
 
-            const concluidas =
-                progressoExercicio.length;
+                        return {
+                            id:
+                                exercicio.id ||
+                                null,
 
-           return {
-    id: exercicio.id || null,
+                            nome:
+                                exercicio.nome ||
+                                'Exercício',
 
-    nome:
-        exercicio.nome ||
-        'Exercício',
+                            seriesConcluidas:
+                                concluidas,
 
-    seriesConcluidas:
-        concluidas,
+                            seriesTotal:
+                                total,
 
-    seriesTotal:
-        total,
+                            completo:
+                                total > 0 &&
+                                concluidas >= total,
 
-    completo:
-        total > 0 &&
-        concluidas >= total,
+                            tipoExecucao:
+                                exercicio.tipoExecucao ||
+                                'individual',
 
-    tipoExecucao:
-        exercicio.tipoExecucao ||
-        'individual',
-
-    grupoExecucao:
-        exercicio.grupoExecucao ||
-        null
-};
-        }
-    );
+                            grupoExecucao:
+                                exercicio.grupoExecucao ||
+                                null
+                        };
+                    }
+                );
 
     // Registra o treino concluído
     historico.push({
