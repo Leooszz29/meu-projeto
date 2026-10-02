@@ -3412,7 +3412,7 @@ window.addEventListener(
                 )
                 : null;
 
-            const characterImg =
+        const characterImg =
             document.getElementById(
                 'characterImg'
             );
