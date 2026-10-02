@@ -1980,110 +1980,96 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
 
     if (!workout) return;
 
-    // DEFINE O GRUPO DE EXECUÇÃO
+        // DEFINE O GRUPO DE EXECUÇÃO
+    let grupoExecucao = null;
 
-let grupoExecucao = null;
-
-if (tipoExecucao !== 'individual') {
-
-    if (grupoSelecionado) {
-
-        // USA UM GRUPO JÁ EXISTENTE
-        grupoExecucao =
-            grupoSelecionado;
-
-    } else {
-
-        // CRIA UM NOVO GRUPO
-        grupoExecucao =
-            uid();
-
+    if (tipoExecucao !== 'individual') {
+        if (grupoSelecionado) {
+            // USA UM GRUPO JÁ EXISTENTE
+            grupoExecucao =
+                grupoSelecionado;
+        } else {
+            // CRIA UM NOVO GRUPO
+            grupoExecucao =
+                uid();
+        }
     }
-
-}
 
     // ========================================
-// LIMITE DE EXERCÍCIOS POR GRUPO
-// ========================================
+    // LIMITE DE EXERCÍCIOS POR GRUPO
+    // ========================================
 
-if (
-    tipoExecucao !== 'individual' &&
-    grupoSelecionado
-) {
+    if (
+        tipoExecucao !== 'individual' &&
+        grupoSelecionado
+    ) {
+        const limiteGrupo =
+            tipoExecucao === 'bisset'
+                ? 2
+                : 3;
 
-    const limiteGrupo =
-        tipoExecucao === 'bisset'
-            ? 2
-            : 3;
+        const exerciciosNoGrupo =
+            workout.exercicios.filter(
+                exercicio => {
+                    // AO EDITAR, NÃO CONTA
+                    // O PRÓPRIO EXERCÍCIO
+                    if (
+                        editingExerciseCtx.exerciseId &&
+                        exercicio.id ===
+                            editingExerciseCtx.exerciseId
+                    ) {
+                        return false;
+                    }
 
-    const exerciciosNoGrupo =
-        workout.exercicios.filter(exercicio => {
-
-            // AO EDITAR, NÃO CONTA O PRÓPRIO EXERCÍCIO
-            if (
-                editingExerciseCtx.exerciseId &&
-                exercicio.id === editingExerciseCtx.exerciseId
-            ) {
-                return false;
-            }
-
-            return (
-                exercicio.grupoExecucao === grupoExecucao &&
-                exercicio.tipoExecucao === tipoExecucao
+                    return (
+                        exercicio.grupoExecucao ===
+                            grupoExecucao &&
+                        exercicio.tipoExecucao ===
+                            tipoExecucao
+                    );
+                }
             );
 
-        });
+        if (
+            exerciciosNoGrupo.length >=
+            limiteGrupo
+        ) {
+            showWarningModal(
+                tipoExecucao === 'bisset'
+                    ? 'Este Bi-set já possui 2 exercícios.'
+                    : 'Este Tri-set já possui 3 exercícios.'
+            );
 
-    if (exerciciosNoGrupo.length >= limiteGrupo) {
-
-    showWarningModal(
-        tipoExecucao === 'bisset'
-            ? 'Este Bi-set já possui 2 exercícios.'
-            : 'Este Tri-set já possui 3 exercícios.'
-    );
-
-    return;
-}
-}
-
-    if (editingExerciseCtx.exerciseId) {
-
-    const ex =
-        workout.exercicios.find(
-            e => e.id === editingExerciseCtx.exerciseId
-        );
-
-    if (ex) {
-
-        ex.nome = nome;
-
-        ex.tipoExecucao =
-            tipoExecucao;
-
-        ex.grupoExecucao =
-            grupoExecucao;
-
-        ex.series =
-            series;
-
-        ex.repeticoes =
-            repeticoes;
-
-        ex.descanso =
-            descanso;
+            return;
+        }
     }
 
-}
-     else {
-      workout.exercicios.push({
-    id: uid(),
-    nome,
-    tipoExecucao,
-    grupoExecucao,
-    series,
-    repeticoes,
-    descanso
-});
+    if (editingExerciseCtx.exerciseId) {
+        const exercise =
+            workout.exercicios.find(
+                exercise =>
+                    exercise.id ===
+                    editingExerciseCtx.exerciseId
+            );
+
+        if (exercise) {
+            exercise.nome = nome;
+            exercise.tipoExecucao = tipoExecucao;
+            exercise.grupoExecucao = grupoExecucao;
+            exercise.series = series;
+            exercise.repeticoes = repeticoes;
+            exercise.descanso = descanso;
+        }
+    } else {
+        workout.exercicios.push({
+            id: uid(),
+            nome,
+            tipoExecucao,
+            grupoExecucao,
+            series,
+            repeticoes,
+            descanso
+        });
     }
 
     saveWorkouts(workouts);
