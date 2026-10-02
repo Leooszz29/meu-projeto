@@ -3057,24 +3057,29 @@ document
                     }
                 );
 
-    // Registra o treino concluído
-    historico.push({
-    workoutId: treinoAtivo.id,
-    nome: treinoAtivo.nome,
-    data: new Date().toISOString(),
+            // Registra o treino concluído
+            historico.push({
+                workoutId:
+                    treinoAtivo.id,
 
-    exercicios:
-        resumoExercicios,
+                nome:
+                    treinoAtivo.nome,
 
-    totalExercicios:
-        exerciciosFinalizados.length,
+                data:
+                    new Date().toISOString(),
 
-    seriesConcluidas:
-        seriesConcluidas,
+                exercicios:
+                    resumoExercicios,
 
-    seriesTotal:
-        totalSeries
-});
+                totalExercicios:
+                    exerciciosFinalizados.length,
+
+                seriesConcluidas:
+                    seriesConcluidas,
+
+                seriesTotal:
+                    totalSeries
+            });
 
     // Salva o histórico atualizado
     localStorage.setItem(
