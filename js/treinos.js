@@ -1546,6 +1546,16 @@ if (
         obterChaveTreinoAtivo()
     );
 
+    const progressoAtual =
+    carregarProgressoTreino();
+
+delete progressoAtual[workoutId];
+
+localStorage.setItem(
+    obterChaveProgressoTreino(),
+    JSON.stringify(progressoAtual)
+);
+
     resetActiveTraining();
 }        
         let workouts = loadWorkouts();
