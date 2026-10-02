@@ -3203,42 +3203,56 @@ document
         }
     );
 
-document.addEventListener('keydown', (event) => {
+document
+    .addEventListener(
+        'keydown',
+        (event) => {
+            const modal =
+                document.getElementById(
+                    'finishModalOverlay'
+                );
 
-    const modal =
-        document.getElementById('finishModalOverlay');
+            if (
+                event.key !== 'Tab' ||
+                !modal.classList.contains(
+                    'show'
+                )
+            ) {
+                return;
+            }
 
-    if (
-        event.key !== 'Tab' ||
-        !modal.classList.contains('show')
-    ) {
-        return;
-    }
+            const focusableElements =
+                modal.querySelectorAll(
+                    'button, [tabindex]:not([tabindex="-1"])'
+                );
 
-    const focusableElements =
-        modal.querySelectorAll(
-            'button, [tabindex]:not([tabindex="-1"])'
-        );
+            const firstElement =
+                focusableElements[0];
 
-    const firstElement = focusableElements[0];
-    const lastElement =
-        focusableElements[focusableElements.length - 1];
+            const lastElement =
+                focusableElements[
+                    focusableElements.length - 1
+                ];
 
-    if (
-        event.shiftKey &&
-        document.activeElement === firstElement
-    ) {
-        event.preventDefault();
-        lastElement.focus();
-    } else if (
-        !event.shiftKey &&
-        document.activeElement === lastElement
-    ) {
-        event.preventDefault();
-        firstElement.focus();
-    }
+            if (
+                event.shiftKey &&
+                document.activeElement ===
+                    firstElement
+            ) {
+                event.preventDefault();
 
-});
+                lastElement.focus();
+            } else if (
+                !event.shiftKey &&
+                document.activeElement ===
+                    lastElement
+            ) {
+                event.preventDefault();
+
+                firstElement.focus();
+            }
+        }
+    );
 
 // ========================================
 // MODAL - SELECIONAR TREINO
