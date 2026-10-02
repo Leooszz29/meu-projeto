@@ -2984,7 +2984,7 @@ document
                 }
             );
 
-               const finishIncompleteCount =
+            const finishIncompleteCount =
                 document.getElementById(
                     'finishIncompleteCount'
                 );
