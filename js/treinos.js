@@ -2078,14 +2078,30 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
 });
 
 function deleteExercise(workoutId, exerciseId) {
-    askConfirm('Remover este exercício?', () => {
-        const workouts = loadWorkouts();
-        const workout = workouts.find(w => w.id === workoutId);
-        if (!workout) return;
-        workout.exercicios = workout.exercicios.filter(e => e.id !== exerciseId);
-        saveWorkouts(workouts);
-        renderWorkouts();
-    });
+    askConfirm(
+        'Remover este exercício?',
+        () => {
+            const workouts =
+                loadWorkouts();
+
+            const workout =
+                workouts.find(
+                    workout =>
+                        workout.id === workoutId
+                );
+
+            if (!workout) return;
+
+            workout.exercicios =
+                workout.exercicios.filter(
+                    exercise =>
+                        exercise.id !== exerciseId
+                );
+
+            saveWorkouts(workouts);
+            renderWorkouts();
+        }
+    );
 }
 
 // ==================== CALENDÁRIO DE CHECK-IN ====================
