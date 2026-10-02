@@ -1582,87 +1582,101 @@ function openExerciseModal(workoutId, exerciseId) {
     const title =
     document.getElementById('exerciseModalTitle');
 
-const nameInput =
-    document.getElementById('exerciseNameInput');
+    const nameInput =
+        document.getElementById('exerciseNameInput');
 
-const typeInput =
-    document.getElementById('exerciseTypeInput');
+    const typeInput =
+        document.getElementById('exerciseTypeInput');
 
-const groupField =
-    document.getElementById('exerciseGroupField');
+    const groupField =
+        document.getElementById('exerciseGroupField');
 
-const seriesInput =
-    document.getElementById('exerciseSeriesInput');
+    const seriesInput =
+        document.getElementById('exerciseSeriesInput');
 
-const repsInput =
-    document.getElementById('exerciseRepsInput');
+    const repsInput =
+        document.getElementById('exerciseRepsInput');
 
-const restInput =
-    document.getElementById('exerciseRestInput');
-
-[
-    nameInput,
-    seriesInput,
-    repsInput,
-    restInput
-].forEach(input => {
-    input.classList.remove('input-error');
-});
+    const restInput =
+        document.getElementById('exerciseRestInput');
 
     [
-    nameInput,
-    seriesInput,
-    repsInput,
-    restInput
-].forEach(input => {
-    input.oninput = () => {
+        nameInput,
+        seriesInput,
+        repsInput,
+        restInput
+    ].forEach(input => {
         input.classList.remove('input-error');
-    };
-});
+    });
+
+    [
+        nameInput,
+        seriesInput,
+        repsInput,
+        restInput
+    ].forEach(input => {
+        input.oninput = () => {
+            input.classList.remove('input-error');
+        };
+    });
 
     nameInput.onkeydown = (event) => {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        document.getElementById('exerciseSaveBtn').click();
+        if (event.key === 'Enter') {
+            event.preventDefault();
+
+            document
+                .getElementById('exerciseSaveBtn')
+                .click();
+        }
+    };
+
+    let exerciseEditing = null;
+
+    if (exerciseId) {
+        const workouts = loadWorkouts();
+
+        const workout = workouts.find(
+            workout => workout.id === workoutId
+        );
+
+        const exercise =
+            workout
+                ? workout.exercicios.find(
+                    exercise =>
+                        exercise.id === exerciseId
+                )
+                : null;
+
+        exerciseEditing = exercise;
+
+        title.textContent = 'Editar exercício';
+
+        nameInput.value =
+            exercise ? exercise.nome : '';
+
+        typeInput.value =
+            exercise
+                ? (exercise.tipoExecucao || 'individual')
+                : 'individual';
+
+        seriesInput.value =
+            exercise ? exercise.series : '';
+
+        repsInput.value =
+            exercise ? exercise.repeticoes : '';
+
+        restInput.value =
+            exercise ? exercise.descanso : '';
+
+    } else {
+        title.textContent = 'Novo exercício';
+
+        nameInput.value = '';
+        typeInput.value = 'individual';
+        seriesInput.value = '';
+        repsInput.value = '';
+        restInput.value = '';
     }
-};
-
-let exerciseEditing = null;
-
-if (exerciseId) {
-    const workouts = loadWorkouts();
-    const workout = workouts.find(w => w.id === workoutId);
-   const ex =
-    workout
-        ? workout.exercicios.find(
-            e => e.id === exerciseId
-        )
-        : null;
-
-exerciseEditing = ex;
-
-    title.textContent = 'Editar exercício';
-
-    nameInput.value = ex ? ex.nome : '';
-
-    typeInput.value =
-        ex ? (ex.tipoExecucao || 'individual') : 'individual';
-
-    seriesInput.value = ex ? ex.series : '';
-    repsInput.value = ex ? ex.repeticoes : '';
-    restInput.value = ex ? ex.descanso : '';
-
-} else {
-    title.textContent = 'Novo exercício';
-
-    nameInput.value = '';
-
-    typeInput.value = 'individual';
-
-    seriesInput.value = '';
-    repsInput.value = '';
-    restInput.value = '';
-}
 
     // ========================================
 // CAMPO DE GRUPO - BI-SET / TRI-SET
