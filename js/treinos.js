@@ -2658,9 +2658,20 @@ document
         'click',
         closeCheckinModal
     );
-document.getElementById('checkinModalOverlay').addEventListener('click', (e) => {
-    if (e.target.id === 'checkinModalOverlay') closeCheckinModal();
-});
+
+document
+    .getElementById('checkinModalOverlay')
+    .addEventListener(
+        'click',
+        (event) => {
+            if (
+                event.target.id ===
+                'checkinModalOverlay'
+            ) {
+                closeCheckinModal();
+            }
+        }
+    );
 
 document.getElementById('checkinSaveBtn').addEventListener('click', () => {
     if (!calSelectedDateKey) return;
