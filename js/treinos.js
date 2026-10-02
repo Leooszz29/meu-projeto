@@ -2878,42 +2878,43 @@ document
                     !todasSeriesConcluidas
                 );
 
-    // Preenche a lista de exercícios realizados
-const finishExercisesList =
-    document.getElementById(
-        'finishExercisesList'
-    );
+                // Preenche a lista de exercícios realizados
+            const finishExercisesList =
+                document.getElementById(
+                    'finishExercisesList'
+                );
 
-finishExercisesList.innerHTML = '';
-    
-    let exerciciosIncompletos = 0;
+            finishExercisesList.innerHTML = '';
 
-exerciciosFinalizados.forEach(
-    (exercicio, index) => {
+            let exerciciosIncompletos = 0;
 
-        const totalSeriesExercicio =
-            Number(exercicio.series) || 0;
+            exerciciosFinalizados.forEach(
+                (exercicio, index) => {
+                    const totalSeriesExercicio =
+                        Number(
+                            exercicio.series
+                        ) || 0;
 
-        const exerciseKey =
-            exercicio.id ||
-            `exercise-${index}`;
+                    const exerciseKey =
+                        exercicio.id ||
+                        `exercise-${index}`;
 
-        const progressoExercicio =
-            progressoTreino[
-                treinoAtivo.id
-            ]?.[exerciseKey] || [];
+                    const progressoExercicio =
+                        progressoTreino[
+                            treinoAtivo.id
+                        ]?.[exerciseKey] || [];
 
-        const concluidasExercicio =
-            progressoExercicio.length;
+                    const concluidasExercicio =
+                        progressoExercicio.length;
 
-        const exercicioCompleto =
-            totalSeriesExercicio > 0 &&
-            concluidasExercicio >=
-                totalSeriesExercicio;
-        
-        if (!exercicioCompleto) {
-    exerciciosIncompletos++;
-}
+                    const exercicioCompleto =
+                        totalSeriesExercicio > 0 &&
+                        concluidasExercicio >=
+                            totalSeriesExercicio;
+
+                    if (!exercicioCompleto) {
+                        exerciciosIncompletos++;
+                    }
 
         // Linha do exercício
         const exerciseRow =
