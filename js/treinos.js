@@ -2229,12 +2229,14 @@ document.addEventListener('keydown', (event) => {
 
 function loadCheckins() {
     try {
-        return JSON.parse(
-    localStorage.getItem(
-        obterChaveCheckins()
-    )
-) || {};
-    } catch (e) {
+        return (
+            JSON.parse(
+                localStorage.getItem(
+                    obterChaveCheckins()
+                )
+            ) || {}
+        );
+    } catch (error) {
         return {};
     }
 }
