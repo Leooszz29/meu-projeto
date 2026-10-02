@@ -1878,57 +1878,106 @@ document.getElementById('exerciseModalOverlay').addEventListener('click', (e) =>
 document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
     if (!editingExerciseCtx) return;
 
-    const nome =
-    document.getElementById('exerciseNameInput').value.trim();
+        const nome =
+        document
+            .getElementById('exerciseNameInput')
+            .value
+            .trim();
 
-const tipoExecucao =
-    document.getElementById('exerciseTypeInput').value;
+    const tipoExecucao =
+        document
+            .getElementById('exerciseTypeInput')
+            .value;
 
-const grupoSelecionado =
-    document.getElementById('exerciseGroupInput').value;
+    const grupoSelecionado =
+        document
+            .getElementById('exerciseGroupInput')
+            .value;
 
-const series =
-    parseInt(
-        document.getElementById('exerciseSeriesInput').value,
-        10
-    );
-    const repeticoes = parseInt(document.getElementById('exerciseRepsInput').value, 10);
-    const descanso = parseInt(document.getElementById('exerciseRestInput').value, 10);
+    const series =
+        parseInt(
+            document
+                .getElementById('exerciseSeriesInput')
+                .value,
+            10
+        );
 
-    if (!nome || isNaN(series) || series < 1 || isNaN(repeticoes) || repeticoes < 1 || isNaN(descanso) || descanso < 0) {
-        [
-            ['exerciseNameInput', !nome],
-            ['exerciseSeriesInput', isNaN(series) || series < 1],
-            ['exerciseRepsInput', isNaN(repeticoes) || repeticoes < 1],
-            ['exerciseRestInput', isNaN(descanso) || descanso < 0]
-        ].forEach(([id, invalid]) => {
-    const el = document.getElementById(id);
+    const repeticoes =
+        parseInt(
+            document
+                .getElementById('exerciseRepsInput')
+                .value,
+            10
+        );
 
-    el.classList.toggle(
-        'input-error',
-        invalid
-    );
-});
+    const descanso =
+        parseInt(
+            document
+                .getElementById('exerciseRestInput')
+                .value,
+            10
+        );
 
-        const firstInvalidInput =
-    [
+    const camposInvalidos = [
         ['exerciseNameInput', !nome],
-        ['exerciseSeriesInput', isNaN(series) || series < 1],
-        ['exerciseRepsInput', isNaN(repeticoes) || repeticoes < 1],
-        ['exerciseRestInput', isNaN(descanso) || descanso < 0]
-    ].find(([, invalid]) => invalid);
+        [
+            'exerciseSeriesInput',
+            isNaN(series) || series < 1
+        ],
+        [
+            'exerciseRepsInput',
+            isNaN(repeticoes) || repeticoes < 1
+        ],
+        [
+            'exerciseRestInput',
+            isNaN(descanso) || descanso < 0
+        ]
+    ];
 
-if (firstInvalidInput) {
-    document
-        .getElementById(firstInvalidInput[0])
-        .focus();
-}
-        
+    const possuiCampoInvalido =
+        camposInvalidos.some(
+            ([, invalid]) => invalid
+        );
+
+    if (possuiCampoInvalido) {
+        camposInvalidos.forEach(
+            ([id, invalid]) => {
+                const input =
+                    document.getElementById(id);
+
+                input.classList.toggle(
+                    'input-error',
+                    invalid
+                );
+            }
+        );
+
+        const primeiroCampoInvalido =
+            camposInvalidos.find(
+                ([, invalid]) => invalid
+            );
+
+        if (primeiroCampoInvalido) {
+            document
+                .getElementById(
+                    primeiroCampoInvalido[0]
+                )
+                .focus();
+        }
+
         return;
     }
 
-    const workouts = loadWorkouts();
-    const workout = workouts.find(w => w.id === editingExerciseCtx.workoutId);
+    const workouts =
+        loadWorkouts();
+
+    const workout =
+        workouts.find(
+            workout =>
+                workout.id ===
+                editingExerciseCtx.workoutId
+        );
+
     if (!workout) return;
 
     // DEFINE O GRUPO DE EXECUÇÃO
