@@ -3160,8 +3160,13 @@ document
     );
 
 document
-    .getElementById('finishCloseBtn')
-    .addEventListener('click', closeFinishModal);
+    .getElementById(
+        'finishCloseBtn'
+    )
+    .addEventListener(
+        'click',
+        closeFinishModal
+    );
 
 document.getElementById('finishModalOverlay').addEventListener('click', (e) => {
     if (e.target.id === 'finishModalOverlay') {
