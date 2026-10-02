@@ -2105,9 +2105,10 @@ function deleteExercise(workoutId, exerciseId) {
 }
 
 // ==================== CALENDÁRIO DE CHECK-IN ====================
-const CHECKIN_STORAGE_KEY = 'fitzoneCheckins';
-function obterChaveCheckins() {
+const CHECKIN_STORAGE_KEY =
+    'fitzoneCheckins';
 
+function obterChaveCheckins() {
     const sessao =
         carregarSessao();
 
@@ -2120,8 +2121,31 @@ function obterChaveCheckins() {
 
     return `${CHECKIN_STORAGE_KEY}:${sessao.email.toLowerCase()}`;
 }
-const weekdayHeaders = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-const monthNames = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+const weekdayHeaders = [
+    'Dom',
+    'Seg',
+    'Ter',
+    'Qua',
+    'Qui',
+    'Sex',
+    'Sáb'
+];
+
+const monthNames = [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro'
+];
 
 let calCurrentDate = new Date();
 let calViewYear = calCurrentDate.getFullYear();
