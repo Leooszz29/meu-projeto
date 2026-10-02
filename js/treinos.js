@@ -1533,36 +1533,43 @@ function resetActiveTraining() {
 }
 
 function deleteWorkout(workoutId) {
-    askConfirm('Excluir este treino e todos os seus exercícios?', () => {
-        
-        const treinoAtivo =
-    carregarTreinoAtivo();
+    askConfirm(
+        'Excluir este treino e todos os seus exercícios?',
+        () => {
+            const treinoAtivo =
+                carregarTreinoAtivo();
 
-if (
-    treinoAtivo &&
-    treinoAtivo.id === workoutId
-) {
-    localStorage.removeItem(
-        obterChaveTreinoAtivo()
+            if (
+                treinoAtivo &&
+                treinoAtivo.id === workoutId
+            ) {
+                localStorage.removeItem(
+                    obterChaveTreinoAtivo()
+                );
+
+                const progressoAtual =
+                    carregarProgressoTreino();
+
+                delete progressoAtual[workoutId];
+
+                localStorage.setItem(
+                    obterChaveProgressoTreino(),
+                    JSON.stringify(progressoAtual)
+                );
+
+                resetActiveTraining();
+            }
+
+            let workouts = loadWorkouts();
+
+            workouts = workouts.filter(
+                workout => workout.id !== workoutId
+            );
+
+            saveWorkouts(workouts);
+            renderWorkouts();
+        }
     );
-
-    const progressoAtual =
-    carregarProgressoTreino();
-
-delete progressoAtual[workoutId];
-
-localStorage.setItem(
-    obterChaveProgressoTreino(),
-    JSON.stringify(progressoAtual)
-);
-
-    resetActiveTraining();
-}        
-        let workouts = loadWorkouts();
-        workouts = workouts.filter(w => w.id !== workoutId);
-        saveWorkouts(workouts);
-        renderWorkouts();
-    });
 }
 
 // ==================== MODAL EXERCÍCIO ====================
