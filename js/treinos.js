@@ -2413,8 +2413,15 @@ function renderCalendar() {
         grid.appendChild(cell);
     }
 
-       document.getElementById('statMes').textContent = checkinsNoMes;
-    document.getElementById('statSequencia').textContent = calcularSequencia(data);
+           document
+        .getElementById('statMes')
+        .textContent =
+            checkinsNoMes;
+
+    document
+        .getElementById('statSequencia')
+        .textContent =
+            calcularSequencia(data);
 
     const calendarWrapper =
         document.getElementById('calendarWrapper');
@@ -2423,24 +2430,43 @@ function renderCalendar() {
         calendarWrapper.classList.contains('show');
 
     calendarWrapper
-        .querySelectorAll('button, [tabindex]')
-        .forEach((element) => {
-            element.tabIndex = calendarIsOpen ? 0 : -1;
+        .querySelectorAll(
+            'button, [tabindex]'
+        )
+        .forEach(element => {
+            element.tabIndex =
+                calendarIsOpen ? 0 : -1;
         });
 }
 
 function calcularSequencia(data) {
     let streak = 0;
-    let d = new Date();
+
+    const date =
+        new Date();
+
     while (true) {
-        const key = calDateKey(d.getFullYear(), d.getMonth(), d.getDate());
-        if (data[key] && data[key].checked) {
+        const key =
+            calDateKey(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate()
+            );
+
+        if (
+            data[key] &&
+            data[key].checked
+        ) {
             streak++;
-            d.setDate(d.getDate() - 1);
+
+            date.setDate(
+                date.getDate() - 1
+            );
         } else {
             break;
         }
     }
+
     return streak;
 }
 
