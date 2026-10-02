@@ -3132,8 +3132,6 @@ document
     );
 
 function closeFinishModal() {
-
-function closeFinishModal() {
     document
         .getElementById('finishModalOverlay')
         .classList.remove('show');
