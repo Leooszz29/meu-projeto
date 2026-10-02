@@ -2916,69 +2916,73 @@ document
                         exerciciosIncompletos++;
                     }
 
-        // Linha do exercício
-        const exerciseRow =
-            document.createElement('div');
+                            // Linha do exercício
+                    const exerciseRow =
+                        document.createElement(
+                            'div'
+                        );
 
-        exerciseRow.className =
-            exercicioCompleto
-                ? 'finish-exercise-row complete'
-                : 'finish-exercise-row incomplete';
+                    exerciseRow.className =
+                        exercicioCompleto
+                            ? 'finish-exercise-row complete'
+                            : 'finish-exercise-row incomplete';
 
+                    // Ícone ✓ ou ✕
+                    const exerciseStatus =
+                        document.createElement(
+                            'span'
+                        );
 
-        // Ícone ✓ ou ✕
-        const exerciseStatus =
-            document.createElement('span');
+                    exerciseStatus.className =
+                        'finish-exercise-status';
 
-        exerciseStatus.className =
-            'finish-exercise-status';
+                    exerciseStatus.textContent =
+                        exercicioCompleto
+                            ? '✓'
+                            : '✕';
 
-        exerciseStatus.textContent =
-            exercicioCompleto
-                ? '✓'
-                : '✕';
+                    // Nome
+                    const exerciseName =
+                        document.createElement(
+                            'strong'
+                        );
 
+                    exerciseName.className =
+                        'finish-exercise-name';
 
-        // Nome
-        const exerciseName =
-            document.createElement('strong');
+                    exerciseName.textContent =
+                        exercicio.nome ||
+                        'Exercício';
 
-        exerciseName.className =
-            'finish-exercise-name';
+                    // Séries
+                    const exerciseSeries =
+                        document.createElement(
+                            'span'
+                        );
 
-        exerciseName.textContent =
-            exercicio.nome ||
-            'Exercício';
+                    exerciseSeries.className =
+                        'finish-exercise-series';
 
+                    exerciseSeries.textContent =
+                        `${concluidasExercicio} de ${totalSeriesExercicio} séries`;
 
-        // Séries
-        const exerciseSeries =
-            document.createElement('span');
+                    exerciseRow.appendChild(
+                        exerciseStatus
+                    );
 
-        exerciseSeries.className =
-            'finish-exercise-series';
+                    exerciseRow.appendChild(
+                        exerciseName
+                    );
 
-        exerciseSeries.textContent =
-            `${concluidasExercicio} de ${totalSeriesExercicio} séries`;
+                    exerciseRow.appendChild(
+                        exerciseSeries
+                    );
 
-
-        exerciseRow.appendChild(
-            exerciseStatus
-        );
-
-        exerciseRow.appendChild(
-            exerciseName
-        );
-
-        exerciseRow.appendChild(
-            exerciseSeries
-        );
-
-        finishExercisesList.appendChild(
-            exerciseRow
-        );
-    }
-);
+                    finishExercisesList.appendChild(
+                        exerciseRow
+                    );
+                }
+            );
 
     const finishIncompleteCount =
     document.getElementById(
