@@ -2413,7 +2413,7 @@ function renderCalendar() {
         grid.appendChild(cell);
     }
 
-           document
+    document
         .getElementById('statMes')
         .textContent =
             checkinsNoMes;
