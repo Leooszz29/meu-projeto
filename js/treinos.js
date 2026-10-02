@@ -2546,12 +2546,17 @@ function openCheckinModal(key) {
 }
 
 function closeCheckinModal() {
-    document.getElementById('checkinModalOverlay').classList.remove('show');
+    document
+        .getElementById('checkinModalOverlay')
+        .classList.remove('show');
+
     calSelectedDateKey = null;
 
     if (
         checkinModalTrigger &&
-        document.contains(checkinModalTrigger)
+        document.contains(
+            checkinModalTrigger
+        )
     ) {
         checkinModalTrigger.focus();
     }
