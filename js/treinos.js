@@ -2248,20 +2248,51 @@ function saveCheckins(data) {
     );
 }
 
-function calDateKey(y, m, d) {
-    return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+function calDateKey(year, month, day) {
+    const formattedMonth =
+        String(month + 1).padStart(2, '0');
+
+    const formattedDay =
+        String(day).padStart(2, '0');
+
+    return `${year}-${formattedMonth}-${formattedDay}`;
 }
 
 function renderCalendar() {
-    const data = loadCheckins();
-    document.getElementById('monthLabel').textContent = `${monthNames[calViewMonth]} ${calViewYear}`;
+    const data =
+        loadCheckins();
 
-    const grid = document.getElementById('daysGrid');
+    const monthLabel =
+        document.getElementById('monthLabel');
+
+    monthLabel.textContent =
+        `${monthNames[calViewMonth]} ${calViewYear}`;
+
+    const grid =
+        document.getElementById('daysGrid');
+
     grid.innerHTML = '';
 
-    const firstDay = new Date(calViewYear, calViewMonth, 1).getDay();
-    const daysInMonth = new Date(calViewYear, calViewMonth + 1, 0).getDate();
-    const todayKey = calDateKey(calCurrentDate.getFullYear(), calCurrentDate.getMonth(), calCurrentDate.getDate());
+    const firstDay =
+        new Date(
+            calViewYear,
+            calViewMonth,
+            1
+        ).getDay();
+
+    const daysInMonth =
+        new Date(
+            calViewYear,
+            calViewMonth + 1,
+            0
+        ).getDate();
+
+    const todayKey =
+        calDateKey(
+            calCurrentDate.getFullYear(),
+            calCurrentDate.getMonth(),
+            calCurrentDate.getDate()
+        );
 
     for (let i = 0; i < firstDay; i++) {
         const empty = document.createElement('div');
