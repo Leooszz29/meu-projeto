@@ -2751,23 +2751,31 @@ document
     );
 
 // ==================== FINALIZAR TREINO ====================
-document.getElementById('btnFinishWorkout').addEventListener('click', () => {
+document
+    .getElementById('btnFinishWorkout')
+    .addEventListener(
+        'click',
+        () => {
+            // Busca o treino selecionado
+            const treinoAtivo =
+                carregarTreinoAtivo();
 
-    // Busca o treino selecionado
-    const treinoAtivo =
-    carregarTreinoAtivo();
+            // Impede finalizar sem selecionar um treino
+            if (!treinoAtivo) {
+                document
+                    .getElementById(
+                        'selectWorkoutModalOverlay'
+                    )
+                    .classList.add('show');
 
-    // Impede finalizar sem selecionar um treino
-   if (!treinoAtivo) {
+                document
+                    .getElementById(
+                        'selectWorkoutOkBtn'
+                    )
+                    .focus();
 
-    document
-        .getElementById('selectWorkoutModalOverlay')
-        .classList.add('show');
-
-    document.getElementById('selectWorkoutOkBtn').focus();
-
-    return;
-}
+                return;
+            }
     
 // Busca os dados completos do treino
 const workouts =
