@@ -2564,55 +2564,63 @@ function closeCheckinModal() {
     checkinModalTrigger = null;
 }
 
-document.addEventListener('keydown', (event) => {
-
-    if (
-        event.key === 'Escape' &&
-        document
-            .getElementById('checkinModalOverlay')
-            .classList.contains('show')
-    ) {
-        closeCheckinModal();
+document.addEventListener(
+    'keydown',
+    (event) => {
+        if (
+            event.key === 'Escape' &&
+            document
+                .getElementById('checkinModalOverlay')
+                .classList.contains('show')
+        ) {
+            closeCheckinModal();
+        }
     }
+);
 
-});
+document.addEventListener(
+    'keydown',
+    (event) => {
+        const modal =
+            document.getElementById(
+                'checkinModalOverlay'
+            );
 
-document.addEventListener('keydown', (event) => {
+        if (
+            event.key !== 'Tab' ||
+            !modal.classList.contains('show')
+        ) {
+            return;
+        }
 
-    const modal =
-        document.getElementById('checkinModalOverlay');
+        const focusableElements =
+            modal.querySelectorAll(
+                'input, button, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
 
-    if (
-        event.key !== 'Tab' ||
-        !modal.classList.contains('show')
-    ) {
-        return;
+        const firstElement =
+            focusableElements[0];
+
+        const lastElement =
+            focusableElements[
+                focusableElements.length - 1
+            ];
+
+        if (
+            event.shiftKey &&
+            document.activeElement === firstElement
+        ) {
+            event.preventDefault();
+            lastElement.focus();
+        } else if (
+            !event.shiftKey &&
+            document.activeElement === lastElement
+        ) {
+            event.preventDefault();
+            firstElement.focus();
+        }
     }
-
-    const focusableElements =
-        modal.querySelectorAll(
-            'input, button, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-
-    const firstElement = focusableElements[0];
-    const lastElement =
-        focusableElements[focusableElements.length - 1];
-
-    if (
-        event.shiftKey &&
-        document.activeElement === firstElement
-    ) {
-        event.preventDefault();
-        lastElement.focus();
-    } else if (
-        !event.shiftKey &&
-        document.activeElement === lastElement
-    ) {
-        event.preventDefault();
-        firstElement.focus();
-    }
-
-});
+);
 
 document
     .getElementById('checkinToggle')
