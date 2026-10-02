@@ -3089,19 +3089,24 @@ document
                 )
             );
 
-    // Remove o treino ativo após a conclusão
-    localStorage.removeItem(
-    obterChaveTreinoAtivo()
-);
-    const progressoAtual =
-    carregarProgressoTreino();
+            // Remove o treino ativo após a conclusão
+            localStorage.removeItem(
+                obterChaveTreinoAtivo()
+            );
 
-delete progressoAtual[treinoAtivo.id];
+            const progressoAtual =
+                carregarProgressoTreino();
 
-localStorage.setItem(
-    obterChaveProgressoTreino(),
-    JSON.stringify(progressoAtual)
-);
+            delete progressoAtual[
+                treinoAtivo.id
+            ];
+
+            localStorage.setItem(
+                obterChaveProgressoTreino(),
+                JSON.stringify(
+                    progressoAtual
+                )
+            );
 
     document
     .getElementById('btnFinishWorkout')
