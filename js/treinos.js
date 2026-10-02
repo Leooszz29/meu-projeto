@@ -3184,18 +3184,24 @@ document
         }
     );
 
-document.addEventListener('keydown', (event) => {
-
-    if (
-        event.key === 'Escape' &&
-        document
-            .getElementById('finishModalOverlay')
-            .classList.contains('show')
-    ) {
-        closeFinishModal();
-    }
-
-});
+document
+    .addEventListener(
+        'keydown',
+        (event) => {
+            if (
+                event.key === 'Escape' &&
+                document
+                    .getElementById(
+                        'finishModalOverlay'
+                    )
+                    .classList.contains(
+                        'show'
+                    )
+            ) {
+                closeFinishModal();
+            }
+        }
+    );
 
 document.addEventListener('keydown', (event) => {
 
