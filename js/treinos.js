@@ -3405,12 +3405,12 @@ window.addEventListener(
             );
         }
 
-const genero =
-    sessao && sessao.email
-        ? localStorage.getItem(
-            `generoFitZone:${sessao.email.toLowerCase()}`
-        )
-        : null;
+        const genero =
+            sessao && sessao.email
+                ? localStorage.getItem(
+                    `generoFitZone:${sessao.email.toLowerCase()}`
+                )
+                : null;
 
     const characterImg = document.getElementById('characterImg');
 
