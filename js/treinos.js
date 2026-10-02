@@ -3412,7 +3412,10 @@ window.addEventListener(
                 )
                 : null;
 
-    const characterImg = document.getElementById('characterImg');
+            const characterImg =
+            document.getElementById(
+                'characterImg'
+            );
 
     const imagens = {
         masculino: 'img/atleta-masculino.png',
