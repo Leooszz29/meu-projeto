@@ -2809,65 +2809,74 @@ document
 
             // Calcula o total de séries
             // e quantas foram concluídas
-const progressoTreino =
-    carregarProgressoTreino();
+            const progressoTreino =
+                carregarProgressoTreino();
 
-let totalSeries = 0;
-let seriesConcluidas = 0;
+            let totalSeries = 0;
+            let seriesConcluidas = 0;
 
-const exerciciosFinalizados =
-    workoutFinalizado?.exercicios || [];
+            const exerciciosFinalizados =
+                workoutFinalizado?.exercicios || [];
 
-exerciciosFinalizados.forEach(
-    (exercicio, index) => {
+            exerciciosFinalizados.forEach(
+                (exercicio, index) => {
+                    const quantidadeSeries =
+                        Number(
+                            exercicio.series
+                        ) || 0;
 
-        const quantidadeSeries =
-            Number(exercicio.series) || 0;
+                    totalSeries +=
+                        quantidadeSeries;
 
-        totalSeries += quantidadeSeries;
+                    const exerciseKey =
+                        exercicio.id ||
+                        `exercise-${index}`;
 
-        const exerciseKey =
-            exercicio.id ||
-            `exercise-${index}`;
+                    const progressoExercicio =
+                        progressoTreino[
+                            treinoAtivo.id
+                        ]?.[exerciseKey] || [];
 
-        const progressoExercicio =
-            progressoTreino[
-                treinoAtivo.id
-            ]?.[exerciseKey] || [];
+                    seriesConcluidas +=
+                        progressoExercicio.length;
+                }
+            );
 
-        seriesConcluidas +=
-            progressoExercicio.length;
-    }
-);
+            document
+                .getElementById(
+                    'finishSeriesCount'
+                )
+                .textContent =
+                    `${seriesConcluidas} de ${totalSeries}`;
 
-document.getElementById(
-    'finishSeriesCount'
-).textContent =
-    `${seriesConcluidas} de ${totalSeries}`;
+            const finishSeriesCount =
+                document.getElementById(
+                    'finishSeriesCount'
+                );
 
-const finishSeriesCount =
-    document.getElementById(
-        'finishSeriesCount'
-    );
+            const finishSeriesItem =
+                finishSeriesCount.closest(
+                    '.finish-summary-item'
+                );
 
-const finishSeriesItem =
-    finishSeriesCount.closest(
-        '.finish-summary-item'
-    );
+            const todasSeriesConcluidas =
+                totalSeries > 0 &&
+                seriesConcluidas >=
+                    totalSeries;
 
-const todasSeriesConcluidas =
-    totalSeries > 0 &&
-    seriesConcluidas >= totalSeries;
+            finishSeriesItem
+                .classList
+                .toggle(
+                    'complete',
+                    todasSeriesConcluidas
+                );
 
-finishSeriesItem.classList.toggle(
-    'complete',
-    todasSeriesConcluidas
-);
-
-finishSeriesItem.classList.toggle(
-    'incomplete',
-    !todasSeriesConcluidas
-);
+            finishSeriesItem
+                .classList
+                .toggle(
+                    'incomplete',
+                    !todasSeriesConcluidas
+                );
 
     // Preenche a lista de exercícios realizados
 const finishExercisesList =
