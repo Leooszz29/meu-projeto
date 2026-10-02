@@ -2916,7 +2916,7 @@ document
                         exerciciosIncompletos++;
                     }
 
-                            // Linha do exercício
+                    // Linha do exercício
                     const exerciseRow =
                         document.createElement(
                             'div'
