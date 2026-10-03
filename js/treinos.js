@@ -554,7 +554,47 @@ const progressoTreino =
 
 const progressoAtual =
     progressoTreino[workout.id] || {};
-    
+
+function atualizarBotaoFinalizar() {
+    const progresso =
+        carregarProgressoTreino();
+
+    const progressoWorkout =
+        progresso[workout.id] || {};
+
+    const exercicios =
+        workout.exercicios || [];
+
+    const todasSeriesConcluidas =
+        exercicios.length > 0 &&
+        exercicios.every(
+            (exercicio, index) => {
+                const quantidadeSeries =
+                    parseInt(
+                        exercicio.series,
+                        10
+                    ) || 0;
+
+                const exerciseKey =
+                    exercicio.id ||
+                    `exercise-${index}`;
+
+                const seriesConcluidas =
+                    progressoWorkout[
+                        exerciseKey
+                    ] || [];
+
+                return (
+                    quantidadeSeries > 0 &&
+                    seriesConcluidas.length >=
+                        quantidadeSeries
+                );
+            }
+        );
+
+    finishButton.disabled =
+        !todasSeriesConcluidas;
+}    
 
     // NOME DO TREINO
 
