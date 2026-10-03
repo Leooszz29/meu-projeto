@@ -1492,7 +1492,11 @@ input.classList.add('input-error');
 let pendingDeleteAction = null;
 let confirmModalTrigger = null;
 
-function askConfirm(text, onConfirm) {
+function askConfirm(
+    text,
+    onConfirm,
+    confirmLabel = 'Excluir'
+) {
     confirmModalTrigger = document.activeElement;
     
     document.getElementById('confirmModalText').textContent = text;
