@@ -3424,7 +3424,7 @@ window.addEventListener(
                 'img/atleta-feminino.png'
         };
 
-            if (genero === 'masculino') {
+        if (genero === 'masculino') {
             document.body.classList.add(
                 'theme-masculino'
             );
