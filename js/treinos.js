@@ -3547,15 +3547,16 @@ document
 document.addEventListener(
     'keydown',
     (event) => {
+        const overlay =
+            document.getElementById(
+                'warningModalOverlay'
+            );
+
         if (
             event.key === 'Escape' &&
-            document
-                .getElementById(
-                    'warningModalOverlay'
-                )
-                .classList.contains(
-                    'show'
-                )
+            overlay.classList.contains(
+                'show'
+            )
         ) {
             closeWarningModal();
         }
