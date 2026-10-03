@@ -3213,10 +3213,10 @@ document
     .addEventListener(
         'keydown',
         (event) => {
-const overlay =
-    document.getElementById(
-        'finishModalOverlay'
-    );
+            const overlay =
+                document.getElementById(
+                    'finishModalOverlay'
+                );
 
             if (
                 event.key !== 'Tab' ||
