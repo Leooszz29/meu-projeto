@@ -3327,7 +3327,7 @@ document.addEventListener(
 document
     .addEventListener(
         'keydown',
-(event) => {
+        (event) => {
             const overlay =
                 document.getElementById(
                     'selectWorkoutModalOverlay'
