@@ -3305,18 +3305,24 @@ document
         }
     );
 
-document.addEventListener('keydown', (event) => {
+document.addEventListener(
+    'keydown',
+    (event) => {
+        const overlay =
+            document.getElementById(
+                'selectWorkoutModalOverlay'
+            );
 
-    if (
-        event.key === 'Escape' &&
-        document
-            .getElementById('selectWorkoutModalOverlay')
-            .classList.contains('show')
-    ) {
-        closeSelectWorkoutModal();
+        if (
+            event.key === 'Escape' &&
+            overlay.classList.contains(
+                'show'
+            )
+        ) {
+            closeSelectWorkoutModal();
+        }
     }
-
-});
+);
 
 document
     .addEventListener(
