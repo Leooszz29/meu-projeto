@@ -3327,15 +3327,15 @@ document.addEventListener(
 document
     .addEventListener(
         'keydown',
-        (event) => {
-            const modal =
+(event) => {
+            const overlay =
                 document.getElementById(
                     'selectWorkoutModalOverlay'
                 );
 
             if (
                 event.key !== 'Tab' ||
-                !modal.classList.contains(
+                !overlay.classList.contains(
                     'show'
                 )
             ) {
@@ -3343,7 +3343,7 @@ document
             }
 
             const focusableElements =
-                modal.querySelectorAll(
+                overlay.querySelectorAll(
                     'button, [tabindex]:not([tabindex="-1"])'
                 );
 
