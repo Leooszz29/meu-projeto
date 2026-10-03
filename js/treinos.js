@@ -868,6 +868,8 @@ document.dispatchEvent(
     eventoProgresso
 );
 
+atualizarBotaoFinalizar();
+
 seriesButton.setAttribute(
     'aria-label',
     concluida
