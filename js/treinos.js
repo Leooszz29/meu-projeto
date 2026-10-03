@@ -466,6 +466,16 @@ if (
 
 startBtn.addEventListener('click', () => {
 
+    const treinoAtivoAtual =
+        carregarTreinoAtivo();
+
+    if (
+        treinoAtivoAtual &&
+        treinoAtivoAtual.id !== workout.id
+    ) {
+        return;
+    }
+
     // SALVA O TREINO SELECIONADO
 localStorage.setItem(
     obterChaveTreinoAtivo(),
