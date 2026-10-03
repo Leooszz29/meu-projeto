@@ -545,7 +545,7 @@ function renderActiveTraining(workout) {
     return;
 }
 
-finishButton.disabled = false;
+finishButton.disabled = true;
 
     // CARREGA O PROGRESSO DAS SÉRIES
 
