@@ -470,11 +470,26 @@ startBtn.addEventListener('click', () => {
         carregarTreinoAtivo();
 
     if (
-        treinoAtivoAtual &&
-        treinoAtivoAtual.id !== workout.id
-    ) {
-        return;
-    }
+    treinoAtivoAtual &&
+    treinoAtivoAtual.id !== workout.id
+) {
+    askConfirm(
+        'Já existe um treino em andamento. Deseja trocar de treino?',
+        () => {
+            localStorage.setItem(
+                obterChaveTreinoAtivo(),
+                JSON.stringify({
+                    id: workout.id,
+                    nome: workout.nome
+                })
+            );
+
+            renderWorkouts();
+        }
+    );
+
+    return;
+}
 
     // SALVA O TREINO SELECIONADO
 localStorage.setItem(
