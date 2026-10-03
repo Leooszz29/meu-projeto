@@ -3482,31 +3482,46 @@ window.addEventListener(
 let warningModalPreviousFocus = null;
 
 function showWarningModal(message) {
-    warningModalPreviousFocus = document.activeElement;
-    
+    warningModalPreviousFocus =
+        document.activeElement;
+
     const overlay =
-        document.getElementById('warningModalOverlay');
+        document.getElementById(
+            'warningModalOverlay'
+        );
 
     const messageElement =
-        document.getElementById('warningModalMessage');
+        document.getElementById(
+            'warningModalMessage'
+        );
 
-    messageElement.textContent = message;
+    messageElement.textContent =
+        message;
 
-    overlay.classList.add('show');
+    overlay.classList.add(
+        'show'
+    );
 
     document
-        .getElementById('warningModalOkBtn')
+        .getElementById(
+            'warningModalOkBtn'
+        )
         .focus();
 }
 
 function closeWarningModal() {
     document
-        .getElementById('warningModalOverlay')
-        .classList.remove('show');
+        .getElementById(
+            'warningModalOverlay'
+        )
+        .classList.remove(
+            'show'
+        );
 
     if (
         warningModalPreviousFocus &&
-        typeof warningModalPreviousFocus.focus === 'function'
+        typeof warningModalPreviousFocus.focus ===
+            'function'
     ) {
         warningModalPreviousFocus.focus();
     }
@@ -3515,47 +3530,69 @@ function closeWarningModal() {
 }
 
 document
-    .getElementById('warningModalOkBtn')
-    .addEventListener('click', closeWarningModal);
+    .getElementById(
+        'warningModalOkBtn'
+    )
+    .addEventListener(
+        'click',
+        closeWarningModal
+    );
 
-document.addEventListener('keydown', (event) => {
-
-    if (
-        event.key === 'Escape' &&
-        document
-            .getElementById('warningModalOverlay')
-            .classList.contains('show')
-    ) {
-        closeWarningModal();
-    }
-
-});
-
-document
-    .getElementById('warningModalOverlay')
-    .addEventListener('click', (event) => {
-
-        if (event.target.id === 'warningModalOverlay') {
+document.addEventListener(
+    'keydown',
+    (event) => {
+        if (
+            event.key === 'Escape' &&
+            document
+                .getElementById(
+                    'warningModalOverlay'
+                )
+                .classList.contains(
+                    'show'
+                )
+        ) {
             closeWarningModal();
         }
-
-    });
-
-document.addEventListener('keydown', (event) => {
-
-    const overlay =
-        document.getElementById('warningModalOverlay');
-
-    if (
-        event.key === 'Tab' &&
-        overlay.classList.contains('show')
-    ) {
-        event.preventDefault();
-
-        document
-            .getElementById('warningModalOkBtn')
-            .focus();
     }
+);
 
-});
+document
+    .getElementById(
+        'warningModalOverlay'
+    )
+    .addEventListener(
+        'click',
+        (event) => {
+            if (
+                event.target.id ===
+                'warningModalOverlay'
+            ) {
+                closeWarningModal();
+            }
+        }
+    );
 
+document.addEventListener(
+    'keydown',
+    (event) => {
+        const overlay =
+            document.getElementById(
+                'warningModalOverlay'
+            );
+
+        if (
+            event.key === 'Tab' &&
+            overlay.classList.contains(
+                'show'
+            )
+        ) {
+            event.preventDefault();
+
+            document
+                .getElementById(
+                    'warningModalOkBtn'
+                )
+                .focus();
+        }
+    }
+);
