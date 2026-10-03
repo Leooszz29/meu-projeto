@@ -1500,6 +1500,11 @@ function askConfirm(
     confirmModalTrigger = document.activeElement;
     
     document.getElementById('confirmModalText').textContent = text;
+
+    document.getElementById(
+        'confirmDeleteBtn'
+    ).textContent = confirmLabel;
+
     pendingDeleteAction = onConfirm;
     document.getElementById('confirmModalOverlay').classList.add('show');
 
