@@ -3424,43 +3424,60 @@ window.addEventListener(
                 'img/atleta-feminino.png'
         };
 
-    if (genero === 'masculino') {
-        document.body.classList.add('theme-masculino');
-        characterImg.src = imagens.masculino;
-        characterImg.style.display = 'block';
-    } else if (genero === 'feminino') {
-        document.body.classList.add('theme-feminino');
-        characterImg.src = imagens.feminino;
-        characterImg.style.display = 'block';
+            if (genero === 'masculino') {
+            document.body.classList.add(
+                'theme-masculino'
+            );
+
+            characterImg.src =
+                imagens.masculino;
+
+            characterImg.style.display =
+                'block';
+        } else if (
+            genero === 'feminino'
+        ) {
+            document.body.classList.add(
+                'theme-feminino'
+            );
+
+            characterImg.src =
+                imagens.feminino;
+
+            characterImg.style.display =
+                'block';
+        }
+
+        renderWorkouts();
+
+        const treinoAtivo =
+            carregarTreinoAtivo();
+
+        if (treinoAtivo) {
+            const workouts =
+                loadWorkouts();
+
+            const workoutAtivo =
+                workouts.find(
+                    workout =>
+                        workout.id ===
+                        treinoAtivo.id
+                );
+
+            if (workoutAtivo) {
+                renderActiveTraining(
+                    workoutAtivo
+                );
+            } else {
+                localStorage.removeItem(
+                    obterChaveTreinoAtivo()
+                );
+            }
+        }
+
+        renderCalendar();
     }
-
-    renderWorkouts();
-
-const treinoAtivo =
-    carregarTreinoAtivo();
-
-if (treinoAtivo) {
-
-    const workouts =
-        loadWorkouts();
-
-    const workoutAtivo =
-        workouts.find(
-            workout =>
-                workout.id === treinoAtivo.id
-        );
-
-    if (workoutAtivo) {
-    renderActiveTraining(workoutAtivo);
-} else {
-    localStorage.removeItem(
-        obterChaveTreinoAtivo()
-    );
-}
-}
-
-renderCalendar();
-});
+);
 
 let warningModalPreviousFocus = null;
 
