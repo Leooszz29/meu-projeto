@@ -594,9 +594,11 @@ function atualizarBotaoFinalizar() {
 
     finishButton.disabled =
         !todasSeriesConcluidas;
-}    
+}
 
-    // NOME DO TREINO
+atualizarBotaoFinalizar();
+
+// NOME DO TREINO
 
     nameElement.textContent =
         workout.nome || 'Treino';
