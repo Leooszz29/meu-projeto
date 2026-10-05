@@ -345,6 +345,25 @@ function handleSaveProfile() {
         return;
     }
 
+        const altura =
+        Number(getValue('altura'));
+
+    if (
+        !altura ||
+        altura < 100 ||
+        altura > 250
+    ) {
+        alert(
+            'Informe uma altura válida entre 100 e 250 cm.'
+        );
+
+        document
+            .getElementById('altura')
+            ?.focus();
+
+        return;
+    }
+
     const data = {
 
         nome: getValue('nome'),
