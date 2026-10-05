@@ -326,6 +326,25 @@ function handleSaveProfile() {
         return;
     }
 
+    const peso =
+        Number(getValue('peso'));
+
+    if (
+        !peso ||
+        peso < 20 ||
+        peso > 400
+    ) {
+        alert(
+            'Informe um peso válido entre 20 e 400 kg.'
+        );
+
+        document
+            .getElementById('peso')
+            ?.focus();
+
+        return;
+    }
+
     const data = {
 
         nome: getValue('nome'),
