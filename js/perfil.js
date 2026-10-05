@@ -124,10 +124,10 @@ function fillForm() {
         const sessao =
             carregarSessao();
 
-    const usuarios =
-        JSON.parse(
-            localStorage.getItem('usuarios')
-        ) || [];
+        const usuarios =
+            JSON.parse(
+                localStorage.getItem('usuarios')
+            ) || [];
 
     if (sessao && sessao.email) {
         usuario =
