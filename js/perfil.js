@@ -304,7 +304,7 @@ function handleSaveProfile() {
             .getElementById('nome')
             ?.focus();
 
-                return;
+        return;
     }
 
     const idade =
