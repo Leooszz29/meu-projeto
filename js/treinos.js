@@ -2949,6 +2949,14 @@ document
                 seriesConcluidas >=
                     totalSeries;
 
+            if (!todasSeriesConcluidas) {
+                showWarningModal(
+                    'Conclua todas as séries antes de finalizar o treino.'
+                );
+
+                return;
+            }
+
             finishSeriesItem
                 .classList
                 .toggle(
