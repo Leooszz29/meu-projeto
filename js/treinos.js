@@ -492,7 +492,7 @@ startBtn.addEventListener('click', () => {
         return;
     }
 
-// SALVA O TREINO SELECIONADO
+    // SALVA O TREINO SELECIONADO
     localStorage.setItem(
         obterChaveTreinoAtivo(),
         JSON.stringify({
