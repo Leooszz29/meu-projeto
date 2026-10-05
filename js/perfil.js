@@ -556,7 +556,7 @@ function calcularIMC() {
         peso / (alturaMetros * alturaMetros);
 
     imcInput.value =
-    imc.toFixed(1);
+        imc.toFixed(1);
 
     if (!classificacao) {
         return;
