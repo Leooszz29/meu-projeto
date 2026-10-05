@@ -3194,9 +3194,18 @@ document
             const checkins =
                 loadCheckins();
 
+            const checkinExistente =
+                checkins[chaveHoje];
+
+            const treinoExistente =
+                checkinExistente?.treino
+                    ?.trim();
+
             checkins[chaveHoje] = {
                 checked: true,
-                treino: treinoAtivo.nome
+                treino: treinoExistente
+                    ? `${treinoExistente} • ${treinoAtivo.nome}`
+                    : treinoAtivo.nome
             };
 
             saveCheckins(checkins);
