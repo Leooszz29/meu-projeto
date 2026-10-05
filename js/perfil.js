@@ -304,9 +304,27 @@ function handleSaveProfile() {
             .getElementById('nome')
             ?.focus();
 
-        return;
+                return;
     }
 
+    const idade =
+        Number(getValue('idade'));
+
+    if (
+        !idade ||
+        idade < 10 ||
+        idade > 120
+    ) {
+        alert(
+            'Informe uma idade válida entre 10 e 120 anos.'
+        );
+
+        document
+            .getElementById('idade')
+            ?.focus();
+
+        return;
+    }
 
     const data = {
 
