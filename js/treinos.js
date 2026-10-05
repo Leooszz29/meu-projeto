@@ -3181,7 +3181,7 @@ document
                     historico
                 )
             );
-                        const hoje =
+            const hoje =
                 new Date();
 
             const chaveHoje =
