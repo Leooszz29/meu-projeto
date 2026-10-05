@@ -292,6 +292,22 @@ function handleSaveProfile() {
     console.log('Salvar perfil acionado');
 
 
+    const nome =
+        getValue('nome');
+
+    if (!nome) {
+        alert(
+            'Informe seu nome antes de salvar o perfil.'
+        );
+
+        document
+            .getElementById('nome')
+            ?.focus();
+
+        return;
+    }
+
+
     const data = {
 
         nome: getValue('nome'),
