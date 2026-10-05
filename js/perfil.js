@@ -129,21 +129,20 @@ function fillForm() {
                 localStorage.getItem('usuarios')
             ) || [];
 
-    if (sessao && sessao.email) {
-        usuario =
-            usuarios.find(
-                usuarioCadastrado =>
-                    usuarioCadastrado.email.toLowerCase() ===
-                    sessao.email.toLowerCase()
-            ) || {};
+        if (sessao && sessao.email) {
+            usuario =
+                usuarios.find(
+                    usuarioCadastrado =>
+                        usuarioCadastrado.email.toLowerCase() ===
+                        sessao.email.toLowerCase()
+                ) || {};
+        }
+    } catch (error) {
+        console.warn(
+            'Não foi possível carregar o usuário:',
+            error
+        );
     }
-} catch (error) {
-    console.warn(
-        'Não foi possível carregar o usuário:',
-        error
-    );
-}
-
 
     // Nome:
     // primeiro tenta o perfil salvo.
