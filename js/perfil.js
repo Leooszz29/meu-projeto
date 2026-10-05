@@ -121,8 +121,8 @@ function fillForm() {
     let usuario = {};
 
     try {
-    const sessao =
-        carregarSessao();
+        const sessao =
+            carregarSessao();
 
     const usuarios =
         JSON.parse(
