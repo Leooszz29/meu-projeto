@@ -118,9 +118,9 @@ function fillForm() {
 
     const perfil = loadProfile();
 
-   let usuario = {};
+    let usuario = {};
 
-try {
+    try {
     const sessao =
         carregarSessao();
 
@@ -212,7 +212,7 @@ try {
 // MOSTRAR SUCESSO
 // ========================================
 
-function showSuccess() {
+    function showSuccess() {
 
     const successMessage =
         document.getElementById('successMessage');
@@ -287,7 +287,7 @@ function showSuccess() {
 // SALVAR PERFIL PELO CLIQUE
 // ========================================
 
-function handleSaveProfile() {
+    function handleSaveProfile() {
 
     console.log('Salvar perfil acionado');
 
@@ -416,7 +416,7 @@ function handleSaveProfile() {
 // FINALIZAR SESSÃO
 // ========================================
 
-function handleEndSession() {
+    function handleEndSession() {
 
     try {
 
@@ -440,7 +440,7 @@ function handleEndSession() {
 // PERSONAGEM / GÊNERO
 // ========================================
 
-function loadCharacter() {
+    function loadCharacter() {
 
     const characterImg =
         document.getElementById('characterImg');
@@ -452,7 +452,7 @@ function loadCharacter() {
 
     let genero = null;
 
-try {
+    try {
 
     const sessao =
         carregarSessao();
@@ -476,11 +476,11 @@ try {
 }
     
 // APLICA O TEMA DE ACORDO COM O GÊNERO
-if (genero === 'masculino') {
-    document.body.classList.add('theme-masculino');
-} else if (genero === 'feminino') {
-    document.body.classList.add('theme-feminino');
-}
+    if (genero === 'masculino') {
+        document.body.classList.add('theme-masculino');
+    } else if (genero === 'feminino') {
+        document.body.classList.add('theme-feminino');
+    }
 
     const imagens = {
 
@@ -504,13 +504,13 @@ if (genero === 'masculino') {
 
         characterImg.style.display =
             'none';
+        }
     }
-}
 
 // ========================================
 // CALCULAR IMC
 // ========================================
-function calcularIMC() {
+    function calcularIMC() {
 
     const pesoInput =
         document.getElementById('peso');
@@ -622,8 +622,8 @@ function calcularIMC() {
             'input',
             calcularIMC
         );
+        }
     }
-}
 
     function initializeProfileActions() {
 
@@ -644,9 +644,9 @@ function calcularIMC() {
         endSessionButton.addEventListener(
             'click',
             handleEndSession
-        );
+            );
+        }
     }
-}
 // ========================================
 // RESUMO DOS TREINOS
 // ========================================
@@ -721,7 +721,7 @@ function calcularIMC() {
             );
         
         lastNameElement.textContent =
-    ultimoTreino.nome || 'Treino';
+        ultimoTreino.nome || 'Treino';
 
        } else {
 
@@ -780,9 +780,9 @@ function calcularIMC() {
     ).length;
 
 
-const totalParciais =
-    historico.filter(
-        treino =>
+    const totalParciais =
+        historico.filter(
+            treino =>
             Array.isArray(treino.exercicios) &&
             Number(treino.seriesTotal) > 0 &&
             Number(treino.seriesConcluidas) <
@@ -791,53 +791,53 @@ const totalParciais =
 
     // TAXA DE CONCLUSÃO
 
-const treinosDetalhados =
-    totalCompletos + totalParciais;
+    const treinosDetalhados =
+        totalCompletos + totalParciais;
 
-const taxaConclusao =
-    treinosDetalhados > 0
+    const taxaConclusao =
+        treinosDetalhados > 0
         ? Math.round(
             (totalCompletos / treinosDetalhados) * 100
         )
         : 0;
 
 
-const historyCompletionRate =
-    document.getElementById(
+    const historyCompletionRate =
+        document.getElementById(
         'historyCompletionRate'
     );
 
-const historyCompletionBar =
-    document.getElementById(
+    const historyCompletionBar =
+        document.getElementById(
         'historyCompletionBar'
     );
 
 
-if (historyCompletionRate) {
+    if (historyCompletionRate) {
     historyCompletionRate.textContent =
         `${taxaConclusao}%`;
-}
+    }
 
-if (historyCompletionBar) {
+    if (historyCompletionBar) {
     historyCompletionBar.style.width =
         `${taxaConclusao}%`;
-}
+    }
 
 
-if (historyTotal) {
+    if (historyTotal) {
     historyTotal.textContent =
         totalTreinos;
-}
+    }
 
-if (historyComplete) {
+    if (historyComplete) {
     historyComplete.textContent =
         totalCompletos;
-}
+    }
 
-if (historyPartial) {
+    if (historyPartial) {
     historyPartial.textContent =
         totalParciais;
-}
+    }
 
     historyList.innerHTML = '';
 
