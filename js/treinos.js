@@ -3230,6 +3230,7 @@ function closeFinishModal() {
         .classList.remove('show');
 
     resetActiveTraining();
+    renderWorkouts();
 }
 
 document
