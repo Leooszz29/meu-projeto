@@ -569,38 +569,38 @@ function calcularIMC() {
         classificacao.textContent = 'Baixo peso';
         classificacao.classList.add('baixo-peso');
 
-} else if (imc < 25) {
+    } else if (imc < 25) {
 
         classificacao.textContent = 'Peso adequado';
         classificacao.classList.add('peso-adequado');
 
-} else if (imc < 30) {
+    } else if (imc < 30) {
 
        classificacao.textContent = 'Sobrepeso';
        classificacao.classList.add('sobrepeso');
 
-} else if (imc < 35) {
+    } else if (imc < 35) {
 
       classificacao.textContent = 'Obesidade grau I';
       classificacao.classList.add('obesidade-1');
 
-} else if (imc < 40) {
+    } else if (imc < 40) {
 
       classificacao.textContent = 'Obesidade grau II';
       classificacao.classList.add('obesidade-2');
 
-} else {
+    } else {
 
       classificacao.textContent = 'Obesidade grau III';
       classificacao.classList.add('obesidade-3');
-}
+    }
     
 }
 // ========================================
 // INICIALIZAÇÃO
 // ========================================
 
-function initializeIMC() {
+    function initializeIMC() {
 
     const pesoInput =
         document.getElementById('peso');
@@ -625,7 +625,7 @@ function initializeIMC() {
     }
 }
 
-function initializeProfileActions() {
+    function initializeProfileActions() {
 
     const saveButton =
         document.getElementById('btnSaveProfile');
@@ -651,7 +651,7 @@ function initializeProfileActions() {
 // RESUMO DOS TREINOS
 // ========================================
 
-function loadTrainingSummary() {
+    function loadTrainingSummary() {
 
     const totalElement =
         document.getElementById('totalWorkouts');
@@ -738,7 +738,7 @@ function loadTrainingSummary() {
 // HISTÓRICO DE TREINOS
 // ========================================
 
-function loadWorkoutHistory() {
+    function loadWorkoutHistory() {
 
     const historyList =
         document.getElementById('workoutHistoryList');
@@ -756,26 +756,26 @@ function loadWorkoutHistory() {
 
     // RESUMO GERAL DO HISTÓRICO
 
-const historyTotal =
-    document.getElementById('historyTotal');
+    const historyTotal =
+        document.getElementById('historyTotal');
 
-const historyComplete =
-    document.getElementById('historyComplete');
+    const historyComplete =
+        document.getElementById('historyComplete');
 
-const historyPartial =
-    document.getElementById('historyPartial');
-
-
-const totalTreinos =
-    historico.length;
+    const historyPartial =
+        document.getElementById('historyPartial');
 
 
-const totalCompletos =
-    historico.filter(
-        treino =>
-            Array.isArray(treino.exercicios) &&
-            Number(treino.seriesTotal) > 0 &&
-            Number(treino.seriesConcluidas) >=
+    const totalTreinos =
+        historico.length;
+
+
+    const totalCompletos =
+        historico.filter(
+            treino =>
+             Array.isArray(treino.exercicios) &&
+                Number(treino.seriesTotal) > 0 &&
+                Number(treino.seriesConcluidas) >=
                 Number(treino.seriesTotal)
     ).length;
 
