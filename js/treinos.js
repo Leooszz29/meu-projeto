@@ -487,7 +487,7 @@ startBtn.addEventListener('click', () => {
                 renderWorkouts();
             },
             'Confirmar'
-);
+        );
 
         return;
     }
