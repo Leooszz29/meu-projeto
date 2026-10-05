@@ -564,7 +564,7 @@ function calcularIMC() {
     
    classificacao.className = 'imc-classificacao';
 
-if (imc < 18.5) {
+   if (imc < 18.5) {
 
     classificacao.textContent = 'Baixo peso';
     classificacao.classList.add('baixo-peso');
