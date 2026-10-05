@@ -566,33 +566,33 @@ function calcularIMC() {
 
     if (imc < 18.5) {
 
-    classificacao.textContent = 'Baixo peso';
-    classificacao.classList.add('baixo-peso');
+        classificacao.textContent = 'Baixo peso';
+        classificacao.classList.add('baixo-peso');
 
 } else if (imc < 25) {
 
-    classificacao.textContent = 'Peso adequado';
-    classificacao.classList.add('peso-adequado');
+        classificacao.textContent = 'Peso adequado';
+        classificacao.classList.add('peso-adequado');
 
 } else if (imc < 30) {
 
-    classificacao.textContent = 'Sobrepeso';
-    classificacao.classList.add('sobrepeso');
+       classificacao.textContent = 'Sobrepeso';
+       classificacao.classList.add('sobrepeso');
 
 } else if (imc < 35) {
 
-    classificacao.textContent = 'Obesidade grau I';
-    classificacao.classList.add('obesidade-1');
+      classificacao.textContent = 'Obesidade grau I';
+      classificacao.classList.add('obesidade-1');
 
 } else if (imc < 40) {
 
-    classificacao.textContent = 'Obesidade grau II';
-    classificacao.classList.add('obesidade-2');
+      classificacao.textContent = 'Obesidade grau II';
+      classificacao.classList.add('obesidade-2');
 
 } else {
 
-    classificacao.textContent = 'Obesidade grau III';
-    classificacao.classList.add('obesidade-3');
+      classificacao.textContent = 'Obesidade grau III';
+      classificacao.classList.add('obesidade-3');
 }
     
 }
