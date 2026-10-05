@@ -345,7 +345,7 @@ function handleSaveProfile() {
         return;
     }
 
-        const altura =
+    const altura =
         Number(getValue('altura'));
 
     if (
