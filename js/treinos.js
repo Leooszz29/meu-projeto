@@ -3181,6 +3181,25 @@ document
                     historico
                 )
             );
+                        const hoje =
+                new Date();
+
+            const chaveHoje =
+                calDateKey(
+                    hoje.getFullYear(),
+                    hoje.getMonth(),
+                    hoje.getDate()
+                );
+
+            const checkins =
+                loadCheckins();
+
+            checkins[chaveHoje] = {
+                checked: true,
+                treino: treinoAtivo.nome
+            };
+
+            saveCheckins(checkins);
 
             // Remove o treino ativo após a conclusão
             localStorage.removeItem(
