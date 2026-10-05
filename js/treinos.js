@@ -3201,11 +3201,32 @@ document
                 checkinExistente?.treino
                     ?.trim();
 
+            const treinosDoDia =
+                treinoExistente
+                    ? treinoExistente
+                        .split(' • ')
+                        .map(
+                            treino =>
+                                treino.trim()
+                        )
+                    : [];
+
+            const treinoJaRegistrado =
+                treinosDoDia.includes(
+                    treinoAtivo.nome
+                );
+
+            if (!treinoJaRegistrado) {
+                treinosDoDia.push(
+                    treinoAtivo.nome
+                );
+            }
+
             checkins[chaveHoje] = {
                 checked: true,
-                treino: treinoExistente
-                    ? `${treinoExistente} • ${treinoAtivo.nome}`
-                    : treinoAtivo.nome
+                treino: treinosDoDia.join(
+                    ' • '
+                )
             };
 
             saveCheckins(checkins);
