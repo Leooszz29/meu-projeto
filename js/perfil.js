@@ -562,7 +562,7 @@ function calcularIMC() {
         return;
     }
     
-   classificacao.className = 'imc-classificacao';
+    classificacao.className = 'imc-classificacao';
 
     if (imc < 18.5) {
 
