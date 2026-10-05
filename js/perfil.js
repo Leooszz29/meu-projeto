@@ -211,7 +211,7 @@ function fillForm() {
 // MOSTRAR SUCESSO
 // ========================================
 
-    function showSuccess() {
+function showSuccess() {
 
     const successMessage =
         document.getElementById('successMessage');
