@@ -1748,7 +1748,6 @@ if (document.readyState === 'loading') {
 document.addEventListener(
     'click',
     (event) => {
-
         const modalOverlay =
             document.getElementById(
                 'historyDetailsModalOverlay'
@@ -1758,32 +1757,31 @@ document.addEventListener(
             return;
         }
 
-       // Fecha pelo X ou pelo botão inferior
-if (
-    event.target.closest(
-        '#historyDetailsCloseBtn'
-    ) ||
-    event.target.closest(
-        '#historyDetailsFooterBtn'
-    )
-) {
+        // Fecha pelo X ou pelo botão inferior
 
-    modalOverlay.classList.remove(
-        'show'
-    );
+        if (
+            event.target.closest(
+                '#historyDetailsCloseBtn'
+            ) ||
+            event.target.closest(
+                '#historyDetailsFooterBtn'
+            )
+        ) {
+            modalOverlay.classList.remove(
+                'show'
+            );
 
-    return;
-}
+            return;
+        }
 
         // Fecha clicando fora da janela
+
         if (
             event.target === modalOverlay
         ) {
-
             modalOverlay.classList.remove(
                 'show'
             );
         }
-
     }
 );
