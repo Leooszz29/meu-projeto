@@ -1268,15 +1268,22 @@ function loadWorkoutHistory() {
                     const dataDetalhes =
                         new Date(treino.data);
 
-                    detailsDate.textContent =
-                        dataDetalhes.toLocaleDateString(
-                            'pt-BR',
-                            {
-                                day: '2-digit',
-                                month: '2-digit',
-                                year: 'numeric'
-                            }
+                    const dataDetalhesValida =
+                        !Number.isNaN(
+                            dataDetalhes.getTime()
                         );
+
+                    detailsDate.textContent =
+                        dataDetalhesValida
+                            ? dataDetalhes.toLocaleDateString(
+                                'pt-BR',
+                                {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric'
+                                }
+                            )
+                            : '—';
 
                     // Quantidade de exercícios
 
