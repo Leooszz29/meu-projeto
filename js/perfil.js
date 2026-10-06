@@ -1703,31 +1703,26 @@ function initializeHistoryDeleteModal() {
 }
 
 function initializeProfile() {
-
-    console.log('PERFIL.JS INICIADO');
-
     const sessao =
-    carregarSessao();
+        carregarSessao();
 
-if (!sessao || sessao.autenticado !== true) {
-    window.location.href = 'login.html';
-    return;
-}
+    if (
+        !sessao ||
+        sessao.autenticado !== true
+    ) {
+        window.location.href =
+            'login.html';
+
+        return;
+    }
 
     fillForm();
-
     loadCharacter();
-
     initializeIMC();
-
-  initializeProfileActions();
-
-loadTrainingSummary();
-
-loadWorkoutHistory();
-
-initializeHistoryDeleteModal();
-
+    initializeProfileActions();
+    loadTrainingSummary();
+    loadWorkoutHistory();
+    initializeHistoryDeleteModal();
 }
 
 // ========================================
