@@ -1486,7 +1486,7 @@ function loadWorkoutHistory() {
                     const gruposRenderizados =
                         new Set();
 
-                    treino.exercicios.forEach((exercicio) => {
+                    exercicios.forEach((exercicio) => {
                         const tipo =
                             exercicio.tipoExecucao ||
                             'individual';
