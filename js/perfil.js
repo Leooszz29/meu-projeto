@@ -686,8 +686,7 @@ function loadTrainingSummary() {
 // HISTÓRICO DE TREINOS
 // ========================================
 
-    function loadWorkoutHistory() {
-
+function loadWorkoutHistory() {
     const historyList =
         document.getElementById('workoutHistoryList');
 
@@ -696,11 +695,11 @@ function loadTrainingSummary() {
     }
 
     const historico =
-    JSON.parse(
-        localStorage.getItem(
-            obterChaveHistoricoTreinos()
-        )
-    ) || [];
+        JSON.parse(
+            localStorage.getItem(
+                obterChaveHistoricoTreinos()
+            )
+        ) || [];
 
     // RESUMO GERAL DO HISTÓRICO
 
@@ -719,20 +718,20 @@ function loadTrainingSummary() {
     const totalCompletos =
         historico.filter(
             treino =>
-             Array.isArray(treino.exercicios) &&
+                Array.isArray(treino.exercicios) &&
                 Number(treino.seriesTotal) > 0 &&
                 Number(treino.seriesConcluidas) >=
-                Number(treino.seriesTotal)
-    ).length;
+                    Number(treino.seriesTotal)
+        ).length;
 
     const totalParciais =
         historico.filter(
             treino =>
-            Array.isArray(treino.exercicios) &&
-            Number(treino.seriesTotal) > 0 &&
-            Number(treino.seriesConcluidas) <
-                Number(treino.seriesTotal)
-    ).length;
+                Array.isArray(treino.exercicios) &&
+                Number(treino.seriesTotal) > 0 &&
+                Number(treino.seriesConcluidas) <
+                    Number(treino.seriesTotal)
+        ).length;
 
     // TAXA DE CONCLUSÃO
 
