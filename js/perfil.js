@@ -1231,9 +1231,7 @@ function loadWorkoutHistory() {
 
                     // Nome do treino
 
-                    document.getElementById(
-                        'historyDetailsName'
-                    ).textContent =
+                    detailsName.textContent =
                         treino.nome || 'Treino';
 
                     // Data
@@ -1241,9 +1239,7 @@ function loadWorkoutHistory() {
                     const dataDetalhes =
                         new Date(treino.data);
 
-                    document.getElementById(
-                        'historyDetailsDate'
-                    ).textContent =
+                    detailsDate.textContent =
                         dataDetalhes.toLocaleDateString(
                             'pt-BR',
                             {
@@ -1255,19 +1251,15 @@ function loadWorkoutHistory() {
 
                     // Quantidade de exercícios
 
-                    document.getElementById(
-                        'historyDetailsExercises'
-                    ).textContent =
+                    detailsExercises.textContent =
                         treino.totalExercicios ??
                         treino.exercicios.length;
 
                     // Séries
 
-                    document.getElementById(
-                        'historyDetailsSeries'
-                    ).textContent =
+                    detailsSeries.textContent =
                         `${treino.seriesConcluidas ?? 0} de ${treino.seriesTotal ?? 0}`;
-
+                    
                     // ========================================
                     // PORCENTAGEM DE CONCLUSÃO
                     // ========================================
