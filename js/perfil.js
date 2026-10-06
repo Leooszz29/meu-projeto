@@ -237,15 +237,12 @@ function showSuccess() {
         return;
     }
 
-
     const label =
         button.querySelector('.btn-label');
-
 
     button.disabled = true;
 
     button.classList.add('saved');
-
 
     if (label) {
 
@@ -258,13 +255,11 @@ function showSuccess() {
             '✓ Salvo com sucesso!';
     }
 
-
     setTimeout(() => {
 
         button.disabled = false;
 
         button.classList.remove('saved');
-
 
         if (label) {
 
@@ -280,7 +275,6 @@ function showSuccess() {
     }, 2200);
 }
 
-
 // ========================================
 // SALVAR PERFIL PELO CLIQUE
 // ========================================
@@ -288,7 +282,6 @@ function showSuccess() {
     function handleSaveProfile() {
 
     console.log('Salvar perfil acionado');
-
 
     const nome =
         getValue('nome');
@@ -384,13 +377,10 @@ function showSuccess() {
             getValue('infoPessoais')
     };
 
-
     console.log('Dados do perfil:', data);
-
 
     const sucesso =
         saveProfile(data);
-
 
     if (!sucesso) {
 
@@ -401,14 +391,12 @@ function showSuccess() {
         return;
     }
 
-
     showSuccess();
 
     console.log(
         'Perfil salvo com sucesso no localStorage.'
     );
 }
-
 
 // ========================================
 // FINALIZAR SESSÃO
@@ -433,7 +421,6 @@ function showSuccess() {
     window.location.href = 'login.html';
 }
 
-
 // ========================================
 // PERSONAGEM / GÊNERO
 // ========================================
@@ -446,7 +433,6 @@ function showSuccess() {
     if (!characterImg) {
         return;
     }
-
 
     let genero = null;
 
@@ -488,7 +474,6 @@ function showSuccess() {
         feminino:
             'https://cdn-icons-png.flaticon.com/512/4140/4140047.png'
     };
-
 
     if (genero && imagens[genero]) {
 
@@ -731,7 +716,6 @@ function showSuccess() {
 
 }
 
-
 // ========================================
 // HISTÓRICO DE TREINOS
 // ========================================
@@ -763,10 +747,8 @@ function showSuccess() {
     const historyPartial =
         document.getElementById('historyPartial');
 
-
     const totalTreinos =
         historico.length;
-
 
     const totalCompletos =
         historico.filter(
@@ -776,7 +758,6 @@ function showSuccess() {
                 Number(treino.seriesConcluidas) >=
                 Number(treino.seriesTotal)
     ).length;
-
 
     const totalParciais =
         historico.filter(
@@ -799,7 +780,6 @@ function showSuccess() {
         )
         : 0;
 
-
     const historyCompletionRate =
         document.getElementById(
         'historyCompletionRate'
@@ -810,7 +790,6 @@ function showSuccess() {
         'historyCompletionBar'
     );
 
-
     if (historyCompletionRate) {
     historyCompletionRate.textContent =
         `${taxaConclusao}%`;
@@ -820,7 +799,6 @@ function showSuccess() {
     historyCompletionBar.style.width =
         `${taxaConclusao}%`;
     }
-
 
     if (historyTotal) {
     historyTotal.textContent =
@@ -849,7 +827,6 @@ function showSuccess() {
 
         return;
     }
-
 
     // ========================================
     // AGRUPAR TREINOS POR MÊS
@@ -886,7 +863,6 @@ function showSuccess() {
 
     });
 
-
     // ========================================
     // ORDENAR MESES
     // MAIS RECENTE PRIMEIRO
@@ -904,7 +880,6 @@ function showSuccess() {
             return dataB - dataA;
 
         });
-
 
     // ========================================
     // CRIAR CADA MÊS
@@ -942,7 +917,6 @@ function showSuccess() {
             )
             .toUpperCase();
 
-
         const quantidade =
             grupo.treinos.length;
 
@@ -954,7 +928,6 @@ function showSuccess() {
             Number(treino.seriesConcluidas) >=
                 Number(treino.seriesTotal)
     ).length;
-
 
 const parciais =
     grupo.treinos.filter(
@@ -1006,7 +979,6 @@ const parciais =
     </span>
 `;
 
-
         // CONTEÚDO DO MÊS
 
         const monthContent =
@@ -1018,7 +990,6 @@ const parciais =
         if (indiceGrupo !== 0) {
             monthContent.hidden = true;
         }
-
 
         // TREINOS MAIS RECENTES PRIMEIRO
 
@@ -1032,14 +1003,12 @@ const parciais =
 
             });
 
-
         treinosOrdenados.forEach((treino) => {
 
             const item =
                 document.createElement('div');
 
             item.className = 'history-item';
-
 
             const nome =
                 document.createElement('span');
@@ -1080,7 +1049,6 @@ if (Array.isArray(treino.exercicios)) {
             : 'incomplete'
     );
 
-
     statusResumo.innerHTML =
 completo
     ? `
@@ -1111,7 +1079,6 @@ completo
     statusResumo.textContent =
         'Registro anterior';
 }
-
 
             const data =
                 document.createElement('span');
@@ -1153,15 +1120,13 @@ data.innerHTML = `
     <span>${dataFormatada}</span>
 `;
 
-
          // ÁREA DA DIREITA: DATA + EXCLUIR
 
-const actions =
-    document.createElement('div');
+    const actions =
+        document.createElement('div');
 
-actions.className =
-    'history-item-actions';
-
+    actions.className =
+        'history-item-actions';
 
 // BOTÃO EXCLUIR
 
@@ -1193,7 +1158,6 @@ deleteButton.setAttribute(
     'aria-label',
     'Excluir treino do histórico'
 );
-
 
 // EXCLUIR TREINO
 
@@ -1271,7 +1235,6 @@ if (
         ).textContent =
             treino.nome || 'Treino';
 
-
         // Data
         const dataDetalhes =
             new Date(treino.data);
@@ -1288,14 +1251,12 @@ if (
                 }
             );
 
-
         // Quantidade de exercícios
         document.getElementById(
             'historyDetailsExercises'
         ).textContent =
             treino.totalExercicios ??
             treino.exercicios.length;
-
 
         // Séries
         document.getElementById(
@@ -1374,8 +1335,7 @@ completionCard.classList.toggle(
     'incomplete',
     !conclusaoCompleta
 );
-        
-        
+
     // ========================================
 // STATUS GERAL DO TREINO
 // ========================================
@@ -1441,7 +1401,7 @@ if (treinoCompleto) {
             ? '1 exercício ficou incompleto.'
             : `${exerciciosIncompletos} exercícios ficaram incompletos.`;
 }
-
+        
         // Lista de exercícios
         const exerciseList =
             document.getElementById(
@@ -1461,7 +1421,6 @@ if (treinoCompleto) {
             ? 'history-details-exercise complete'
             : 'history-details-exercise incomplete';
 
-
     const status =
         document.createElement('span');
 
@@ -1470,7 +1429,6 @@ if (treinoCompleto) {
 
     status.textContent =
         exercicio.completo ? '✓' : '✕';
-
 
     const name =
         document.createElement('strong');
@@ -1481,7 +1439,6 @@ if (treinoCompleto) {
     name.textContent =
         exercicio.nome || 'Exercício';
 
-
     const series =
         document.createElement('span');
 
@@ -1491,7 +1448,6 @@ if (treinoCompleto) {
     series.textContent =
         `${exercicio.seriesConcluidas ?? 0} de ${exercicio.seriesTotal ?? 0} séries`;
 
-
     row.appendChild(status);
     row.appendChild(name);
     row.appendChild(series);
@@ -1499,9 +1455,7 @@ if (treinoCompleto) {
     return row;
 };
 
-
 const gruposRenderizados = new Set();
-
 
 treino.exercicios.forEach((exercicio) => {
 
@@ -1526,7 +1480,6 @@ treino.exercicios.forEach((exercicio) => {
         return;
     }
 
-
     // Evita desenhar o mesmo grupo duas vezes
     const chaveGrupo =
         `${tipo}-${grupo}`;
@@ -1539,7 +1492,6 @@ treino.exercicios.forEach((exercicio) => {
 
     gruposRenderizados.add(chaveGrupo);
 
-
     // Exercícios pertencentes ao mesmo grupo
     const exerciciosDoGrupo =
         treino.exercicios.filter(
@@ -1548,20 +1500,17 @@ treino.exercicios.forEach((exercicio) => {
                 item.grupoExecucao === grupo
         );
 
-
     const groupBox =
         document.createElement('div');
 
     groupBox.className =
         `history-details-group ${tipo}`;
 
-
     const groupTitle =
         document.createElement('div');
 
     groupTitle.className =
         'history-details-group-title';
-
 
     const nomeTipo =
         tipo === 'triset'
@@ -1571,9 +1520,7 @@ treino.exercicios.forEach((exercicio) => {
     groupTitle.textContent =
         `${nomeTipo} ${grupo}`;
 
-
     groupBox.appendChild(groupTitle);
-
 
     exerciciosDoGrupo.forEach(
         (item, index) => {
@@ -1581,7 +1528,6 @@ treino.exercicios.forEach((exercicio) => {
             groupBox.appendChild(
                 criarLinhaExercicio(item)
             );
-
 
             // Separador entre exercícios do grupo
             if (
@@ -1602,11 +1548,9 @@ treino.exercicios.forEach((exercicio) => {
         }
     );
 
-
     exerciseList.appendChild(groupBox);
 
 });
-
 
         // Abre o modal
         document.getElementById(
@@ -1632,7 +1576,6 @@ monthContent.appendChild(item);
 
         });
 
-
         // ABRIR / FECHAR O MÊS
 
         monthHeader.addEventListener(
@@ -1656,7 +1599,6 @@ monthContent.appendChild(item);
             }
         );
 
-
         monthGroup.appendChild(monthHeader);
         monthGroup.appendChild(monthContent);
 
@@ -1671,7 +1613,6 @@ monthContent.appendChild(item);
 // ========================================
 
 let historyDeleteIndex = null;
-
 
 function openHistoryDeleteModal(
     index,
@@ -1702,7 +1643,6 @@ function openHistoryDeleteModal(
 
 }
 
-
 function closeHistoryDeleteModal() {
 
     const modal =
@@ -1719,7 +1659,6 @@ function closeHistoryDeleteModal() {
     historyDeleteIndex = null;
 
 }
-
 
 function initializeHistoryDeleteModal() {
 
@@ -1746,14 +1685,12 @@ function initializeHistoryDeleteModal() {
         return;
     }
 
-
     // CANCELAR
 
     cancelButton.addEventListener(
         'click',
         closeHistoryDeleteModal
     );
-
 
     // CLICAR FORA DO MODAL
 
@@ -1767,7 +1704,6 @@ function initializeHistoryDeleteModal() {
 
         }
     );
-
 
     // CONFIRMAR EXCLUSÃO
 
@@ -1875,7 +1811,6 @@ document.addEventListener(
             return;
         }
 
-
        // Fecha pelo X ou pelo botão inferior
 if (
     event.target.closest(
@@ -1892,7 +1827,6 @@ if (
 
     return;
 }
-
 
         // Fecha clicando fora da janela
         if (
