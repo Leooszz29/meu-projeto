@@ -650,7 +650,7 @@ function loadTrainingSummary() {
 
     // TREINOS CONCLUÍDOS NESTE MÊS
 
-        const treinosDoMes =
+    const treinosDoMes =
         historico.filter((treino) => {
             const dataTreino =
                 new Date(treino.data);
