@@ -1365,58 +1365,57 @@ function loadWorkoutHistory() {
                                 : `${exerciciosIncompletos} exercícios ficaram incompletos.`;
                     }
         
-        // Lista de exercícios
-        const exerciseList =
-            document.getElementById(
-                'historyDetailsExerciseList'
-            );
+                    // Lista de exercícios
 
-        exerciseList.innerHTML = '';
+                    const exerciseList =
+                        document.getElementById(
+                            'historyDetailsExerciseList'
+                        );
 
+                    exerciseList.innerHTML = '';
 
-        const criarLinhaExercicio = (exercicio) => {
+                    const criarLinhaExercicio = (exercicio) => {
+                        const row =
+                            document.createElement('div');
 
-    const row =
-        document.createElement('div');
+                        row.className =
+                            exercicio.completo
+                                ? 'history-details-exercise complete'
+                                : 'history-details-exercise incomplete';
 
-    row.className =
-        exercicio.completo
-            ? 'history-details-exercise complete'
-            : 'history-details-exercise incomplete';
+                        const status =
+                            document.createElement('span');
 
-    const status =
-        document.createElement('span');
+                        status.className =
+                            'history-details-exercise-status';
 
-    status.className =
-        'history-details-exercise-status';
+                        status.textContent =
+                            exercicio.completo ? '✓' : '✕';
 
-    status.textContent =
-        exercicio.completo ? '✓' : '✕';
+                        const name =
+                            document.createElement('strong');
 
-    const name =
-        document.createElement('strong');
+                        name.className =
+                            'history-details-exercise-name';
 
-    name.className =
-        'history-details-exercise-name';
+                        name.textContent =
+                            exercicio.nome || 'Exercício';
 
-    name.textContent =
-        exercicio.nome || 'Exercício';
+                        const series =
+                            document.createElement('span');
 
-    const series =
-        document.createElement('span');
+                        series.className =
+                            'history-details-exercise-series';
 
-    series.className =
-        'history-details-exercise-series';
+                        series.textContent =
+                            `${exercicio.seriesConcluidas ?? 0} de ${exercicio.seriesTotal ?? 0} séries`;
 
-    series.textContent =
-        `${exercicio.seriesConcluidas ?? 0} de ${exercicio.seriesTotal ?? 0} séries`;
+                        row.appendChild(status);
+                        row.appendChild(name);
+                        row.appendChild(series);
 
-    row.appendChild(status);
-    row.appendChild(name);
-    row.appendChild(series);
-
-    return row;
-};
+                        return row;
+                    };
 
 const gruposRenderizados = new Set();
 
