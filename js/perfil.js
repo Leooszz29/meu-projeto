@@ -228,7 +228,6 @@ function showSuccess() {
         }, 2200);
     }
 
-
     // Também altera o botão
 
     const button =
