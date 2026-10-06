@@ -1299,71 +1299,71 @@ function loadWorkoutHistory() {
                         !conclusaoCompleta
                     );
 
-    // ========================================
-// STATUS GERAL DO TREINO
-// ========================================
+                    // ========================================
+                    // STATUS GERAL DO TREINO
+                    // ========================================
 
-const exerciciosIncompletos =
-    treino.exercicios.filter(
-        exercicio =>
-            !exercicio.completo
-    ).length;
+                    const exerciciosIncompletos =
+                        treino.exercicios.filter(
+                            exercicio =>
+                                !exercicio.completo
+                        ).length;
 
-const treinoCompleto =
-    exerciciosIncompletos === 0;
+                    const treinoCompleto =
+                        exerciciosIncompletos === 0;
 
-const statusBox =
-    document.getElementById(
-        'historyDetailsStatus'
-    );
+                    const statusBox =
+                        document.getElementById(
+                            'historyDetailsStatus'
+                        );
 
-const statusIcon =
-    document.getElementById(
-        'historyDetailsStatusIcon'
-    );
+                    const statusIcon =
+                        document.getElementById(
+                            'historyDetailsStatusIcon'
+                        );
 
-const statusTitle =
-    document.getElementById(
-        'historyDetailsStatusTitle'
-    );
+                    const statusTitle =
+                        document.getElementById(
+                            'historyDetailsStatusTitle'
+                        );
 
-const statusMessage =
-    document.getElementById(
-        'historyDetailsStatusMessage'
-    );
+                    const statusMessage =
+                        document.getElementById(
+                            'historyDetailsStatusMessage'
+                        );
 
-statusBox.classList.toggle(
-    'complete',
-    treinoCompleto
-);
+                    statusBox.classList.toggle(
+                        'complete',
+                        treinoCompleto
+                    );
 
-statusBox.classList.toggle(
-    'incomplete',
-    !treinoCompleto
-);
+                    statusBox.classList.toggle(
+                        'incomplete',
+                        !treinoCompleto
+                    );
 
-if (treinoCompleto) {
+                    if (treinoCompleto) {
+                        statusIcon.textContent =
+                            '✓';
 
-    statusIcon.textContent = '✓';
+                        statusTitle.textContent =
+                            'Treino completo!';
 
-    statusTitle.textContent =
-        'Treino completo!';
+                        statusMessage.textContent =
+                            'Todos os exercícios foram realizados.';
 
-    statusMessage.textContent =
-        'Todos os exercícios foram realizados.';
+                    } else {
+                        statusIcon.textContent =
+                            '✕';
 
-} else {
+                        statusTitle.textContent =
+                            'Treino incompleto';
 
-    statusIcon.textContent = '✕';
-
-    statusTitle.textContent =
-        'Treino incompleto';
-
-    statusMessage.textContent =
-        exerciciosIncompletos === 1
-            ? '1 exercício ficou incompleto.'
-            : `${exerciciosIncompletos} exercícios ficaram incompletos.`;
-}
+                        statusMessage.textContent =
+                            exerciciosIncompletos === 1
+                                ? '1 exercício ficou incompleto.'
+                                : `${exerciciosIncompletos} exercícios ficaram incompletos.`;
+                    }
         
         // Lista de exercícios
         const exerciseList =
