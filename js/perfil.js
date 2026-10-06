@@ -1315,6 +1315,7 @@ function loadWorkoutHistory() {
                         document.getElementById(
                             'historyDetailsCompletionCard'
                         );
+                    
                     if (!completionCard) {
                         return;
                     }
