@@ -1194,30 +1194,30 @@ function loadWorkoutHistory() {
                         return;
                     }
 
-            const detailsName =
-                document.getElementById(
-                    'historyDetailsName'
-                );
+                    const detailsName =
+                        document.getElementById(
+                            'historyDetailsName'
+                        );
 
-            const detailsDate =
-                document.getElementById(
-                    'historyDetailsDate'
-                );
+                    const detailsDate =
+                        document.getElementById(
+                            'historyDetailsDate'
+                        );
 
-             const detailsExercises =
-                 document.getElementById(
-                     'historyDetailsExercises'
-                 );
+                    const detailsExercises =
+                        document.getElementById(
+                            'historyDetailsExercises'
+                        );
 
-             const detailsSeries =
-                 document.getElementById(
-                     'historyDetailsSeries'
-                  );
+                    const detailsSeries =
+                        document.getElementById(
+                            'historyDetailsSeries'
+                        );
 
-             const detailsCompletion =
-                 document.getElementById(
-                     'historyDetailsCompletion'
-                   );
+                    const detailsCompletion =
+                        document.getElementById(
+                            'historyDetailsCompletion'
+                        );
 
                     if (
                         !detailsName ||
