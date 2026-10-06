@@ -706,12 +706,19 @@ function loadWorkoutHistory() {
         return;
     }
 
-    const historico =
-        JSON.parse(
-            localStorage.getItem(
-                obterChaveHistoricoTreinos()
-            )
-        ) || [];
+    let historico = [];
+
+    try {
+        historico =
+            JSON.parse(
+                localStorage.getItem(
+                    obterChaveHistoricoTreinos()
+                )
+            ) || [];
+
+    } catch (error) {
+        historico = [];
+    }
 
     // RESUMO GERAL DO HISTÓRICO
 
