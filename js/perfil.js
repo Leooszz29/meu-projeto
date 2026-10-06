@@ -618,12 +618,19 @@ function loadTrainingSummary() {
 
     // Busca o histórico salvo
 
-    const historico =
-        JSON.parse(
-            localStorage.getItem(
-                obterChaveHistoricoTreinos()
-            )
-        ) || [];
+    let historico = [];
+
+    try {
+        historico =
+            JSON.parse(
+                localStorage.getItem(
+                    obterChaveHistoricoTreinos()
+                )
+            ) || [];
+
+    } catch (error) {
+        historico = [];
+    }
 
     // TOTAL DE TREINOS
 
