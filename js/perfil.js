@@ -1665,17 +1665,16 @@ function initializeHistoryDeleteModal() {
     confirmButton.addEventListener(
         'click',
         () => {
-
             if (historyDeleteIndex === null) {
                 return;
             }
 
             const historico =
-    JSON.parse(
-        localStorage.getItem(
-            obterChaveHistoricoTreinos()
-        )
-    ) || [];
+                JSON.parse(
+                    localStorage.getItem(
+                        obterChaveHistoricoTreinos()
+                    )
+                ) || [];
 
             if (
                 historyDeleteIndex < 0 ||
@@ -1691,18 +1690,16 @@ function initializeHistoryDeleteModal() {
             );
 
             localStorage.setItem(
-    obterChaveHistoricoTreinos(),
-    JSON.stringify(historico)
-);
+                obterChaveHistoricoTreinos(),
+                JSON.stringify(historico)
+            );
 
             closeHistoryDeleteModal();
 
             loadTrainingSummary();
             loadWorkoutHistory();
-
         }
     );
-
 }
 
 function initializeProfile() {
