@@ -1562,9 +1562,18 @@ function loadWorkoutHistory() {
 
                     // Abre o modal
 
-                    document.getElementById(
-                        'historyDetailsModalOverlay'
-                    ).classList.add('show');
+                    const detailsModalOverlay =
+                        document.getElementById(
+                            'historyDetailsModalOverlay'
+                        );
+
+                    if (!detailsModalOverlay) {
+                        return;
+                    }
+
+                    detailsModalOverlay.classList.add(
+                        'show'
+                    );
                 }
             );
 
