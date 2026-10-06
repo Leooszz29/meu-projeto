@@ -1133,50 +1133,52 @@ function loadWorkoutHistory() {
                 }
             );
 
-// BOTÃO VER DETALHES
-const detailsButton =
-    document.createElement('button');
+            // BOTÃO VER DETALHES
 
-detailsButton.type = 'button';
+            const detailsButton =
+                document.createElement('button');
 
-detailsButton.className =
-    'history-details-btn';
+            detailsButton.type = 'button';
 
-detailsButton.innerHTML = `
-    <svg
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-    >
-        <path
-            d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
-        />
-        <circle
-            cx="12"
-            cy="12"
-            r="2.5"
-        />
-    </svg>
+            detailsButton.className =
+                'history-details-btn';
 
-    <span>Ver detalhes</span>
-`;
+            detailsButton.innerHTML = `
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
+                    />
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="2.5"
+                    />
+                </svg>
 
-detailsButton.setAttribute(
-    'aria-label',
-    `Ver detalhes do treino ${
-        treino.nome || 'Treino'
-    }`
-);
+                <span>Ver detalhes</span>
+            `;
 
-// Registros antigos ainda não possuem
-// o resumo detalhado dos exercícios
-if (
-    !Array.isArray(treino.exercicios)
-) {
-    detailsButton.disabled = true;
+            detailsButton.setAttribute(
+                'aria-label',
+                `Ver detalhes do treino ${
+                    treino.nome || 'Treino'
+                }`
+            );
 
-    detailsButton.title =
-        'Detalhes não disponíveis para este registro';
-}
+            // Registros antigos ainda não possuem
+            // o resumo detalhado dos exercícios
+
+            if (
+                !Array.isArray(treino.exercicios)
+            ) {
+                detailsButton.disabled = true;
+
+                detailsButton.title =
+                    'Detalhes não disponíveis para este registro';
+            }
 
     detailsButton.addEventListener(
     'click',
