@@ -985,65 +985,61 @@ function loadWorkoutHistory() {
                 treino.nome || 'Treino';
 
             // ========================================
-// STATUS DO TREINO
-// ========================================
+            // STATUS DO TREINO
+            // ========================================
 
-const statusResumo =
-    document.createElement('div');
+            const statusResumo =
+                document.createElement('div');
 
-statusResumo.className =
-    'history-workout-status';
+            statusResumo.className =
+                'history-workout-status';
 
+            if (Array.isArray(treino.exercicios)) {
+                const concluidas =
+                    Number(treino.seriesConcluidas) || 0;
 
-if (Array.isArray(treino.exercicios)) {
+                const total =
+                    Number(treino.seriesTotal) || 0;
 
-    const concluidas =
-        Number(treino.seriesConcluidas) || 0;
+                const completo =
+                    total > 0 &&
+                    concluidas >= total;
 
-    const total =
-        Number(treino.seriesTotal) || 0;
+                statusResumo.classList.add(
+                    completo
+                        ? 'complete'
+                        : 'incomplete'
+                );
 
-    const completo =
-        total > 0 &&
-        concluidas >= total;
+                statusResumo.innerHTML =
+                    completo
+                        ? `
+                            <span class="history-status-icon">✓</span>
 
+                            <span class="history-status-content">
+                                <span class="history-status-title">
+                                    Completo
+                                    <span class="history-status-separator">·</span>
+                                </span>
 
-    statusResumo.classList.add(
-        completo
-            ? 'complete'
-            : 'incomplete'
-    );
+                                <span class="history-status-series">
+                                    ${concluidas} de ${total} séries
+                                </span>
+                            </span>
+                          `
+                        : `
+                            <span class="history-status-icon">●</span>
+                            <span>Parcial</span>
+                            <span class="history-status-separator">·</span>
+                            <span>${concluidas} de ${total} séries</span>
+                          `;
 
-    statusResumo.innerHTML =
-completo
-    ? `
-        <span class="history-status-icon">✓</span>
+            } else {
+                statusResumo.classList.add('legacy');
 
-        <span class="history-status-content">
-            <span class="history-status-title">
-                Completo
-                <span class="history-status-separator">·</span>
-            </span>
-
-            <span class="history-status-series">
-                ${concluidas} de ${total} séries
-            </span>
-        </span>
-      `
-            : `
-                <span class="history-status-icon">●</span>
-                <span>Parcial</span>
-                <span class="history-status-separator">·</span>
-                <span>${concluidas} de ${total} séries</span>
-              `;
-
-} else {
-
-    statusResumo.classList.add('legacy');
-
-    statusResumo.textContent =
-        'Registro anterior';
-}
+                statusResumo.textContent =
+                    'Registro anterior';
+            }
 
             const data =
                 document.createElement('span');
