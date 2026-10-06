@@ -1357,7 +1357,7 @@ function loadWorkoutHistory() {
                     // ========================================
 
                     const exerciciosIncompletos =
-                        treino.exercicios.filter(
+                        exercicios.filter(
                             exercicio =>
                                 !exercicio.completo
                         ).length;
