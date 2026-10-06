@@ -1228,77 +1228,76 @@ function loadWorkoutHistory() {
                     ).textContent =
                         `${treino.seriesConcluidas ?? 0} de ${treino.seriesTotal ?? 0}`;
 
-        // ========================================
-// PORCENTAGEM DE CONCLUSÃO
-// ========================================
+                    // ========================================
+                    // PORCENTAGEM DE CONCLUSÃO
+                    // ========================================
 
-const seriesConcluidas =
-    Number(
-        treino.seriesConcluidas
-    ) || 0;
+                    const seriesConcluidas =
+                        Number(
+                            treino.seriesConcluidas
+                        ) || 0;
 
-const seriesTotal =
-    Number(
-        treino.seriesTotal
-    ) || 0;
+                    const seriesTotal =
+                        Number(
+                            treino.seriesTotal
+                        ) || 0;
 
-const porcentagemConclusao =
-    seriesTotal > 0
-        ? Math.round(
-            (
-                seriesConcluidas /
-                seriesTotal
-            ) * 100
-        )
-        : 0;
+                    const porcentagemConclusao =
+                        seriesTotal > 0
+                            ? Math.round(
+                                (
+                                    seriesConcluidas /
+                                    seriesTotal
+                                ) * 100
+                            )
+                            : 0;
 
-document.getElementById(
-    'historyDetailsCompletion'
-).textContent =
-    `${porcentagemConclusao}%`;
+                    document.getElementById(
+                        'historyDetailsCompletion'
+                    ).textContent =
+                        `${porcentagemConclusao}%`;
 
-const progressIcon =
-    document.getElementById(
-        'historyDetailsProgressIcon'
-    );
+                    const progressIcon =
+                        document.getElementById(
+                            'historyDetailsProgressIcon'
+                        );
 
-if (progressIcon) {
+                    if (progressIcon) {
+                        const porcentagemVisual =
+                            Math.max(
+                                0,
+                                Math.min(
+                                    porcentagemConclusao,
+                                    100
+                                )
+                            );
 
-    const porcentagemVisual =
-        Math.max(
-            0,
-            Math.min(
-                porcentagemConclusao,
-                100
-            )
-        );
+                        const graus =
+                            (porcentagemVisual / 100) * 360;
 
-    const graus =
-        (porcentagemVisual / 100) * 360;
+                        progressIcon.style.setProperty(
+                            '--progress',
+                            `${graus}deg`
+                        );
+                    }
 
-    progressIcon.style.setProperty(
-        '--progress',
-        `${graus}deg`
-    );
-}
+                    const completionCard =
+                        document.getElementById(
+                            'historyDetailsCompletionCard'
+                        );
 
-const completionCard =
-    document.getElementById(
-        'historyDetailsCompletionCard'
-    );
+                    const conclusaoCompleta =
+                        porcentagemConclusao >= 100;
 
-const conclusaoCompleta =
-    porcentagemConclusao >= 100;
+                    completionCard.classList.toggle(
+                        'complete',
+                        conclusaoCompleta
+                    );
 
-completionCard.classList.toggle(
-    'complete',
-    conclusaoCompleta
-);
-
-completionCard.classList.toggle(
-    'incomplete',
-    !conclusaoCompleta
-);
+                    completionCard.classList.toggle(
+                        'incomplete',
+                        !conclusaoCompleta
+                    );
 
     // ========================================
 // STATUS GERAL DO TREINO
