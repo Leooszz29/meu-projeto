@@ -1284,9 +1284,7 @@ function loadWorkoutHistory() {
                             )
                             : 0;
 
-                    document.getElementById(
-                        'historyDetailsCompletion'
-                    ).textContent =
+                    detailsCompletion.textContent =
                         `${porcentagemConclusao}%`;
 
                     const progressIcon =
