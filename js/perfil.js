@@ -1541,7 +1541,6 @@ function loadWorkoutHistory() {
         monthHeader.addEventListener(
             'click',
             () => {
-
                 const fechado =
                     monthContent.hidden;
 
@@ -1555,7 +1554,6 @@ function loadWorkoutHistory() {
 
                 arrow.textContent =
                     fechado ? '▼' : '▶';
-
             }
         );
 
@@ -1563,11 +1561,8 @@ function loadWorkoutHistory() {
         monthGroup.appendChild(monthContent);
 
         historyList.appendChild(monthGroup);
-
     });
-
 }
-
 // ========================================
 // MODAL DE EXCLUSÃO DO HISTÓRICO
 // ========================================
