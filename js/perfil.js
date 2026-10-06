@@ -886,63 +886,63 @@ function loadWorkoutHistory() {
             grupo.treinos.length;
 
         const completos =
-    grupo.treinos.filter(
-        treino =>
-            Array.isArray(treino.exercicios) &&
-            Number(treino.seriesTotal) > 0 &&
-            Number(treino.seriesConcluidas) >=
-                Number(treino.seriesTotal)
-    ).length;
+            grupo.treinos.filter(
+                treino =>
+                    Array.isArray(treino.exercicios) &&
+                    Number(treino.seriesTotal) > 0 &&
+                    Number(treino.seriesConcluidas) >=
+                        Number(treino.seriesTotal)
+            ).length;
 
-const parciais =
-    grupo.treinos.filter(
-        treino =>
-            Array.isArray(treino.exercicios) &&
-            Number(treino.seriesTotal) > 0 &&
-            Number(treino.seriesConcluidas) <
-                Number(treino.seriesTotal)
-    ).length;
+        const parciais =
+            grupo.treinos.filter(
+                treino =>
+                    Array.isArray(treino.exercicios) &&
+                    Number(treino.seriesTotal) > 0 &&
+                    Number(treino.seriesConcluidas) <
+                        Number(treino.seriesTotal)
+            ).length;
 
-       monthHeader.innerHTML = `
-    <span class="history-month-title">
-        <span class="history-month-arrow">
-            ${indiceGrupo === 0 ? '▼' : '▶'}
-        </span>
+        monthHeader.innerHTML = `
+            <span class="history-month-title">
+                <span class="history-month-arrow">
+                    ${indiceGrupo === 0 ? '▼' : '▶'}
+                </span>
 
-        ${nomeMes}
-    </span>
+                ${nomeMes}
+            </span>
 
-    <span class="history-month-summary">
+            <span class="history-month-summary">
 
-        <span class="history-month-count">
-            ${quantidade}
-            ${quantidade === 1 ? 'treino' : 'treinos'}
-        </span>
+                <span class="history-month-count">
+                    ${quantidade}
+                    ${quantidade === 1 ? 'treino' : 'treinos'}
+                </span>
 
-        ${
-            completos > 0
-                ? `
-                    <span class="history-month-complete">
-                        <span>✓</span>
-                        ${completos}
-                    </span>
-                  `
-                : ''
-        }
+                ${
+                    completos > 0
+                        ? `
+                            <span class="history-month-complete">
+                                <span>✓</span>
+                                ${completos}
+                            </span>
+                          `
+                        : ''
+                }
 
-        ${
-            parciais > 0
-                ? `
-                    <span class="history-month-partial">
-                        <span>●</span>
-                        ${parciais}
-                    </span>
-                  `
-                : ''
-        }
+                ${
+                    parciais > 0
+                        ? `
+                            <span class="history-month-partial">
+                                <span>●</span>
+                                ${parciais}
+                            </span>
+                          `
+                        : ''
+                }
 
-    </span>
-`;
+            </span>
+        `;
 
         // CONTEÚDO DO MÊS
 
