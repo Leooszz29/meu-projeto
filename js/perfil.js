@@ -542,8 +542,7 @@ function calcularIMC() {
 // INICIALIZAÇÃO
 // ========================================
 
-    function initializeIMC() {
-
+function initializeIMC() {
     const pesoInput =
         document.getElementById('peso');
 
@@ -564,11 +563,10 @@ function calcularIMC() {
             'input',
             calcularIMC
         );
-        }
     }
+}
 
-    function initializeProfileActions() {
-
+function initializeProfileActions() {
     const saveButton =
         document.getElementById('btnSaveProfile');
 
@@ -586,9 +584,10 @@ function calcularIMC() {
         endSessionButton.addEventListener(
             'click',
             handleEndSession
-            );
-        }
+        );
     }
+}
+
 // ========================================
 // RESUMO DOS TREINOS
 // ========================================
