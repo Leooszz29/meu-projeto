@@ -733,52 +733,52 @@ function loadWorkoutHistory() {
                     Number(treino.seriesTotal)
         ).length;
 
-    // TAXA DE CONCLUSÃO
+// TAXA DE CONCLUSÃO
 
-    const treinosDetalhados =
-        totalCompletos + totalParciais;
+const treinosDetalhados =
+    totalCompletos + totalParciais;
 
-    const taxaConclusao =
-        treinosDetalhados > 0
+const taxaConclusao =
+    treinosDetalhados > 0
         ? Math.round(
             (totalCompletos / treinosDetalhados) * 100
         )
         : 0;
 
-    const historyCompletionRate =
-        document.getElementById(
+const historyCompletionRate =
+    document.getElementById(
         'historyCompletionRate'
     );
 
-    const historyCompletionBar =
-        document.getElementById(
+const historyCompletionBar =
+    document.getElementById(
         'historyCompletionBar'
     );
 
-    if (historyCompletionRate) {
+if (historyCompletionRate) {
     historyCompletionRate.textContent =
         `${taxaConclusao}%`;
-    }
+}
 
-    if (historyCompletionBar) {
+if (historyCompletionBar) {
     historyCompletionBar.style.width =
         `${taxaConclusao}%`;
-    }
+}
 
-    if (historyTotal) {
+if (historyTotal) {
     historyTotal.textContent =
         totalTreinos;
-    }
+}
 
-    if (historyComplete) {
+if (historyComplete) {
     historyComplete.textContent =
         totalCompletos;
-    }
+}
 
-    if (historyPartial) {
+if (historyPartial) {
     historyPartial.textContent =
         totalParciais;
-    }
+}
 
     historyList.innerHTML = '';
 
