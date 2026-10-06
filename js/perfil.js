@@ -607,14 +607,14 @@ function loadTrainingSummary() {
 
     // Se os cards não existirem, encerra
 
-if (
-    !totalElement ||
-    !monthElement ||
-    !lastElement ||
-    !lastNameElement
-) {
-    return;
-}
+    if (
+        !totalElement ||
+        !monthElement ||
+        !lastElement ||
+        !lastNameElement
+    ) {
+        return;
+    }
 
     // Busca o histórico salvo
 
