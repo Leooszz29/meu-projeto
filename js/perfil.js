@@ -1315,6 +1315,9 @@ function loadWorkoutHistory() {
                         document.getElementById(
                             'historyDetailsCompletionCard'
                         );
+                    if (!completionCard) {
+                        return;
+                    }
 
                     const conclusaoCompleta =
                         porcentagemConclusao >= 100;
