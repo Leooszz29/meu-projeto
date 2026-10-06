@@ -1415,6 +1415,10 @@ function loadWorkoutHistory() {
                             'historyDetailsExerciseList'
                         );
 
+                    if (!exerciseList) {
+                        return;
+                    }
+
                     exerciseList.innerHTML = '';
 
                     const criarLinhaExercicio = (exercicio) => {
