@@ -245,10 +245,8 @@ function showSuccess() {
     button.classList.add('saved');
 
     if (label) {
-
         label.innerHTML =
             '<span class="check-icon">✓</span> Salvo com sucesso!';
-
     } else {
 
         button.textContent =
