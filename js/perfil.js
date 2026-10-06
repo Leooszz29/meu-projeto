@@ -212,12 +212,10 @@ function fillForm() {
 // ========================================
 
 function showSuccess() {
-
     const successMessage =
         document.getElementById('successMessage');
 
     if (successMessage) {
-
         successMessage.textContent =
             'Perfil salvo com sucesso! 💪';
 
@@ -241,35 +239,27 @@ function showSuccess() {
         button.querySelector('.btn-label');
 
     button.disabled = true;
-
     button.classList.add('saved');
 
     if (label) {
         label.innerHTML =
             '<span class="check-icon">✓</span> Salvo com sucesso!';
     } else {
-
         button.textContent =
             '✓ Salvo com sucesso!';
     }
 
     setTimeout(() => {
-
         button.disabled = false;
-
         button.classList.remove('saved');
 
         if (label) {
-
             label.textContent =
                 'Salvar perfil';
-
         } else {
-
             button.textContent =
                 'Salvar perfil';
         }
-
     }, 2200);
 }
 
