@@ -397,8 +397,7 @@ function handleEndSession() {
 // PERSONAGEM / GÊNERO
 // ========================================
 
-    function loadCharacter() {
-
+function loadCharacter() {
     const characterImg =
         document.getElementById('characterImg');
 
@@ -409,29 +408,27 @@ function handleEndSession() {
     let genero = null;
 
     try {
+        const sessao =
+            carregarSessao();
 
-    const sessao =
-        carregarSessao();
-
-    if (
-        sessao &&
-        sessao.email
-    ) {
-        genero =
-            localStorage.getItem(
-                `generoFitZone:${sessao.email.toLowerCase()}`
-            );
+        if (
+            sessao &&
+            sessao.email
+        ) {
+            genero =
+                localStorage.getItem(
+                    `generoFitZone:${sessao.email.toLowerCase()}`
+                );
+        }
+    } catch (error) {
+        console.warn(
+            'Não foi possível carregar o gênero:',
+            error
+        );
     }
 
-} catch (error) {
+    // APLICA O TEMA DE ACORDO COM O GÊNERO
 
-    console.warn(
-        'Não foi possível carregar o gênero:',
-        error
-    );
-}
-    
-// APLICA O TEMA DE ACORDO COM O GÊNERO
     if (genero === 'masculino') {
         document.body.classList.add('theme-masculino');
     } else if (genero === 'feminino') {
@@ -439,7 +436,6 @@ function handleEndSession() {
     }
 
     const imagens = {
-
         masculino:
             'https://cdn-icons-png.flaticon.com/512/4140/4140048.png',
 
@@ -448,19 +444,16 @@ function handleEndSession() {
     };
 
     if (genero && imagens[genero]) {
-
         characterImg.src =
             imagens[genero];
 
         characterImg.style.display =
             'block';
-
     } else {
-
         characterImg.style.display =
             'none';
-        }
     }
+}
 
 // ========================================
 // CALCULAR IMC
