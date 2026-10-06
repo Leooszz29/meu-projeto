@@ -378,16 +378,12 @@ function handleSaveProfile() {
 // FINALIZAR SESSÃO
 // ========================================
 
-    function handleEndSession() {
-
+function handleEndSession() {
     try {
-
         localStorage.removeItem(
             'fitzoneSessao'
         );
-
     } catch (error) {
-
         console.warn(
             'Não foi possível encerrar a sessão:',
             error
