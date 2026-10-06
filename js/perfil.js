@@ -1523,7 +1523,7 @@ function loadWorkoutHistory() {
                         // Exercícios pertencentes ao mesmo grupo
 
                         const exerciciosDoGrupo =
-                            treino.exercicios.filter(
+                            exercicios.filter(
                                 item =>
                                     item.tipoExecucao === tipo &&
                                     item.grupoExecucao === grupo
