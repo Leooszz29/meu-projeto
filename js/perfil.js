@@ -1365,6 +1365,15 @@ function loadWorkoutHistory() {
                         document.getElementById(
                             'historyDetailsStatusMessage'
                         );
+                    
+                    if (
+                        !statusBox ||
+                        !statusIcon ||
+                        !statusTitle ||
+                        !statusMessage
+                    ) {
+                        return;
+                    }
 
                     statusBox.classList.toggle(
                         'complete',
