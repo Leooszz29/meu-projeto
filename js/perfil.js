@@ -1417,102 +1417,101 @@ function loadWorkoutHistory() {
                         return row;
                     };
 
-const gruposRenderizados = new Set();
+                    const gruposRenderizados =
+                        new Set();
 
-treino.exercicios.forEach((exercicio) => {
+                    treino.exercicios.forEach((exercicio) => {
+                        const tipo =
+                            exercicio.tipoExecucao ||
+                            'individual';
 
-    const tipo =
-        exercicio.tipoExecucao ||
-        'individual';
+                        const grupo =
+                            exercicio.grupoExecucao;
 
-    const grupo =
-        exercicio.grupoExecucao;
+                        // Exercício individual
 
+                        if (
+                            tipo === 'individual' ||
+                            !grupo
+                        ) {
+                            exerciseList.appendChild(
+                                criarLinhaExercicio(exercicio)
+                            );
 
-    // Exercício individual
-    if (
-        tipo === 'individual' ||
-        !grupo
-    ) {
+                            return;
+                        }
 
-        exerciseList.appendChild(
-            criarLinhaExercicio(exercicio)
-        );
+                        // Evita desenhar o mesmo grupo duas vezes
 
-        return;
-    }
+                        const chaveGrupo =
+                            `${tipo}-${grupo}`;
 
-    // Evita desenhar o mesmo grupo duas vezes
-    const chaveGrupo =
-        `${tipo}-${grupo}`;
+                        if (
+                            gruposRenderizados.has(chaveGrupo)
+                        ) {
+                            return;
+                        }
 
-    if (
-        gruposRenderizados.has(chaveGrupo)
-    ) {
-        return;
-    }
+                        gruposRenderizados.add(chaveGrupo);
 
-    gruposRenderizados.add(chaveGrupo);
+                        // Exercícios pertencentes ao mesmo grupo
 
-    // Exercícios pertencentes ao mesmo grupo
-    const exerciciosDoGrupo =
-        treino.exercicios.filter(
-            item =>
-                item.tipoExecucao === tipo &&
-                item.grupoExecucao === grupo
-        );
+                        const exerciciosDoGrupo =
+                            treino.exercicios.filter(
+                                item =>
+                                    item.tipoExecucao === tipo &&
+                                    item.grupoExecucao === grupo
+                            );
 
-    const groupBox =
-        document.createElement('div');
+                        const groupBox =
+                            document.createElement('div');
 
-    groupBox.className =
-        `history-details-group ${tipo}`;
+                        groupBox.className =
+                            `history-details-group ${tipo}`;
 
-    const groupTitle =
-        document.createElement('div');
+                        const groupTitle =
+                            document.createElement('div');
 
-    groupTitle.className =
-        'history-details-group-title';
+                        groupTitle.className =
+                            'history-details-group-title';
 
-    const nomeTipo =
-        tipo === 'triset'
-            ? 'TRI-SET'
-            : 'BI-SET';
+                        const nomeTipo =
+                            tipo === 'triset'
+                                ? 'TRI-SET'
+                                : 'BI-SET';
 
-    groupTitle.textContent =
-        `${nomeTipo} ${grupo}`;
+                        groupTitle.textContent =
+                            `${nomeTipo} ${grupo}`;
 
-    groupBox.appendChild(groupTitle);
+                        groupBox.appendChild(groupTitle);
 
-    exerciciosDoGrupo.forEach(
-        (item, index) => {
+                        exerciciosDoGrupo.forEach(
+                            (item, index) => {
+                                groupBox.appendChild(
+                                    criarLinhaExercicio(item)
+                                );
 
-            groupBox.appendChild(
-                criarLinhaExercicio(item)
-            );
+                                // Separador entre exercícios do grupo
 
-            // Separador entre exercícios do grupo
-            if (
-                index <
-                exerciciosDoGrupo.length - 1
-            ) {
+                                if (
+                                    index <
+                                    exerciciosDoGrupo.length - 1
+                                ) {
+                                    const plus =
+                                        document.createElement('div');
 
-                const plus =
-                    document.createElement('div');
+                                    plus.className =
+                                        'history-details-group-plus';
 
-                plus.className =
-                    'history-details-group-plus';
+                                    plus.textContent = '+';
 
-                plus.textContent = '+';
+                                    groupBox.appendChild(plus);
+                                }
+                            }
+                        );
 
-                groupBox.appendChild(plus);
-            }
-        }
-    );
-
-    exerciseList.appendChild(groupBox);
-
-});
+                        exerciseList.appendChild(groupBox);
+                    });
 
         // Abre o modal
         document.getElementById(
