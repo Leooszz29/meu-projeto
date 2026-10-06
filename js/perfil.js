@@ -650,10 +650,18 @@ function loadTrainingSummary() {
 
     // TREINOS CONCLUÍDOS NESTE MÊS
 
-    const treinosDoMes =
+        const treinosDoMes =
         historico.filter((treino) => {
             const dataTreino =
                 new Date(treino.data);
+
+            if (
+                Number.isNaN(
+                    dataTreino.getTime()
+                )
+            ) {
+                return false;
+            }
 
             return (
                 dataTreino.getMonth() === mesAtual &&
