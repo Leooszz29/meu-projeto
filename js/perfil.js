@@ -1265,9 +1265,14 @@ function loadWorkoutHistory() {
 
                     // Quantidade de exercícios
 
+                    const exercicios =
+                        Array.isArray(treino.exercicios)
+                            ? treino.exercicios
+                            : [];
+
                     detailsExercises.textContent =
                         treino.totalExercicios ??
-                        treino.exercicios.length;
+                        exercicios.length;
 
                     // Séries
 
