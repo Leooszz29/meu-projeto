@@ -592,8 +592,7 @@ function initializeProfileActions() {
 // RESUMO DOS TREINOS
 // ========================================
 
-    function loadTrainingSummary() {
-
+function loadTrainingSummary() {
     const totalElement =
         document.getElementById('totalWorkouts');
 
@@ -602,50 +601,60 @@ function initializeProfileActions() {
 
     const lastElement =
         document.getElementById('lastWorkout');
-    
+
     const lastNameElement =
-    document.getElementById('lastWorkoutName');
+        document.getElementById('lastWorkoutName');
 
     // Se os cards não existirem, encerra
+
     if (!totalElement || !monthElement || !lastElement) {
         return;
     }
 
     // Busca o histórico salvo
+
     const historico =
-    JSON.parse(
-        localStorage.getItem(
-            obterChaveHistoricoTreinos()
-        )
-    ) || [];
+        JSON.parse(
+            localStorage.getItem(
+                obterChaveHistoricoTreinos()
+            )
+        ) || [];
 
     // TOTAL DE TREINOS
-    totalElement.textContent = historico.length;
+
+    totalElement.textContent =
+        historico.length;
 
     // DATA ATUAL
-    const agora = new Date();
 
-    const mesAtual = agora.getMonth();
-    const anoAtual = agora.getFullYear();
+    const agora =
+        new Date();
+
+    const mesAtual =
+        agora.getMonth();
+
+    const anoAtual =
+        agora.getFullYear();
 
     // TREINOS CONCLUÍDOS NESTE MÊS
-    const treinosDoMes = historico.filter((treino) => {
 
-        const dataTreino =
-            new Date(treino.data);
+    const treinosDoMes =
+        historico.filter((treino) => {
+            const dataTreino =
+                new Date(treino.data);
 
-        return (
-            dataTreino.getMonth() === mesAtual &&
-            dataTreino.getFullYear() === anoAtual
-        );
-    });
+            return (
+                dataTreino.getMonth() === mesAtual &&
+                dataTreino.getFullYear() === anoAtual
+            );
+        });
 
     monthElement.textContent =
         treinosDoMes.length;
 
     // ÚLTIMO TREINO
-    if (historico.length > 0) {
 
+    if (historico.length > 0) {
         const ultimoTreino =
             historico[historico.length - 1];
 
@@ -660,18 +669,17 @@ function initializeProfileActions() {
                     month: '2-digit'
                 }
             );
-        
+
         lastNameElement.textContent =
-        ultimoTreino.nome || 'Treino';
+            ultimoTreino.nome || 'Treino';
 
-       } else {
+    } else {
+        lastElement.textContent =
+            '—';
 
-        lastElement.textContent = '—';
-
-        lastNameElement.textContent = '—';
-
+        lastNameElement.textContent =
+            '—';
     }
-
 }
 
 // ========================================
