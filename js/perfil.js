@@ -1180,50 +1180,53 @@ function loadWorkoutHistory() {
                     'Detalhes não disponíveis para este registro';
             }
 
-    detailsButton.addEventListener(
-    'click',
-    () => {
+            detailsButton.addEventListener(
+                'click',
+                () => {
+                    if (
+                        !Array.isArray(treino.exercicios)
+                    ) {
+                        return;
+                    }
 
-        if (
-            !Array.isArray(treino.exercicios)
-        ) {
-            return;
-        }
+                    // Nome do treino
 
-        // Nome do treino
-        document.getElementById(
-            'historyDetailsName'
-        ).textContent =
-            treino.nome || 'Treino';
+                    document.getElementById(
+                        'historyDetailsName'
+                    ).textContent =
+                        treino.nome || 'Treino';
 
-        // Data
-        const dataDetalhes =
-            new Date(treino.data);
+                    // Data
 
-        document.getElementById(
-            'historyDetailsDate'
-        ).textContent =
-            dataDetalhes.toLocaleDateString(
-                'pt-BR',
-                {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                }
-            );
+                    const dataDetalhes =
+                        new Date(treino.data);
 
-        // Quantidade de exercícios
-        document.getElementById(
-            'historyDetailsExercises'
-        ).textContent =
-            treino.totalExercicios ??
-            treino.exercicios.length;
+                    document.getElementById(
+                        'historyDetailsDate'
+                    ).textContent =
+                        dataDetalhes.toLocaleDateString(
+                            'pt-BR',
+                            {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                            }
+                        );
 
-        // Séries
-        document.getElementById(
-            'historyDetailsSeries'
-        ).textContent =
-            `${treino.seriesConcluidas ?? 0} de ${treino.seriesTotal ?? 0}`;
+                    // Quantidade de exercícios
+
+                    document.getElementById(
+                        'historyDetailsExercises'
+                    ).textContent =
+                        treino.totalExercicios ??
+                        treino.exercicios.length;
+
+                    // Séries
+
+                    document.getElementById(
+                        'historyDetailsSeries'
+                    ).textContent =
+                        `${treino.seriesConcluidas ?? 0} de ${treino.seriesTotal ?? 0}`;
 
         // ========================================
 // PORCENTAGEM DE CONCLUSÃO
