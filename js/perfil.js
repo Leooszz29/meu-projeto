@@ -1194,6 +1194,41 @@ function loadWorkoutHistory() {
                         return;
                     }
 
+            const detailsName =
+                document.getElementById(
+                    'historyDetailsName'
+                );
+
+            const detailsDate =
+                document.getElementById(
+                    'historyDetailsDate'
+                );
+
+             const detailsExercises =
+                 document.getElementById(
+                     'historyDetailsExercises'
+                 );
+
+             const detailsSeries =
+                 document.getElementById(
+                     'historyDetailsSeries'
+                  );
+
+             const detailsCompletion =
+                 document.getElementById(
+                     'historyDetailsCompletion'
+                   );
+
+                    if (
+                        !detailsName ||
+                        !detailsDate ||
+                        !detailsExercises ||
+                        !detailsSeries ||
+                        !detailsCompletion
+                    ) {
+                        return;
+                    }
+
                     // Nome do treino
 
                     document.getElementById(
