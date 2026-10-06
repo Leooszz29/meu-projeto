@@ -267,10 +267,7 @@ function showSuccess() {
 // SALVAR PERFIL PELO CLIQUE
 // ========================================
 
-    function handleSaveProfile() {
-
-    console.log('Salvar perfil acionado');
-
+function handleSaveProfile() {
     const nome =
         getValue('nome');
 
@@ -344,9 +341,7 @@ function showSuccess() {
     }
 
     const data = {
-
         nome: getValue('nome'),
-
         idade: getValue('idade'),
 
         tipoSanguineo:
@@ -365,13 +360,10 @@ function showSuccess() {
             getValue('infoPessoais')
     };
 
-    console.log('Dados do perfil:', data);
-
     const sucesso =
         saveProfile(data);
 
     if (!sucesso) {
-
         alert(
             'Não foi possível salvar o perfil. Tente novamente.'
         );
@@ -380,10 +372,6 @@ function showSuccess() {
     }
 
     showSuccess();
-
-    console.log(
-        'Perfil salvo com sucesso no localStorage.'
-    );
 }
 
 // ========================================
