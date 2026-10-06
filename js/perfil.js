@@ -1513,30 +1513,29 @@ function loadWorkoutHistory() {
                         exerciseList.appendChild(groupBox);
                     });
 
-        // Abre o modal
-        document.getElementById(
-            'historyDetailsModalOverlay'
-        ).classList.add('show');
+                    // Abre o modal
 
-    }
-);
-            
-// ========================================
-// RESUMO DE CONCLUSÃO NO HISTÓRICO
-// ========================================
-            
-actions.appendChild(data);
-actions.appendChild(detailsButton);
-actions.appendChild(deleteButton);
+                    document.getElementById(
+                        'historyDetailsModalOverlay'
+                    ).classList.add('show');
+                }
+            );
 
-item.appendChild(nome);
-item.appendChild(statusResumo);
-item.appendChild(actions);
+            // ========================================
+            // RESUMO DE CONCLUSÃO NO HISTÓRICO
+            // ========================================
 
-monthContent.appendChild(item);
+            actions.appendChild(data);
+            actions.appendChild(detailsButton);
+            actions.appendChild(deleteButton);
 
+            item.appendChild(nome);
+            item.appendChild(statusResumo);
+            item.appendChild(actions);
+
+            monthContent.appendChild(item);
         });
-
+        
         // ABRIR / FECHAR O MÊS
 
         monthHeader.addEventListener(
