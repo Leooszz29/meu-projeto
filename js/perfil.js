@@ -482,12 +482,14 @@ function calcularIMC() {
     const alturaCm =
         parseFloat(alturaInput.value);
 
-    if (
-        isNaN(peso) ||
-        isNaN(alturaCm) ||
-        peso <= 0 ||
-        alturaCm <= 0
-    ) {
+if (
+    !Number.isFinite(peso) ||
+    !Number.isFinite(alturaCm) ||
+    peso < 20 ||
+    peso > 400 ||
+    alturaCm < 100 ||
+    alturaCm > 250
+) {
         imcInput.value = '';
 
         if (classificacao) {
