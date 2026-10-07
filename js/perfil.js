@@ -663,23 +663,17 @@ function loadTrainingSummary() {
     // TREINOS CONCLUÍDOS NESTE MÊS
 
     const treinosDoMes =
-        historico.filter((treino) => {
-            const dataTreino =
-                new Date(treino.data);
+        historicoComDataValida.filter(
+            (treino) => {
+                const dataTreino =
+                    new Date(treino.data);
 
-            if (
-                Number.isNaN(
-                    dataTreino.getTime()
-                )
-            ) {
-                return false;
+                return (
+                    dataTreino.getMonth() === mesAtual &&
+                    dataTreino.getFullYear() === anoAtual
+                );
             }
-
-            return (
-                dataTreino.getMonth() === mesAtual &&
-                dataTreino.getFullYear() === anoAtual
-            );
-        });
+        );
 
     monthElement.textContent =
         treinosDoMes.length;
