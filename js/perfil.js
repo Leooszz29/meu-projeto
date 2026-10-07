@@ -1484,11 +1484,35 @@ function loadWorkoutHistory() {
 
                     const exerciciosIncompletos =
                         exercicios.filter(
-                            exercicio =>
-                                !exercicio.completo
+                            (exercicio) => {
+                                const total =
+                                    Math.max(
+                                        0,
+                                        Number(
+                                            exercicio.seriesTotal
+                                        ) || 0
+                                    );
+
+                                const concluidas =
+                                    Math.max(
+                                        0,
+                                        Math.min(
+                                            Number(
+                                                exercicio.seriesConcluidas
+                                            ) || 0,
+                                            total
+                                        )
+                                    );
+
+                                return !(
+                                    total > 0 &&
+                                    concluidas >= total
+                                );
+                            }
                         ).length;
 
                     const treinoCompleto =
+                        exercicios.length > 0 &&
                         exerciciosIncompletos === 0;
 
                     const statusBox =
