@@ -1222,7 +1222,8 @@ function loadWorkoutHistory() {
                 'click',
                 () => {
                     if (
-                        !Array.isArray(treino.exercicios)
+                        !Array.isArray(treino.exercicios) ||
+                        Number(treino.seriesTotal) <= 0
                     ) {
                         return;
                     }
