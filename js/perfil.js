@@ -1046,15 +1046,23 @@ function loadWorkoutHistory() {
                 Array.isArray(treino.exercicios) &&
                 Number(treino.seriesTotal) > 0
             ) {
-                const concluidas =
-                    Number(treino.seriesConcluidas) || 0;
-
                 const total =
                     Math.max(
                         0,
                         Number(
                             treino.seriesTotal
                         ) || 0
+                    );
+
+                const concluidas =
+                    Math.max(
+                        0,
+                        Math.min(
+                            Number(
+                                treino.seriesConcluidas
+                            ) || 0,
+                            total
+                        )
                     );
 
                 const completo =
