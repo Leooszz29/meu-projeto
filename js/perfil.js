@@ -632,10 +632,22 @@ function loadTrainingSummary() {
         historico = [];
     }
 
+    // TREINOS COM DATA VÁLIDA
+
+    const historicoComDataValida =
+        historico.filter((treino) => {
+            const dataTreino =
+                new Date(treino.data);
+
+            return !Number.isNaN(
+                dataTreino.getTime()
+            );
+        });
+
     // TOTAL DE TREINOS
 
     totalElement.textContent =
-        historico.length;
+        historicoComDataValida.length;
 
     // DATA ATUAL
 
