@@ -1599,8 +1599,16 @@ function loadWorkoutHistory() {
                         series.className =
                             'history-details-exercise-series';
 
+                        const seriesTotalExercicio =
+                            Math.max(
+                                0,
+                                Number(
+                                    exercicio.seriesTotal
+                                ) || 0
+                            );
+
                         series.textContent =
-                            `${exercicio.seriesConcluidas ?? 0} de ${exercicio.seriesTotal ?? 0} séries`;
+                            `${exercicio.seriesConcluidas ?? 0} de ${seriesTotalExercicio} séries`;
 
                         row.appendChild(status);
                         row.appendChild(name);
