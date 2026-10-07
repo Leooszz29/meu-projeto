@@ -1618,6 +1618,11 @@ function loadWorkoutHistory() {
                                 )
                             );
 
+                        const exercicioCompleto =
+                            seriesTotalExercicio > 0 &&
+                            seriesConcluidasExercicio >=
+                                seriesTotalExercicio;
+
                         series.textContent =
                             `${seriesConcluidasExercicio} de ${seriesTotalExercicio} séries`;
 
