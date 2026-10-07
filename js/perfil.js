@@ -769,7 +769,7 @@ function loadWorkoutHistory() {
         ).length;
 
     const totalParciais =
-        historico.filter(
+        historicoComDataValida.filter(
             treino =>
                 Array.isArray(treino.exercicios) &&
                 Number(treino.seriesTotal) > 0 &&
