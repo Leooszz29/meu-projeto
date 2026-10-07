@@ -1303,15 +1303,24 @@ function loadWorkoutHistory() {
 
                     // Séries
 
-                    const seriesConcluidas =
-                        Number(
-                            treino.seriesConcluidas
-                        ) || 0;
-
                     const seriesTotal =
-                        Number(
-                            treino.seriesTotal
-                        ) || 0;
+                        Math.max(
+                            0,
+                            Number(
+                                treino.seriesTotal
+                            ) || 0
+                        );
+
+                    const seriesConcluidas =
+                        Math.max(
+                            0,
+                            Math.min(
+                                Number(
+                                    treino.seriesConcluidas
+                                ) || 0,
+                                seriesTotal
+                            )
+                        );
 
                     detailsSeries.textContent =
                         `${seriesConcluidas} de ${seriesTotal}`;
