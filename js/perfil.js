@@ -1297,9 +1297,21 @@ function loadWorkoutHistory() {
                             ? treino.exercicios
                             : [];
 
+                    const totalExerciciosInformado =
+                        Number(
+                            treino.totalExercicios
+                        );
+
+                    const totalExercicios =
+                        Number.isFinite(
+                            totalExerciciosInformado
+                        ) &&
+                        totalExerciciosInformado >= 0
+                            ? totalExerciciosInformado
+                            : exercicios.length;
+
                     detailsExercises.textContent =
-                        treino.totalExercicios ??
-                        exercicios.length;
+                        totalExercicios;
 
                     // Séries
 
