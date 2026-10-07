@@ -692,21 +692,14 @@ function loadTrainingSummary() {
         const dataUltimoTreino =
             new Date(ultimoTreino.data);
 
-        const dataUltimoTreinoValida =
-            !Number.isNaN(
-                dataUltimoTreino.getTime()
-            );
-
         lastElement.textContent =
-            dataUltimoTreinoValida
-                ? dataUltimoTreino.toLocaleDateString(
-                    'pt-BR',
-                    {
-                        day: '2-digit',
-                        month: '2-digit'
-                    }
-                )
-                : '—';
+            dataUltimoTreino.toLocaleDateString(
+                'pt-BR',
+                {
+                    day: '2-digit',
+                    month: '2-digit'
+                }
+            );
 
         lastNameElement.textContent =
             ultimoTreino.nome || 'Treino';
