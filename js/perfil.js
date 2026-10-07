@@ -1348,17 +1348,8 @@ function loadWorkoutHistory() {
                         );
 
                     if (progressIcon) {
-                        const porcentagemVisual =
-                            Math.max(
-                                0,
-                                Math.min(
-                                    porcentagemConclusao,
-                                    100
-                                )
-                            );
-
                         const graus =
-                            (porcentagemVisual / 100) * 360;
+                            (porcentagemConclusao / 100) * 360;
 
                         progressIcon.style.setProperty(
                             '--progress',
