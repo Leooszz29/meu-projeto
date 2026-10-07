@@ -1567,38 +1567,6 @@ function loadWorkoutHistory() {
                     exerciseList.innerHTML = '';
 
                     const criarLinhaExercicio = (exercicio) => {
-                        const row =
-                            document.createElement('div');
-
-                        row.className =
-                            exercicio.completo
-                                ? 'history-details-exercise complete'
-                                : 'history-details-exercise incomplete';
-
-                        const status =
-                            document.createElement('span');
-
-                        status.className =
-                            'history-details-exercise-status';
-
-                        status.textContent =
-                            exercicio.completo ? '✓' : '✕';
-
-                        const name =
-                            document.createElement('strong');
-
-                        name.className =
-                            'history-details-exercise-name';
-
-                        name.textContent =
-                            exercicio.nome || 'Exercício';
-
-                        const series =
-                            document.createElement('span');
-
-                        series.className =
-                            'history-details-exercise-series';
-
                         const seriesTotalExercicio =
                             Math.max(
                                 0,
@@ -1622,6 +1590,38 @@ function loadWorkoutHistory() {
                             seriesTotalExercicio > 0 &&
                             seriesConcluidasExercicio >=
                                 seriesTotalExercicio;
+
+                        const row =
+                            document.createElement('div');
+
+                        row.className =
+                            exercicioCompleto
+                                ? 'history-details-exercise complete'
+                                : 'history-details-exercise incomplete';
+
+                        const status =
+                            document.createElement('span');
+
+                        status.className =
+                            'history-details-exercise-status';
+
+                        status.textContent =
+                            exercicioCompleto ? '✓' : '✕';
+
+                        const name =
+                            document.createElement('strong');
+
+                        name.className =
+                            'history-details-exercise-name';
+
+                        name.textContent =
+                            exercicio.nome || 'Exercício';
+
+                        const series =
+                            document.createElement('span');
+
+                        series.className =
+                            'history-details-exercise-series';
 
                         series.textContent =
                             `${seriesConcluidasExercicio} de ${seriesTotalExercicio} séries`;
