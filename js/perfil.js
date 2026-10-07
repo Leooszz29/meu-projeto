@@ -1028,7 +1028,10 @@ function loadWorkoutHistory() {
             statusResumo.className =
                 'history-workout-status';
 
-            if (Array.isArray(treino.exercicios)) {
+            if (
+                Array.isArray(treino.exercicios) &&
+                Number(treino.seriesTotal) > 0
+            ) {
                 const concluidas =
                     Number(treino.seriesConcluidas) || 0;
 
