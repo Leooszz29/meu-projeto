@@ -680,9 +680,14 @@ function loadTrainingSummary() {
 
     // ÚLTIMO TREINO
 
-    if (historico.length > 0) {
+    if (historicoComDataValida.length > 0) {
         const ultimoTreino =
-            historico[historico.length - 1];
+            [...historicoComDataValida]
+                .sort(
+                    (a, b) =>
+                        new Date(b.data) -
+                        new Date(a.data)
+                )[0];
 
         const dataUltimoTreino =
             new Date(ultimoTreino.data);
