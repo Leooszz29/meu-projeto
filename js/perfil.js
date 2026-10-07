@@ -760,7 +760,7 @@ function loadWorkoutHistory() {
         historicoComDataValida.length;
 
     const totalCompletos =
-        historico.filter(
+        historicoComDataValida.filter(
             treino =>
                 Array.isArray(treino.exercicios) &&
                 Number(treino.seriesTotal) > 0 &&
