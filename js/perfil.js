@@ -1320,7 +1320,7 @@ function loadWorkoutHistory() {
                     // PORCENTAGEM DE CONCLUSÃO
                     // ========================================
 
-                    const porcentagemConclusao =
+                    const porcentagemCalculada =
                         seriesTotal > 0
                             ? Math.round(
                                 (
@@ -1329,6 +1329,15 @@ function loadWorkoutHistory() {
                                 ) * 100
                             )
                             : 0;
+
+                    const porcentagemConclusao =
+                        Math.max(
+                            0,
+                            Math.min(
+                                porcentagemCalculada,
+                                100
+                            )
+                        );
 
                     detailsCompletion.textContent =
                         `${porcentagemConclusao}%`;
