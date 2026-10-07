@@ -746,8 +746,18 @@ function loadWorkoutHistory() {
     const historyPartial =
         document.getElementById('historyPartial');
 
+    const historicoComDataValida =
+        historico.filter((treino) => {
+            const dataTreino =
+                new Date(treino.data);
+
+            return !Number.isNaN(
+                dataTreino.getTime()
+            );
+        });
+
     const totalTreinos =
-        historico.length;
+        historicoComDataValida.length;
 
     const totalCompletos =
         historico.filter(
