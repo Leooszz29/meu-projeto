@@ -788,11 +788,25 @@ function loadWorkoutHistory() {
 
     const totalParciais =
         historicoComDataValida.filter(
-            treino =>
-                Array.isArray(treino.exercicios) &&
-                Number(treino.seriesTotal) > 0 &&
-                Number(treino.seriesConcluidas) <
-                    Number(treino.seriesTotal)
+            (treino) => {
+                const total =
+                    Number(
+                        treino.seriesTotal
+                    );
+
+                const concluidas =
+                    Number(
+                        treino.seriesConcluidas
+                    );
+
+                return (
+                    Array.isArray(treino.exercicios) &&
+                    Number.isFinite(total) &&
+                    Number.isFinite(concluidas) &&
+                    total > 0 &&
+                    concluidas < total
+                );
+            }
         ).length;
 
     // TAXA DE CONCLUSÃO
