@@ -1931,12 +1931,20 @@ function initializeHistoryDeleteModal() {
             let historico = [];
 
             try {
-                historico =
+                const dadosHistorico =
                     JSON.parse(
                         localStorage.getItem(
                             obterChaveHistoricoTreinos()
                         )
-                    ) || [];
+                    );
+
+                if (!Array.isArray(dadosHistorico)) {
+                    closeHistoryDeleteModal();
+                    return;
+                }
+
+                historico =
+                    dadosHistorico;
 
             } catch (error) {
                 closeHistoryDeleteModal();
