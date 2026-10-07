@@ -1303,13 +1303,6 @@ function loadWorkoutHistory() {
 
                     // Séries
 
-                    detailsSeries.textContent =
-                        `${treino.seriesConcluidas ?? 0} de ${treino.seriesTotal ?? 0}`;
-                    
-                    // ========================================
-                    // PORCENTAGEM DE CONCLUSÃO
-                    // ========================================
-
                     const seriesConcluidas =
                         Number(
                             treino.seriesConcluidas
@@ -1319,6 +1312,13 @@ function loadWorkoutHistory() {
                         Number(
                             treino.seriesTotal
                         ) || 0;
+
+                    detailsSeries.textContent =
+                        `${seriesConcluidas} de ${seriesTotal}`;
+
+                    // ========================================
+                    // PORCENTAGEM DE CONCLUSÃO
+                    // ========================================
 
                     const porcentagemConclusao =
                         seriesTotal > 0
