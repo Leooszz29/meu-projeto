@@ -1083,7 +1083,6 @@ function loadWorkoutHistory() {
                 Number(treino.seriesTotal) > 0 &&
                 Number(treino.seriesConcluidas) >= 0
             ) {
-                
                 const total =
                     Math.max(
                         0,
