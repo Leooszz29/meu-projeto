@@ -1607,8 +1607,19 @@ function loadWorkoutHistory() {
                                 ) || 0
                             );
 
+                        const seriesConcluidasExercicio =
+                            Math.max(
+                                0,
+                                Math.min(
+                                    Number(
+                                        exercicio.seriesConcluidas
+                                    ) || 0,
+                                    seriesTotalExercicio
+                                )
+                            );
+
                         series.textContent =
-                            `${exercicio.seriesConcluidas ?? 0} de ${seriesTotalExercicio} séries`;
+                            `${seriesConcluidasExercicio} de ${seriesTotalExercicio} séries`;
 
                         row.appendChild(status);
                         row.appendChild(name);
