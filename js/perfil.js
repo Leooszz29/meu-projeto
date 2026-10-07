@@ -781,6 +781,7 @@ function loadWorkoutHistory() {
                     Number.isFinite(total) &&
                     Number.isFinite(concluidas) &&
                     total > 0 &&
+                    concluidas >= 0 &&
                     concluidas >= total
                 );
             }
