@@ -1209,7 +1209,8 @@ function loadWorkoutHistory() {
             // o resumo detalhado dos exercícios
 
             if (
-                !Array.isArray(treino.exercicios)
+                !Array.isArray(treino.exercicios) ||
+                Number(treino.seriesTotal) <= 0
             ) {
                 detailsButton.disabled = true;
 
