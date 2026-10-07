@@ -826,7 +826,7 @@ function loadWorkoutHistory() {
 
     historyList.innerHTML = '';
 
-    if (historico.length === 0) {
+    if (historicoComDataValida.length === 0) {
 
         historyList.innerHTML = `
             <div class="history-empty">
