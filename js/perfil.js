@@ -567,16 +567,19 @@ function initializeIMC() {
 }
 
 function initializeProfileActions() {
-    const saveButton =
-        document.getElementById('btnSaveProfile');
+    const profileForm =
+        document.getElementById('profileForm');
 
     const endSessionButton =
         document.getElementById('btnEndSession');
 
-    if (saveButton) {
-        saveButton.addEventListener(
-            'click',
-            handleSaveProfile
+    if (profileForm) {
+        profileForm.addEventListener(
+            'submit',
+            (event) => {
+                event.preventDefault();
+                handleSaveProfile();
+            }
         );
     }
 
