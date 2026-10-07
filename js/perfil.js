@@ -733,12 +733,17 @@ function loadWorkoutHistory() {
     let historico = [];
 
     try {
-        historico =
+        const dadosHistorico =
             JSON.parse(
                 localStorage.getItem(
                     obterChaveHistoricoTreinos()
                 )
-            ) || [];
+            );
+
+        historico =
+            Array.isArray(dadosHistorico)
+                ? dadosHistorico
+                : [];
 
     } catch (error) {
         historico = [];
