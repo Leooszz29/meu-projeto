@@ -457,7 +457,7 @@ function exibirHistoricoDesempenho() {
                     ).toLocaleDateString('pt-BR');
                 }
 
-                                // RESUMO DAS SÉRIES DO TREINO
+                // RESUMO DAS SÉRIES DO TREINO
                 const resumoStatus = document.getElementById(
                     'historyDetailsStatus'
                 );
