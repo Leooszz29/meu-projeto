@@ -410,7 +410,27 @@ function exibirHistoricoDesempenho() {
                 year: 'numeric'
             });
 
-            item.append(nome, status, data);
+            // BOTÃO VER DETALHES
+            const botaoDetalhes = document.createElement('button');
+
+            botaoDetalhes.type = 'button';
+            botaoDetalhes.className = 'history-details-btn';
+            botaoDetalhes.textContent = 'Ver detalhes';
+
+            botaoDetalhes.setAttribute(
+                'aria-label',
+                `Ver detalhes do treino ${treino.nome || 'Treino'}`
+            );
+
+            // Registros antigos não possuem detalhes
+            botaoDetalhes.disabled = !possuiDetalhes;
+
+            if (!possuiDetalhes) {
+                botaoDetalhes.title =
+                    'Detalhes não disponíveis para este registro';
+            }
+
+            item.append(nome, status, data, botaoDetalhes);
             conteudo.appendChild(item);
         });
 
