@@ -501,6 +501,29 @@ function exibirHistoricoDesempenho() {
                         : `● Treino parcial: ${seriesConcluidas} de ${seriesTotal} séries (${porcentagem}%).`;
                 }
 
+                // ATUALIZAR CARTÃO DE SÉRIES CONCLUÍDAS
+                const contadorSeries = document.getElementById(
+                    'historyDetailsSeries'
+                );
+
+                if (contadorSeries) {
+                    const totalSeries = Math.max(
+                        0,
+                        Number(treino.seriesTotal) || 0
+                    );
+
+                    const seriesRealizadas = Math.max(
+                        0,
+                        Math.min(
+                            Number(treino.seriesConcluidas) || 0,
+                            totalSeries
+                        )
+                    );
+
+                    contadorSeries.textContent =
+                        `${seriesRealizadas} de ${totalSeries}`;
+                }
+
                 // ATUALIZAR CARTÃO DE EXERCÍCIOS
                 const contadorExercicios = document.getElementById(
                     'historyDetailsExerciseCount'
