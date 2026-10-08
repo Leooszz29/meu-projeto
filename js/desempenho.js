@@ -138,6 +138,86 @@ function carregarResumoDesempenho() {
 
 carregarResumoDesempenho();
 
+// ========================================
+// CARREGAR INDICADORES DO HISTÓRICO
+// ========================================
+
+function carregarIndicadoresHistorico() {
+    const chave = obterChaveHistoricoDesempenho();
+
+    if (!chave) {
+        return;
+    }
+
+    let historico = [];
+
+    try {
+        const dados = JSON.parse(localStorage.getItem(chave));
+        historico = Array.isArray(dados) ? dados : [];
+    } catch (error) {
+        console.warn('Erro ao carregar indicadores:', error);
+    }
+
+    const treinosValidos = historico.filter((treino) => {
+        return treino &&
+            treino.data &&
+            !Number.isNaN(new Date(treino.data).getTime());
+    });
+
+    const completos = treinosValidos.filter((treino) => {
+        const total = Number(treino.seriesTotal);
+        const concluidas = Number(treino.seriesConcluidas);
+
+        return Array.isArray(treino.exercicios) &&
+            Number.isFinite(total) &&
+            Number.isFinite(concluidas) &&
+            total > 0 &&
+            concluidas >= 0 &&
+            concluidas >= total;
+    }).length;
+
+    const parciais = treinosValidos.filter((treino) => {
+        const total = Number(treino.seriesTotal);
+        const concluidas = Number(treino.seriesConcluidas);
+
+        return Array.isArray(treino.exercicios) &&
+            Number.isFinite(total) &&
+            Number.isFinite(concluidas) &&
+            total > 0 &&
+            concluidas >= 0 &&
+            concluidas < total;
+    }).length;
+
+    const detalhados = completos + parciais;
+
+    const taxa = detalhados > 0
+        ? Math.round((completos / detalhados) * 100)
+        : 0;
+
+    const indicadores = {
+        historyTotal: treinosValidos.length,
+        historyComplete: completos,
+        historyPartial: parciais,
+        historyCompletionRate: `${taxa}%`
+    };
+
+    Object.entries(indicadores).forEach(([id, valor]) => {
+        const elemento = document.getElementById(id);
+
+        if (elemento) {
+            elemento.textContent = valor;
+        }
+    });
+
+    const barra = document.getElementById('historyCompletionBar');
+
+    if (barra) {
+        barra.style.width = `${taxa}%`;
+    }
+}
+
+carregarIndicadoresHistorico();
+
 const btnEndSession =
     document.getElementById('btnEndSession');
 
