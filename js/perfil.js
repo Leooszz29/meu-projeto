@@ -294,8 +294,11 @@ function handleSaveProfile() {
         idade > 120
     ) {
         alert(
-            'Informe uma idade válida entre 10 e 120 anos.'
-        );
+            'Não foi possível salvar o perfil.\n\n' +
+            'O campo Idade deve conter um valor ' +
+            'entre 10 e 120 anos.\n' +
+            'Corrija a idade e tente novamente.'
+        );;
 
         document
             .getElementById('idade')
