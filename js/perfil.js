@@ -1779,6 +1779,8 @@ function loadWorkoutHistory() {
                         return;
                     }
 
+                    ultimoBotaoDetalhes = detailsButton;
+
                     detailsModalOverlay.classList.add(
                         'show'
                     );
