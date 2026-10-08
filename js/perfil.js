@@ -2065,3 +2065,28 @@ document.addEventListener(
         }
     }
 );
+
+// ========================================
+// FECHAR DETALHES DO HISTÓRICO COM ESC
+// ========================================
+
+document.addEventListener(
+    'keydown',
+    (event) => {
+        if (event.key !== 'Escape') {
+            return;
+        }
+
+        const modalOverlay =
+            document.getElementById(
+                'historyDetailsModalOverlay'
+            );
+
+        if (
+            modalOverlay &&
+            modalOverlay.classList.contains('show')
+        ) {
+            modalOverlay.classList.remove('show');
+        }
+    }
+);
