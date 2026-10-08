@@ -316,7 +316,10 @@ function handleSaveProfile() {
         peso > 400
     ) {
         alert(
-            'Informe um peso válido entre 20 e 400 kg.'
+            'Não foi possível salvar o perfil.\n\n' +
+            'O campo Peso deve conter um valor ' +
+            'entre 20 e 400 kg.\n' +
+            'Corrija o peso e tente novamente.'
         );
 
         document
