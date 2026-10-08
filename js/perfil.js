@@ -2031,6 +2031,35 @@ if (document.readyState === 'loading') {
 }
 
 // ========================================
+// RETORNAR FOCO AO BOTÃO VER DETALHES
+// ========================================
+
+let ultimoBotaoDetalhes = null;
+
+function fecharDetalhesHistorico() {
+    const modalOverlay =
+        document.getElementById(
+            'historyDetailsModalOverlay'
+        );
+
+    if (
+        !modalOverlay ||
+        !modalOverlay.classList.contains('show')
+    ) {
+        return;
+    }
+
+    modalOverlay.classList.remove('show');
+
+    if (
+        ultimoBotaoDetalhes &&
+        ultimoBotaoDetalhes.isConnected
+    ) {
+        ultimoBotaoDetalhes.focus();
+    }
+}
+
+// ========================================
 // MODAL — DETALHES DO HISTÓRICO
 // ========================================
 
