@@ -112,10 +112,38 @@
 };
 
 // Busca as contas já cadastradas
-const usuarios =
-    JSON.parse(
-        localStorage.getItem('usuarios')
-    ) || [];
+let usuarios = [];
+
+try {
+    const dadosSalvos =
+        localStorage.getItem('usuarios');
+
+    const dadosConvertidos =
+        dadosSalvos
+            ? JSON.parse(dadosSalvos)
+            : [];
+
+    if (!Array.isArray(dadosConvertidos)) {
+        throw new Error(
+            'Formato inválido dos usuários'
+        );
+    }
+
+    usuarios = dadosConvertidos;
+
+} catch (error) {
+    console.error(
+        'Erro ao carregar usuários:',
+        error
+    );
+
+    showError(
+        'Não foi possível carregar os cadastros. ' +
+        'Os dados existentes foram preservados.'
+    );
+
+    return;
+}
 
 const emailJaCadastrado =
     usuarios.some(
