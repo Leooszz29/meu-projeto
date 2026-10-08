@@ -1782,6 +1782,15 @@ function loadWorkoutHistory() {
                     detailsModalOverlay.classList.add(
                         'show'
                     );
+
+                    const closeDetailsButton =
+                        document.getElementById(
+                            'historyDetailsCloseBtn'
+                        );
+
+                    if (closeDetailsButton) {
+                        closeDetailsButton.focus();
+                    }
                 }
             );
 
