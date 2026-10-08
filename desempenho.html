@@ -155,6 +155,51 @@
 
 </div>
 
+<!-- JANELA DE DETALHES DO TREINO -->
+<div
+    class="modal-overlay"
+    id="historyDetailsModalOverlay"
+    hidden
+>
+    <div
+        class="modal history-details-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="historyDetailsName"
+    >
+
+        <button
+            type="button"
+            class="history-details-close"
+            id="historyDetailsCloseBtn"
+            aria-label="Fechar detalhes"
+        >
+            ×
+        </button>
+
+        <div class="history-details-header">
+            <div class="history-details-heading">
+                <h2 id="historyDetailsName">
+                    Detalhes do treino
+                </h2>
+
+                <p
+                    class="history-details-date"
+                    id="historyDetailsDate"
+                ></p>
+            </div>
+        </div>
+
+        <div
+            class="history-details-status"
+            id="historyDetailsStatus"
+        ></div>
+
+        <div id="historyDetailsExercises"></div>
+
+    </div>
+</div>
+
 <script src="js/desempenho.js"></script>
 
 </body>
