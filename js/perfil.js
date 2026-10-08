@@ -273,7 +273,9 @@ function handleSaveProfile() {
 
     if (!nome) {
         alert(
-            'Informe seu nome antes de salvar o perfil.'
+            'Não foi possível salvar o perfil.\n\n' +
+            'O campo Nome é obrigatório.\n' +
+            'Preencha seu nome e tente novamente.'
         );
 
         document
