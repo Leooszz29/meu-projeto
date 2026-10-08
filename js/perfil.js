@@ -298,7 +298,7 @@ function handleSaveProfile() {
             'O campo Idade deve conter um valor ' +
             'entre 10 e 120 anos.\n' +
             'Corrija a idade e tente novamente.'
-        );;
+        );
 
         document
             .getElementById('idade')
