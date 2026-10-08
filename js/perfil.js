@@ -2122,7 +2122,7 @@ document.addEventListener(
             modalOverlay &&
             modalOverlay.classList.contains('show')
         ) {
-            modalOverlay.classList.remove('show');
+            fecharDetalhesHistorico();
         }
     }
 );
