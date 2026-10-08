@@ -428,9 +428,17 @@ localStorage.setItem(
 recoveryCodeGenerated =
     gerarCodigoRecuperacao();
 
-    console.log(
+        console.log(
         'Código de recuperação (TESTE):',
         recoveryCodeGenerated
+    );
+
+    alert(
+        'MODO DE ESTUDOS: este código não foi ' +
+        'enviado por e-mail. Abra o console do ' +
+        'navegador (F12) para consultar o código ' +
+        'de recuperação. Esta função não é ' +
+        'segura para contas reais.'
     );
 
     passwordRecoveryOverlay.classList.remove('show');
