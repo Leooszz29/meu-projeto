@@ -2099,3 +2099,77 @@ document.addEventListener(
         }
     }
 );
+
+// ========================================
+// CONTROLAR TAB NO MODAL DE DETALHES
+// ========================================
+
+document.addEventListener(
+    'keydown',
+    (event) => {
+        if (event.key !== 'Tab') {
+            return;
+        }
+
+        const modalOverlay =
+            document.getElementById(
+                'historyDetailsModalOverlay'
+            );
+
+        if (
+            !modalOverlay ||
+            !modalOverlay.classList.contains('show')
+        ) {
+            return;
+        }
+
+        const focusableElements =
+            Array.from(
+                modalOverlay.querySelectorAll(
+                    'button:not([disabled]), ' +
+                    'a[href], ' +
+                    'input:not([disabled]), ' +
+                    'select:not([disabled]), ' +
+                    'textarea:not([disabled]), ' +
+                    '[tabindex]:not([tabindex="-1"])'
+                )
+            ).filter(
+                element =>
+                    element.getClientRects().length > 0
+            );
+
+        if (focusableElements.length === 0) {
+            event.preventDefault();
+            return;
+        }
+
+        const firstElement =
+            focusableElements[0];
+
+        const lastElement =
+            focusableElements[
+                focusableElements.length - 1
+            ];
+
+        if (
+            event.shiftKey &&
+            (
+                document.activeElement === firstElement ||
+                !modalOverlay.contains(document.activeElement)
+            )
+        ) {
+            event.preventDefault();
+            lastElement.focus();
+
+        } else if (
+            !event.shiftKey &&
+            (
+                document.activeElement === lastElement ||
+                !modalOverlay.contains(document.activeElement)
+            )
+        ) {
+            event.preventDefault();
+            firstElement.focus();
+        }
+    }
+);
