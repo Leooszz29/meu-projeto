@@ -457,6 +457,50 @@ function exibirHistoricoDesempenho() {
                     ).toLocaleDateString('pt-BR');
                 }
 
+                                // RESUMO DAS SÉRIES DO TREINO
+                const resumoStatus = document.getElementById(
+                    'historyDetailsStatus'
+                );
+
+                if (resumoStatus) {
+                    const seriesTotal = Math.max(
+                        0,
+                        Number(treino.seriesTotal) || 0
+                    );
+
+                    const seriesConcluidas = Math.max(
+                        0,
+                        Math.min(
+                            Number(treino.seriesConcluidas) || 0,
+                            seriesTotal
+                        )
+                    );
+
+                    const porcentagem = seriesTotal > 0
+                        ? Math.round(
+                            (seriesConcluidas / seriesTotal) * 100
+                        )
+                        : 0;
+
+                    const completo =
+                        seriesTotal > 0 &&
+                        seriesConcluidas >= seriesTotal;
+
+                    resumoStatus.classList.toggle(
+                        'complete',
+                        completo
+                    );
+
+                    resumoStatus.classList.toggle(
+                        'incomplete',
+                        !completo
+                    );
+
+                    resumoStatus.textContent = completo
+                        ? `✓ Treino completo! ${seriesConcluidas} de ${seriesTotal} séries (${porcentagem}%).`
+                        : `● Treino parcial: ${seriesConcluidas} de ${seriesTotal} séries (${porcentagem}%).`;
+                }
+
                 janela.hidden = false;
                 janela.classList.add('show');
 
