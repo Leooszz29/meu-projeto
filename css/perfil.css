@@ -3260,3 +3260,35 @@ textarea::placeholder{
         font-size: 9px;
     }
 }
+
+/* ========================================
+   DESEMPENHO - DETALHES DOS EXERCÍCIOS
+======================================== */
+
+#historyDetailsExercises {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.history-exercise-item {
+    background: rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: left;
+}
+
+.history-exercise-item strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: var(--chalk);
+}
+
+.history-exercise-item p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--chalk-dim);
+}
