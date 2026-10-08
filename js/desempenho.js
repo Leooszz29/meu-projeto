@@ -501,6 +501,59 @@ function exibirHistoricoDesempenho() {
                         : `● Treino parcial: ${seriesConcluidas} de ${seriesTotal} séries (${porcentagem}%).`;
                 }
 
+                // LISTA DE EXERCÍCIOS DO TREINO
+                const listaExercicios = document.getElementById(
+                    'historyDetailsExercises'
+                );
+
+                if (listaExercicios) {
+                    listaExercicios.replaceChildren();
+
+                    const exercicios = Array.isArray(treino.exercicios)
+                        ? treino.exercicios
+                        : [];
+
+                    if (exercicios.length === 0) {
+                        const mensagem = document.createElement('p');
+                        mensagem.textContent =
+                            'Nenhum detalhe de exercício disponível.';
+                        listaExercicios.appendChild(mensagem);
+                    }
+
+                    exercicios.forEach((exercicio, indice) => {
+                        const itemExercicio = document.createElement('div');
+                        itemExercicio.className = 'history-exercise-item';
+
+                        const nomeExercicio = document.createElement('strong');
+                        nomeExercicio.textContent =
+                            `${indice + 1}. ${exercicio.nome || 'Exercício'}`;
+
+                        const total = Math.max(
+                            0,
+                            Number(exercicio.seriesTotal) || 0
+                        );
+
+                        const concluidas = Math.max(
+                            0,
+                            Math.min(
+                                Number(exercicio.seriesConcluidas) || 0,
+                                total
+                            )
+                        );
+
+                        const informacao = document.createElement('p');
+                        informacao.textContent =
+                            `${concluidas} de ${total} séries concluídas`;
+
+                        itemExercicio.append(
+                            nomeExercicio,
+                            informacao
+                        );
+
+                        listaExercicios.appendChild(itemExercicio);
+                    });
+                }
+
                 janela.hidden = false;
                 janela.classList.add('show');
 
