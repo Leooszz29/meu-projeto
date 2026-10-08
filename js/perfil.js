@@ -2086,7 +2086,7 @@ document.addEventListener(
             event.target.closest(
                 '#historyDetailsFooterBtn'
             )
-                ) {
+        ) {
             fecharDetalhesHistorico();
 
             return;
