@@ -501,6 +501,31 @@ function exibirHistoricoDesempenho() {
                         : `● Treino parcial: ${seriesConcluidas} de ${seriesTotal} séries (${porcentagem}%).`;
                 }
 
+                // ATUALIZAR CARTÃO DE EXERCÍCIOS
+                const contadorExercicios = document.getElementById(
+                    'historyDetailsExerciseCount'
+                );
+
+                if (contadorExercicios) {
+                    const exerciciosRegistrados =
+                        Array.isArray(treino.exercicios)
+                            ? treino.exercicios
+                            : [];
+
+                    const totalInformado = Number(
+                        treino.totalExercicios
+                    );
+
+                    const totalExercicios =
+                        treino.totalExercicios != null &&
+                        Number.isFinite(totalInformado) &&
+                        totalInformado >= 0
+                            ? totalInformado
+                            : exerciciosRegistrados.length;
+
+                    contadorExercicios.textContent = totalExercicios;
+                }
+
                 // LISTA DE EXERCÍCIOS DO TREINO
                 const listaExercicios = document.getElementById(
                     'historyDetailsExercises'
