@@ -2097,9 +2097,7 @@ document.addEventListener(
         if (
             event.target === modalOverlay
         ) {
-            modalOverlay.classList.remove(
-                'show'
-            );
+            fecharDetalhesHistorico();
         }
     }
 );
