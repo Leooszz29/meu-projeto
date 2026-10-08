@@ -430,6 +430,41 @@ function exibirHistoricoDesempenho() {
                     'Detalhes não disponíveis para este registro';
             }
 
+            botaoDetalhes.addEventListener('click', () => {
+                const janela = document.getElementById(
+                    'historyDetailsModalOverlay'
+                );
+
+                if (!janela || !possuiDetalhes) {
+                    return;
+                }
+
+                const titulo = document.getElementById(
+                    'historyDetailsName'
+                );
+
+                const dataDetalhes = document.getElementById(
+                    'historyDetailsDate'
+                );
+
+                if (titulo) {
+                    titulo.textContent = treino.nome || 'Treino';
+                }
+
+                if (dataDetalhes) {
+                    dataDetalhes.textContent = new Date(
+                        treino.data
+                    ).toLocaleDateString('pt-BR');
+                }
+
+                janela.hidden = false;
+                janela.classList.add('show');
+
+                document.getElementById(
+                    'historyDetailsCloseBtn'
+                )?.focus();
+            });
+
             item.append(nome, status, data, botaoDetalhes);
             conteudo.appendChild(item);
         });
