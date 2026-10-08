@@ -165,24 +165,24 @@ function carregarUsuarioSalvo(email) {
         const usuariosJSON =
             localStorage.getItem('usuarios');
 
-const usuarios =
-    usuariosJSON
-        ? JSON.parse(usuariosJSON)
-        : [];
+        const usuarios =
+            usuariosJSON
+                ? JSON.parse(usuariosJSON)
+                : [];
 
-if (!Array.isArray(usuarios)) {
-    throw new Error(
-        'Formato inválido da lista de usuários'
-    );
-}
+        if (!Array.isArray(usuarios)) {
+            throw new Error(
+                'Formato inválido da lista de usuários'
+            );
+        }
 
-return usuarios.find(
-    usuario =>
-        usuario &&
-        typeof usuario.email === 'string' &&
-        usuario.email.toLowerCase() ===
-        email.toLowerCase()
-) || null;
+        return usuarios.find(
+            usuario =>
+                usuario &&
+                typeof usuario.email === 'string' &&
+                usuario.email.toLowerCase() ===
+                email.toLowerCase()
+        ) || null;
 
     } catch (error) {
         return null;
