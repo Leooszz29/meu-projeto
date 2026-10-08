@@ -1736,7 +1736,7 @@ function loadWorkoutHistory() {
                                 : 'BI-SET';
 
                         groupTitle.textContent =
-                            `${nomeTipo} ${grupo}`;
+                            nomeTipo;
 
                         groupBox.appendChild(groupTitle);
 
