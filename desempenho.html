@@ -96,6 +96,61 @@
 
         </div>
 
+        </section>
+
+    <!-- HISTÓRICO DE TREINOS -->
+    <section class="workout-history">
+
+        <div class="history-header">
+            <span class="history-eyebrow">ATIVIDADE</span>
+            <h2>Histórico de Treinos</h2>
+            <p>Seus treinos concluídos recentemente.</p>
+        </div>
+
+        <!-- RESUMO DO HISTÓRICO -->
+        <div class="history-overview" id="historyOverview">
+
+            <div class="history-overview-item">
+                <span class="history-overview-value" id="historyTotal">0</span>
+                <span class="history-overview-label">Treinos</span>
+            </div>
+
+            <div class="history-overview-item complete">
+                <span class="history-overview-value" id="historyComplete">0</span>
+                <span class="history-overview-label">Completos</span>
+            </div>
+
+            <div class="history-overview-item partial">
+                <span class="history-overview-value" id="historyPartial">0</span>
+                <span class="history-overview-label">Parciais</span>
+            </div>
+
+        </div>
+
+        <!-- TAXA DE CONCLUSÃO -->
+        <div class="history-completion">
+
+            <div class="history-completion-info">
+                <span>Taxa de conclusão</span>
+                <strong id="historyCompletionRate">0%</strong>
+            </div>
+
+            <div class="history-completion-track">
+                <div
+                    class="history-completion-bar"
+                    id="historyCompletionBar"
+                ></div>
+            </div>
+
+        </div>
+
+        <!-- LISTA DE TREINOS -->
+        <div class="history-list" id="workoutHistoryList">
+            <div class="history-empty">
+                Nenhum treino concluído ainda.
+            </div>
+        </div>
+
     </section>
 
 </div>
