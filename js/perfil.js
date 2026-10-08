@@ -2086,10 +2086,8 @@ document.addEventListener(
             event.target.closest(
                 '#historyDetailsFooterBtn'
             )
-        ) {
-            modalOverlay.classList.remove(
-                'show'
-            );
+                ) {
+            fecharDetalhesHistorico();
 
             return;
         }
