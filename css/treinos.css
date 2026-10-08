@@ -4846,9 +4846,9 @@ right: 0;
     }
 
     .app-nav-link {
-        min-height: 36px;
+        min-height: 40px;
         padding: 0 8px;
-        font-size: 9px;
+        font-size: 11px;
         letter-spacing: 0.4px;
     }
 
