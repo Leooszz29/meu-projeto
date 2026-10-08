@@ -338,7 +338,10 @@ function handleSaveProfile() {
         altura > 250
     ) {
         alert(
-            'Informe uma altura válida entre 100 e 250 cm.'
+            'Não foi possível salvar o perfil.\n\n' +
+            'O campo Altura deve conter um valor ' +
+            'entre 100 e 250 cm.\n' +
+            'Corrija a altura e tente novamente.'
         );
 
         document
