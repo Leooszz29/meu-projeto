@@ -359,6 +359,61 @@ function exibirHistoricoDesempenho() {
             );
         });
 
+        // ========================================
+        // EXIBIR TREINOS DO MÊS
+        // ========================================
+
+        grupo.treinos.forEach((treino) => {
+            const item = document.createElement('div');
+            item.className = 'history-item';
+
+            const nome = document.createElement('span');
+            nome.className = 'history-workout-name';
+            nome.textContent = treino.nome || 'Treino';
+
+            const status = document.createElement('div');
+            status.className = 'history-workout-status';
+
+            const total = Number(treino.seriesTotal);
+            const concluidas = Number(treino.seriesConcluidas);
+
+            const possuiDetalhes =
+                Array.isArray(treino.exercicios) &&
+                Number.isFinite(total) &&
+                Number.isFinite(concluidas) &&
+                total > 0 &&
+                concluidas >= 0;
+
+            if (possuiDetalhes) {
+                const completo = concluidas >= total;
+
+                status.classList.add(
+                    completo ? 'complete' : 'incomplete'
+                );
+
+                status.textContent = completo
+                    ? `✓ Completo · ${concluidas} de ${total} séries`
+                    : `● Parcial · ${concluidas} de ${total} séries`;
+            } else {
+                status.classList.add('legacy');
+                status.textContent = 'Registro anterior';
+            }
+
+            const data = document.createElement('span');
+            data.className = 'history-date';
+
+            data.textContent = new Date(
+                treino.data
+            ).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+
+            item.append(nome, status, data);
+            conteudo.appendChild(item);
+        });
+
         container.append(cabecalho, conteudo);
         lista.appendChild(container);
     });
