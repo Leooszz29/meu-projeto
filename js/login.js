@@ -428,7 +428,7 @@ localStorage.setItem(
 recoveryCodeGenerated =
     gerarCodigoRecuperacao();
 
-        console.log(
+    console.log(
         'Código de recuperação (TESTE):',
         recoveryCodeGenerated
     );
