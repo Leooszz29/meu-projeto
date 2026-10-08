@@ -218,6 +218,68 @@ function carregarIndicadoresHistorico() {
 
 carregarIndicadoresHistorico();
 
+// ========================================
+// ORGANIZAR HISTÓRICO POR MÊS
+// ========================================
+
+function obterHistoricoAgrupado() {
+    const chave = obterChaveHistoricoDesempenho();
+
+    if (!chave) {
+        return [];
+    }
+
+    let historico = [];
+
+    try {
+        const dados = JSON.parse(localStorage.getItem(chave));
+        historico = Array.isArray(dados) ? dados : [];
+    } catch (error) {
+        console.warn('Erro ao organizar histórico:', error);
+        return [];
+    }
+
+    const grupos = {};
+
+    historico.forEach((treino, indice) => {
+        if (!treino || !treino.data) {
+            return;
+        }
+
+        const data = new Date(treino.data);
+
+        if (Number.isNaN(data.getTime())) {
+            return;
+        }
+
+        const chaveMes = `${data.getFullYear()}-${data.getMonth()}`;
+
+        if (!grupos[chaveMes]) {
+            grupos[chaveMes] = {
+                ano: data.getFullYear(),
+                mes: data.getMonth(),
+                treinos: []
+            };
+        }
+
+        grupos[chaveMes].treinos.push({
+            ...treino,
+            originalIndex: indice
+        });
+    });
+
+    return Object.values(grupos)
+        .sort((a, b) =>
+            b.ano - a.ano || b.mes - a.mes
+        )
+        .map((grupo) => ({
+            ...grupo,
+            treinos: grupo.treinos.sort(
+                (a, b) => new Date(b.data) - new Date(a.data)
+            )
+        }));
+}
+
 const btnEndSession =
     document.getElementById('btnEndSession');
 
