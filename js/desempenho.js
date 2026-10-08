@@ -476,6 +476,34 @@ function exibirHistoricoDesempenho() {
 
 exibirHistoricoDesempenho();
 
+// ========================================
+// FECHAR JANELA DE DETALHES
+// ========================================
+
+const janelaDetalhes = document.getElementById(
+    'historyDetailsModalOverlay'
+);
+
+const botaoFecharDetalhes = document.getElementById(
+    'historyDetailsCloseBtn'
+);
+
+function fecharJanelaDetalhes() {
+    if (!janelaDetalhes) {
+        return;
+    }
+
+    janelaDetalhes.classList.remove('show');
+    janelaDetalhes.hidden = true;
+}
+
+if (botaoFecharDetalhes) {
+    botaoFecharDetalhes.addEventListener(
+        'click',
+        fecharJanelaDetalhes
+    );
+}
+
 const btnEndSession =
     document.getElementById('btnEndSession');
 
