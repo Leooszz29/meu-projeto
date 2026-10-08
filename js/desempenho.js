@@ -501,6 +501,69 @@ function exibirHistoricoDesempenho() {
                         : `● Treino parcial: ${seriesConcluidas} de ${seriesTotal} séries (${porcentagem}%).`;
                 }
 
+                // ========================================
+                // ATUALIZAR CARTÃO DE CONCLUSÃO
+                // ========================================
+
+                const contadorConclusao = document.getElementById(
+                    'historyDetailsCompletion'
+                );
+
+                const cartaoConclusao = document.getElementById(
+                    'historyDetailsCompletionCard'
+                );
+
+                const iconeProgresso = document.getElementById(
+                    'historyDetailsProgressIcon'
+                );
+
+                const totalSeriesConclusao = Math.max(
+                    0,
+                    Number(treino.seriesTotal) || 0
+                );
+
+                const realizadasConclusao = Math.max(
+                    0,
+                    Math.min(
+                        Number(treino.seriesConcluidas) || 0,
+                        totalSeriesConclusao
+                    )
+                );
+
+                const porcentagemConclusao = totalSeriesConclusao > 0
+                    ? Math.round(
+                        (realizadasConclusao / totalSeriesConclusao) * 100
+                    )
+                    : 0;
+
+                const conclusaoCompleta =
+                    totalSeriesConclusao > 0 &&
+                    realizadasConclusao >= totalSeriesConclusao;
+
+                if (contadorConclusao) {
+                    contadorConclusao.textContent =
+                        `${porcentagemConclusao}%`;
+                }
+
+                if (cartaoConclusao) {
+                    cartaoConclusao.classList.toggle(
+                        'complete',
+                        conclusaoCompleta
+                    );
+
+                    cartaoConclusao.classList.toggle(
+                        'incomplete',
+                        !conclusaoCompleta
+                    );
+                }
+
+                if (iconeProgresso) {
+                    iconeProgresso.style.setProperty(
+                        '--progress',
+                        `${porcentagemConclusao * 3.6}deg`
+                    );
+                }
+
                 // ATUALIZAR CARTÃO DE SÉRIES CONCLUÍDAS
                 const contadorSeries = document.getElementById(
                     'historyDetailsSeries'
