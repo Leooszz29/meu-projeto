@@ -280,6 +280,92 @@ function obterHistoricoAgrupado() {
         }));
 }
 
+// ========================================
+// EXIBIR HISTÓRICO POR MÊS
+// ========================================
+
+function exibirHistoricoDesempenho() {
+    const lista = document.getElementById('workoutHistoryList');
+
+    if (!lista) {
+        return;
+    }
+
+    const grupos = obterHistoricoAgrupado();
+
+    lista.replaceChildren();
+
+    if (grupos.length === 0) {
+        const mensagem = document.createElement('div');
+        mensagem.className = 'history-empty';
+        mensagem.textContent = 'Nenhum treino concluído ainda.';
+
+        lista.appendChild(mensagem);
+        return;
+    }
+
+    grupos.forEach((grupo, indice) => {
+        const container = document.createElement('div');
+        container.className = 'history-month';
+
+        const cabecalho = document.createElement('button');
+        cabecalho.type = 'button';
+        cabecalho.className = 'history-month-header';
+
+        const nomeMes = new Date(
+            grupo.ano,
+            grupo.mes,
+            1
+        ).toLocaleDateString('pt-BR', {
+            month: 'long',
+            year: 'numeric'
+        }).toUpperCase();
+
+        const titulo = document.createElement('span');
+        titulo.className = 'history-month-title';
+
+        const seta = document.createElement('span');
+        seta.className = 'history-month-arrow';
+        seta.textContent = indice === 0 ? '▼' : '▶';
+
+        titulo.append(seta, ` ${nomeMes}`);
+
+        const quantidade = document.createElement('span');
+        quantidade.className = 'history-month-summary';
+        quantidade.textContent =
+            `${grupo.treinos.length} ${
+                grupo.treinos.length === 1 ? 'treino' : 'treinos'
+            }`;
+
+        cabecalho.append(titulo, quantidade);
+
+        const conteudo = document.createElement('div');
+        conteudo.className = 'history-month-content';
+        conteudo.hidden = indice !== 0;
+
+        cabecalho.setAttribute(
+            'aria-expanded',
+            String(!conteudo.hidden)
+        );
+
+        cabecalho.addEventListener('click', () => {
+            conteudo.hidden = !conteudo.hidden;
+
+            seta.textContent = conteudo.hidden ? '▶' : '▼';
+
+            cabecalho.setAttribute(
+                'aria-expanded',
+                String(!conteudo.hidden)
+            );
+        });
+
+        container.append(cabecalho, conteudo);
+        lista.appendChild(container);
+    });
+}
+
+exibirHistoricoDesempenho();
+
 const btnEndSession =
     document.getElementById('btnEndSession');
 
