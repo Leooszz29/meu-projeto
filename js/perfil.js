@@ -1868,7 +1868,6 @@ function initializeHistoryDeleteModal() {
 
             closeHistoryDeleteModal();
 
-            loadTrainingSummary();
             loadWorkoutHistory();
         }
     );
