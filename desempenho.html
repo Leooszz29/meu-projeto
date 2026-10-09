@@ -99,6 +99,80 @@
 
         </section>
 
+    <!-- META MENSAL DE TREINOS -->
+    <section
+        class="monthly-goal"
+        aria-labelledby="monthlyGoalTitle"
+    >
+
+        <div class="summary-header">
+            <span class="summary-eyebrow">OBJETIVOS</span>
+            <h2 id="monthlyGoalTitle">Minha Meta Mensal</h2>
+            <p>
+                Defina sua meta e acompanhe seu progresso.
+            </p>
+        </div>
+
+        <div class="monthly-goal-settings">
+            <label for="monthlyGoalInput">
+                Quantos treinos deseja realizar por mês?
+            </label>
+
+            <div class="monthly-goal-controls">
+                <input
+                    type="number"
+                    id="monthlyGoalInput"
+                    min="1"
+                    max="100"
+                    value="12"
+                >
+
+                <button
+                    type="button"
+                    id="saveMonthlyGoal"
+                    class="monthly-goal-save"
+                >
+                    Salvar meta
+                </button>
+            </div>
+        </div>
+
+        <div class="monthly-goal-progress">
+            <div class="monthly-goal-info">
+                <strong id="monthlyGoalCount">
+                    0 / 12 treinos
+                </strong>
+
+                <span id="monthlyGoalPercent">
+                    0%
+                </span>
+            </div>
+
+            <div
+                class="monthly-goal-track"
+                role="progressbar"
+                aria-label="Progresso da meta mensal"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                id="monthlyGoalProgress"
+            >
+                <div
+                    class="monthly-goal-bar"
+                    id="monthlyGoalBar"
+                ></div>
+            </div>
+
+            <p
+                class="monthly-goal-message"
+                id="monthlyGoalMessage"
+            >
+                Defina sua meta para começar!
+            </p>
+        </div>
+
+    </section>
+
     <!-- COMPARAÇÃO MENSAL DE TREINOS -->
     <section
         class="monthly-comparison"
