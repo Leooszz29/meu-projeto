@@ -114,6 +114,87 @@ function obterChaveHistoricoDesempenho() {
 }
 
 // ========================================
+// META MENSAL — SALVAR E CARREGAR
+// ========================================
+
+function obterChaveMetaMensal() {
+    try {
+        const sessaoJSON = localStorage.getItem('fitzoneSessao');
+
+        const sessao = sessaoJSON
+            ? JSON.parse(sessaoJSON)
+            : null;
+
+        if (
+            !sessao ||
+            typeof sessao.email !== 'string' ||
+            !sessao.email.trim()
+        ) {
+            return null;
+        }
+
+        return `metaMensalFitZone:${sessao.email.toLowerCase()}`;
+
+    } catch (error) {
+        console.warn('Erro ao identificar usuário da meta:', error);
+        return null;
+    }
+}
+
+function carregarMetaMensal() {
+    const campo = document.getElementById('monthlyGoalInput');
+    const chave = obterChaveMetaMensal();
+
+    if (!campo || !chave) {
+        return;
+    }
+
+    const metaSalva = Number(localStorage.getItem(chave));
+
+    campo.value = Number.isInteger(metaSalva) &&
+        metaSalva >= 1 &&
+        metaSalva <= 100
+        ? metaSalva
+        : 12;
+}
+
+const botaoSalvarMeta = document.getElementById('saveMonthlyGoal');
+
+if (botaoSalvarMeta) {
+    botaoSalvarMeta.addEventListener('click', () => {
+        const campo = document.getElementById('monthlyGoalInput');
+        const chave = obterChaveMetaMensal();
+
+        if (!campo || !chave) {
+            return;
+        }
+
+        const meta = Number(campo.value);
+
+        if (
+            !Number.isInteger(meta) ||
+            meta < 1 ||
+            meta > 100
+        ) {
+            alert('Informe uma meta entre 1 e 100 treinos.');
+            return;
+        }
+
+        try {
+            localStorage.setItem(chave, String(meta));
+
+            alert('Meta mensal salva com sucesso!');
+
+        } catch (error) {
+            console.error('Erro ao salvar meta mensal:', error);
+            alert('Não foi possível salvar sua meta.');
+        }
+    });
+}
+
+carregarMetaMensal();
+
+// ========================================
 // COMPARAÇÃO MENSAL DE TREINOS
 // ========================================
 
