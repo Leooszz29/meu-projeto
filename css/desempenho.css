@@ -3,3 +3,85 @@
 ======================================== */
 
 /* Estilos exclusivos da página Desempenho */
+
+/* ========================================
+   GRÁFICO DE EVOLUÇÃO MENSAL
+======================================== */
+
+.training-chart {
+    margin-top: 24px;
+    padding: 26px;
+    background: rgba(43, 45, 48, 0.78);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.training-chart-content {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 12px;
+    min-height: 240px;
+    padding: 24px 12px 8px;
+}
+
+.training-chart-empty {
+    width: 100%;
+    align-self: center;
+    text-align: center;
+    color: var(--chalk-dim);
+    font-size: 13px;
+}
+
+.training-chart-column {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    min-width: 0;
+}
+
+.training-chart-value {
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.training-chart-bar {
+    width: 100%;
+    max-width: 54px;
+    min-height: 5px;
+    border-radius: 8px 8px 3px 3px;
+    background: linear-gradient(
+        180deg,
+        var(--accent-alt),
+        var(--accent)
+    );
+    box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.20);
+    transition: height 0.3s ease;
+}
+
+.training-chart-month {
+    color: var(--chalk-dim);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+@media (max-width: 480px) {
+    .training-chart {
+        padding: 18px 12px;
+    }
+
+    .training-chart-content {
+        gap: 6px;
+        padding: 20px 0 8px;
+    }
+
+    .training-chart-month {
+        font-size: 10px;
+    }
+}
