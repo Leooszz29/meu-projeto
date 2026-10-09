@@ -141,12 +141,26 @@ function carregarGraficoMensal() {
 
     const hoje = new Date();
 
-    const meses = Array.from({ length: 6 }, (_, indice) => {
-        const data = new Date(
-            hoje.getFullYear(),
-            hoje.getMonth() - (5 - indice),
-            1
-        );
+    const botaoAtivo = document.querySelector(
+        '.training-chart-filter.active'
+    );
+
+    const periodoSelecionado = Number(
+        botaoAtivo?.dataset.months || 6
+    );
+
+    const quantidadeMeses = [3, 6, 12].includes(periodoSelecionado)
+        ? periodoSelecionado
+        : 6;
+
+    const meses = Array.from(
+        { length: quantidadeMeses },
+        (_, indice) => {
+            const data = new Date(
+                hoje.getFullYear(),
+                hoje.getMonth() - (quantidadeMeses - 1 - indice),
+                1
+            );
 
         return {
             ano: data.getFullYear(),
