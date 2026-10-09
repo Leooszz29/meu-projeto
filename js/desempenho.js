@@ -1613,6 +1613,7 @@ if (botaoConfirmarExclusao) {
                 carregarResumoDesempenho();
                 carregarComparacaoMensal();
                 atualizarProgressoMetaMensal();
+                carregarSequenciaTreinos();
                 carregarGraficoMensal();
                 carregarIndicadoresHistorico();
                 exibirHistoricoDesempenho();
