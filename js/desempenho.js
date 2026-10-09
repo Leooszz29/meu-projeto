@@ -824,6 +824,9 @@ function exibirHistoricoDesempenho() {
                 mensagem.textContent =
                     `Deseja excluir "${treino.nome || 'Treino'}" realizado em ${dataFormatada}?`;
 
+                modal.dataset.originalIndex =
+                    botaoExcluir.dataset.originalIndex;
+
                 modal.classList.add('show');
             });
 
