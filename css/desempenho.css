@@ -439,3 +439,60 @@
 .monthly-goal-track.monthly-goal-completed {
     border: 1px solid rgba(74, 222, 128, 0.45);
 }
+
+/* ========================================
+   CONTROLES PERSONALIZADOS DA META
+======================================== */
+
+.monthly-goal-stepper {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.monthly-goal-step {
+    width: 40px;
+    height: 44px;
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    color: var(--accent);
+    font-size: 24px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.monthly-goal-step:hover {
+    background: rgba(var(--accent-rgb), 0.15);
+}
+
+.monthly-goal-step:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -3px;
+}
+
+.monthly-goal-stepper #monthlyGoalInput {
+    width: 65px;
+    height: 44px;
+    padding: 6px;
+    border: none;
+    border-left: 1px solid rgba(var(--accent-rgb), 0.2);
+    border-right: 1px solid rgba(var(--accent-rgb), 0.2);
+    border-radius: 0;
+    background: transparent;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .monthly-goal-step {
+        width: 36px;
+    }
+
+    .monthly-goal-stepper #monthlyGoalInput {
+        width: 55px;
+    }
+}
