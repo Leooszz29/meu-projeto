@@ -320,6 +320,19 @@
     text-align: center;
 }
 
+/* Remover as setas padrão do campo numérico */
+
+#monthlyGoalInput::-webkit-inner-spin-button,
+#monthlyGoalInput::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#monthlyGoalInput {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
 .monthly-goal-save {
     padding: 12px 22px;
     background: var(--accent);
