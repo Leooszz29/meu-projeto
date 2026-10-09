@@ -278,3 +278,129 @@
         gap: 8px;
     }
 }
+
+/* ========================================
+   META MENSAL DE TREINOS
+======================================== */
+
+.monthly-goal {
+    margin-top: 24px;
+    padding: 26px;
+    background: rgba(43, 45, 48, 0.78);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.monthly-goal-settings {
+    margin-top: 24px;
+}
+
+.monthly-goal-settings label {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--chalk-dim);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.monthly-goal-controls {
+    display: flex;
+    gap: 12px;
+}
+
+#monthlyGoalInput {
+    width: 110px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    border-radius: 10px;
+    color: var(--chalk);
+    font-size: 16px;
+    text-align: center;
+}
+
+.monthly-goal-save {
+    padding: 12px 22px;
+    background: var(--accent);
+    border: none;
+    border-radius: 10px;
+    color: #111;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.monthly-goal-save:hover {
+    opacity: 0.85;
+}
+
+.monthly-goal-save:focus-visible,
+#monthlyGoalInput:focus-visible {
+    outline: 2px solid var(--accent-alt);
+    outline-offset: 3px;
+}
+
+.monthly-goal-progress {
+    margin-top: 26px;
+}
+
+.monthly-goal-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+#monthlyGoalCount {
+    color: var(--chalk);
+    font-size: 16px;
+}
+
+#monthlyGoalPercent {
+    color: var(--accent);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.monthly-goal-track {
+    width: 100%;
+    height: 12px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 20px;
+}
+
+.monthly-goal-bar {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        var(--accent),
+        var(--accent-alt)
+    );
+    border-radius: 20px;
+    transition: width 0.3s ease;
+}
+
+.monthly-goal-message {
+    margin-top: 12px;
+    color: var(--chalk-dim);
+    font-size: 13px;
+}
+
+@media (max-width: 480px) {
+    .monthly-goal {
+        padding: 18px 12px;
+    }
+
+    .monthly-goal-controls {
+        flex-wrap: wrap;
+    }
+
+    .monthly-goal-save {
+        flex: 1;
+    }
+}
