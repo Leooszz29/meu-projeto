@@ -920,6 +920,21 @@ if (botaoCancelarExclusao) {
     );
 }
 
+// ========================================
+// FECHAR EXCLUSÃO AO CLICAR FORA
+// ========================================
+
+if (modalExcluirTreino) {
+    modalExcluirTreino.addEventListener(
+        'click',
+        (event) => {
+            if (event.target === modalExcluirTreino) {
+                fecharModalExclusao();
+            }
+        }
+    );
+}
+
 const btnEndSession =
     document.getElementById('btnEndSession');
 
