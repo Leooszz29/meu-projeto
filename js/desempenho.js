@@ -804,6 +804,25 @@ function exibirHistoricoDesempenho() {
 
             botaoExcluir.title = 'Excluir treino';
 
+            botaoExcluir.addEventListener('click', () => {
+                const modal = document.getElementById(
+                    'historyDeleteModal'
+                );
+
+                const mensagem = document.getElementById(
+                    'historyDeleteMessage'
+                );
+
+                if (!modal || !mensagem) {
+                    return;
+                }
+
+                mensagem.textContent =
+                    `Deseja excluir "${treino.nome || 'Treino'}" realizado em ${dataFormatada}?`;
+
+                modal.classList.add('show');
+            });
+
             // BARRA DE AÇÕES DO HISTÓRICO
             const barraAcoes = document.createElement('div');
 
