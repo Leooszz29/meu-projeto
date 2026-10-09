@@ -457,48 +457,72 @@ function exibirHistoricoDesempenho() {
                     ).toLocaleDateString('pt-BR');
                 }
 
-                // RESUMO DAS SÉRIES DO TREINO
+                // ========================================
+                // STATUS GERAL DO TREINO
+                // ========================================
+
                 const resumoStatus = document.getElementById(
                     'historyDetailsStatus'
                 );
 
+                const tituloStatus = document.getElementById(
+                    'historyDetailsStatusTitle'
+                );
+
+                const mensagemStatus = document.getElementById(
+                    'historyDetailsStatusMessage'
+                );
+
+                const iconeStatus = document.getElementById(
+                    'historyDetailsStatusIcon'
+                );
+
+                const seriesTotalStatus = Math.max(
+                    0,
+                    Number(treino.seriesTotal) || 0
+                );
+
+                const seriesConcluidasStatus = Math.max(
+                    0,
+                    Math.min(
+                        Number(treino.seriesConcluidas) || 0,
+                        seriesTotalStatus
+                    )
+                );
+
+                const treinoCompletoStatus =
+                    seriesTotalStatus > 0 &&
+                    seriesConcluidasStatus >= seriesTotalStatus;
+
                 if (resumoStatus) {
-                    const seriesTotal = Math.max(
-                        0,
-                        Number(treino.seriesTotal) || 0
-                    );
-
-                    const seriesConcluidas = Math.max(
-                        0,
-                        Math.min(
-                            Number(treino.seriesConcluidas) || 0,
-                            seriesTotal
-                        )
-                    );
-
-                    const porcentagem = seriesTotal > 0
-                        ? Math.round(
-                            (seriesConcluidas / seriesTotal) * 100
-                        )
-                        : 0;
-
-                    const completo =
-                        seriesTotal > 0 &&
-                        seriesConcluidas >= seriesTotal;
-
                     resumoStatus.classList.toggle(
                         'complete',
-                        completo
+                        treinoCompletoStatus
                     );
 
                     resumoStatus.classList.toggle(
                         'incomplete',
-                        !completo
+                        !treinoCompletoStatus
                     );
+                }
 
-                    resumoStatus.textContent = completo
-                        ? `✓ Treino completo! ${seriesConcluidas} de ${seriesTotal} séries (${porcentagem}%).`
-                        : `● Treino parcial: ${seriesConcluidas} de ${seriesTotal} séries (${porcentagem}%).`;
+                if (iconeStatus) {
+                    iconeStatus.textContent =
+                        treinoCompletoStatus ? '✓' : '!';
+                }
+
+                if (tituloStatus) {
+                    tituloStatus.textContent =
+                        treinoCompletoStatus
+                            ? 'Treino completo!'
+                            : 'Treino parcial';
+                }
+
+                if (mensagemStatus) {
+                    mensagemStatus.textContent =
+                        treinoCompletoStatus
+                            ? 'Todos os exercícios foram realizados.'
+                            : `${seriesConcluidasStatus} de ${seriesTotalStatus} séries concluídas.`;
                 }
 
                 // ========================================
