@@ -251,8 +251,20 @@ function atualizarProgressoMetaMensal() {
 
     const faltam = Math.max(0, meta - realizados);
 
-    mensagem.textContent = faltam === 0
-        ? 'Parabéns! Você atingiu sua meta mensal!'
+    const metaConcluida = realizados >= meta;
+
+    progresso.classList.toggle(
+        'monthly-goal-completed',
+        metaConcluida
+    );
+
+    mensagem.classList.toggle(
+        'monthly-goal-success',
+        metaConcluida
+    );
+
+    mensagem.textContent = metaConcluida
+        ? '🏆 Parabéns! Você atingiu sua meta mensal!'
         : `Faltam ${faltam} treinos para atingir sua meta!`;
 }
 
