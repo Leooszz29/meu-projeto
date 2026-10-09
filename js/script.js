@@ -1,13 +1,38 @@
+
 const stations = document.querySelectorAll('.station');
 
-stations.forEach(st => {
-  st.addEventListener('click', () => {
-    stations.forEach(s => s.classList.remove('selected'));
-    st.classList.add('selected');
-  });
+stations.forEach((station) => {
+    station.addEventListener('click', () => {
+        stations.forEach((item) => {
+            item.classList.remove('selected');
+        });
+
+        station.classList.add('selected');
+    });
 });
 
 function escolherGenero(genero) {
-  localStorage.setItem('generoFitZone', genero);
-  window.location.href = 'login.html';
+    const generosPermitidos = ['masculino', 'feminino'];
+
+    if (!generosPermitidos.includes(genero)) {
+        console.error('Gênero selecionado inválido.');
+        return;
+    }
+
+    try {
+        localStorage.setItem('generoFitZone', genero);
+
+        window.location.href = 'login.html';
+
+    } catch (erro) {
+        console.error(
+            'Erro ao salvar o gênero selecionado:',
+            erro
+        );
+
+        alert(
+            'Não foi possível salvar sua seleção. ' +
+            'Verifique as configurações do navegador e tente novamente.'
+        );
+    }
 }
