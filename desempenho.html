@@ -99,6 +99,64 @@
 
         </section>
 
+    <!-- COMPARAÇÃO MENSAL DE TREINOS -->
+    <section
+        class="monthly-comparison"
+        aria-labelledby="comparisonTitle"
+    >
+
+        <div class="summary-header">
+            <span class="summary-eyebrow">COMPARATIVO</span>
+            <h2 id="comparisonTitle">Comparação Mensal</h2>
+            <p>
+                Compare sua frequência de treinos com o mês anterior.
+            </p>
+        </div>
+
+        <div class="monthly-comparison-grid">
+
+            <div class="monthly-comparison-card">
+                <span class="monthly-comparison-label">
+                    Mês anterior
+                </span>
+
+                <strong
+                    class="monthly-comparison-value"
+                    id="previousMonthTotal"
+                >
+                    0
+                </strong>
+            </div>
+
+            <div class="monthly-comparison-card">
+                <span class="monthly-comparison-label">
+                    Mês atual
+                </span>
+
+                <strong
+                    class="monthly-comparison-value"
+                    id="currentMonthTotal"
+                >
+                    0
+                </strong>
+            </div>
+
+        </div>
+
+        <div
+            class="monthly-comparison-result"
+            id="monthlyComparisonResult"
+            aria-live="polite"
+        >
+            <strong id="monthlyComparisonPercent">—</strong>
+
+            <span id="monthlyComparisonMessage">
+                Preparando comparação mensal...
+            </span>
+        </div>
+
+    </section>
+
     <!-- GRÁFICO DE EVOLUÇÃO MENSAL -->
     <section class="training-chart" aria-labelledby="chartTitle">
 
