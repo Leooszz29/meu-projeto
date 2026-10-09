@@ -954,6 +954,8 @@ if (botaoConfirmarExclusao) {
     botaoConfirmarExclusao.addEventListener(
         'click',
         () => {
+            console.log('FITZONE: botão Excluir acionado');
+            
             if (!modalExcluirTreino) {
                 return;
             }
