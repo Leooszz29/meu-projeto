@@ -637,6 +637,40 @@ function initializeProfilePhoto() {
         campo.click();
     });
 
+    // Remover foto personalizada e restaurar personagem
+    removerFoto?.addEventListener('click', () => {
+        const fotoSalva = localStorage.getItem(chaveFoto);
+
+        if (!fotoSalva) {
+            menu.hidden = true;
+            return;
+        }
+
+        const confirmar = confirm(
+            'Deseja remover sua foto e restaurar o personagem padrão?'
+        );
+
+        if (!confirmar) {
+            return;
+        }
+
+        try {
+            localStorage.removeItem(chaveFoto);
+
+            imagem.style.objectFit = 'contain';
+            imagem.style.borderRadius = '0';
+
+            loadCharacter();
+
+            menu.hidden = true;
+            campo.value = '';
+
+        } catch (erro) {
+            console.error('Erro ao remover foto:', erro);
+            alert('Não foi possível remover a foto.');
+        }
+    });
+
     // Fechar o menu ao clicar fora
     document.addEventListener('click', (evento) => {
         if (
