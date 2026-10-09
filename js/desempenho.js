@@ -1147,6 +1147,7 @@ if (botaoConfirmarExclusao) {
                 delete modalExcluirTreino.dataset.originalIndex;
 
                 carregarResumoDesempenho();
+                carregarGraficoMensal();
                 carregarIndicadoresHistorico();
                 exibirHistoricoDesempenho();
 
