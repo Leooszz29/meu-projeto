@@ -402,13 +402,33 @@ function exibirHistoricoDesempenho() {
             const data = document.createElement('span');
             data.className = 'history-date';
 
-            data.textContent = new Date(
+            const dataFormatada = new Date(
                 treino.data
             ).toLocaleDateString('pt-BR', {
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric'
             });
+
+            data.innerHTML = `
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <rect
+                        x="3"
+                        y="5"
+                        width="18"
+                        height="16"
+                        rx="2"
+                    />
+                    <path d="M16 3v4" />
+                    <path d="M8 3v4" />
+                    <path d="M3 10h18" />
+                </svg>
+
+                <span>${dataFormatada}</span>
+            `;
 
             // BOTÃO VER DETALHES
             const botaoDetalhes = document.createElement('button');
