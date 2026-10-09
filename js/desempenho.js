@@ -804,6 +804,10 @@ function exibirHistoricoDesempenho() {
 
             botaoExcluir.title = 'Excluir treino';
 
+            // IDENTIFICAR O TREINO A SER EXCLUÍDO
+            botaoExcluir.dataset.originalIndex =
+                String(treino.originalIndex);
+
             botaoExcluir.addEventListener('click', () => {
                 const modal = document.getElementById(
                     'historyDeleteModal'
