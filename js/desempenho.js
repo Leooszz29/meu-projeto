@@ -180,12 +180,14 @@ if (botaoSalvarMeta) {
             return;
         }
 
-        try {
-            localStorage.setItem(chave, String(meta));
+try {
+    localStorage.setItem(chave, String(meta));
 
-            alert('Meta mensal salva com sucesso!');
+    atualizarProgressoMetaMensal();
 
-        } catch (error) {
+    alert('Meta mensal salva com sucesso!');
+
+} catch (error) {
             console.error('Erro ao salvar meta mensal:', error);
             alert('Não foi possível salvar sua meta.');
         }
