@@ -591,16 +591,9 @@ function atualizarBotaoFinalizar() {
     const exercicios =
         workout.exercicios || [];
 
-    const todasSeriesConcluidas =
-        exercicios.length > 0 &&
-        exercicios.every(
+    const algumaSerieConcluida =
+        exercicios.some(
             (exercicio, index) => {
-                const quantidadeSeries =
-                    parseInt(
-                        exercicio.series,
-                        10
-                    ) || 0;
-
                 const exerciseKey =
                     exercicio.id ||
                     `exercise-${index}`;
@@ -611,15 +604,14 @@ function atualizarBotaoFinalizar() {
                     ] || [];
 
                 return (
-                    quantidadeSeries > 0 &&
-                    seriesConcluidas.length >=
-                        quantidadeSeries
+                    Array.isArray(seriesConcluidas) &&
+                    seriesConcluidas.length > 0
                 );
             }
         );
 
     finishButton.disabled =
-        !todasSeriesConcluidas;
+        !algumaSerieConcluida;
 }
 
 atualizarBotaoFinalizar();
