@@ -2941,9 +2941,9 @@ document
                 seriesConcluidas >=
                     totalSeries;
 
-            if (!todasSeriesConcluidas) {
+            if (seriesConcluidas === 0) {
                 showWarningModal(
-                    'Conclua todas as séries antes de finalizar o treino.'
+                    'Conclua pelo menos uma série antes de finalizar o treino.'
                 );
 
                 return;
