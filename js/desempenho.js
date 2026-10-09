@@ -195,6 +195,68 @@ if (botaoSalvarMeta) {
 carregarMetaMensal();
 
 // ========================================
+// META MENSAL — ATUALIZAR PROGRESSO
+// ========================================
+
+function atualizarProgressoMetaMensal() {
+    const contador = document.getElementById('monthlyGoalCount');
+    const percentual = document.getElementById('monthlyGoalPercent');
+    const barra = document.getElementById('monthlyGoalBar');
+    const progresso = document.getElementById('monthlyGoalProgress');
+    const mensagem = document.getElementById('monthlyGoalMessage');
+    const campo = document.getElementById('monthlyGoalInput');
+
+    if (!contador || !percentual || !barra ||
+        !progresso || !mensagem || !campo) return;
+
+    const meta = Number(campo.value);
+    const chave = obterChaveHistoricoDesempenho();
+
+    if (!chave || !Number.isInteger(meta) || meta < 1) return;
+
+    let historico = [];
+
+    try {
+        const dados = JSON.parse(localStorage.getItem(chave));
+        historico = Array.isArray(dados) ? dados : [];
+    } catch (error) {
+        console.warn('Erro ao carregar progresso da meta:', error);
+    }
+
+    const hoje = new Date();
+    const inicioMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+    const inicioProximoMes = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 1);
+
+    const realizados = historico.filter((treino) => {
+        if (!treino || !treino.data) return false;
+
+        const data = new Date(treino.data);
+
+        return !Number.isNaN(data.getTime()) &&
+            data >= inicioMes &&
+            data < inicioProximoMes;
+    }).length;
+
+    const porcentagem = Math.min(
+        100,
+        Math.round((realizados / meta) * 100)
+    );
+
+    contador.textContent = `${realizados} / ${meta} treinos`;
+    percentual.textContent = `${porcentagem}%`;
+    barra.style.width = `${porcentagem}%`;
+    progresso.setAttribute('aria-valuenow', String(porcentagem));
+
+    const faltam = Math.max(0, meta - realizados);
+
+    mensagem.textContent = faltam === 0
+        ? 'Parabéns! Você atingiu sua meta mensal!'
+        : `Faltam ${faltam} treinos para atingir sua meta!`;
+}
+
+atualizarProgressoMetaMensal();
+
+// ========================================
 // COMPARAÇÃO MENSAL DE TREINOS
 // ========================================
 
