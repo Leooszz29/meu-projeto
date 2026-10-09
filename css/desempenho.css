@@ -140,3 +140,38 @@
         font-size: 11px;
     }
 }
+
+/* ========================================
+   GRÁFICO — RESPONSIVIDADE
+======================================== */
+
+@media (max-width: 600px) {
+    .training-chart-content {
+        justify-content: flex-start;
+        gap: 12px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 16px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) transparent;
+    }
+
+    .training-chart-column {
+        flex: 0 0 38px;
+        min-width: 38px;
+    }
+
+    .training-chart-bar {
+        max-width: 34px;
+    }
+
+    .training-chart-content::-webkit-scrollbar {
+        height: 5px;
+    }
+
+    .training-chart-content::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 10px;
+    }
+}
+
