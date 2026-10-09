@@ -597,6 +597,9 @@ function initializeProfilePhoto() {
     const botao = document.getElementById('editProfilePhoto');
     const campo = document.getElementById('profilePhotoInput');
     const imagem = document.getElementById('characterImg');
+    const menu = document.getElementById('profilePhotoMenu');
+    const alterarFoto = document.getElementById('changeProfilePhoto');
+    const removerFoto = document.getElementById('removeProfilePhoto');
 
     const sessao = carregarSessao();
 
@@ -621,9 +624,28 @@ function initializeProfilePhoto() {
         console.warn('Erro ao carregar foto:', erro);
     }
 
-    // Abrir seletor de imagens
+    // Abrir e fechar o menu de edição
     botao.addEventListener('click', () => {
+        if (!menu) return;
+
+        menu.hidden = !menu.hidden;
+    });
+
+    // Escolher uma nova foto
+    alterarFoto?.addEventListener('click', () => {
+        menu.hidden = true;
         campo.click();
+    });
+
+    // Fechar o menu ao clicar fora
+    document.addEventListener('click', (evento) => {
+        if (
+            menu &&
+            !menu.contains(evento.target) &&
+            !botao.contains(evento.target)
+        ) {
+            menu.hidden = true;
+        }
     });
 
     // Selecionar e salvar foto
