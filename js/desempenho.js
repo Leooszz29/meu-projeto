@@ -680,11 +680,27 @@ function exibirHistoricoDesempenho() {
                                 ? 'history-details-exercise complete'
                                 : 'history-details-exercise incomplete';
 
-                        const informacao = document.createElement('p');
+                        nomeExercicio.className =
+                            'history-details-exercise-name';
+
+                        const informacao = document.createElement('span');
+                        informacao.className =
+                            'history-details-exercise-series';
+
                         informacao.textContent =
-                            `${concluidas} de ${total} séries concluídas`;
+                            `${concluidas} de ${total} séries`;
+
+                        const iconeStatus = document.createElement('span');
+                        iconeStatus.className =
+                            'history-details-exercise-status';
+
+                        iconeStatus.textContent =
+                            concluidas === total && total > 0
+                                ? '✓'
+                                : '✕';
 
                         itemExercicio.append(
+                            iconeStatus,
                             nomeExercicio,
                             informacao
                         );
