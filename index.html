@@ -19,60 +19,54 @@
 
     <h1>Selecione o seu gênero</h1>
 
+
     <div class="arena-floor">
 
         <!-- MASCULINO -->
-
-        <div
+        <button
+            type="button"
             class="station"
             id="station-homem"
+            aria-label="Selecionar gênero masculino"
             onclick="escolherGenero('masculino')"
         >
+            <span class="spotlight" aria-hidden="true"></span>
 
-            <div class="spotlight"></div>
+            <span class="ring" aria-hidden="true"></span>
 
-            <div class="ring"></div>
-
-            <div class="lifter-wrap" id="lift-homem">
-
+            <span class="lifter-wrap" id="lift-homem">
                 <img
                     class="lifter-img"
                     src="img/atleta-masculino.png"
-                    alt="Atleta masculino"
+                    alt=""
                 >
 
-                <div class="platform"></div>
-
-            </div>
-
-        </div>
-
+                <span class="platform" aria-hidden="true"></span>
+            </span>
+        </button>
 
         <!-- FEMININO -->
-
-        <div
+        <button
+            type="button"
             class="station"
             id="station-mulher"
+            aria-label="Selecionar gênero feminino"
             onclick="escolherGenero('feminino')"
         >
+            <span class="spotlight" aria-hidden="true"></span>
 
-            <div class="spotlight"></div>
+            <span class="ring" aria-hidden="true"></span>
 
-            <div class="ring"></div>
-
-            <div class="lifter-wrap" id="lift-mulher">
-
+            <span class="lifter-wrap" id="lift-mulher">
                 <img
                     class="lifter-img"
                     src="img/atleta-feminino.png"
-                    alt="Atleta feminino"
+                    alt=""
                 >
 
-                <div class="platform"></div>
-
-            </div>
-
-        </div>
+                <span class="platform" aria-hidden="true"></span>
+            </span>
+        </button>
 
     </div>
 
