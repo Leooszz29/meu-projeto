@@ -980,15 +980,6 @@ if (botaoConfirmarExclusao) {
                     localStorage.getItem(chave)
                 );
 
-                console.log('FITZONE: dados antes da exclusão', {
-                    ehArray: Array.isArray(dados),
-                    quantidade: Array.isArray(dados)
-                        ? dados.length
-                        : null,
-                    indice,
-                    indiceSeguro: Number.isSafeInteger(indice)
-                });
-
                 if (
                     !Array.isArray(dados) ||
                     !Number.isSafeInteger(indice) ||
