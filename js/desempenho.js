@@ -114,6 +114,148 @@ function obterChaveHistoricoDesempenho() {
 }
 
 // ========================================
+// COMPARAÇÃO MENSAL DE TREINOS
+// ========================================
+
+function carregarComparacaoMensal() {
+    const anteriorElemento = document.getElementById(
+        'previousMonthTotal'
+    );
+
+    const atualElemento = document.getElementById(
+        'currentMonthTotal'
+    );
+
+    const percentualElemento = document.getElementById(
+        'monthlyComparisonPercent'
+    );
+
+    const mensagemElemento = document.getElementById(
+        'monthlyComparisonMessage'
+    );
+
+    const resultadoElemento = document.getElementById(
+        'monthlyComparisonResult'
+    );
+
+    if (
+        !anteriorElemento ||
+        !atualElemento ||
+        !percentualElemento ||
+        !mensagemElemento ||
+        !resultadoElemento
+    ) {
+        return;
+    }
+
+    const chave = obterChaveHistoricoDesempenho();
+
+    if (!chave) {
+        return;
+    }
+
+    let historico = [];
+
+    try {
+        const dados = JSON.parse(localStorage.getItem(chave));
+        historico = Array.isArray(dados) ? dados : [];
+    } catch (error) {
+        console.warn('Erro ao carregar comparação mensal:', error);
+    }
+
+    const hoje = new Date();
+
+    const inicioAtual = new Date(
+        hoje.getFullYear(),
+        hoje.getMonth(),
+        1
+    );
+
+    const inicioAnterior = new Date(
+        hoje.getFullYear(),
+        hoje.getMonth() - 1,
+        1
+    );
+
+    const inicioProximo = new Date(
+        hoje.getFullYear(),
+        hoje.getMonth() + 1,
+        1
+    );
+
+    let totalAnterior = 0;
+    let totalAtual = 0;
+
+    historico.forEach((treino) => {
+        if (!treino || !treino.data) {
+            return;
+        }
+
+        const data = new Date(treino.data);
+
+        if (Number.isNaN(data.getTime())) {
+            return;
+        }
+
+        if (data >= inicioAtual && data < inicioProximo) {
+            totalAtual++;
+        } else if (data >= inicioAnterior && data < inicioAtual) {
+            totalAnterior++;
+        }
+    });
+
+    anteriorElemento.textContent = totalAnterior;
+    atualElemento.textContent = totalAtual;
+
+    resultadoElemento.classList.remove(
+        'positive',
+        'negative',
+        'neutral'
+    );
+
+    if (totalAnterior === 0) {
+        percentualElemento.textContent = '—';
+
+        mensagemElemento.textContent = totalAtual > 0
+            ? 'Primeiros treinos registrados neste mês.'
+            : 'Nenhum treino registrado nos dois meses.';
+
+        resultadoElemento.classList.add('neutral');
+        return;
+    }
+
+    const variacao = (
+        (totalAtual - totalAnterior) / totalAnterior
+    ) * 100;
+
+    const percentual = Math.abs(variacao).toLocaleString(
+        'pt-BR',
+        { maximumFractionDigits: 1 }
+    );
+
+    if (variacao > 0) {
+        percentualElemento.textContent = `+${percentual}%`;
+        mensagemElemento.textContent =
+            'Mais treinos que no mês anterior.';
+        resultadoElemento.classList.add('positive');
+
+    } else if (variacao < 0) {
+        percentualElemento.textContent = `-${percentual}%`;
+        mensagemElemento.textContent =
+            'Menos treinos que no mês anterior.';
+        resultadoElemento.classList.add('negative');
+
+    } else {
+        percentualElemento.textContent = '0%';
+        mensagemElemento.textContent =
+            'Mesma quantidade de treinos do mês anterior.';
+        resultadoElemento.classList.add('neutral');
+    }
+}
+
+carregarComparacaoMensal();
+
+// ========================================
 // GRÁFICO DE EVOLUÇÃO MENSAL
 // ========================================
 
