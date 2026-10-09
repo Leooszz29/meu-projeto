@@ -1483,6 +1483,7 @@ if (botaoConfirmarExclusao) {
 
                 carregarResumoDesempenho();
                 carregarComparacaoMensal();
+                atualizarProgressoMetaMensal();
                 carregarGraficoMensal();
                 carregarIndicadoresHistorico();
                 exibirHistoricoDesempenho();
