@@ -590,7 +590,7 @@ function initializeProfileActions() {
 }
 
 // ========================================
-// SELECIONAR E VISUALIZAR FOTO DO PERFIL
+// FOTO PERSONALIZADA DO PERFIL
 // ========================================
 
 function initializeProfilePhoto() {
@@ -598,20 +598,39 @@ function initializeProfilePhoto() {
     const campo = document.getElementById('profilePhotoInput');
     const imagem = document.getElementById('characterImg');
 
-    if (!botao || !campo || !imagem) {
+    const sessao = carregarSessao();
+
+    if (!botao || !campo || !imagem || !sessao?.email) {
         return;
     }
 
+    const chaveFoto =
+        `fotoPerfilFitZone:${sessao.email.toLowerCase()}`;
+
+    // Recuperar foto salva
+    try {
+        const fotoSalva = localStorage.getItem(chaveFoto);
+
+        if (fotoSalva) {
+            imagem.src = fotoSalva;
+            imagem.style.display = 'block';
+            imagem.style.objectFit = 'cover';
+            imagem.style.borderRadius = '50%';
+        }
+    } catch (erro) {
+        console.warn('Erro ao carregar foto:', erro);
+    }
+
+    // Abrir seletor de imagens
     botao.addEventListener('click', () => {
         campo.click();
     });
 
+    // Selecionar e salvar foto
     campo.addEventListener('change', () => {
-        const arquivo = campo.files[0];
+        const arquivo = campo.files?.[0];
 
-        if (!arquivo) {
-            return;
-        }
+        if (!arquivo) return;
 
         const tiposPermitidos = [
             'image/jpeg',
@@ -634,13 +653,77 @@ function initializeProfilePhoto() {
         const leitor = new FileReader();
 
         leitor.onload = () => {
-            imagem.src = leitor.result;
-            imagem.style.display = 'block';
-            imagem.style.objectFit = 'cover';
-            imagem.style.borderRadius = '50%';
+            const fotoOriginal = new Image();
+
+            fotoOriginal.onload = () => {
+                const canvas = document.createElement('canvas');
+                const tamanho = 300;
+
+                canvas.width = tamanho;
+                canvas.height = tamanho;
+
+                const contexto = canvas.getContext('2d');
+
+                if (!contexto) {
+                    alert('Não foi possível processar a imagem.');
+                    return;
+                }
+
+                const lado = Math.min(
+                    fotoOriginal.width,
+                    fotoOriginal.height
+                );
+
+                const origemX = (fotoOriginal.width - lado) / 2;
+                const origemY = (fotoOriginal.height - lado) / 2;
+
+                contexto.drawImage(
+                    fotoOriginal,
+                    origemX,
+                    origemY,
+                    lado,
+                    lado,
+                    0,
+                    0,
+                    tamanho,
+                    tamanho
+                );
+
+                const fotoOtimizada =
+                    canvas.toDataURL('image/jpeg', 0.8);
+
+                try {
+                    localStorage.setItem(
+                        chaveFoto,
+                        fotoOtimizada
+                    );
+
+                    imagem.src = fotoOtimizada;
+                    imagem.style.display = 'block';
+                    imagem.style.objectFit = 'cover';
+                    imagem.style.borderRadius = '50%';
+
+                } catch (erro) {
+                    console.error('Erro ao salvar foto:', erro);
+                    alert(
+                        'Não foi possível salvar a foto. Verifique o espaço disponível no navegador.'
+                    );
+                }
+            };
+
+            fotoOriginal.onerror = () => {
+                alert('Não foi possível abrir a imagem selecionada.');
+            };
+
+            fotoOriginal.src = leitor.result;
+        };
+
+        leitor.onerror = () => {
+            alert('Erro ao ler a imagem.');
         };
 
         leitor.readAsDataURL(arquivo);
+        campo.value = '';
     });
 }
 
