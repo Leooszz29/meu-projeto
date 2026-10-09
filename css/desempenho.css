@@ -175,3 +175,106 @@
     }
 }
 
+/* ========================================
+   COMPARAÇÃO MENSAL DE TREINOS
+======================================== */
+
+.monthly-comparison {
+    margin-top: 24px;
+    padding: 26px;
+    background: rgba(43, 45, 48, 0.78);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.monthly-comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.monthly-comparison-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 16px;
+    background: rgba(0, 0, 0, 0.20);
+    border: 1px solid rgba(var(--accent-rgb), 0.15);
+    border-radius: 14px;
+}
+
+.monthly-comparison-label {
+    color: var(--chalk-dim);
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.monthly-comparison-value {
+    color: var(--accent);
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.monthly-comparison-result {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 18px;
+    padding: 18px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    text-align: center;
+}
+
+#monthlyComparisonPercent {
+    color: var(--accent);
+    font-size: 24px;
+    font-weight: 800;
+}
+
+#monthlyComparisonMessage {
+    color: var(--chalk-dim);
+    font-size: 13px;
+}
+
+.monthly-comparison-result.positive #monthlyComparisonPercent {
+    color: #38c978;
+}
+
+.monthly-comparison-result.negative #monthlyComparisonPercent {
+    color: #f16b6b;
+}
+
+.monthly-comparison-result.neutral #monthlyComparisonPercent {
+    color: var(--accent);
+}
+
+@media (max-width: 480px) {
+    .monthly-comparison {
+        padding: 18px 12px;
+    }
+
+    .monthly-comparison-grid {
+        gap: 10px;
+    }
+
+    .monthly-comparison-card {
+        padding: 20px 10px;
+    }
+
+    .monthly-comparison-value {
+        font-size: 30px;
+    }
+
+    .monthly-comparison-result {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
