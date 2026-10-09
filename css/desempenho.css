@@ -404,3 +404,25 @@
         flex: 1;
     }
 }
+
+/* ========================================
+   META MENSAL CONCLUÍDA
+======================================== */
+
+.monthly-goal-track.monthly-goal-completed .monthly-goal-bar {
+    background: linear-gradient(
+        90deg,
+        #16a34a,
+        #4ade80
+    );
+    box-shadow: 0 0 12px rgba(74, 222, 128, 0.45);
+}
+
+.monthly-goal-message.monthly-goal-success {
+    color: #4ade80;
+    font-weight: 800;
+}
+
+.monthly-goal-track.monthly-goal-completed {
+    border: 1px solid rgba(74, 222, 128, 0.45);
+}
