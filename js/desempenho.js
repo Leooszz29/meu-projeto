@@ -114,6 +114,90 @@ function obterChaveHistoricoDesempenho() {
 }
 
 // ========================================
+// SEQUÊNCIA SEMANAL DE TREINOS
+// ========================================
+
+function carregarSequenciaTreinos() {
+    const contador = document.getElementById('trainingStreakCount');
+    const mensagem = document.getElementById('trainingStreakMessage');
+    const chave = obterChaveHistoricoDesempenho();
+
+    if (!contador || !mensagem || !chave) return;
+
+    let historico = [];
+
+    try {
+        const dados = JSON.parse(localStorage.getItem(chave));
+        historico = Array.isArray(dados) ? dados : [];
+    } catch (error) {
+        console.warn('Erro ao carregar sequência de treinos:', error);
+    }
+
+    const inicioSemana = (data) => {
+        const resultado = new Date(
+            data.getFullYear(),
+            data.getMonth(),
+            data.getDate()
+        );
+
+        const diasDesdeSegunda = (resultado.getDay() + 6) % 7;
+        resultado.setDate(resultado.getDate() - diasDesdeSegunda);
+
+        return resultado;
+    };
+
+    const hoje = new Date();
+    const semanaAtual = inicioSemana(hoje);
+
+    const semanasComTreino = new Set();
+
+    historico.forEach((treino) => {
+        if (!treino || !treino.data) return;
+
+        const data = new Date(treino.data);
+
+        if (Number.isNaN(data.getTime()) || data > hoje) return;
+
+        const segunda = inicioSemana(data);
+
+        semanasComTreino.add(
+            `${segunda.getFullYear()}-${segunda.getMonth()}-${segunda.getDate()}`
+        );
+    });
+
+    const chaveSemana = (data) =>
+        `${data.getFullYear()}-${data.getMonth()}-${data.getDate()}`;
+
+    const referencia = new Date(semanaAtual);
+
+    if (!semanasComTreino.has(chaveSemana(referencia))) {
+        referencia.setDate(referencia.getDate() - 7);
+    }
+
+    let sequencia = 0;
+
+    while (semanasComTreino.has(chaveSemana(referencia))) {
+        sequencia++;
+        referencia.setDate(referencia.getDate() - 7);
+    }
+
+    contador.textContent = sequencia;
+
+    if (sequencia === 0) {
+        mensagem.textContent =
+            'Registre seus treinos para iniciar sua sequência!';
+    } else if (sequencia === 1) {
+        mensagem.textContent =
+            'Você completou 1 semana de treinos. Continue assim!';
+    } else {
+        mensagem.textContent =
+            `🔥 Excelente! Você está há ${sequencia} semanas consecutivas treinando!`;
+    }
+}
+
+carregarSequenciaTreinos();
+
+// ========================================
 // META MENSAL — SALVAR E CARREGAR
 // ========================================
 
