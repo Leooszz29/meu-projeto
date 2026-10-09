@@ -56,9 +56,35 @@
 
 <header>
 
-    <div class="character-preview">
-            <img id="characterImg" src="" alt="Personagem selecionado" style="display:none;">
-        </div>
+<div class="character-preview">
+
+    <img
+        id="characterImg"
+        src=""
+        alt="Foto ou personagem do perfil"
+        style="display:none;"
+    >
+
+    <!-- Botão para editar a foto -->
+    <button
+        type="button"
+        id="editProfilePhoto"
+        class="edit-profile-photo"
+        aria-label="Alterar foto do perfil"
+        title="Alterar foto do perfil"
+    >
+        📷
+    </button>
+
+    <!-- Seleção de imagem -->
+    <input
+        type="file"
+        id="profilePhotoInput"
+        accept="image/jpeg,image/png,image/webp"
+        hidden
+    >
+
+</div>
 
         <div class="page-heading">
 
