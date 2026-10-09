@@ -590,19 +590,57 @@ function initializeProfileActions() {
 }
 
 // ========================================
-// BOTÃO DE EDIÇÃO DA FOTO DO PERFIL
+// SELECIONAR E VISUALIZAR FOTO DO PERFIL
 // ========================================
 
 function initializeProfilePhoto() {
     const botao = document.getElementById('editProfilePhoto');
     const campo = document.getElementById('profilePhotoInput');
+    const imagem = document.getElementById('characterImg');
 
-    if (!botao || !campo) {
+    if (!botao || !campo || !imagem) {
         return;
     }
 
     botao.addEventListener('click', () => {
         campo.click();
+    });
+
+    campo.addEventListener('change', () => {
+        const arquivo = campo.files[0];
+
+        if (!arquivo) {
+            return;
+        }
+
+        const tiposPermitidos = [
+            'image/jpeg',
+            'image/png',
+            'image/webp'
+        ];
+
+        if (!tiposPermitidos.includes(arquivo.type)) {
+            alert('Selecione uma imagem JPG, PNG ou WebP.');
+            campo.value = '';
+            return;
+        }
+
+        if (arquivo.size > 5 * 1024 * 1024) {
+            alert('A imagem deve ter no máximo 5 MB.');
+            campo.value = '';
+            return;
+        }
+
+        const leitor = new FileReader();
+
+        leitor.onload = () => {
+            imagem.src = leitor.result;
+            imagem.style.display = 'block';
+            imagem.style.objectFit = 'cover';
+            imagem.style.borderRadius = '50%';
+        };
+
+        leitor.readAsDataURL(arquivo);
     });
 }
 
