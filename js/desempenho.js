@@ -973,6 +973,13 @@ if (botaoConfirmarExclusao) {
             const indice = Number(indiceTexto);
             const chave = obterChaveHistoricoDesempenho();
 
+            console.log('FITZONE: diagnóstico da exclusão', {
+                indiceTexto,
+                indice,
+                chave,
+                indiceValido: /^(0|[1-9]\d*)$/.test(indiceTexto)
+            });
+
             if (!chave) {
                 return;
             }
