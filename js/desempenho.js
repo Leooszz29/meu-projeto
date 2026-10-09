@@ -231,6 +231,40 @@ function carregarGraficoMensal() {
 carregarGraficoMensal();
 
 // ========================================
+// FILTROS DO GRÁFICO MENSAL
+// ========================================
+
+const botoesPeriodo = document.querySelectorAll(
+    '.training-chart-filter'
+);
+
+botoesPeriodo.forEach((botao) => {
+    botao.addEventListener('click', () => {
+
+        botoesPeriodo.forEach((item) => {
+            item.classList.remove('active');
+            item.setAttribute('aria-pressed', 'false');
+        });
+
+        botao.classList.add('active');
+        botao.setAttribute('aria-pressed', 'true');
+
+        const descricao = document.getElementById(
+            'chartDescription'
+        );
+
+        if (descricao) {
+            const quantidade = Number(botao.dataset.months);
+
+            descricao.textContent =
+                `Acompanhe seus treinos nos últimos ${quantidade} meses.`;
+        }
+
+        carregarGraficoMensal();
+    });
+});
+
+// ========================================
 // CARREGAR RESUMO DO DESEMPENHO
 // ========================================
 
