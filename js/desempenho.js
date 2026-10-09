@@ -391,9 +391,35 @@ function exibirHistoricoDesempenho() {
                     completo ? 'complete' : 'incomplete'
                 );
 
-                status.textContent = completo
-                    ? `✓ Completo · ${concluidas} de ${total} séries`
-                    : `● Parcial · ${concluidas} de ${total} séries`;
+                status.innerHTML = completo
+                    ? `
+                        <span class="history-status-icon">✓</span>
+
+                        <span class="history-status-content">
+                            <span class="history-status-title">
+                                Completo
+                                <span class="history-status-separator">·</span>
+                            </span>
+
+                            <span class="history-status-series">
+                                ${concluidas} de ${total} séries
+                            </span>
+                        </span>
+                    `
+                    : `
+                        <span class="history-status-icon">●</span>
+
+                        <span class="history-status-content">
+                            <span class="history-status-title">
+                                Parcial
+                                <span class="history-status-separator">·</span>
+                            </span>
+
+                            <span class="history-status-series">
+                                ${concluidas} de ${total} séries
+                            </span>
+                        </span>
+                    `;
             } else {
                 status.classList.add('legacy');
                 status.textContent = 'Registro anterior';
