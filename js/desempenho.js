@@ -731,12 +731,22 @@ function exibirHistoricoDesempenho() {
 
             botaoExcluir.title = 'Excluir treino';
 
-            item.append(
-                nome,
-                status,
+            // BARRA DE AÇÕES DO HISTÓRICO
+            const barraAcoes = document.createElement('div');
+
+            barraAcoes.className =
+                'history-item-actions';
+
+            barraAcoes.append(
                 data,
                 botaoDetalhes,
                 botaoExcluir
+            );
+
+            item.append(
+                nome,
+                status,
+                barraAcoes
             );
             conteudo.appendChild(item);
         });
