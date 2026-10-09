@@ -657,7 +657,10 @@ function exibirHistoricoDesempenho() {
 
                     exercicios.forEach((exercicio, indice) => {
                         const itemExercicio = document.createElement('div');
-                        itemExercicio.className = 'history-exercise-item';
+                        itemExercicio.className =
+                            concluidas === total && total > 0
+                                ? 'history-details-exercise complete'
+                                : 'history-details-exercise incomplete';
 
                         const nomeExercicio = document.createElement('strong');
                         nomeExercicio.textContent =
