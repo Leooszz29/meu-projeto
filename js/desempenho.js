@@ -893,6 +893,33 @@ if (botaoFecharRodape) {
     );
 }
 
+// ========================================
+// CANCELAR EXCLUSÃO DO HISTÓRICO
+// ========================================
+
+const modalExcluirTreino = document.getElementById(
+    'historyDeleteModal'
+);
+
+const botaoCancelarExclusao = document.getElementById(
+    'historyDeleteCancel'
+);
+
+function fecharModalExclusao() {
+    if (!modalExcluirTreino) {
+        return;
+    }
+
+    modalExcluirTreino.classList.remove('show');
+}
+
+if (botaoCancelarExclusao) {
+    botaoCancelarExclusao.addEventListener(
+        'click',
+        fecharModalExclusao
+    );
+}
+
 const btnEndSession =
     document.getElementById('btnEndSession');
 
