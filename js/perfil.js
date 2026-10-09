@@ -2022,9 +2022,6 @@ function initializeProfile() {
     loadCharacter();
     initializeIMC();
     initializeProfileActions();
-    loadTrainingSummary();
-    loadWorkoutHistory();
-    initializeHistoryDeleteModal();
 }
 
 // ========================================
