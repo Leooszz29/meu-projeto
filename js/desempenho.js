@@ -114,6 +114,109 @@ function obterChaveHistoricoDesempenho() {
 }
 
 // ========================================
+// GRÁFICO DE EVOLUÇÃO MENSAL
+// ========================================
+
+function carregarGraficoMensal() {
+    const grafico = document.getElementById('trainingChart');
+
+    if (!grafico) {
+        return;
+    }
+
+    const chave = obterChaveHistoricoDesempenho();
+
+    if (!chave) {
+        return;
+    }
+
+    let historico = [];
+
+    try {
+        const dados = JSON.parse(localStorage.getItem(chave));
+        historico = Array.isArray(dados) ? dados : [];
+    } catch (error) {
+        console.warn('Erro ao carregar gráfico:', error);
+    }
+
+    const hoje = new Date();
+
+    const meses = Array.from({ length: 6 }, (_, indice) => {
+        const data = new Date(
+            hoje.getFullYear(),
+            hoje.getMonth() - (5 - indice),
+            1
+        );
+
+        return {
+            ano: data.getFullYear(),
+            mes: data.getMonth(),
+            nome: data.toLocaleDateString('pt-BR', {
+                month: 'short'
+            }).replace('.', ''),
+            total: 0
+        };
+    });
+
+    historico.forEach((treino) => {
+        if (!treino || !treino.data) {
+            return;
+        }
+
+        const data = new Date(treino.data);
+
+        if (Number.isNaN(data.getTime())) {
+            return;
+        }
+
+        const mes = meses.find((item) =>
+            item.ano === data.getFullYear() &&
+            item.mes === data.getMonth()
+        );
+
+        if (mes) {
+            mes.total++;
+        }
+    });
+
+    const maiorTotal = Math.max(
+        1,
+        ...meses.map((mes) => mes.total)
+    );
+
+    grafico.innerHTML = '';
+
+    meses.forEach((mes) => {
+        const coluna = document.createElement('div');
+        coluna.className = 'training-chart-column';
+
+        const valor = document.createElement('span');
+        valor.className = 'training-chart-value';
+        valor.textContent = mes.total;
+
+        const barra = document.createElement('div');
+        barra.className = 'training-chart-bar';
+        barra.style.height =
+            `${Math.max(5, (mes.total / maiorTotal) * 150)}px`;
+
+        const nome = document.createElement('span');
+        nome.className = 'training-chart-month';
+        nome.textContent = mes.nome;
+
+        coluna.append(valor, barra, nome);
+        grafico.appendChild(coluna);
+    });
+
+    grafico.setAttribute(
+        'aria-label',
+        'Treinos por mês: ' +
+        meses.map((mes) => `${mes.nome}: ${mes.total}`).join(', ')
+    );
+}
+
+carregarGraficoMensal();
+
+// ========================================
 // CARREGAR RESUMO DO DESEMPENHO
 // ========================================
 
