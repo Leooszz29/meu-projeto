@@ -736,6 +736,21 @@ if (botaoFecharDetalhes) {
     );
 }
 
+// ========================================
+// BOTÃO INFERIOR - FECHAR DETALHES
+// ========================================
+
+const botaoFecharRodape = document.getElementById(
+    'historyDetailsFooterBtn'
+);
+
+if (botaoFecharRodape) {
+    botaoFecharRodape.addEventListener(
+        'click',
+        fecharJanelaDetalhes
+    );
+}
+
 const btnEndSession =
     document.getElementById('btnEndSession');
 
