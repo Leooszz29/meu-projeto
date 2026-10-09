@@ -105,9 +105,43 @@
         <div class="summary-header">
             <span class="summary-eyebrow">PROGRESSO</span>
             <h2 id="chartTitle">Evolução Mensal</h2>
-            <p>
+
+            <p id="chartDescription">
                 Acompanhe seus treinos nos últimos seis meses.
             </p>
+
+            <div
+                class="training-chart-filters"
+                role="group"
+                aria-label="Selecionar período do gráfico"
+            >
+                <button
+                    type="button"
+                    class="training-chart-filter"
+                    data-months="3"
+                    aria-pressed="false"
+                >
+                    3 meses
+                </button>
+
+                <button
+                    type="button"
+                    class="training-chart-filter active"
+                    data-months="6"
+                    aria-pressed="true"
+                >
+                    6 meses
+                </button>
+
+                <button
+                    type="button"
+                    class="training-chart-filter"
+                    data-months="12"
+                    aria-pressed="false"
+                >
+                    12 meses
+                </button>
+            </div>
         </div>
 
         <div
