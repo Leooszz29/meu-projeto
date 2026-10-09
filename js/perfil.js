@@ -622,6 +622,7 @@ function initializeProfile() {
 
     fillForm();
     loadCharacter();
+    initializeProfilePhoto();
     initializeIMC();
     initializeProfileActions();
 }
