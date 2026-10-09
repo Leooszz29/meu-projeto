@@ -717,7 +717,27 @@ function exibirHistoricoDesempenho() {
                 )?.focus();
             });
 
-            item.append(nome, status, data, botaoDetalhes);
+            // BOTÃO EXCLUIR TREINO
+            const botaoExcluir = document.createElement('button');
+
+            botaoExcluir.type = 'button';
+            botaoExcluir.className = 'history-delete-btn';
+            botaoExcluir.textContent = '🗑';
+
+            botaoExcluir.setAttribute(
+                'aria-label',
+                `Excluir treino ${treino.nome || 'Treino'}`
+            );
+
+            botaoExcluir.title = 'Excluir treino';
+
+            item.append(
+                nome,
+                status,
+                data,
+                botaoDetalhes,
+                botaoExcluir
+            );
             conteudo.appendChild(item);
         });
 
