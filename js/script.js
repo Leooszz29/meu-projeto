@@ -1,6 +1,12 @@
 
 const stations = document.querySelectorAll('.station');
 
+window.addEventListener('pageshow', () => {
+    stations.forEach((station) => {
+        station.classList.remove('selected');
+    });
+});
+
 stations.forEach((station) => {
     station.addEventListener('click', () => {
         stations.forEach((item) => {
