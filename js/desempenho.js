@@ -197,6 +197,39 @@ try {
 carregarMetaMensal();
 
 // ========================================
+// META MENSAL — BOTÕES + E -
+// ========================================
+
+const botaoDiminuirMeta = document.getElementById('decreaseMonthlyGoal');
+const botaoAumentarMeta = document.getElementById('increaseMonthlyGoal');
+const campoMetaMensal = document.getElementById('monthlyGoalInput');
+
+if (botaoDiminuirMeta && botaoAumentarMeta && campoMetaMensal) {
+
+    botaoDiminuirMeta.addEventListener('click', () => {
+        const valorAtual = Number(campoMetaMensal.value);
+
+        if (!Number.isInteger(valorAtual)) {
+            campoMetaMensal.value = 12;
+            return;
+        }
+
+        campoMetaMensal.value = Math.max(1, valorAtual - 1);
+    });
+
+    botaoAumentarMeta.addEventListener('click', () => {
+        const valorAtual = Number(campoMetaMensal.value);
+
+        if (!Number.isInteger(valorAtual)) {
+            campoMetaMensal.value = 12;
+            return;
+        }
+
+        campoMetaMensal.value = Math.min(100, valorAtual + 1);
+    });
+}
+
+// ========================================
 // META MENSAL — ATUALIZAR PROGRESSO
 // ========================================
 
