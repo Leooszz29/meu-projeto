@@ -589,6 +589,23 @@ function initializeProfileActions() {
     }
 }
 
+// ========================================
+// BOTÃO DE EDIÇÃO DA FOTO DO PERFIL
+// ========================================
+
+function initializeProfilePhoto() {
+    const botao = document.getElementById('editProfilePhoto');
+    const campo = document.getElementById('profilePhotoInput');
+
+    if (!botao || !campo) {
+        return;
+    }
+
+    botao.addEventListener('click', () => {
+        campo.click();
+    });
+}
+
 function initializeProfile() {
     const sessao =
         carregarSessao();
