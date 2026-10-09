@@ -942,6 +942,81 @@ if (modalExcluirTreino) {
     );
 }
 
+// ========================================
+// CONFIRMAR EXCLUSÃO DO TREINO
+// ========================================
+
+const botaoConfirmarExclusao = document.getElementById(
+    'historyDeleteConfirm'
+);
+
+if (botaoConfirmarExclusao) {
+    botaoConfirmarExclusao.addEventListener(
+        'click',
+        () => {
+            if (!modalExcluirTreino) {
+                return;
+            }
+
+            const indiceTexto =
+                modalExcluirTreino.dataset.originalIndex;
+
+            if (
+                indiceTexto === undefined ||
+                !/^(0|[1-9]\d*)$/.test(indiceTexto)
+            ) {
+                return;
+            }
+
+            const indice = Number(indiceTexto);
+            const chave = obterChaveHistoricoDesempenho();
+
+            if (!chave) {
+                return;
+            }
+
+            try {
+                const dados = JSON.parse(
+                    localStorage.getItem(chave)
+                );
+
+                if (
+                    !Array.isArray(dados) ||
+                    !Number.isSafeInteger(indice) ||
+                    indice >= dados.length
+                ) {
+                    return;
+                }
+
+                dados.splice(indice, 1);
+
+                localStorage.setItem(
+                    chave,
+                    JSON.stringify(dados)
+                );
+
+                fecharModalExclusao();
+
+                delete modalExcluirTreino.dataset.originalIndex;
+
+                carregarResumoDesempenho();
+                carregarIndicadoresHistorico();
+                exibirHistoricoDesempenho();
+
+            } catch (error) {
+                console.error(
+                    'Erro ao excluir treino:',
+                    error
+                );
+
+                alert(
+                    'Não foi possível excluir o treino. Tente novamente.'
+                );
+            }
+        }
+    );
+}
+
 const btnEndSession =
     document.getElementById('btnEndSession');
 
