@@ -36,6 +36,50 @@ function verificarSessaoDesempenho() {
 verificarSessaoDesempenho();
 
 // ========================================
+// APLICAR TEMA DO USUÁRIO
+// ========================================
+
+function aplicarTemaDesempenho() {
+    try {
+        const sessaoJSON =
+            localStorage.getItem('fitzoneSessao');
+
+        const sessao =
+            sessaoJSON
+                ? JSON.parse(sessaoJSON)
+                : null;
+
+        if (!sessao || !sessao.email) {
+            return;
+        }
+
+        const genero =
+            localStorage.getItem(
+                `generoFitZone:${sessao.email.toLowerCase()}`
+            );
+
+        document.body.classList.remove(
+            'theme-masculino',
+            'theme-feminino'
+        );
+
+        if (genero === 'masculino') {
+            document.body.classList.add('theme-masculino');
+        } else if (genero === 'feminino') {
+            document.body.classList.add('theme-feminino');
+        }
+
+    } catch (error) {
+        console.warn(
+            'Não foi possível aplicar o tema:',
+            error
+        );
+    }
+}
+
+aplicarTemaDesempenho();
+
+// ========================================
 // CHAVE DO HISTÓRICO POR USUÁRIO
 // ========================================
 
