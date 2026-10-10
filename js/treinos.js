@@ -22,18 +22,20 @@ function carregarSessao() {
 }
 
 function obterChaveTreinoAtivo() {
-
-    const sessao =
-        carregarSessao();
+    const sessao = carregarSessao();
 
     if (
         !sessao ||
-        !sessao.email
+        sessao.autenticado !== true ||
+        typeof sessao.email !== 'string' ||
+        !sessao.email.trim()
     ) {
-        return 'treinoAtivo';
+        throw new Error(
+            'Sessão inválida: não é possível acessar o treino ativo.'
+        );
     }
 
-    return `treinoAtivo:${sessao.email.toLowerCase()}`;
+    return `treinoAtivo:${sessao.email.trim().toLowerCase()}`;
 }
 
 function carregarTreinoAtivo() {
