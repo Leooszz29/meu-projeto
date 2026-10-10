@@ -3409,8 +3409,21 @@ document
 
             // Salva o histórico atualizado
             try {
+                const chave = obterChaveHistoricoTreinos();
+                const dadosAtuais = localStorage.getItem(chave);
+
+                if (dadosAtuais !== null) {
+                    const historicoExistente = JSON.parse(dadosAtuais);
+
+                    if (!Array.isArray(historicoExistente)) {
+                        throw new Error(
+                            'Histórico existente inválido.'
+                        );
+                    }
+                }
+
                 localStorage.setItem(
-                    obterChaveHistoricoTreinos(),
+                    chave,
                     JSON.stringify(historico)
                 );
             } catch (erro) {
