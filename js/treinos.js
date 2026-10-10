@@ -2442,7 +2442,12 @@ function loadCheckins() {
                 )
             ) || {}
         );
-    } catch (error) {
+    } catch (erro) {
+        console.error(
+            'Erro ao carregar check-ins:',
+            erro
+        );
+
         return {};
     }
 }
