@@ -736,13 +736,29 @@ setTimeout(() => {
    // Armazenar ou remover preferência de lembrar
 atualizarPreferenciaEmail(email);
 
-    localStorage.setItem(
-    'fitzoneSessao',
-    JSON.stringify({
-        autenticado: true,
-        email: email
-    })
-);
+    try {
+        localStorage.setItem(
+            'fitzoneSessao',
+            JSON.stringify({
+                autenticado: true,
+                email: email
+            })
+        );
+    } catch (erro) {
+        console.error(
+            'Erro ao salvar a sessão:',
+            erro
+        );
+
+        showError(
+            'Não foi possível iniciar sua sessão. Tente novamente.'
+        );
+
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+        return;
+    }
+
     const generoSelecionado =
     usuarioSalvo.genero ||
     localStorage.getItem(
