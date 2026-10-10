@@ -886,15 +886,29 @@ for (
 
         }
 
-
         progressoSalvo[workout.id][exerciseKey] =
             seriesSalvas;
 
+        try {
+            localStorage.setItem(
+                obterChaveProgressoTreino(),
+                JSON.stringify(progressoSalvo)
+            );
 
-       localStorage.setItem(
-    obterChaveProgressoTreino(),
-    JSON.stringify(progressoSalvo)
-);
+        } catch (erro) {
+            console.error(
+                'Não foi possível salvar o progresso:',
+                erro
+            );
+
+            seriesButton.classList.toggle('completed');
+
+            alert(
+                'Não foi possível salvar o progresso. Tente novamente.'
+            );
+
+            return;
+        }
 
 const eventoProgresso =
     new CustomEvent(
