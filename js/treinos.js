@@ -533,7 +533,7 @@ startBtn.addEventListener('click', () => {
         treinoAtivoAtual.id !== workout.id
     ) {
         askConfirm(
-            'Já existe um treino em andamento. Deseja trocar de treino?',
+            'Você já possui um treino em andamento. Deseja iniciar outro treino? O progresso do treino anterior ficará armazenado, mas ele deixará de ser o treino ativo.',
             () => {
                 localStorage.setItem(
                     obterChaveTreinoAtivo(),
