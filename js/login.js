@@ -199,19 +199,24 @@ function carregarUsuarioSalvo(email) {
 
 // ==================== PREFERÊNCIA DE EMAIL ====================
 
+
 function atualizarPreferenciaEmail(email) {
+    try {
+        if (rememberCheckbox.checked) {
+            localStorage.setItem(
+                'rememberedEmail',
+                email.trim().toLowerCase()
+            );
+        } else {
+            localStorage.removeItem(
+                'rememberedEmail'
+            );
+        }
 
-    if (rememberCheckbox.checked) {
-
-        localStorage.setItem(
-            'rememberedEmail',
-            email
-        );
-
-    } else {
-
-        localStorage.removeItem(
-            'rememberedEmail'
+    } catch (erro) {
+        console.warn(
+            'Não foi possível atualizar a preferência de e-mail:',
+            erro
         );
     }
 }
