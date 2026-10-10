@@ -3257,9 +3257,11 @@ document
                 });
 
             if (treinoJaFinalizadoHoje) {
-                console.warn(
-                    'Este treino já possui uma finalização registrada hoje.'
+                alert(
+                    'Este treino já foi finalizado hoje e está registrado no histórico. Não é necessário finalizar novamente.'
                 );
+
+                return;
             }
 
             // Registra o treino concluído
