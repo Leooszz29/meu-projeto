@@ -180,8 +180,21 @@ function loadWorkouts() {
 
 function saveWorkouts(workouts) {
     try {
+        const chave = obterChaveTreinos();
+        const dadosAtuais = localStorage.getItem(chave);
+
+        if (dadosAtuais !== null) {
+            const treinosExistentes = JSON.parse(dadosAtuais);
+
+            if (!Array.isArray(treinosExistentes)) {
+                throw new Error(
+                    'Os dados dos treinos existentes são inválidos.'
+                );
+            }
+        }
+
         localStorage.setItem(
-            obterChaveTreinos(),
+            chave,
             JSON.stringify(workouts)
         );
 
