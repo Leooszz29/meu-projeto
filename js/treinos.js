@@ -1500,7 +1500,12 @@ input.classList.add('input-error');
         workouts.push({ id: uid(), nome, exercicios: [] });
     }
 
-    saveWorkouts(workouts);
+    const salvou = saveWorkouts(workouts);
+
+    if (!salvou) {
+        return;
+    }
+
     closeWorkoutModal();
     renderWorkouts();
 });
