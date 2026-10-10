@@ -2957,7 +2957,12 @@ document
                 };
             }
 
-            saveCheckins(data);
+            const salvou = saveCheckins(data);
+
+            if (!salvou) {
+                return;
+            }
+
             closeCheckinModal();
             renderCalendar();
         }
