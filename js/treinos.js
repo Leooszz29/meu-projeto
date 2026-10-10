@@ -535,13 +535,26 @@ startBtn.addEventListener('click', () => {
         askConfirm(
             'Você já possui um treino em andamento. Deseja iniciar outro treino? O progresso do treino anterior ficará armazenado, mas ele deixará de ser o treino ativo.',
             () => {
-                localStorage.setItem(
-                    obterChaveTreinoAtivo(),
-                    JSON.stringify({
-                        id: workout.id,
-                        nome: workout.nome
-                    })
-                );
+                try {
+                    localStorage.setItem(
+                        obterChaveTreinoAtivo(),
+                        JSON.stringify({
+                            id: workout.id,
+                            nome: workout.nome
+                        })
+                    );
+                } catch (erro) {
+                    console.error(
+                        'Erro ao trocar de treino:',
+                        erro
+                    );
+
+                    alert(
+                        'Não foi possível trocar de treino. Tente novamente.'
+                    );
+
+                    return;
+                }
 
                 renderWorkouts();
             },
