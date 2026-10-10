@@ -148,14 +148,22 @@ function resetarCamposNovaSenha() {
     );
 }
 
+
 function validarCredenciais(usuarioSalvo, email, password) {
+    if (
+        !usuarioSalvo ||
+        typeof usuarioSalvo.email !== 'string' ||
+        typeof usuarioSalvo.senha !== 'string'
+    ) {
+        return false;
+    }
+
     return (
-        usuarioSalvo &&
-        usuarioSalvo.email.toLowerCase() === email &&
+        usuarioSalvo.email.trim().toLowerCase() ===
+            email.trim().toLowerCase() &&
         usuarioSalvo.senha === password
     );
 }
-
 
 // Adicione daqui para baixo
 function carregarUsuarioSalvo(email) {
