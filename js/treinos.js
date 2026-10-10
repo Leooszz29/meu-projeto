@@ -174,10 +174,26 @@ function loadWorkouts() {
 }
 
 function saveWorkouts(workouts) {
-    localStorage.setItem(
-        obterChaveTreinos(),
-        JSON.stringify(workouts)
-    );
+    try {
+        localStorage.setItem(
+            obterChaveTreinos(),
+            JSON.stringify(workouts)
+        );
+
+        return true;
+
+    } catch (erro) {
+        console.error(
+            'Não foi possível salvar os treinos:',
+            erro
+        );
+
+        alert(
+            'Não foi possível salvar seus treinos. Tente novamente.'
+        );
+
+        return false;
+    }
 }
 
 function uid() {
