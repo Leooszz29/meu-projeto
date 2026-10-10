@@ -1642,30 +1642,6 @@ function deleteWorkout(workoutId) {
     askConfirm(
         'Excluir este treino e todos os seus exercícios?',
         () => {
-            const treinoAtivo =
-                carregarTreinoAtivo();
-
-            if (
-                treinoAtivo &&
-                treinoAtivo.id === workoutId
-            ) {
-                localStorage.removeItem(
-                    obterChaveTreinoAtivo()
-                );
-
-                const progressoAtual =
-                    carregarProgressoTreino();
-
-                delete progressoAtual[workoutId];
-
-                localStorage.setItem(
-                    obterChaveProgressoTreino(),
-                    JSON.stringify(progressoAtual)
-                );
-
-                resetActiveTraining();
-            }
-
             let workouts = loadWorkouts();
 
             workouts = workouts.filter(
@@ -1676,6 +1652,37 @@ function deleteWorkout(workoutId) {
 
             if (!salvou) {
                 return;
+            }
+
+            const treinoAtivo = carregarTreinoAtivo();
+
+            if (
+                treinoAtivo &&
+                treinoAtivo.id === workoutId
+            ) {
+                try {
+                    localStorage.removeItem(
+                        obterChaveTreinoAtivo()
+                    );
+
+                    const progressoAtual =
+                        carregarProgressoTreino();
+
+                    delete progressoAtual[workoutId];
+
+                    localStorage.setItem(
+                        obterChaveProgressoTreino(),
+                        JSON.stringify(progressoAtual)
+                    );
+
+                    resetActiveTraining();
+
+                } catch (erro) {
+                    console.warn(
+                        'Treino excluído, mas não foi possível limpar todos os dados do treino ativo:',
+                        erro
+                    );
+                }
             }
 
             renderWorkouts();
