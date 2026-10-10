@@ -772,13 +772,18 @@ if (generoSelecionado) {
 
 function inicializarLogin() {
 
-   const sessao =
-    carregarSessao();
+    const sessao = carregarSessao();
 
-if (sessao && sessao.autenticado === true) {
-    window.location.href = 'perfil.html';
-    return;
-}
+    const sessaoValida =
+        sessao &&
+        sessao.autenticado === true &&
+        typeof sessao.email === 'string' &&
+        sessao.email.trim() !== '';
+
+    if (sessaoValida) {
+        window.location.href = 'perfil.html';
+        return;
+    }
 
     carregarEmailLembrado();
 
