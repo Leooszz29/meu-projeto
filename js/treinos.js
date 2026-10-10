@@ -1672,7 +1672,12 @@ function deleteWorkout(workoutId) {
                 workout => workout.id !== workoutId
             );
 
-            saveWorkouts(workouts);
+            const salvou = saveWorkouts(workouts);
+
+            if (!salvou) {
+                return;
+            }
+
             renderWorkouts();
         }
     );
