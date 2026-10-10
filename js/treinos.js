@@ -3321,24 +3321,36 @@ document
                 return;
             }
 
-            // Remove o treino ativo após a conclusão
-            localStorage.removeItem(
-                obterChaveTreinoAtivo()
-            );
+            // Limpa os dados do treino finalizado
+            try {
+                const progressoAtual =
+                    carregarProgressoTreino();
 
-            const progressoAtual =
-                carregarProgressoTreino();
+                delete progressoAtual[
+                    treinoAtivo.id
+                ];
 
-            delete progressoAtual[
-                treinoAtivo.id
-            ];
+                localStorage.setItem(
+                    obterChaveProgressoTreino(),
+                    JSON.stringify(progressoAtual)
+                );
 
-            localStorage.setItem(
-                obterChaveProgressoTreino(),
-                JSON.stringify(
-                    progressoAtual
-                )
-            );
+                localStorage.removeItem(
+                    obterChaveTreinoAtivo()
+                );
+
+            } catch (erro) {
+                console.error(
+                    'Erro ao limpar dados do treino finalizado:',
+                    erro
+                );
+
+                alert(
+                    'O treino foi registrado, mas não foi possível limpar todos os dados. Atualize a página e confira o histórico.'
+                );
+
+                return;
+            }
 
             document
                 .getElementById(
