@@ -755,21 +755,27 @@ atualizarPreferenciaEmail(email);
         return;
     }
 
-    const generoSelecionado =
-    usuarioSalvo.genero ||
-    localStorage.getItem(
-        `generoFitZone:${email.toLowerCase()}`
-    ) ||
-    localStorage.getItem(
-        'generoFitZone'
-    );
+    try {
+        const generoSelecionado =
+            usuarioSalvo.genero ||
+            localStorage.getItem(
+                `generoFitZone:${email.toLowerCase()}`
+            ) ||
+            localStorage.getItem('generoFitZone');
 
-if (generoSelecionado) {
-    localStorage.setItem(
-        `generoFitZone:${email.toLowerCase()}`,
-        generoSelecionado
-    );
-}
+        if (generoSelecionado) {
+            localStorage.setItem(
+                `generoFitZone:${email.toLowerCase()}`,
+                generoSelecionado
+            );
+        }
+
+    } catch (erro) {
+        console.warn(
+            'Não foi possível atualizar o gênero do usuário:',
+            erro
+        );
+    }
     
     showSuccess(
         'Login realizado com sucesso! Seja bem-vindo! 💪'
