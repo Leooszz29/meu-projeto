@@ -2385,10 +2385,26 @@ function loadCheckins() {
 }
 
 function saveCheckins(data) {
-    localStorage.setItem(
-        obterChaveCheckins(),
-        JSON.stringify(data)
-    );
+    try {
+        localStorage.setItem(
+            obterChaveCheckins(),
+            JSON.stringify(data)
+        );
+
+        return true;
+
+    } catch (erro) {
+        console.error(
+            'Erro ao salvar check-ins:',
+            erro
+        );
+
+        alert(
+            'Não foi possível salvar o check-in. Tente novamente.'
+        );
+
+        return false;
+    }
 }
 
 function calDateKey(year, month, day) {
