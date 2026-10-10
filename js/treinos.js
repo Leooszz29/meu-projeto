@@ -2178,7 +2178,12 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
         });
     }
 
-    saveWorkouts(workouts);
+    const salvou = saveWorkouts(workouts);
+
+    if (!salvou) {
+        return;
+    }
+
     closeExerciseModal();
     renderWorkouts();
 });
