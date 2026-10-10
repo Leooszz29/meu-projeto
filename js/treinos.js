@@ -2453,9 +2453,27 @@ function loadCheckins() {
 }
 
 function saveCheckins(data) {
+
     try {
+        const chave = obterChaveCheckins();
+        const dadosAtuais = localStorage.getItem(chave);
+
+        if (dadosAtuais !== null) {
+            const dadosVerificados = JSON.parse(dadosAtuais);
+
+            if (
+                !dadosVerificados ||
+                typeof dadosVerificados !== 'object' ||
+                Array.isArray(dadosVerificados)
+            ) {
+                throw new Error(
+                    'Dados de check-in existentes inválidos.'
+                );
+            }
+        }
+
         localStorage.setItem(
-            obterChaveCheckins(),
+            chave,
             JSON.stringify(data)
         );
 
