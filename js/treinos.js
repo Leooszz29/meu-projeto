@@ -168,7 +168,12 @@ function loadWorkouts() {
         return JSON.parse(
             localStorage.getItem(obterChaveTreinos())
         ) || [];
-    } catch (e) {
+    } catch (erro) {
+        console.error(
+            'Erro ao carregar treinos:',
+            erro
+        );
+
         return [];
     }
 }
