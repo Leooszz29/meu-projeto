@@ -129,9 +129,19 @@ function carregarHistoricoTreinos() {
                 obterChaveHistoricoTreinos()
             );
 
-        return historicoJSON
-            ? JSON.parse(historicoJSON)
-            : [];
+        if (!historicoJSON) {
+            return [];
+        }
+
+        const historico = JSON.parse(historicoJSON);
+
+        if (!Array.isArray(historico)) {
+            throw new Error(
+                'Formato inválido do histórico de treinos.'
+            );
+        }
+
+        return historico;
 
     } catch (error) {
 
