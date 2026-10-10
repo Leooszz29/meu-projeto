@@ -781,8 +781,22 @@ function inicializarLogin() {
         sessao.email.trim() !== '';
 
     if (sessaoValida) {
-        window.location.href = 'perfil.html';
-        return;
+        const usuarioDaSessao =
+            carregarUsuarioSalvo(sessao.email.trim());
+
+        if (usuarioDaSessao) {
+            window.location.href = 'perfil.html';
+            return;
+        }
+
+        try {
+            localStorage.removeItem('fitzoneSessao');
+        } catch (erro) {
+            console.warn(
+                'Não foi possível limpar a sessão inválida:',
+                erro
+            );
+        }
     }
 
     carregarEmailLembrado();
