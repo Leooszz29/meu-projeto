@@ -217,16 +217,28 @@ function atualizarPreferenciaEmail(email) {
 }
 
 function carregarEmailLembrado() {
+    try {
+        const rememberedEmail =
+            localStorage.getItem('rememberedEmail');
 
-    const rememberedEmail =
-        localStorage.getItem('rememberedEmail');
+        if (
+            typeof rememberedEmail !== 'string' ||
+            !rememberedEmail.trim()
+        ) {
+            return;
+        }
 
-    if (!rememberedEmail) {
-        return;
+        emailInput.value = rememberedEmail.trim();
+        rememberCheckbox.checked = true;
+
+    } catch (erro) {
+        console.warn(
+            'Não foi possível carregar o e-mail lembrado:',
+            erro
+        );
+
+        rememberCheckbox.checked = false;
     }
-
-    emailInput.value = rememberedEmail;
-    rememberCheckbox.checked = true;
 }
 
 function alternarVisibilidadeSenha() {
