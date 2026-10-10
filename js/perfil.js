@@ -23,18 +23,20 @@ function carregarSessao() {
 }
 
 function obterChavePerfil() {
-
-    const sessao =
-        carregarSessao();
+    const sessao = carregarSessao();
 
     if (
         !sessao ||
-        !sessao.email
+        sessao.autenticado !== true ||
+        typeof sessao.email !== 'string' ||
+        !sessao.email.trim()
     ) {
-        return PROFILE_STORAGE_KEY;
+        throw new Error(
+            'Sessão inválida: não é possível acessar o perfil.'
+        );
     }
 
-    return `${PROFILE_STORAGE_KEY}:${sessao.email.toLowerCase()}`;
+    return `${PROFILE_STORAGE_KEY}:${sessao.email.trim().toLowerCase()}`;
 }
 
 // ========================================
