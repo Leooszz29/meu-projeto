@@ -729,10 +729,6 @@ submitBtn.classList.add('loading');
           // Simular envio (remova isso quando conectar a um backend)
 setTimeout(() => {
 
-    showSuccess(
-        'Login realizado com sucesso! Seja bem-vindo! 💪'
-    );
-
    // Armazenar ou remover preferência de lembrar
 atualizarPreferenciaEmail(email);
 
@@ -774,12 +770,15 @@ if (generoSelecionado) {
         generoSelecionado
     );
 }
+    
+    showSuccess(
+        'Login realizado com sucesso! Seja bem-vindo! 💪'
+    );
 
     // Redirecionar para o perfil
     setTimeout(() => {
         window.location.href = 'perfil.html';
     }, 700);
-
 }, 600);
 
 }
