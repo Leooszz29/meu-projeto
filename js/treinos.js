@@ -552,14 +552,26 @@ startBtn.addEventListener('click', () => {
     }
 
     // SALVA O TREINO SELECIONADO
-    localStorage.setItem(
-        obterChaveTreinoAtivo(),
-        JSON.stringify({
-            id: workout.id,
-            nome: workout.nome
-        })
-    );
+    try {
+        localStorage.setItem(
+            obterChaveTreinoAtivo(),
+            JSON.stringify({
+                id: workout.id,
+                nome: workout.nome
+            })
+        );
+    } catch (erro) {
+        console.error(
+            'Erro ao iniciar treino:',
+            erro
+        );
 
+        alert(
+            'Não foi possível iniciar o treino. Tente novamente.'
+        );
+
+        return;
+    }
 
     // REMOVE A SELEÇÃO VISUAL DOS OUTROS CARDS
     document
