@@ -3315,7 +3315,11 @@ document
                 )
             };
 
-            saveCheckins(checkins);
+            const checkinSalvo = saveCheckins(checkins);
+
+            if (!checkinSalvo) {
+                return;
+            }
 
             // Remove o treino ativo após a conclusão
             localStorage.removeItem(
