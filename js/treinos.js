@@ -3224,6 +3224,44 @@ document
                     }
                 );
 
+            const hojeLocal = calDateKey(
+                new Date().getFullYear(),
+                new Date().getMonth(),
+                new Date().getDate()
+            );
+
+            const treinoJaFinalizadoHoje =
+                historico.some(registro => {
+                    const dataRegistro =
+                        new Date(registro.data);
+
+                    if (
+                        Number.isNaN(
+                            dataRegistro.getTime()
+                        )
+                    ) {
+                        return false;
+                    }
+
+                    const diaRegistro = calDateKey(
+                        dataRegistro.getFullYear(),
+                        dataRegistro.getMonth(),
+                        dataRegistro.getDate()
+                    );
+
+                    return (
+                        String(registro.workoutId) ===
+                            String(treinoAtivo.id) &&
+                        diaRegistro === hojeLocal
+                    );
+                });
+
+            if (treinoJaFinalizadoHoje) {
+                console.warn(
+                    'Este treino já possui uma finalização registrada hoje.'
+                );
+            }
+
             // Registra o treino concluído
             historico.push({
                 workoutId:
