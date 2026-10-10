@@ -2209,7 +2209,13 @@ function deleteExercise(workoutId, exerciseId) {
                         exercise.id !== exerciseId
                 );
 
-            saveWorkouts(workouts);
+
+            const salvou = saveWorkouts(workouts);
+
+            if (!salvou) {
+                return;
+            }
+
             renderWorkouts();
         }
     );
