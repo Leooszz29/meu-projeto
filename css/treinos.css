@@ -4945,3 +4945,30 @@ right: 0;
     outline: 2px solid var(--accent);
     outline-offset: 3px;
 }
+
+
+/* MELHORIA VISUAL - CAMPOS DOS FORMULARIOS */
+
+.modal input[type="text"],
+.modal input[type="number"],
+.modal-select {
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
+    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.28);
+}
+
+.modal input[type="text"]:focus,
+.modal input[type="number"]:focus,
+.modal-select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow:
+        0 0 0 3px rgba(var(--accent-rgb), 0.12),
+        0 0 18px rgba(var(--accent-rgb), 0.08);
+}
+
+.modal input[type="text"]::placeholder,
+.modal input[type="number"]::placeholder {
+    color: var(--chalk-dim);
+    opacity: 0.75;
+}
