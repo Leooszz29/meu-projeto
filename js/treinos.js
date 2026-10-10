@@ -100,18 +100,20 @@ function carregarProgressoTreino() {
 }
 
 function obterChaveHistoricoTreinos() {
-
-    const sessao =
-        carregarSessao();
+    const sessao = carregarSessao();
 
     if (
         !sessao ||
-        !sessao.email
+        sessao.autenticado !== true ||
+        typeof sessao.email !== 'string' ||
+        !sessao.email.trim()
     ) {
-        return 'historicoTreinos';
+        throw new Error(
+            'Sessão inválida: não é possível acessar o histórico.'
+        );
     }
 
-    return `historicoTreinos:${sessao.email.toLowerCase()}`;
+    return `historicoTreinos:${sessao.email.trim().toLowerCase()}`;
 }
 
 function carregarHistoricoTreinos() {
