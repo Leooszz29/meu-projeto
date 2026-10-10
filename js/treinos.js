@@ -490,6 +490,41 @@ if (
 
 startBtn.addEventListener('click', () => {
 
+    const historicoHoje = carregarHistoricoTreinos();
+
+    const hoje = new Date();
+
+    const dataHoje = calDateKey(
+        hoje.getFullYear(),
+        hoje.getMonth(),
+        hoje.getDate()
+    );
+
+    const jaConcluidoHoje = historicoHoje.some(registro => {
+        const data = new Date(registro.data);
+
+        if (Number.isNaN(data.getTime())) {
+            return false;
+        }
+
+        return (
+            String(registro.workoutId) === String(workout.id) &&
+            calDateKey(
+                data.getFullYear(),
+                data.getMonth(),
+                data.getDate()
+            ) === dataHoje
+        );
+    });
+
+    if (jaConcluidoHoje) {
+        alert(
+            'Este treino já foi concluído hoje. Você poderá iniciá-lo novamente amanhã.'
+        );
+
+        return;
+    }
+
     const treinoAtivoAtual =
         carregarTreinoAtivo();
 
