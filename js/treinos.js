@@ -3233,12 +3233,24 @@ document
             });
 
             // Salva o histórico atualizado
-            localStorage.setItem(
-                obterChaveHistoricoTreinos(),
-                JSON.stringify(
-                    historico
-                )
-            );
+            try {
+                localStorage.setItem(
+                    obterChaveHistoricoTreinos(),
+                    JSON.stringify(historico)
+                );
+            } catch (erro) {
+                console.error(
+                    'Erro ao salvar histórico do treino:',
+                    erro
+                );
+
+                alert(
+                    'Não foi possível salvar o histórico. O treino não será finalizado. Tente novamente.'
+                );
+
+                return;
+            }
+
             const hoje =
                 new Date();
 
