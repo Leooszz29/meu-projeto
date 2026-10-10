@@ -63,18 +63,20 @@ function carregarTreinoAtivo() {
 }
 
 function obterChaveProgressoTreino() {
-
-    const sessao =
-        carregarSessao();
+    const sessao = carregarSessao();
 
     if (
         !sessao ||
-        !sessao.email
+        sessao.autenticado !== true ||
+        typeof sessao.email !== 'string' ||
+        !sessao.email.trim()
     ) {
-        return 'progressoTreino';
+        throw new Error(
+            'Sessão inválida: não é possível acessar o progresso do treino.'
+        );
     }
 
-    return `progressoTreino:${sessao.email.toLowerCase()}`;
+    return `progressoTreino:${sessao.email.trim().toLowerCase()}`;
 }
 
 function carregarProgressoTreino() {
