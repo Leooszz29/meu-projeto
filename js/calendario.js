@@ -40,6 +40,43 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.replace("login.html");
         return;
     }
+   
+    /* =========================================
+       TEMA DO CALENDARIO POR GENERO
+    ========================================= */
+
+    try {
+        const sessao = JSON.parse(
+            localStorage.getItem("fitzoneSessao")
+        );
+
+        const email = sessao.email.trim().toLowerCase();
+
+        const genero = localStorage.getItem(
+            `generoFitZone:${email}`
+        );
+
+        document.body.classList.remove(
+            "theme-masculino",
+            "theme-feminino"
+        );
+
+        if (genero === "masculino") {
+            document.body.classList.add(
+                "theme-masculino"
+            );
+        } else if (genero === "feminino") {
+            document.body.classList.add(
+                "theme-feminino"
+            );
+        }
+
+    } catch (error) {
+        console.warn(
+            "Não foi possível aplicar o tema do calendário:",
+            error
+        );
+    }
 
     /* =========================================
        MOTIVACAO DIARIA DO FITZONE
