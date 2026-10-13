@@ -7,6 +7,7 @@
 // ========================================
 
 let botaoQueAbriuDetalhes = null;
+let botaoQueAbriuExclusao = null;
 
 function verificarSessaoDesempenho() {
     try {
@@ -1471,6 +1472,8 @@ function exibirHistoricoDesempenho() {
                     return;
                 }
 
+                botaoQueAbriuExclusao = botaoExcluir;
+
                 mensagem.textContent =
                     `Deseja excluir "${treino.nome || 'Treino'}" realizado em ${dataFormatada}?`;
 
@@ -1589,6 +1592,16 @@ function fecharModalExclusao() {
     }
 
     modalExcluirTreino.classList.remove('show');
+
+    if (
+        botaoQueAbriuExclusao &&
+        botaoQueAbriuExclusao.isConnected &&
+        !botaoQueAbriuExclusao.disabled
+    ) {
+        botaoQueAbriuExclusao.focus();
+    }
+
+    botaoQueAbriuExclusao = null;
 }
 
 document.addEventListener('keydown', (event) => {
