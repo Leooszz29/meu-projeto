@@ -831,6 +831,24 @@ function carregarIndicadoresHistorico() {
 
     if (barra) {
         barra.style.width = `${taxa}%`;
+
+        barra.setAttribute(
+            'role',
+            'progressbar'
+        );
+
+        barra.setAttribute(
+            'aria-label',
+            'Taxa de conclusão dos treinos'
+        );
+
+        barra.setAttribute('aria-valuemin', '0');
+        barra.setAttribute('aria-valuemax', '100');
+
+        barra.setAttribute(
+            'aria-valuenow',
+            String(taxa)
+        );
     }
 }
 
