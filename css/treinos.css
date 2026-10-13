@@ -5312,3 +5312,32 @@ right: 0;
         border-radius: 50%;
     }
 }
+
+/* MELHORIA VISUAL - ESTATISTICAS MOBILE */
+
+@media (max-width: 520px) {
+    .stats-row {
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .stat-pill {
+        padding: 16px 10px;
+        text-align: center;
+        border-radius: 14px;
+    }
+
+    .stat-pill .label {
+        font-size: 10px;
+        line-height: 1.5;
+        letter-spacing: 0.3px;
+        margin-bottom: 10px;
+        overflow-wrap: anywhere;
+    }
+
+    .stat-pill .value {
+        font-size: 28px;
+        line-height: 1.2;
+        color: var(--accent);
+    }
+}
