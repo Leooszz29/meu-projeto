@@ -1538,10 +1538,6 @@ function fecharJanelaDetalhes() {
     botaoQueAbriuDetalhes = null;
 }
 
-    janelaDetalhes.classList.remove('show');
-    janelaDetalhes.hidden = true;
-}
-
 document.addEventListener('keydown', (event) => {
     if (
         event.key === 'Escape' &&
