@@ -2381,9 +2381,6 @@ const monthNames = [
     'Dezembro'
 ];
 
-let calCurrentDate = new Date();
-let calViewYear = calCurrentDate.getFullYear();
-let calViewMonth = calCurrentDate.getMonth();
 let calSelectedDateKey = null;
 
 function loadCheckins() {
