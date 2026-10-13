@@ -616,11 +616,20 @@ function carregarGraficoMensal() {
 
     grafico.innerHTML = '';
 
+
     meses.forEach((mes) => {
         const coluna = document.createElement('div');
         coluna.className = 'training-chart-column';
 
+        if (
+            mes.ano === hoje.getFullYear() &&
+            mes.mes === hoje.getMonth()
+        ) {
+            coluna.classList.add('current-month');
+        }
+
         const valor = document.createElement('span');
+
         valor.className = 'training-chart-value';
         valor.textContent = mes.total;
 
