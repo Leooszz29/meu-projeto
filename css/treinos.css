@@ -5000,3 +5000,33 @@ right: 0;
         margin-bottom: 18px;
     }
 }
+
+/* MELHORIA VISUAL - NAVEGACAO SUPERIOR */
+
+.app-nav {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(var(--accent-rgb), 0.07),
+            rgba(43, 45, 48, 0.92) 45%
+        );
+
+    border-color: rgba(var(--accent-rgb), 0.25);
+
+    box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.app-nav-link.active {
+    box-shadow:
+        inset 0 -2px 0 var(--accent),
+        0 0 14px rgba(var(--accent-rgb), 0.08);
+}
+
+@media (hover: hover) {
+    .app-nav-link:not(.active):hover {
+        background: rgba(var(--accent-rgb), 0.12);
+        border-color: rgba(var(--accent-rgb), 0.30);
+    }
+}
