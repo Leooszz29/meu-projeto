@@ -276,10 +276,11 @@ function handleSaveProfile() {
         Number(getValue('idade'));
 
     if (
-        !idade ||
+        !Number.isInteger(idade) ||
         idade < 10 ||
         idade > 120
     ) {
+
         alert(
             'Não foi possível salvar o perfil.\n\n' +
             'O campo Idade deve conter um valor ' +
