@@ -318,17 +318,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             daysGrid.appendChild(cell);
-
-            if (checkin && checkin.checked === true) {
-                const badge = document.createElement("span");
-
-                badge.className = "check-badge";
-                badge.textContent = "✓";
-
-                cell.appendChild(badge);
-            }
-
-            daysGrid.appendChild(cell);
         }
 
         document.getElementById("statMes").textContent =
