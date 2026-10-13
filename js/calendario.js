@@ -9,6 +9,39 @@
 document.addEventListener("DOMContentLoaded", () => {
    
     /* =========================================
+       PROTECAO DE ACESSO AO CALENDARIO
+    ========================================= */
+
+    let sessaoValida = false;
+
+    try {
+        const sessaoJSON =
+            localStorage.getItem("fitzoneSessao");
+
+        const sessao = sessaoJSON
+            ? JSON.parse(sessaoJSON)
+            : null;
+
+        sessaoValida = Boolean(
+            sessao &&
+            sessao.autenticado === true &&
+            typeof sessao.email === "string" &&
+            sessao.email.trim()
+        );
+
+    } catch (error) {
+        console.warn(
+            "Não foi possível validar a sessão:",
+            error
+        );
+    }
+
+    if (!sessaoValida) {
+        window.location.replace("login.html");
+        return;
+    }
+   
+    /* =========================================
        ENCERRAR SESSAO
     ========================================= */
 
