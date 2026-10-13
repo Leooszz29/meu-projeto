@@ -1591,6 +1591,17 @@ function fecharModalExclusao() {
     modalExcluirTreino.classList.remove('show');
 }
 
+document.addEventListener('keydown', (event) => {
+    if (
+        event.key === 'Escape' &&
+        modalExcluirTreino &&
+        modalExcluirTreino.classList.contains('show')
+    ) {
+        event.preventDefault();
+        fecharModalExclusao();
+    }
+});
+
 if (botaoCancelarExclusao) {
     botaoCancelarExclusao.addEventListener(
         'click',
