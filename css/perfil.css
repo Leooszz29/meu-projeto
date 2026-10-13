@@ -3441,3 +3441,46 @@ textarea::placeholder{
         top: 130px;
     }
 }
+
+/* =========================================
+   FITZONE - NAVEGACAO MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+
+    .app-nav {
+        box-sizing: border-box;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 8px;
+    }
+
+    .app-nav-brand {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .app-nav-actions {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .app-nav-link {
+        min-height: 36px;
+        padding: 0 7px;
+        font-size: 10px;
+        letter-spacing: 0;
+    }
+
+    .app-nav .btn-end-session {
+        min-width: 52px;
+        min-height: 36px;
+        padding: 0 7px;
+        font-size: 10px;
+    }
+}
