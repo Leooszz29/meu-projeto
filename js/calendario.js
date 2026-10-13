@@ -1,0 +1,121 @@
+
+"use strict";
+
+/* =========================================
+   FITZONE - CALENDARIO
+   Exibicao e navegacao entre meses
+========================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const monthNames = [
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+    ];
+
+    const today = new Date();
+
+    let currentYear = today.getFullYear();
+    let currentMonth = today.getMonth();
+
+    const monthLabel = document.getElementById("monthLabel");
+    const daysGrid = document.getElementById("daysGrid");
+    const prevMonth = document.getElementById("prevMonth");
+    const nextMonth = document.getElementById("nextMonth");
+
+    function renderCalendar() {
+
+        monthLabel.textContent =
+            `${monthNames[currentMonth]} ${currentYear}`;
+
+        daysGrid.innerHTML = "";
+
+        const firstDay = new Date(
+            currentYear,
+            currentMonth,
+            1
+        ).getDay();
+
+        const daysInMonth = new Date(
+            currentYear,
+            currentMonth + 1,
+            0
+        ).getDate();
+
+        for (let i = 0; i < firstDay; i++) {
+
+            const empty = document.createElement("div");
+
+            empty.className = "day-cell empty";
+            empty.setAttribute("aria-hidden", "true");
+
+            daysGrid.appendChild(empty);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+
+            const cell = document.createElement("div");
+
+            cell.className = "day-cell";
+
+            const number = document.createElement("span");
+
+            number.className = "num";
+            number.textContent = day;
+
+            const isToday =
+                day === today.getDate() &&
+                currentMonth === today.getMonth() &&
+                currentYear === today.getFullYear();
+
+            if (isToday) {
+                cell.classList.add("today");
+                cell.setAttribute("aria-current", "date");
+            }
+
+            cell.appendChild(number);
+            daysGrid.appendChild(cell);
+        }
+    }
+
+    prevMonth.addEventListener("click", () => {
+
+        const previous = new Date(
+            currentYear,
+            currentMonth - 1,
+            1
+        );
+
+        currentYear = previous.getFullYear();
+        currentMonth = previous.getMonth();
+
+        renderCalendar();
+    });
+
+    nextMonth.addEventListener("click", () => {
+
+        const next = new Date(
+            currentYear,
+            currentMonth + 1,
+            1
+        );
+
+        currentYear = next.getFullYear();
+        currentMonth = next.getMonth();
+
+        renderCalendar();
+    });
+
+    renderCalendar();
+
+});
