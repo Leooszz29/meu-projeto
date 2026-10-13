@@ -2917,7 +2917,6 @@ document
             }
 
             closeCheckinModal();
-            renderCalendar();
         }
     );
 
