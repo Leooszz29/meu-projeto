@@ -7,6 +7,21 @@
 ========================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+   
+    /* =========================================
+       ENCERRAR SESSAO
+    ========================================= */
+
+    const btnEndSession =
+        document.getElementById("btnEndSession");
+
+    if (btnEndSession) {
+        btnEndSession.addEventListener("click", () => {
+            localStorage.removeItem("fitzoneSessao");
+
+            window.location.href = "login.html";
+        });
+    }
 
     const monthNames = [
         "Janeiro",
