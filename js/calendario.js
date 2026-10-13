@@ -27,7 +27,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentYear = today.getFullYear();
     let currentMonth = today.getMonth();
+    
+    /* =========================================
+       LEITURA SEGURA DOS CHECK-INS
+    ========================================= */
 
+    function loadCheckins() {
+        try {
+            const sessaoJSON =
+                localStorage.getItem("fitzoneSessao");
+
+            const sessao = sessaoJSON
+                ? JSON.parse(sessaoJSON)
+                : null;
+
+            if (
+                !sessao ||
+                sessao.autenticado !== true ||
+                typeof sessao.email !== "string" ||
+                !sessao.email.trim()
+            ) {
+                return {};
+            }
+
+            const email = sessao.email.trim().toLowerCase();
+
+            const storageKey = `fitzoneCheckins:${email}`;
+
+            const savedData = localStorage.getItem(storageKey);
+
+            if (!savedData) {
+                return {};
+            }
+
+            const checkins = JSON.parse(savedData);
+
+            if (
+                !checkins ||
+                typeof checkins !== "object" ||
+                Array.isArray(checkins)
+            ) {
+                return {};
+            }
+
+            return checkins;
+
+        } catch (error) {
+            console.error(
+                "Erro ao carregar os check-ins:",
+                error
+            );
+
+            return {};
+        }
+    }
+   
     const monthLabel = document.getElementById("monthLabel");
     const daysGrid = document.getElementById("daysGrid");
     const prevMonth = document.getElementById("prevMonth");
