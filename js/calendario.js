@@ -139,6 +139,84 @@ document.addEventListener("DOMContentLoaded", () => {
     const daysGrid = document.getElementById("daysGrid");
     const prevMonth = document.getElementById("prevMonth");
     const nextMonth = document.getElementById("nextMonth");
+   
+    /* =========================================
+       JANELA DE CHECK-IN
+    ========================================= */
+
+    const checkinModal =
+        document.getElementById("checkinModalOverlay");
+
+    const checkinModalDate =
+        document.getElementById("checkinModalDate");
+
+    const checkinCancelBtn =
+        document.getElementById("checkinCancelBtn");
+
+    const checkinToggle =
+        document.getElementById("checkinToggle");
+
+    const checkinTreinoInput =
+        document.getElementById("checkinTreinoInput");
+
+    let checkinModalTrigger = null;
+
+    function openCheckinModal(dateKey, day) {
+        const checkins = loadCheckins();
+        const checkin = checkins[dateKey] || {};
+
+        checkinModalTrigger = document.activeElement;
+
+        checkinModalDate.textContent =
+            `${day} de ${monthNames[currentMonth]} de ${currentYear}`;
+
+        const isChecked = checkin.checked === true;
+
+        checkinToggle.classList.toggle("active", isChecked);
+
+        checkinToggle.setAttribute(
+            "aria-checked",
+            String(isChecked)
+        );
+
+        checkinTreinoInput.value = checkin.treino || "";
+
+        checkinModal.classList.add("show");
+        checkinCancelBtn.focus();
+    }
+
+    function closeCheckinModal() {
+        checkinModal.classList.remove("show");
+
+        if (
+            checkinModalTrigger &&
+            checkinModalTrigger.isConnected
+        ) {
+            checkinModalTrigger.focus();
+        }
+
+        checkinModalTrigger = null;
+    }
+
+    checkinCancelBtn.addEventListener(
+        "click",
+        closeCheckinModal
+    );
+
+    checkinModal.addEventListener("click", (event) => {
+        if (event.target === checkinModal) {
+            closeCheckinModal();
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (
+            event.key === "Escape" &&
+            checkinModal.classList.contains("show")
+        ) {
+            closeCheckinModal();
+        }
+    });
 
     function renderCalendar() {
        
@@ -205,8 +283,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 cell.classList.add("today");
                 cell.setAttribute("aria-current", "date");
             }
-
+            
             cell.appendChild(number);
+
+            if (checkin && checkin.checked === true) {
+                const badge = document.createElement("span");
+
+                badge.className = "check-badge";
+                badge.textContent = "✓";
+
+                cell.appendChild(badge);
+            }
+
+            cell.setAttribute("role", "button");
+            cell.setAttribute("tabindex", "0");
+
+            cell.setAttribute(
+                "aria-label",
+                `Consultar check-in de ${day} de ${monthNames[currentMonth]}`
+            );
+
+            cell.addEventListener("click", () => {
+                openCheckinModal(dateKey, day);
+            });
+
+            cell.addEventListener("keydown", (event) => {
+                if (
+                    event.key === "Enter" ||
+                    event.key === " "
+                ) {
+                    event.preventDefault();
+                    openCheckinModal(dateKey, day);
+                }
+            });
+
+            daysGrid.appendChild(cell);
 
             if (checkin && checkin.checked === true) {
                 const badge = document.createElement("span");
