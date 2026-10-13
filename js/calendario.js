@@ -88,6 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextMonth = document.getElementById("nextMonth");
 
     function renderCalendar() {
+       
+        const checkins = loadCheckins();
+        let checkinsNoMes = 0;
 
         monthLabel.textContent =
             `${monthNames[currentMonth]} ${currentYear}`;
@@ -122,6 +125,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
             cell.className = "day-cell";
 
+           
+            const month = String(currentMonth + 1).padStart(2, "0");
+            const date = String(day).padStart(2, "0");
+
+            const dateKey = `${currentYear}-${month}-${date}`;
+
+            const checkin = checkins[dateKey];
+
+            if (checkin && checkin.checked === true) {
+                cell.classList.add("checked");
+                checkinsNoMes++;
+            }
+
             const number = document.createElement("span");
 
             number.className = "num";
@@ -138,8 +154,21 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             cell.appendChild(number);
+
+            if (checkin && checkin.checked === true) {
+                const badge = document.createElement("span");
+
+                badge.className = "check-badge";
+                badge.textContent = "✓";
+
+                cell.appendChild(badge);
+            }
+
             daysGrid.appendChild(cell);
         }
+
+        document.getElementById("statMes").textContent =
+            checkinsNoMes;
     }
 
     prevMonth.addEventListener("click", () => {
