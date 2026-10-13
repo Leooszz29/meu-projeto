@@ -1023,7 +1023,13 @@ function exibirHistoricoDesempenho() {
             if (possuiDetalhes) {
                 const completo = concluidas >= total;
 
+                const percentual = Math.min(
+                    100,
+                    Math.round((concluidas / total) * 100)
+                );
+
                 status.classList.add(
+
                     completo ? 'complete' : 'incomplete'
                 );
 
@@ -1038,7 +1044,7 @@ function exibirHistoricoDesempenho() {
                             </span>
 
                             <span class="history-status-series">
-                                ${concluidas} de ${total} séries
+                                ${concluidas} de ${total} séries (${percentual}%)
                             </span>
                         </span>
                     `
@@ -1052,7 +1058,7 @@ function exibirHistoricoDesempenho() {
                             </span>
 
                             <span class="history-status-series">
-                                ${concluidas} de ${total} séries
+                                ${concluidas} de ${total} séries (${percentual}%)
                             </span>
                         </span>
                     `;
