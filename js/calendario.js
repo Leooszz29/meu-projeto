@@ -223,10 +223,13 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("checkinTreinoInput");
 
     let checkinModalTrigger = null;
+    let selectedCheckinDateKey = null;
 
     function openCheckinModal(dateKey, day) {
         const checkins = loadCheckins();
         const checkin = checkins[dateKey] || {};
+       
+        selectedCheckinDateKey = dateKey;
 
         checkinModalTrigger = document.activeElement;
 
@@ -259,6 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         checkinModalTrigger = null;
+        selectedCheckinDateKey = null;
     }
    
     /* =========================================
@@ -273,6 +277,47 @@ document.addEventListener("DOMContentLoaded", () => {
             "aria-checked",
             String(isActive)
         );
+    });
+   
+    /* =========================================
+       SALVAR CHECK-IN DO DIA SELECIONADO
+    ========================================= */
+
+    const checkinSaveBtn =
+        document.getElementById("checkinSaveBtn");
+
+    checkinSaveBtn.addEventListener("click", () => {
+        if (!selectedCheckinDateKey) {
+            return;
+        }
+
+        const checkins = loadCheckins();
+
+        const checked =
+            checkinToggle.getAttribute("aria-checked") === "true";
+
+        const treino =
+            checkinTreinoInput.value.trim();
+
+        if (!checked && !treino) {
+            delete checkins[selectedCheckinDateKey];
+        } else {
+            checkins[selectedCheckinDateKey] = {
+                checked,
+                treino
+            };
+        }
+
+        const salvou = saveCheckins(checkins);
+
+        if (!salvou) {
+            return;
+        }
+
+        closeCheckinModal();
+        selectedCheckinDateKey = null;
+
+        renderCalendar();
     });
 
     checkinCancelBtn.addEventListener(
