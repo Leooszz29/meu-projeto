@@ -682,17 +682,6 @@ botoesPeriodo.forEach((botao) => {
         botao.classList.add('active');
         botao.setAttribute('aria-pressed', 'true');
 
-        const descricao = document.getElementById(
-            'chartDescription'
-        );
-
-        if (descricao) {
-            const quantidade = Number(botao.dataset.months);
-
-            descricao.textContent =
-                `Acompanhe seus treinos nos últimos ${quantidade} meses.`;
-        }
-
         carregarGraficoMensal();
     });
 });
