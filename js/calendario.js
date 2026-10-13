@@ -623,29 +623,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 cell.appendChild(badge);
             }
-           
-            /* =========================================
-               NOME DO TREINO NO CALENDARIO
-            ========================================= */
-
-            if (
-                checkin &&
-                typeof checkin.treino === "string" &&
-                checkin.treino.trim()
-            ) {
-                const treinoLabel =
-                    document.createElement("span");
-
-                treinoLabel.className = "treino-label";
-
-                treinoLabel.textContent =
-                    checkin.treino.trim();
-
-                treinoLabel.title =
-                    checkin.treino.trim();
-
-                cell.appendChild(treinoLabel);
-            }
 
             cell.setAttribute("role", "button");
             cell.setAttribute("tabindex", "0");
