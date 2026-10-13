@@ -1524,6 +1524,17 @@ function fecharJanelaDetalhes() {
     janelaDetalhes.hidden = true;
 }
 
+document.addEventListener('keydown', (event) => {
+    if (
+        event.key === 'Escape' &&
+        janelaDetalhes &&
+        !janelaDetalhes.hidden
+    ) {
+        event.preventDefault();
+        fecharJanelaDetalhes();
+    }
+});
+
 if (botaoFecharDetalhes) {
     botaoFecharDetalhes.addEventListener(
         'click',
