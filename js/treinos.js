@@ -2475,36 +2475,6 @@ function closeCheckinModal() {
 }
 
 document
-    .getElementById('checkinToggle')
-    .addEventListener('click', function () {
-
-        const isActive =
-            this.classList.toggle('active');
-
-        const checked =
-            isActive ? 'true' : 'false';
-
-        this.dataset.checked = checked;
-
-        this.setAttribute(
-            'aria-checked',
-            checked
-        );
-    });
-
-document
-    .getElementById('checkinTreinoInput')
-    .addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-
-            document
-                .getElementById('checkinSaveBtn')
-                .click();
-        }
-    });
-
-document
     .getElementById('checkinCancelBtn')
     .addEventListener(
         'click',
