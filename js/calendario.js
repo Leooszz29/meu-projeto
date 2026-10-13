@@ -40,6 +40,143 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.replace("login.html");
         return;
     }
+
+    /* =========================================
+       MOTIVACAO DIARIA DO FITZONE
+    ========================================= */
+
+    const motivacaoModal =
+        document.getElementById("motivacaoModalOverlay");
+
+    const motivacaoTexto =
+        document.getElementById("motivacaoModalTexto");
+
+    const motivacaoAutor =
+        document.getElementById("motivacaoModalAutor");
+
+    const motivacaoBtn =
+        document.getElementById("motivacaoModalBtn");
+
+    const frasesMotivacionais = [
+        {
+            texto: "Cada passo conta na construção de uma versão melhor de você.",
+            autor: "FitZone"
+        },
+        {
+            texto: "A disciplina transforma pequenos esforços em grandes conquistas.",
+            autor: "FitZone"
+        },
+        {
+            texto: "O progresso começa quando você decide não desistir.",
+            autor: "FitZone"
+        },
+        {
+            texto: "Seu maior desafio é superar quem você foi ontem.",
+            autor: "FitZone"
+        },
+        {
+            texto: "A constância faz a diferença, mesmo nos dias difíceis.",
+            autor: "FitZone"
+        },
+        {
+            texto: "Você não precisa ser perfeito. Precisa continuar.",
+            autor: "FitZone"
+        },
+        {
+            texto: "Cada treino é uma oportunidade de evoluir.",
+            autor: "FitZone"
+        }
+    ];
+
+    function obterDataLocal() {
+        const agora = new Date();
+
+        const ano = agora.getFullYear();
+
+        const mes = String(
+            agora.getMonth() + 1
+        ).padStart(2, "0");
+
+        const dia = String(
+            agora.getDate()
+        ).padStart(2, "0");
+
+        return `${ano}-${mes}-${dia}`;
+    }
+
+    function iniciarMotivacaoDiaria() {
+        if (
+            !motivacaoModal ||
+            !motivacaoTexto ||
+            !motivacaoAutor ||
+            !motivacaoBtn
+        ) {
+            return;
+        }
+
+        try {
+            const sessao = JSON.parse(
+                localStorage.getItem("fitzoneSessao")
+            );
+
+            const email = sessao.email.trim().toLowerCase();
+            const hoje = obterDataLocal();
+
+            const chave = `fitzoneMotivacao:${email}`;
+
+            if (localStorage.getItem(chave) === hoje) {
+                return;
+            }
+
+            const indice = Math.floor(
+                new Date(
+                    hoje + "T12:00:00"
+                ).getTime() / 86400000
+            ) % frasesMotivacionais.length;
+
+            const frase = frasesMotivacionais[indice];
+
+            motivacaoTexto.textContent = frase.texto;
+            motivacaoAutor.textContent = frase.autor;
+
+            motivacaoModal.classList.add("show");
+            motivacaoModal.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+            motivacaoBtn.focus();
+
+            motivacaoBtn.addEventListener(
+                "click",
+                () => {
+                    try {
+                        localStorage.setItem(chave, hoje);
+                    } catch (error) {
+                        console.warn(
+                            "Não foi possível registrar a motivação diária:",
+                            error
+                        );
+                    }
+
+                    motivacaoModal.classList.remove("show");
+                    motivacaoModal.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+                },
+                { once: true }
+            );
+
+        } catch (error) {
+            console.error(
+                "Erro ao iniciar a motivação diária:",
+                error
+            );
+        }
+    }
+
+    iniciarMotivacaoDiaria();
    
     /* =========================================
        ENCERRAR SESSAO
