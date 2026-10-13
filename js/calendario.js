@@ -197,6 +197,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         checkinModalTrigger = null;
     }
+   
+    /* =========================================
+       CONTROLE VISUAL DO CHECK-IN
+    ========================================= */
+
+    checkinToggle.addEventListener("click", () => {
+        const isActive =
+            checkinToggle.classList.toggle("active");
+
+        checkinToggle.setAttribute(
+            "aria-checked",
+            String(isActive)
+        );
+    });
 
     checkinCancelBtn.addEventListener(
         "click",
