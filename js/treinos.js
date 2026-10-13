@@ -2356,33 +2356,6 @@ function obterChaveCheckins() {
     return `${CHECKIN_STORAGE_KEY}:${sessao.email.trim().toLowerCase()}`;
 }
 
-const weekdayHeaders = [
-    'Dom',
-    'Seg',
-    'Ter',
-    'Qua',
-    'Qui',
-    'Sex',
-    'Sáb'
-];
-
-const monthNames = [
-    'Janeiro',
-    'Fevereiro',
-    'Março',
-    'Abril',
-    'Maio',
-    'Junho',
-    'Julho',
-    'Agosto',
-    'Setembro',
-    'Outubro',
-    'Novembro',
-    'Dezembro'
-];
-
-let calSelectedDateKey = null;
-
 function loadCheckins() {
     try {
         return (
