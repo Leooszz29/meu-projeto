@@ -2482,20 +2482,6 @@ document
     );
 
 document
-    .getElementById('checkinModalOverlay')
-    .addEventListener(
-        'click',
-        (event) => {
-            if (
-                event.target.id ===
-                'checkinModalOverlay'
-            ) {
-                closeCheckinModal();
-            }
-        }
-    );
-
-document
     .getElementById('checkinSaveBtn')
     .addEventListener(
         'click',
