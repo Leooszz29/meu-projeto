@@ -6,6 +6,163 @@
 
 /* Estilos do calendario */
 
-/* Janela motivacional diaria */
+/* =========================================
+   JANELA MOTIVACIONAL DIARIA
+========================================= */
+
+#motivacaoModalOverlay {
+    z-index: 100;
+}
+
+#motivacaoModalOverlay .motivacao-modal {
+    width: 100%;
+    max-width: 460px;
+
+    padding: 38px 32px;
+
+    text-align: center;
+
+    border-radius: 22px;
+
+    border: 1px solid rgba(
+        var(--accent-rgb),
+        0.35
+    );
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(var(--accent-rgb), 0.12),
+            transparent 65%
+        ),
+        var(--concrete-1);
+
+    box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.65),
+        0 0 45px rgba(var(--accent-rgb), 0.10);
+}
+
+.motivacao-icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 72px;
+    height: 72px;
+
+    margin: 0 auto 22px;
+
+    font-size: 34px;
+
+    border-radius: 50%;
+
+    background: rgba(var(--accent-rgb), 0.12);
+    border: 1px solid rgba(var(--accent-rgb), 0.30);
+}
+
+.motivacao-subtitulo {
+    margin: 0 0 12px;
+
+    color: var(--accent);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+#motivacaoModalTitle {
+    margin: 0 0 25px;
+
+    color: var(--chalk);
+
+    font-size: clamp(25px, 5vw, 34px);
+    line-height: 1.15;
+}
+
+.motivacao-frase {
+    margin: 0 0 20px;
+    padding: 0;
+
+    border: none;
+
+    color: var(--chalk);
+
+    font-size: clamp(17px, 3.5vw, 21px);
+    font-style: italic;
+    font-weight: 500;
+
+    line-height: 1.6;
+}
+
+.motivacao-autor {
+    margin: 0 0 30px;
+
+    color: var(--chalk-dim);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 0.5px;
+}
+
+#motivacaoModalBtn {
+    width: 100%;
+    min-height: 50px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#motivacaoModalBtn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(var(--accent-rgb), 0.30);
+}
+
+#motivacaoModalBtn:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 4px;
+}
+
+@media (max-width: 520px) {
+    #motivacaoModalOverlay .motivacao-modal {
+        padding: 30px 22px;
+        border-radius: 18px;
+    }
+
+    .motivacao-icone {
+        width: 62px;
+        height: 62px;
+
+        margin-bottom: 18px;
+
+        font-size: 29px;
+    }
+
+    .motivacao-frase {
+        line-height: 1.5;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #motivacaoModalBtn {
+        transition: none;
+    }
+
+    #motivacaoModalBtn:hover {
+        transform: none;
+    }
+}
 
 /* Responsividade */
