@@ -5093,3 +5093,40 @@ right: 0;
         text-align: center;
     }
 }
+
+/* MELHORIA VISUAL - CARTOES MOBILE */
+
+@media (max-width: 520px) {
+    .workout-card {
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    .workout-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        margin-bottom: 14px;
+        padding-bottom: 14px;
+    }
+
+    .workout-title {
+        width: 100%;
+        font-size: 22px;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        line-height: 1.2;
+    }
+
+    .workout-actions {
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .workout-actions .icon-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+    }
+}
