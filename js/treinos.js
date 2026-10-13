@@ -2453,37 +2453,6 @@ function calDateKey(year, month, day) {
     return `${year}-${formattedMonth}-${formattedDay}`;
 }
 
-function calcularSequencia(data) {
-    let streak = 0;
-
-    const date =
-        new Date();
-
-    while (true) {
-        const key =
-            calDateKey(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate()
-            );
-
-        if (
-            data[key] &&
-            data[key].checked
-        ) {
-            streak++;
-
-            date.setDate(
-                date.getDate() - 1
-            );
-        } else {
-            break;
-        }
-    }
-
-    return streak;
-}
-
 let checkinModalTrigger = null;
 
 function openCheckinModal(key) {
