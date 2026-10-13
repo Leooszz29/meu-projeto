@@ -568,6 +568,14 @@ function carregarGraficoMensal() {
     const quantidadeMeses = [3, 6, 12].includes(periodoSelecionado)
         ? periodoSelecionado
         : 6;
+    
+    const descricaoGrafico =
+        document.getElementById('chartDescription');
+
+    if (descricaoGrafico) {
+        descricaoGrafico.textContent =
+            `Acompanhe seus treinos nos últimos ${quantidadeMeses} meses.`;
+    }
 
     const meses = Array.from(
         { length: quantidadeMeses },
