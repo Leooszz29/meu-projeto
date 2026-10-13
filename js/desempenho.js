@@ -6,6 +6,8 @@
 // VERIFICAR SESSÃO ATIVA
 // ========================================
 
+let botaoQueAbriuDetalhes = null;
+
 function verificarSessaoDesempenho() {
     try {
         const sessaoJSON =
@@ -1142,6 +1144,8 @@ function exibirHistoricoDesempenho() {
                 if (!janela || !possuiDetalhes) {
                     return;
                 }
+                
+                botaoQueAbriuDetalhes = botaoDetalhes;
 
                 const titulo = document.getElementById(
                     'historyDetailsName'
@@ -1519,6 +1523,20 @@ function fecharJanelaDetalhes() {
     if (!janelaDetalhes) {
         return;
     }
+
+    janelaDetalhes.classList.remove('show');
+    janelaDetalhes.hidden = true;
+
+    if (
+        botaoQueAbriuDetalhes &&
+        botaoQueAbriuDetalhes.isConnected &&
+        !botaoQueAbriuDetalhes.disabled
+    ) {
+        botaoQueAbriuDetalhes.focus();
+    }
+
+    botaoQueAbriuDetalhes = null;
+}
 
     janelaDetalhes.classList.remove('show');
     janelaDetalhes.hidden = true;
