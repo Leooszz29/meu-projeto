@@ -71,6 +71,24 @@
     text-transform: uppercase;
 }
 
+/* ========================================
+   DESTAQUE DO MES ATUAL
+======================================== */
+
+.training-chart-column.current-month .training-chart-month {
+    color: var(--accent);
+    font-weight: 800;
+}
+
+.training-chart-column.current-month .training-chart-bar {
+    box-shadow:
+        0 0 18px rgba(var(--accent-rgb), 0.35);
+}
+
+.training-chart-column.current-month .training-chart-value {
+    color: var(--accent);
+}
+
 @media (max-width: 480px) {
     .training-chart {
         padding: 18px 12px;
