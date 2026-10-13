@@ -78,7 +78,85 @@
             </p>
 
         </section>
+        
+<!-- CALENDARIO FITZONE -->
 
+<section class="calendar-section"
+         aria-label="Calendário de check-ins">
+
+    <div class="stats-row">
+
+        <div class="stat-pill">
+            <div class="label">
+                Check-ins no mês
+            </div>
+            <div class="value"
+                 id="statMes">
+                0
+            </div>
+        </div>
+
+        <div class="stat-pill">
+            <div class="label">
+                Sequência atual
+            </div>
+            <div class="value"
+                 id="statSequencia">
+                0
+            </div>
+        </div>
+
+    </div>
+
+    <div class="calendar-card">
+
+        <div class="month-nav">
+
+            <button type="button"
+                    id="prevMonth"
+                    aria-label="Mês anterior">
+                ‹
+            </button>
+
+            <div class="month-label"
+                 id="monthLabel"
+                 aria-live="polite">
+                Outubro 2026
+            </div>
+
+            <button type="button"
+                    id="nextMonth"
+                    aria-label="Próximo mês">
+                ›
+            </button>
+
+        </div>
+
+        <div class="weekdays">
+            <span>Dom</span>
+            <span>Seg</span>
+            <span>Ter</span>
+            <span>Qua</span>
+            <span>Qui</span>
+            <span>Sex</span>
+            <span>Sáb</span>
+        </div>
+
+        <div class="days-grid"
+             id="daysGrid">
+        </div>
+
+        <div class="legend">
+            <span>
+                <span class="dot checked"></span>
+                Check-in feito
+            </span>
+        </div>
+
+    </div>
+
+</section>
+        
         <a href="treinos.html"
            class="btn-new-workout">
             Ir para Meus Treinos
