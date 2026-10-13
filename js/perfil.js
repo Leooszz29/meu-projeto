@@ -299,10 +299,11 @@ function handleSaveProfile() {
         Number(getValue('peso'));
 
     if (
-        !peso ||
+        !Number.isFinite(peso) ||
         peso < 20 ||
         peso > 400
     ) {
+
         alert(
             'Não foi possível salvar o perfil.\n\n' +
             'O campo Peso deve conter um valor ' +
@@ -321,10 +322,11 @@ function handleSaveProfile() {
         Number(getValue('altura'));
 
     if (
-        !altura ||
+        !Number.isFinite(altura) ||
         altura < 100 ||
         altura > 250
     ) {
+
         alert(
             'Não foi possível salvar o perfil.\n\n' +
             'O campo Altura deve conter um valor ' +
