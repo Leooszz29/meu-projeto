@@ -781,9 +781,9 @@ atualizarPreferenciaEmail(email);
         'Login realizado com sucesso! Seja bem-vindo! 💪'
     );
 
-    // Redirecionar para o perfil
+    // Redirecionar para o calendario
     setTimeout(() => {
-        window.location.href = 'perfil.html';
+        window.location.href = 'calendario.html';
     }, 700);
 }, 600);
 
@@ -806,7 +806,7 @@ function inicializarLogin() {
             carregarUsuarioSalvo(sessao.email.trim());
 
         if (usuarioDaSessao) {
-            window.location.href = 'perfil.html';
+            window.location.href = 'calendario.html';
             return;
         }
 
