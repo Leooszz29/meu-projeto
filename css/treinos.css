@@ -5170,3 +5170,39 @@ right: 0;
         border-radius: 12px;
     }
 }
+
+/* MELHORIA VISUAL - TREINO EM ANDAMENTO MOBILE */
+
+@media (max-width: 520px) {
+    .active-exercise-item {
+        align-items: flex-start;
+        gap: 10px;
+        padding: 14px 12px;
+    }
+
+    .active-exercise-info {
+        min-width: 0;
+    }
+
+    .active-exercise-name {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .active-exercise-meta {
+        line-height: 1.6;
+    }
+
+    .active-series-controls {
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .active-series-btn {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 8px 10px;
+    }
+}
