@@ -97,6 +97,44 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
    
+    /* =========================================
+       SEQUENCIA DE CHECK-INS
+    ========================================= */
+
+    function calcularSequencia(checkins) {
+        let sequencia = 0;
+
+        const data = new Date();
+        data.setHours(12, 0, 0, 0);
+
+        while (true) {
+            const ano = data.getFullYear();
+
+            const mes = String(
+                data.getMonth() + 1
+            ).padStart(2, "0");
+
+            const dia = String(
+                data.getDate()
+            ).padStart(2, "0");
+
+            const chave = `${ano}-${mes}-${dia}`;
+
+            if (
+                checkins[chave] &&
+                checkins[chave].checked === true
+            ) {
+                sequencia++;
+
+                data.setDate(data.getDate() - 1);
+            } else {
+                break;
+            }
+        }
+
+        return sequencia;
+    }
+   
     const monthLabel = document.getElementById("monthLabel");
     const daysGrid = document.getElementById("daysGrid");
     const prevMonth = document.getElementById("prevMonth");
@@ -184,6 +222,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById("statMes").textContent =
             checkinsNoMes;
+       
+        document.getElementById("statSequencia").textContent =
+            calcularSequencia(checkins);
     }
 
     prevMonth.addEventListener("click", () => {
