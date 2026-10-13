@@ -5341,3 +5341,13 @@ right: 0;
         color: var(--accent);
     }
 }
+
+/* =========================================
+   FITZONE - CALENDARIO EM PAGINA SEPARADA
+   Oculta o calendario antigo em Meus Treinos
+========================================= */
+
+#btnToggleCalendar,
+#calendarWrapper {
+    display: none !important;
+}
