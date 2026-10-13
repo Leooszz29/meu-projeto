@@ -2921,38 +2921,6 @@ document
         }
     );
 
-document
-    .getElementById('prevMonth')
-    .addEventListener(
-        'click',
-        () => {
-            calViewMonth--;
-
-            if (calViewMonth < 0) {
-                calViewMonth = 11;
-                calViewYear--;
-            }
-
-            renderCalendar();
-        }
-    );
-
-document
-    .getElementById('nextMonth')
-    .addEventListener(
-        'click',
-        () => {
-            calViewMonth++;
-
-            if (calViewMonth > 11) {
-                calViewMonth = 0;
-                calViewYear++;
-            }
-
-            renderCalendar();
-        }
-    );
-
 // ==================== FINALIZAR TREINO ====================
 document
     .getElementById('btnFinishWorkout')
