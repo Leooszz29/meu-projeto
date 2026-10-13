@@ -87,18 +87,92 @@
             class="exercise-library"
             aria-labelledby="libraryTitle"
         >
-            <h2 id="libraryTitle">
-                Explore os exercícios
-            </h2>
+            <div class="library-header">
+                <span class="page-eyebrow">
+                    SEU CATÁLOGO DE EXERCÍCIOS
+                </span>
 
-            <p>
-                Em breve você poderá pesquisar exercícios,
-                filtrar por grupo muscular e adicioná-los
-                aos seus treinos.
+                <h2 id="libraryTitle">
+                    Explore os exercícios
+                </h2>
+
+                <p>
+                    Pesquise por nome ou selecione um grupo
+                    muscular para encontrar exercícios.
+                </p>
+            </div>
+
+            <div class="library-controls">
+
+                <label for="exerciseSearch">
+                    Pesquisar exercício
+                </label>
+
+                <input
+                    type="search"
+                    id="exerciseSearch"
+                    placeholder="Ex: Supino reto"
+                    autocomplete="off"
+                >
+
+                <div
+                    class="library-filters"
+                    id="exerciseFilters"
+                    role="group"
+                    aria-label="Filtrar por grupo muscular"
+                >
+                    <button
+                        type="button"
+                        class="library-filter active"
+                        data-group="Todos"
+                        aria-pressed="true"
+                    >
+                        Todos
+                    </button>
+
+                    <button type="button" class="library-filter" data-group="Peito">
+                        Peito
+                    </button>
+
+                    <button type="button" class="library-filter" data-group="Costas">
+                        Costas
+                    </button>
+
+                    <button type="button" class="library-filter" data-group="Pernas">
+                        Pernas
+                    </button>
+
+                    <button type="button" class="library-filter" data-group="Braços">
+                        Braços
+                    </button>
+
+                    <button type="button" class="library-filter" data-group="Ombros">
+                        Ombros
+                    </button>
+
+                    <button type="button" class="library-filter" data-group="Abdômen">
+                        Abdômen
+                    </button>
+                </div>
+            </div>
+
+            <p
+                class="library-results-count"
+                id="exerciseResultsCount"
+                aria-live="polite"
+            >
+                Preparando exercícios...
             </p>
+
+            <div
+                class="library-grid"
+                id="exerciseLibraryGrid"
+            >
+                <!-- Os exercícios serão inseridos pelo JavaScript. -->
+            </div>
+
         </section>
     </main>
-
 
 </div>
 
