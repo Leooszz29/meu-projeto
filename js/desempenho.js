@@ -1391,8 +1391,12 @@ function exibirHistoricoDesempenho() {
                         informacao.className =
                             'history-details-exercise-series';
 
+                        const percentualExercicio = total > 0
+                            ? Math.round((concluidas / total) * 100)
+                            : 0;
+
                         informacao.textContent =
-                            `${concluidas} de ${total} séries`;
+                            `${concluidas} de ${total} séries (${percentualExercicio}%)`;
 
                         const iconeStatus = document.createElement('span');
                         iconeStatus.className =
