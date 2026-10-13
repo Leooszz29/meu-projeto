@@ -98,6 +98,69 @@ document.addEventListener("DOMContentLoaded", () => {
     }
    
     /* =========================================
+       SALVAMENTO SEGURO DOS CHECK-INS
+    ========================================= */
+
+    function saveCheckins(data) {
+        try {
+            const sessaoJSON =
+                localStorage.getItem("fitzoneSessao");
+
+            const sessao = sessaoJSON
+                ? JSON.parse(sessaoJSON)
+                : null;
+
+            if (
+                !sessao ||
+                sessao.autenticado !== true ||
+                typeof sessao.email !== "string" ||
+                !sessao.email.trim()
+            ) {
+                throw new Error("Sessão inválida.");
+            }
+
+            const email = sessao.email.trim().toLowerCase();
+            const storageKey = `fitzoneCheckins:${email}`;
+
+            const dadosAtuais = localStorage.getItem(storageKey);
+
+            if (dadosAtuais !== null) {
+                const dadosVerificados =
+                    JSON.parse(dadosAtuais);
+
+                if (
+                    !dadosVerificados ||
+                    typeof dadosVerificados !== "object" ||
+                    Array.isArray(dadosVerificados)
+                ) {
+                    throw new Error(
+                        "Dados de check-in existentes inválidos."
+                    );
+                }
+            }
+
+            localStorage.setItem(
+                storageKey,
+                JSON.stringify(data)
+            );
+
+            return true;
+
+        } catch (error) {
+            console.error(
+                "Erro ao salvar check-ins:",
+                error
+            );
+
+            alert(
+                "Não foi possível salvar o check-in. Tente novamente."
+            );
+
+            return false;
+        }
+    }
+   
+    /* =========================================
        SEQUENCIA DE CHECK-INS
     ========================================= */
 
