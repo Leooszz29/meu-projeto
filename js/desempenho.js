@@ -1690,9 +1690,14 @@ if (botaoConfirmarExclusao) {
                     JSON.stringify(dados)
                 );
 
+                botaoQueAbriuExclusao = null;
+
                 fecharModalExclusao();
 
                 delete modalExcluirTreino.dataset.originalIndex;
+
+                const listaHistorico =
+                    document.getElementById('workoutHistoryList');
 
                 carregarResumoDesempenho();
                 carregarComparacaoMensal();
@@ -1701,6 +1706,11 @@ if (botaoConfirmarExclusao) {
                 carregarGraficoMensal();
                 carregarIndicadoresHistorico();
                 exibirHistoricoDesempenho();
+                
+                if (listaHistorico) {
+                    listaHistorico.setAttribute('tabindex', '-1');
+                    listaHistorico.focus();
+                }
 
             } catch (error) {
                 console.error(
