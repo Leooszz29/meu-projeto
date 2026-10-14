@@ -379,6 +379,22 @@ document.addEventListener('DOMContentLoaded', () => {
             atualizarBiblioteca
         );
     }
+   
+    /* LIMPAR PESQUISA */
+
+    const btnClearExerciseSearch =
+        document.getElementById('btnClearExerciseSearch');
+
+    if (btnClearExerciseSearch && campoPesquisa) {
+        btnClearExerciseSearch.addEventListener(
+            'click',
+            () => {
+                campoPesquisa.value = '';
+                atualizarBiblioteca();
+                campoPesquisa.focus();
+            }
+        );
+    }
 
     /* EXIBICAO INICIAL */
 
