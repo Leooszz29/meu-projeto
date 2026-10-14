@@ -205,21 +205,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderizarExercicios(exercicios);
    
+ 
     /* =========================================
-       FILTROS POR GRUPO MUSCULAR
+       PESQUISA E FILTROS DA BIBLIOTECA
     ========================================= */
+
+    const campoPesquisa = document.getElementById(
+        'exerciseSearch'
+    );
 
     const botoesFiltro = document.querySelectorAll(
         '.library-filter'
     );
 
+    let grupoAtual = 'Todos';
+
+    function normalizarTexto(texto) {
+        return texto
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .trim();
+    }
+
+    function atualizarBiblioteca() {
+
+        const pesquisa = campoPesquisa
+            ? normalizarTexto(campoPesquisa.value)
+            : '';
+
+        const exerciciosFiltrados = exercicios.filter(
+            (exercicio) => {
+
+                const correspondeGrupo =
+                    grupoAtual === 'Todos' ||
+                    exercicio.grupo === grupoAtual;
+
+                const correspondePesquisa =
+                    normalizarTexto(exercicio.nome)
+                        .includes(pesquisa);
+
+                return correspondeGrupo &&
+                    correspondePesquisa;
+            }
+        );
+
+        renderizarExercicios(exerciciosFiltrados);
+    }
+
+    /* FILTROS POR GRUPO MUSCULAR */
+
     botoesFiltro.forEach((botao) => {
 
         botao.addEventListener('click', () => {
 
-            const grupoSelecionado = botao.dataset.group;
+            grupoAtual = botao.dataset.group;
 
             botoesFiltro.forEach((item) => {
+
                 const estaAtivo = item === botao;
 
                 item.classList.toggle(
@@ -233,18 +276,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 );
             });
 
-            const exerciciosFiltrados =
-                grupoSelecionado === 'Todos'
-                    ? exercicios
-                    : exercicios.filter((exercicio) => {
-                        return exercicio.grupo === grupoSelecionado;
-                    });
-
-            renderizarExercicios(exerciciosFiltrados);
-
+            atualizarBiblioteca();
         });
-
     });
+
+    /* PESQUISA POR NOME */
+
+    if (campoPesquisa) {
+        campoPesquisa.addEventListener(
+            'input',
+            atualizarBiblioteca
+        );
+    }
+
+    /* EXIBICAO INICIAL */
+
+    atualizarBiblioteca();
 
     /* =========================================
        ENCERRAR SESSAO
