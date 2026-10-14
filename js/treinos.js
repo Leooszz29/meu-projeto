@@ -3281,7 +3281,13 @@ window.addEventListener(
             'desenvolvimento': 'Desenvolvimento com halteres',
             'elevacao-lateral': 'Elevação lateral',
             'prancha': 'Prancha abdominal',
-            'abdominal-crunch': 'Abdominal crunch'
+            'abdominal-crunch': 'Abdominal crunch',
+            'supino-inclinado': 'Supino inclinado com halteres',
+            'remada-unilateral': 'Remada unilateral com halter',
+            'mesa-flexora': 'Mesa flexora',
+            'rosca-martelo': 'Rosca martelo',
+            'elevacao-frontal': 'Elevação frontal',
+            'abdominal-infra': 'Elevação de joelhos'
         };
 
         const parametrosBiblioteca =
