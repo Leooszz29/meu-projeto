@@ -3297,6 +3297,31 @@ window.addEventListener(
             )
                 ? exerciciosBiblioteca[exercicioIdBiblioteca]
                 : null;
+        
+        /* =========================================
+           AVISO DO EXERCICIO SELECIONADO
+        ========================================= */
+
+        const avisoBiblioteca =
+            document.getElementById(
+                'librarySelectionNotice'
+            );
+
+        const nomeNoAviso =
+            document.getElementById(
+                'librarySelectedExercise'
+            );
+
+        if (
+            nomeExercicioBiblioteca &&
+            avisoBiblioteca &&
+            nomeNoAviso
+        ) {
+            nomeNoAviso.textContent =
+                nomeExercicioBiblioteca;
+
+            avisoBiblioteca.hidden = false;
+        }
 
         if (nomeExercicioBiblioteca) {
 
