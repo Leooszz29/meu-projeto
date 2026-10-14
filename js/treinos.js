@@ -3264,6 +3264,81 @@ window.addEventListener(
         }
 
         renderWorkouts();
+        
+        /* =========================================
+           EXERCICIO RECEBIDO DA BIBLIOTECA
+        ========================================= */
+
+        const exerciciosBiblioteca = {
+            'supino-reto': 'Supino reto',
+            'crucifixo': 'Crucifixo com halteres',
+            'puxada-frontal': 'Puxada frontal',
+            'remada-baixa': 'Remada baixa',
+            'agachamento-livre': 'Agachamento livre',
+            'leg-press': 'Leg press',
+            'rosca-direta': 'Rosca direta',
+            'triceps-polia': 'Tríceps na polia',
+            'desenvolvimento': 'Desenvolvimento com halteres',
+            'elevacao-lateral': 'Elevação lateral',
+            'prancha': 'Prancha abdominal',
+            'abdominal-crunch': 'Abdominal crunch'
+        };
+
+        const parametrosBiblioteca =
+            new URLSearchParams(window.location.search);
+
+        const exercicioIdBiblioteca =
+            parametrosBiblioteca.get('biblioteca');
+
+        const nomeExercicioBiblioteca =
+            Object.hasOwn(
+                exerciciosBiblioteca,
+                exercicioIdBiblioteca
+            )
+                ? exerciciosBiblioteca[exercicioIdBiblioteca]
+                : null;
+
+        if (nomeExercicioBiblioteca) {
+
+            const listaTreinos =
+                document.getElementById('workoutsList');
+
+            listaTreinos.addEventListener('click', (evento) => {
+
+                const botaoAdicionar = evento.target.closest(
+                    '.btn-add-exercise'
+                );
+
+                if (!botaoAdicionar) {
+                    return;
+                }
+
+                const campoNome =
+                    document.getElementById('exerciseNameInput');
+
+                if (!campoNome) {
+                    return;
+                }
+
+                campoNome.value = nomeExercicioBiblioteca;
+
+                parametrosBiblioteca.delete('biblioteca');
+
+                const novaConsulta =
+                    parametrosBiblioteca.toString();
+
+                const novoEndereco =
+                    window.location.pathname +
+                    (novaConsulta ? `?${novaConsulta}` : '') +
+                    window.location.hash;
+
+                window.history.replaceState(
+                    null,
+                    '',
+                    novoEndereco
+                );
+            });
+        }
 
         const treinoAtivo =
             carregarTreinoAtivo();
