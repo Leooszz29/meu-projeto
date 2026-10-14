@@ -5353,7 +5353,40 @@ right: 0;
 
 .app-nav-actions {
     min-width: 0;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+}
+
+@media (min-width: 901px) {
+    .app-nav {
+        gap: 8px;
+        padding: 8px 10px;
+    }
+
+    .app-nav-brand {
+        font-size: 20px;
+    }
+
+    .app-nav-actions {
+        gap: 2px;
+    }
+
+    .app-nav-link {
+        padding: 0 8px;
+        font-size: 10px;
+        letter-spacing: 0.3px;
+    }
+
+    .app-nav .btn-end-session {
+        min-width: 54px;
+        padding: 0 8px;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 900px) {
+    .app-nav-actions {
+        flex-wrap: wrap;
+    }
 }
 
 .app-nav-link {
