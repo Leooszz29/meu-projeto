@@ -256,6 +256,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const resumo = document.createElement('summary');
             resumo.textContent = 'Ver execução';
+           
+            detalhes.addEventListener('toggle', () => {
+                resumo.textContent = detalhes.open
+                    ? 'Ocultar execução'
+                    : 'Ver execução';
+            });
 
             const instrucao = document.createElement('p');
             instrucao.className = 'library-card-instruction';
