@@ -314,9 +314,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     grupoAtual === 'Todos' ||
                     exercicio.grupo === grupoAtual;
 
+                const textoPesquisa = normalizarTexto(
+                    `${exercicio.nome} ${exercicio.musculos}`
+                );
+
                 const correspondePesquisa =
-                    normalizarTexto(exercicio.nome)
-                        .includes(pesquisa);
+                    textoPesquisa.includes(pesquisa);
 
                 return correspondeGrupo &&
                     correspondePesquisa;
