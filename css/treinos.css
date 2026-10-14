@@ -5341,3 +5341,78 @@ right: 0;
         color: var(--accent);
     }
 }
+
+/* =========================================
+   FITZONE - MENU RESPONSIVO COMPLETO
+========================================= */
+
+/* Permite acomodar os novos itens do menu */
+.app-nav {
+    box-sizing: border-box;
+}
+
+.app-nav-actions {
+    min-width: 0;
+    flex-wrap: wrap;
+}
+
+.app-nav-link {
+    white-space: nowrap;
+}
+
+/* Tablets e computadores com largura reduzida */
+@media (max-width: 900px) {
+
+    .app-nav {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .app-nav-brand {
+        width: 100%;
+        text-align: center;
+    }
+
+    .app-nav-actions {
+        width: 100%;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .app-nav-link {
+        padding: 0 10px;
+    }
+
+    .app-nav .btn-end-session {
+        flex-shrink: 0;
+    }
+}
+
+/* Celulares */
+@media (max-width: 520px) {
+
+    .app-nav {
+        gap: 10px;
+        padding: 12px 8px;
+    }
+
+    .app-nav-actions {
+        gap: 6px;
+    }
+
+    .app-nav-link {
+        min-height: 38px;
+        padding: 0 9px;
+        font-size: 10px;
+    }
+
+    .app-nav .btn-end-session {
+        min-width: 56px;
+        min-height: 38px;
+        padding: 0 9px;
+        font-size: 10px;
+    }
+}
