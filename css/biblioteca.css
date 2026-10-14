@@ -208,6 +208,13 @@
     overflow-wrap: normal;
 }
 
+/* TITULOS LONGOS DOS EXERCICIOS */
+
+.library-card h3.library-title-long {
+    font-size: 19px;
+    letter-spacing: 0.2px;
+}
+
 .library-card-muscles {
     margin: 0;
 
