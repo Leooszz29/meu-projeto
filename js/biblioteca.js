@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     exercicio.grupo === grupoAtual;
 
                 const textoPesquisa = normalizarTexto(
-                    `${exercicio.nome} ${exercicio.musculos}`
+                    `${exercicio.nome} ${exercicio.musculos} ${exercicio.grupo}`
                 );
 
                 const correspondePesquisa =
