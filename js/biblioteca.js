@@ -402,6 +402,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const correspondeGrupo =
                     grupoAtual === 'Todos' ||
+                    (
+                        grupoAtual === 'Favoritos' &&
+                        favoritos.has(exercicio.id)
+                    ) ||
                     exercicio.grupo === grupoAtual;
 
                 const textoPesquisa = normalizarTexto(
