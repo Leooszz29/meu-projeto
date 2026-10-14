@@ -218,7 +218,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 instrucao
             );
 
+            const linkTreino = document.createElement('a');
+
+            linkTreino.className = 'btn-add-exercise';
+            linkTreino.textContent = '+ Escolher treino';
+
+            linkTreino.href =
+                `treinos.html?biblioteca=${encodeURIComponent(exercicio.id)}`;
+
+            card.appendChild(linkTreino);
+
             libraryGrid.appendChild(card);
+
         });
 
         resultsCount.textContent =
