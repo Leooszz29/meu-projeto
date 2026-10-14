@@ -333,3 +333,53 @@
 .library-card .btn-add-exercise {
     margin-top: 0;
 }
+
+/* =========================================
+   BIBLIOTECA - BOTAO LIMPAR BUSCA
+========================================= */
+
+.library-clear-search {
+    align-self: flex-end;
+
+    min-height: 40px;
+    padding: 9px 15px;
+
+    color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.08);
+
+    border: 1px solid rgba(var(--accent-rgb), 0.28);
+    border-radius: 9px;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.library-clear-search:hover {
+    background: rgba(var(--accent-rgb), 0.16);
+    border-color: var(--accent);
+}
+
+.library-clear-search:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+    .library-clear-search {
+        min-height: 44px;
+        font-size: 13px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .library-clear-search {
+        transition: none;
+    }
+}
