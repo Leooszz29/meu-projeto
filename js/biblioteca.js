@@ -208,8 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
             instrucao: 'Eleve os halteres à frente do corpo até aproximadamente a altura dos ombros.'
         },
         {
-
-        {
             id: 'abdominal-infra',
             nome: 'Elevação de joelhos',
             grupo: 'Abdômen',
