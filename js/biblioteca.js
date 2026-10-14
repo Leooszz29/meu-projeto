@@ -142,12 +142,55 @@ document.addEventListener('DOMContentLoaded', () => {
             musculos: 'Abdômen e estabilizadores do tronco',
             instrucao: 'Mantenha o corpo alinhado, com o abdômen contraído e sem prender a respiração.'
         },
+
         {
             id: 'abdominal-crunch',
             nome: 'Abdominal crunch',
             grupo: 'Abdômen',
             musculos: 'Reto abdominal',
             instrucao: 'Eleve suavemente a parte superior do tronco, sem puxar o pescoço.'
+        },
+        {
+            id: 'supino-inclinado',
+            nome: 'Supino inclinado com halteres',
+            grupo: 'Peito',
+            musculos: 'Peitoral superior, ombros e tríceps',
+            instrucao: 'Em um banco inclinado, empurre os halteres para cima e retorne de forma controlada.'
+        },
+        {
+            id: 'remada-unilateral',
+            nome: 'Remada unilateral com halter',
+            grupo: 'Costas',
+            musculos: 'Dorsais e bíceps',
+            instrucao: 'Com o tronco estável, puxe o halter em direção ao quadril e abaixe lentamente.'
+        },
+        {
+            id: 'mesa-flexora',
+            nome: 'Mesa flexora',
+            grupo: 'Pernas',
+            musculos: 'Posteriores da coxa',
+            instrucao: 'Flexione os joelhos contra a resistência da máquina e retorne lentamente.'
+        },
+        {
+            id: 'rosca-martelo',
+            nome: 'Rosca martelo',
+            grupo: 'Braços',
+            musculos: 'Bíceps, braquial e braquiorradial',
+            instrucao: 'Com as palmas voltadas para dentro, flexione os cotovelos e retorne de forma controlada.'
+        },
+        {
+            id: 'elevacao-frontal',
+            nome: 'Elevação frontal',
+            grupo: 'Ombros',
+            musculos: 'Deltoide anterior',
+            instrucao: 'Eleve os halteres à frente do corpo até aproximadamente a altura dos ombros.'
+        },
+        {
+            id: 'abdominal-infra',
+            nome: 'Elevação de joelhos',
+            grupo: 'Abdômen',
+            musculos: 'Reto abdominal e flexores do quadril',
+            instrucao: 'Eleve os joelhos em direção ao tronco, evitando balançar o corpo.'
         }
     ];
    
