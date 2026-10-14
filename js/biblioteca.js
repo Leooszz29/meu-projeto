@@ -275,6 +275,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 musculos,
                 detalhes
             );
+           
+            const botaoFavorito =
+                document.createElement('button');
+
+            botaoFavorito.type = 'button';
+            botaoFavorito.className =
+                'library-card-favorite';
+
+            botaoFavorito.textContent = '☆ Favoritar';
+
+            botaoFavorito.setAttribute(
+                'aria-label',
+                `Favoritar ${exercicio.nome}`
+            );
+
+            card.appendChild(botaoFavorito);
 
             const linkTreino = document.createElement('a');
 
