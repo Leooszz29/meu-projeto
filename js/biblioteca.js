@@ -150,6 +150,60 @@ document.addEventListener('DOMContentLoaded', () => {
             instrucao: 'Eleve suavemente a parte superior do tronco, sem puxar o pescoço.'
         }
     ];
+   
+    /* =========================================
+       EXIBIR EXERCICIOS NA BIBLIOTECA
+    ========================================= */
+
+    const libraryGrid = document.getElementById(
+        'exerciseLibraryGrid'
+    );
+
+    const resultsCount = document.getElementById(
+        'exerciseResultsCount'
+    );
+
+    function renderizarExercicios(lista) {
+        if (!libraryGrid || !resultsCount) {
+            return;
+        }
+
+        libraryGrid.replaceChildren();
+
+        lista.forEach((exercicio) => {
+            const card = document.createElement('article');
+            card.className = 'library-card';
+
+            const grupo = document.createElement('span');
+            grupo.className = 'library-card-group';
+            grupo.textContent = exercicio.grupo;
+
+            const titulo = document.createElement('h3');
+            titulo.textContent = exercicio.nome;
+
+            const musculos = document.createElement('p');
+            musculos.className = 'library-card-muscles';
+            musculos.textContent = exercicio.musculos;
+
+            const instrucao = document.createElement('p');
+            instrucao.className = 'library-card-instruction';
+            instrucao.textContent = exercicio.instrucao;
+
+            card.append(
+                grupo,
+                titulo,
+                musculos,
+                instrucao
+            );
+
+            libraryGrid.appendChild(card);
+        });
+
+        resultsCount.textContent =
+            `${lista.length} exercícios encontrados`;
+    }
+
+    renderizarExercicios(exercicios);
 
     /* =========================================
        ENCERRAR SESSAO
