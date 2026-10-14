@@ -224,9 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsCount.textContent =
             `${lista.length} exercícios encontrados`;
     }
-
-    renderizarExercicios(exercicios);
-   
  
     /* =========================================
        PESQUISA E FILTROS DA BIBLIOTECA
