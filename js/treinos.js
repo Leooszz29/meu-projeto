@@ -3287,7 +3287,10 @@ window.addEventListener(
             'mesa-flexora': 'Mesa flexora',
             'rosca-martelo': 'Rosca martelo',
             'elevacao-frontal': 'Elevação frontal',
-            'abdominal-infra': 'Elevação de joelhos'
+            'abdominal-infra': 'Elevação de joelhos',
+            'cadeira-extensora': 'Cadeira extensora',
+            'elevacao-pelvica': 'Elevação pélvica',
+            'gemeos-em-pe': 'Gêmeos em pé (panturrilha)'
         };
 
         const parametrosBiblioteca =
