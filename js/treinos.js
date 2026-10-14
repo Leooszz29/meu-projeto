@@ -3324,6 +3324,7 @@ window.addEventListener(
         }
 
         if (nomeExercicioBiblioteca) {
+            let exercicioPendente = true;
 
             const listaTreinos =
                 document.getElementById('workoutsList');
@@ -3334,7 +3335,7 @@ window.addEventListener(
                     '.btn-add-exercise'
                 );
 
-                if (!botaoAdicionar) {
+                if (!botaoAdicionar || !exercicioPendente) {
                     return;
                 }
 
@@ -3346,6 +3347,7 @@ window.addEventListener(
                 }
 
                 campoNome.value = nomeExercicioBiblioteca;
+                exercicioPendente = false;
 
                 // Oculta o aviso após escolher o treino
                 if (avisoBiblioteca) {
