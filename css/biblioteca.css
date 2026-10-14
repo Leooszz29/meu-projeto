@@ -257,3 +257,66 @@
         transform: none;
     }
 }
+
+/* =========================================
+   BIBLIOTECA - BOTAO ESCOLHER TREINO
+========================================= */
+
+.library-card .btn-add-exercise {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 44px;
+    margin-top: auto;
+    padding: 12px 14px;
+
+    background: rgba(var(--accent-rgb), 0.14);
+    color: var(--accent);
+
+    border: 1px solid rgba(var(--accent-rgb), 0.45);
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.library-card .btn-add-exercise:hover {
+    background: rgba(var(--accent-rgb), 0.24);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.library-card .btn-add-exercise:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+    .library-card .btn-add-exercise {
+        min-height: 46px;
+        font-size: 13px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .library-card .btn-add-exercise {
+        transition: none;
+    }
+
+    .library-card .btn-add-exercise:hover {
+        transform: none;
+    }
+}
