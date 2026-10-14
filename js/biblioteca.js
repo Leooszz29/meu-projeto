@@ -204,6 +204,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     renderizarExercicios(exercicios);
+   
+    /* =========================================
+       FILTROS POR GRUPO MUSCULAR
+    ========================================= */
+
+    const botoesFiltro = document.querySelectorAll(
+        '.library-filter'
+    );
+
+    botoesFiltro.forEach((botao) => {
+
+        botao.addEventListener('click', () => {
+
+            const grupoSelecionado = botao.dataset.group;
+
+            botoesFiltro.forEach((item) => {
+                const estaAtivo = item === botao;
+
+                item.classList.toggle(
+                    'active',
+                    estaAtivo
+                );
+
+                item.setAttribute(
+                    'aria-pressed',
+                    String(estaAtivo)
+                );
+            });
+
+            const exerciciosFiltrados =
+                grupoSelecionado === 'Todos'
+                    ? exercicios
+                    : exercicios.filter((exercicio) => {
+                        return exercicio.grupo === grupoSelecionado;
+                    });
+
+            renderizarExercicios(exerciciosFiltrados);
+
+        });
+
+    });
 
     /* =========================================
        ENCERRAR SESSAO
