@@ -320,3 +320,16 @@
         transform: none;
     }
 }
+
+/* =========================================
+   BIBLIOTECA - ALINHAMENTO DOS BOTOES
+========================================= */
+
+.library-card .library-card-details {
+    margin-top: auto;
+    margin-bottom: 0;
+}
+
+.library-card .btn-add-exercise {
+    margin-top: 0;
+}
