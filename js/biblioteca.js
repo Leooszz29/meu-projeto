@@ -169,6 +169,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         libraryGrid.replaceChildren();
+       
+        if (lista.length === 0) {
+            const mensagem = document.createElement('p');
+
+            mensagem.className = 'library-empty-message';
+
+            mensagem.textContent =
+                'Nenhum exercício encontrado. Tente outro nome ou grupo muscular.';
+
+            mensagem.style.gridColumn = '1 / -1';
+            mensagem.style.textAlign = 'center';
+            mensagem.style.padding = '30px 15px';
+            mensagem.style.color = 'var(--chalk-dim)';
+            mensagem.style.lineHeight = '1.6';
+
+            libraryGrid.appendChild(mensagem);
+
+            resultsCount.textContent =
+                '0 exercícios encontrados';
+
+            return;
+        }
 
         lista.forEach((exercicio) => {
             const card = document.createElement('article');
