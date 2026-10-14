@@ -3347,6 +3347,11 @@ window.addEventListener(
 
                 campoNome.value = nomeExercicioBiblioteca;
 
+                // Oculta o aviso após escolher o treino
+                if (avisoBiblioteca) {
+                    avisoBiblioteca.hidden = true;
+                }
+
                 parametrosBiblioteca.delete('biblioteca');
 
                 const novaConsulta =
