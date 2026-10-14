@@ -208,11 +208,34 @@ document.addEventListener('DOMContentLoaded', () => {
             instrucao: 'Eleve os halteres à frente do corpo até aproximadamente a altura dos ombros.'
         },
         {
+
+        {
             id: 'abdominal-infra',
             nome: 'Elevação de joelhos',
             grupo: 'Abdômen',
             musculos: 'Reto abdominal e flexores do quadril',
             instrucao: 'Eleve os joelhos em direção ao tronco, evitando balançar o corpo.'
+        },
+        {
+            id: 'cadeira-extensora',
+            nome: 'Cadeira extensora',
+            grupo: 'Pernas',
+            musculos: 'Quadríceps',
+            instrucao: 'Sentado na máquina, estenda os joelhos de forma controlada e retorne lentamente.'
+        },
+        {
+            id: 'elevacao-pelvica',
+            nome: 'Elevação pélvica',
+            grupo: 'Pernas',
+            musculos: 'Glúteos e posteriores da coxa',
+            instrucao: 'Com a parte superior das costas apoiada, eleve o quadril contraindo os glúteos e retorne de forma controlada.'
+        },
+        {
+            id: 'gemeos-em-pe',
+            nome: 'Gêmeos em pé (panturrilha)',
+            grupo: 'Pernas',
+            musculos: 'Gastrocnêmio e sóleo',
+            instrucao: 'Eleve os calcanhares de forma controlada, mantenha o equilíbrio e retorne lentamente.'
         }
     ];
    
