@@ -61,6 +61,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
    
     /* =========================================
+       FAVORITOS POR USUARIO
+    ========================================= */
+
+    const chaveFavoritos = `fitzoneFavoritos:${email}`;
+
+    let favoritosSalvos = [];
+
+    try {
+        const dados = JSON.parse(
+            localStorage.getItem(chaveFavoritos) || '[]'
+        );
+
+        if (Array.isArray(dados)) {
+            favoritosSalvos = dados;
+        }
+    } catch (error) {
+        console.warn('Erro ao carregar favoritos:', error);
+    }
+
+    const favoritos = new Set(favoritosSalvos);
+   
+    /* =========================================
        CATALOGO DE EXERCICIOS
     ========================================= */
 
@@ -283,12 +305,49 @@ document.addEventListener('DOMContentLoaded', () => {
             botaoFavorito.className =
                 'library-card-favorite';
 
-            botaoFavorito.textContent = '☆ Favoritar';
+            function atualizarBotaoFavorito() {
+                const favorito = favoritos.has(exercicio.id);
 
-            botaoFavorito.setAttribute(
-                'aria-label',
-                `Favoritar ${exercicio.nome}`
-            );
+                botaoFavorito.textContent = favorito
+                    ? '★ Favoritado'
+                    : '☆ Favoritar';
+
+                botaoFavorito.setAttribute(
+                    'aria-pressed',
+                    String(favorito)
+                );
+
+                botaoFavorito.setAttribute(
+                    'aria-label',
+                    favorito
+                        ? `Remover ${exercicio.nome} dos favoritos`
+                        : `Favoritar ${exercicio.nome}`
+                );
+            }
+
+            atualizarBotaoFavorito();
+
+            botaoFavorito.addEventListener('click', () => {
+                if (favoritos.has(exercicio.id)) {
+                    favoritos.delete(exercicio.id);
+                } else {
+                    favoritos.add(exercicio.id);
+                }
+
+                try {
+                    localStorage.setItem(
+                        chaveFavoritos,
+                        JSON.stringify([...favoritos])
+                    );
+                } catch (error) {
+                    console.warn(
+                        'Erro ao salvar favoritos:',
+                        error
+                    );
+                }
+
+                atualizarBotaoFavorito();
+            });
 
             card.appendChild(botaoFavorito);
 
