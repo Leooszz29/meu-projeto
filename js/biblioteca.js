@@ -347,6 +347,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 atualizarBotaoFavorito();
+
+                if (grupoAtual === 'Favoritos') {
+                    atualizarBiblioteca();
+                }
             });
 
             card.appendChild(botaoFavorito);
