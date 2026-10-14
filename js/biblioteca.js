@@ -250,15 +250,24 @@ document.addEventListener('DOMContentLoaded', () => {
             musculos.className = 'library-card-muscles';
             musculos.textContent = exercicio.musculos;
 
+
+            const detalhes = document.createElement('details');
+            detalhes.className = 'library-card-details';
+
+            const resumo = document.createElement('summary');
+            resumo.textContent = 'Ver execução';
+
             const instrucao = document.createElement('p');
             instrucao.className = 'library-card-instruction';
             instrucao.textContent = exercicio.instrucao;
+
+            detalhes.append(resumo, instrucao);
 
             card.append(
                 grupo,
                 titulo,
                 musculos,
-                instrucao
+                detalhes
             );
 
             const linkTreino = document.createElement('a');
