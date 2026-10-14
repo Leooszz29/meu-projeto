@@ -383,3 +383,58 @@
         transition: none;
     }
 }
+
+/* =========================================
+   BIBLIOTECA - BOTAO FAVORITAR
+========================================= */
+
+.library-card .library-card-favorite {
+    width: 100%;
+    min-height: 44px;
+    padding: 11px 14px;
+
+    color: var(--chalk-dim);
+    background: rgba(0, 0, 0, 0.15);
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.library-card .library-card-favorite:hover {
+    border-color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.08);
+}
+
+.library-card .library-card-favorite[aria-pressed="true"] {
+    color: #f1c75b;
+    background: rgba(241, 199, 91, 0.10);
+    border-color: rgba(241, 199, 91, 0.45);
+}
+
+.library-card .library-card-favorite:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+    .library-card .library-card-favorite {
+        min-height: 46px;
+        font-size: 13px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .library-card .library-card-favorite {
+        transition: none;
+    }
+}
