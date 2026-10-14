@@ -267,6 +267,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const titulo = document.createElement('h3');
             titulo.textContent = exercicio.nome;
+           
+            if (exercicio.nome.length > 24) {
+                titulo.classList.add('library-title-long');
+            }
 
             const musculos = document.createElement('p');
             musculos.className = 'library-card-muscles';
