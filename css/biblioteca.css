@@ -205,7 +205,7 @@
     line-height: 1.15;
     letter-spacing: 0.5px;
 
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
 }
 
 .library-card-muscles {
