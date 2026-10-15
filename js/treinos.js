@@ -3291,7 +3291,9 @@ window.addEventListener(
             'cadeira-extensora': 'Cadeira extensora',
             'elevacao-pelvica': 'Elevação pélvica',
             'gemeos-em-pe': 'Gêmeos em pé (panturrilha)',
-            'peck-deck': 'Crucifixo na máquina (Peck Deck)'
+            'peck-deck': 'Crucifixo na máquina (Peck Deck)',
+            'rosca-barra-w': 'Rosca com barra W',
+            'triceps-corda': 'Tríceps corda'
         };
 
         const parametrosBiblioteca =
