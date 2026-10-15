@@ -95,7 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'crucifixo': 'crucifixo-halteres.webp',
         'supino-inclinado': 'supino-inclinado-halteres.webp',
         'peck-deck': 'peck-deck.webp',
-        'flexao-bracos': 'flexao-bracos.webp'
+        'flexao-bracos': 'flexao-bracos.webp',
+        'rosca-direta': 'rosca-direta.webp'
     };
 
     const exercicios = [
