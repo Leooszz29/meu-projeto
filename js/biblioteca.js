@@ -377,6 +377,22 @@ document.addEventListener('DOMContentLoaded', () => {
         lista.forEach((exercicio) => {
             const card = document.createElement('article');
             card.className = 'library-card';
+           
+            /* IMAGEM DO EXERCICIO */
+
+            const nomeImagem = imagensExercicios[exercicio.id];
+
+            if (nomeImagem) {
+                const imagem = document.createElement('img');
+
+                imagem.className = 'library-card-image';
+                imagem.src = `img/exercicios/${nomeImagem}`;
+                imagem.alt = `Ilustração do exercício ${exercicio.nome}`;
+                imagem.loading = 'lazy';
+                imagem.decoding = 'async';
+
+                card.appendChild(imagem);
+            }
 
             const grupo = document.createElement('span');
             grupo.className = 'library-card-group';
