@@ -3293,7 +3293,9 @@ window.addEventListener(
             'gemeos-em-pe': 'Gêmeos em pé (panturrilha)',
             'peck-deck': 'Crucifixo na máquina (Peck Deck)',
             'rosca-barra-w': 'Rosca com barra W',
-            'triceps-corda': 'Tríceps corda'
+            'triceps-corda': 'Tríceps corda',
+            'flexao-bracos': 'Flexão de braços',
+            'remada-curvada': 'Remada curvada com barra'
         };
 
         const parametrosBiblioteca =
