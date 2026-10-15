@@ -304,6 +304,20 @@ document.addEventListener('DOMContentLoaded', () => {
             grupo: 'Ombros',
             musculos: 'Deltoide posterior, trapézio e rotadores externos do ombro',
             instrucao: 'Com a corda na polia alta, puxe em direção ao rosto, afastando as mãos e mantendo o tronco estável. Retorne lentamente.'
+        },
+        {
+            id: 'abdominal-bicicleta',
+            nome: 'Abdominal bicicleta',
+            grupo: 'Abdômen',
+            musculos: 'Reto abdominal e oblíquos',
+            instrucao: 'Deitado de costas, eleve os ombros e aproxime alternadamente o cotovelo do joelho oposto, mantendo o movimento controlado e sem puxar o pescoço.'
+        },
+        {
+            id: 'prancha-lateral',
+            nome: 'Prancha lateral',
+            grupo: 'Abdômen',
+            musculos: 'Oblíquos, glúteo médio e estabilizadores do tronco',
+            instrucao: 'Apoie o antebraço e a lateral do pé no chão, eleve o quadril e mantenha o corpo alinhado. Repita dos dois lados, respirando normalmente.'
         }
     ];
 
