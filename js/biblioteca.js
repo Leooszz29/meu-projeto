@@ -290,6 +290,20 @@ document.addEventListener('DOMContentLoaded', () => {
             grupo: 'Braços',
             musculos: 'Tríceps braquial',
             instrucao: 'Segure um halter acima da cabeça, flexione os cotovelos para baixar o peso atrás da cabeça e estenda os braços de forma controlada.'
+        },
+        {
+            id: 'crucifixo-inverso',
+            nome: 'Crucifixo inverso na máquina',
+            grupo: 'Ombros',
+            musculos: 'Deltoide posterior, romboides e trapézio',
+            instrucao: 'Ajuste o banco e os pegadores da máquina. Abra os braços para trás de forma controlada, sem elevar os ombros, e retorne lentamente.'
+        },
+        {
+            id: 'face-pull',
+            nome: 'Face pull na polia',
+            grupo: 'Ombros',
+            musculos: 'Deltoide posterior, trapézio e rotadores externos do ombro',
+            instrucao: 'Com a corda na polia alta, puxe em direção ao rosto, afastando as mãos e mantendo o tronco estável. Retorne lentamente.'
         }
     ];
 
