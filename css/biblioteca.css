@@ -547,8 +547,8 @@
 
 .library-zoom-button {
     position: absolute;
+    top: 8px;
     right: 8px;
-    bottom: 8px;
     z-index: 1;
 
     display: flex;
@@ -559,7 +559,7 @@
     height: 28px;
     padding: 0;
 
-    color: var(--accent);
+    color: #ffffff;
     background: transparent;
     border: none;
     border-radius: 0;
@@ -576,7 +576,7 @@
 .library-zoom-button:hover {
     background: transparent;
     border: none;
-    color: var(--accent);
+    color: #ffffff;
     transform: scale(1.1);
 }
 
@@ -592,12 +592,12 @@
 
 @media (max-width: 520px) {
     .library-zoom-button {
+        top: 8px;
         right: 8px;
-        bottom: 8px;
         width: 32px;
         height: 32px;
-        border-radius: 10px;
-    }   
+        border-radius: 0;
+    }
 
 .library-zoom-button svg {
     width: 17px;
