@@ -85,6 +85,18 @@ document.addEventListener('DOMContentLoaded', () => {
     /* =========================================
        CATALOGO DE EXERCICIOS
     ========================================= */
+   
+    /* =========================================
+       IMAGENS DOS EXERCICIOS
+    ========================================= */
+
+    const imagensExercicios = {
+        'supino-reto': 'supino-reto.webp',
+        'crucifixo': 'crucifixo-halteres.webp',
+        'supino-inclinado': 'supino-inclinado-halteres.webp',
+        'peck-deck': 'peck-deck.webp',
+        'flexao-bracos': 'flexao-bracos.webp'
+    };
 
     const exercicios = [
         {
