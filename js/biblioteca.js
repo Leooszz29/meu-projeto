@@ -411,8 +411,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const nomeImagem = imagensExercicios[exercicio.id];
 
             if (nomeImagem) {
-                const imageWrap = document.createElement('div');
-                imageWrap.className = 'library-image-wrap';
+                const botaoImagem = document.createElement('button');
+                botaoImagem.type = 'button';
+                botaoImagem.className = 'library-image-button';
+
+                botaoImagem.setAttribute(
+                    'aria-label',
+                    `Ampliar imagem de ${exercicio.nome}`
+                );
+
+                botaoImagem.title = 'Clique para ampliar';
 
                 const imagem = document.createElement('img');
                 imagem.className = 'library-card-image';
@@ -421,16 +429,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 imagem.loading = 'lazy';
                 imagem.decoding = 'async';
 
-                const botaoZoom = document.createElement('button');
-                botaoZoom.type = 'button';
-                botaoZoom.className = 'library-zoom-button';
-                botaoZoom.setAttribute(
-                    'aria-label',
-                    `Ampliar imagem de ${exercicio.nome}`
-                );
-                botaoZoom.title = 'Ampliar imagem';
-               
-                botaoZoom.addEventListener('click', () => {
+                botaoImagem.appendChild(imagem);
+
+                botaoImagem.addEventListener('click', () => {
                     const modal = document.getElementById('exerciseImageModal');
                     const imagemAmpliada = document.getElementById('exerciseImageExpanded');
 
@@ -446,26 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                botaoZoom.innerHTML = `
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2.2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
-                        <path d="M15 3h6v6"></path>
-                        <path d="M21 3l-7 7"></path>
-                        <path d="M9 21H3v-6"></path>
-                        <path d="M3 21l7-7"></path>
-                    </svg>
-                `;
-
-                imageWrap.append(imagem, botaoZoom);
-                card.appendChild(imageWrap);
+                card.appendChild(botaoImagem);
             }
 
             const grupo = document.createElement('span');
