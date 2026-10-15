@@ -3298,7 +3298,9 @@ window.addEventListener(
             'remada-curvada': 'Remada curvada com barra',
             'barra-fixa': 'Barra fixa',
             'rosca-scott': 'Rosca Scott',
-            'triceps-frances': 'Tríceps francês com halter'
+            'triceps-frances': 'Tríceps francês com halter',
+            'crucifixo-inverso': 'Crucifixo inverso na máquina',
+            'face-pull': 'Face pull na polia'
         };
 
         const parametrosBiblioteca =
