@@ -241,6 +241,20 @@ document.addEventListener('DOMContentLoaded', () => {
             grupo: 'Peito',
             musculos: 'Peitoral e deltoide anterior',
             instrucao: 'Ajuste o banco, mantenha as costas apoiadas e aproxime os braços à frente do peito de forma controlada.'
+        },
+        {
+            id: 'rosca-barra-w',
+            nome: 'Rosca com barra W',
+            grupo: 'Braços',
+            musculos: 'Bíceps, braquial e braquiorradial',
+            instrucao: 'Segure a barra W com as palmas voltadas para cima, flexione os cotovelos mantendo os braços próximos ao corpo e retorne lentamente.'
+        },
+        {
+            id: 'triceps-corda',
+            nome: 'Tríceps corda',
+            grupo: 'Braços',
+            musculos: 'Tríceps braquial',
+            instrucao: 'Na polia alta, mantenha os cotovelos próximos ao tronco, estenda os braços puxando a corda para baixo e retorne de forma controlada.'
         }
     ];
 
