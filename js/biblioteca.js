@@ -108,7 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
         'mesa-flexora': 'mesa-flexora.webp',
         'cadeira-extensora': 'cadeira-extensora.webp',
         'elevacao-pelvica': 'elevacao-pelvica.webp',
-        'gemeos-em-pe': 'gemeos-em-pe.webp'
+        'gemeos-em-pe': 'gemeos-em-pe.webp',
+        'puxada-frontal': 'puxada-frontal.webp',
+        'remada-baixa': 'remada-baixa.webp',
+        'remada-unilateral': 'remada-unilateral.webp',
+        'remada-curvada': 'remada-curvada.webp',
+        'barra-fixa': 'barra-fixa.webp'
     };
 
     const exercicios = [
