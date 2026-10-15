@@ -535,3 +535,62 @@
         right: 14px;
     }
 }
+
+/* =========================================
+   BIBLIOTECA - BOTAO AMPLIAR IMAGEM
+========================================= */
+
+.library-image-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.library-zoom-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+    padding: 0;
+
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.library-zoom-button:hover {
+    background: rgba(0, 0, 0, 0.95);
+    transform: scale(1.08);
+}
+
+.library-zoom-button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.library-zoom-button svg {
+    width: 21px;
+    height: 21px;
+}
+
+@media (max-width: 520px) {
+    .library-zoom-button {
+        top: 8px;
+        right: 8px;
+        width: 40px;
+        height: 40px;
+    }
+}
