@@ -102,7 +102,13 @@ document.addEventListener('DOMContentLoaded', () => {
         'rosca-scott': 'rosca-scott.webp',
         'triceps-polia': 'triceps-polia.webp',
         'triceps-corda': 'triceps-corda.webp',
-        'triceps-frances': 'triceps-frances.webp'
+        'triceps-frances': 'triceps-frances.webp',
+        'agachamento-livre': 'agachamento-livre.webp',
+        'leg-press': 'leg-press.webp',
+        'mesa-flexora': 'mesa-flexora.webp',
+        'cadeira-extensora': 'cadeira-extensora.webp',
+        'elevacao-pelvica': 'elevacao-pelvica.webp',
+        'gemeos-em-pe': 'gemeos-em-pe.webp'
     };
 
     const exercicios = [
