@@ -604,3 +604,27 @@
     height: 17px;
 }
 }
+
+/* =========================================
+   BIBLIOTECA - ICONE DE EXPANDIR DISCRETO
+========================================= */
+
+@media (hover: hover) and (pointer: fine) {
+    .library-zoom-button {
+        opacity: 0;
+        transition:
+            opacity 0.2s ease,
+            transform 0.2s ease;
+    }
+
+    .library-image-wrap:hover .library-zoom-button,
+    .library-zoom-button:focus-visible {
+        opacity: 1;
+    }
+}
+
+@media (hover: none), (pointer: coarse) {
+    .library-zoom-button {
+        opacity: 1;
+    }
+}
