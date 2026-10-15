@@ -3300,7 +3300,9 @@ window.addEventListener(
             'rosca-scott': 'Rosca Scott',
             'triceps-frances': 'Tríceps francês com halter',
             'crucifixo-inverso': 'Crucifixo inverso na máquina',
-            'face-pull': 'Face pull na polia'
+            'face-pull': 'Face pull na polia',
+            'abdominal-bicicleta': 'Abdominal bicicleta',
+            'prancha-lateral': 'Prancha lateral'
         };
 
         const parametrosBiblioteca =
