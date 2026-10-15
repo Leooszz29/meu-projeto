@@ -429,6 +429,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     `Ampliar imagem de ${exercicio.nome}`
                 );
                 botaoZoom.title = 'Ampliar imagem';
+               
+                botaoZoom.addEventListener('click', () => {
+                    const modal = document.getElementById('exerciseImageModal');
+                    const imagemAmpliada = document.getElementById('exerciseImageExpanded');
+
+                    if (!modal || !imagemAmpliada) {
+                        return;
+                    }
+
+                    imagemAmpliada.src = imagem.src;
+                    imagemAmpliada.alt = imagem.alt;
+
+                    if (!modal.open) {
+                        modal.showModal();
+                    }
+                });
 
                 botaoZoom.innerHTML = `
                     <svg
@@ -677,6 +693,25 @@ document.addEventListener('DOMContentLoaded', () => {
     /* EXIBICAO INICIAL */
 
     atualizarBiblioteca();
+   
+    /* =========================================
+       FECHAR IMAGEM AMPLIADA
+    ========================================= */
+
+    const modalImagem = document.getElementById('exerciseImageModal');
+    const botaoFecharImagem = document.getElementById('closeExerciseImageModal');
+
+    if (modalImagem && botaoFecharImagem) {
+        botaoFecharImagem.addEventListener('click', () => {
+            modalImagem.close();
+        });
+
+        modalImagem.addEventListener('click', (event) => {
+            if (event.target === modalImagem) {
+                modalImagem.close();
+            }
+        });
+    }
 
     /* =========================================
        ENCERRAR SESSAO
