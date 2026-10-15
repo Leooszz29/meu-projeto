@@ -452,13 +452,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
-                        stroke-width="2"
+                        stroke-width="2.2"
                         stroke-linecap="round"
                         stroke-linejoin="round"
                         aria-hidden="true"
                     >
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M21 3l-7 7"></path>
+                        <path d="M9 21H3v-6"></path>
+                        <path d="M3 21l7-7"></path>
                     </svg>
                 `;
 
