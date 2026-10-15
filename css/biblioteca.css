@@ -628,3 +628,33 @@
         opacity: 1;
     }
 }
+
+/* =========================================
+   BIBLIOTECA - IMAGEM CLICAVEL
+========================================= */
+
+.library-image-button {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+
+    text-align: left;
+    cursor: zoom-in;
+}
+
+.library-image-button .library-card-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.library-image-button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
