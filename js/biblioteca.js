@@ -411,15 +411,45 @@ document.addEventListener('DOMContentLoaded', () => {
             const nomeImagem = imagensExercicios[exercicio.id];
 
             if (nomeImagem) {
-                const imagem = document.createElement('img');
+                const imageWrap = document.createElement('div');
+                imageWrap.className = 'library-image-wrap';
 
+                const imagem = document.createElement('img');
                 imagem.className = 'library-card-image';
                 imagem.src = `img/exercicios/${nomeImagem}`;
                 imagem.alt = `Ilustração do exercício ${exercicio.nome}`;
                 imagem.loading = 'lazy';
                 imagem.decoding = 'async';
 
-                card.appendChild(imagem);
+                const botaoZoom = document.createElement('button');
+                botaoZoom.type = 'button';
+                botaoZoom.className = 'library-zoom-button';
+                botaoZoom.setAttribute(
+                    'aria-label',
+                    `Ampliar imagem de ${exercicio.nome}`
+                );
+                botaoZoom.title = 'Ampliar imagem';
+
+                botaoZoom.innerHTML = `
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                        <path d="M11 8v6"></path>
+                        <path d="M8 11h6"></path>
+                    </svg>
+                `;
+
+                imageWrap.append(imagem, botaoZoom);
+                card.appendChild(imageWrap);
             }
 
             const grupo = document.createElement('span');
