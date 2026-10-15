@@ -276,6 +276,20 @@ document.addEventListener('DOMContentLoaded', () => {
             grupo: 'Costas',
             musculos: 'Dorsais, bíceps e músculos das escápulas',
             instrucao: 'Segure a barra com as mãos afastadas, mantenha o tronco firme e puxe o corpo até aproximar o queixo da barra. Retorne de forma controlada, sem balançar.'
+        },
+        {
+            id: 'rosca-scott',
+            nome: 'Rosca Scott',
+            grupo: 'Braços',
+            musculos: 'Bíceps e braquial',
+            instrucao: 'Apoie os braços no banco Scott, flexione os cotovelos para elevar a barra e retorne lentamente, sem retirar os braços do apoio.'
+        },
+        {
+            id: 'triceps-frances',
+            nome: 'Tríceps francês com halter',
+            grupo: 'Braços',
+            musculos: 'Tríceps braquial',
+            instrucao: 'Segure um halter acima da cabeça, flexione os cotovelos para baixar o peso atrás da cabeça e estenda os braços de forma controlada.'
         }
     ];
 
