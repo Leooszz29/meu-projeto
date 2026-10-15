@@ -96,7 +96,13 @@ document.addEventListener('DOMContentLoaded', () => {
         'supino-inclinado': 'supino-inclinado-halteres.webp',
         'peck-deck': 'peck-deck.webp',
         'flexao-bracos': 'flexao-bracos.webp',
-        'rosca-direta': 'rosca-direta.webp'
+        'rosca-direta': 'rosca-direta.webp',
+        'rosca-martelo': 'rosca-martelo.webp',
+        'rosca-barra-w': 'rosca-barra-w.webp',
+        'rosca-scott': 'rosca-scott.webp',
+        'triceps-polia': 'triceps-polia.webp',
+        'triceps-corda': 'triceps-corda.webp',
+        'triceps-frances': 'triceps-frances.webp'
     };
 
     const exercicios = [
