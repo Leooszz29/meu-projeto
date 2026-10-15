@@ -5506,3 +5506,39 @@ right: 0;
         font-size: 22px;
     }
 }
+
+/* =========================================
+   FITZONE - MENU HORIZONTAL MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+
+    .app-nav-actions {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+
+        width: 100%;
+        max-width: 100%;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        gap: 6px;
+        padding-bottom: 5px;
+
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scroll-behavior: smooth;
+    }
+
+    .app-nav-link {
+        flex-shrink: 0;
+        min-height: 44px;
+    }
+
+    .app-nav .btn-end-session {
+        flex-shrink: 0;
+        min-height: 44px;
+    }
+}
