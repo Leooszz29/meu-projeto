@@ -582,15 +582,15 @@
 }
 
 .library-zoom-button svg {
-    width: 21px;
-    height: 21px;
+    width: 17px;
+    height: 17px;
 }
 
 @media (max-width: 520px) {
     .library-zoom-button {
         top: 8px;
         right: 8px;
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
     }
 }
