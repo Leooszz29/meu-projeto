@@ -559,7 +559,7 @@
     height: 28px;
     padding: 0;
 
-    color: #ffffff;
+    color: var(--accent);
     background: transparent;
     border: none;
     border-radius: 0;
@@ -586,8 +586,8 @@
 }
 
 .library-zoom-button svg {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
 }
 
 @media (max-width: 520px) {
@@ -597,10 +597,10 @@
         width: 32px;
         height: 32px;
         border-radius: 10px;
-    }
-   
-    .library-zoom-button svg {
-        width: 15px;
-        height: 15px;
-    }
+    }   
+
+.library-zoom-button svg {
+    width: 17px;
+    height: 17px;
+}
 }
