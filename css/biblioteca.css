@@ -560,23 +560,24 @@
     padding: 0;
 
     color: #ffffff;
-    background: rgba(10, 10, 10, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    border-radius: 10px;
-    backdrop-filter: blur(4px);
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
 
     cursor: pointer;
 
     transition:
-        background 0.2s ease,
-        transform 0.2s ease,
-        border-color 0.2s ease;
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .library-zoom-button:hover {
-    background: rgba(10, 10, 10, 0.78);
-    border-color: rgba(255, 255, 255, 0.38);
-    transform: scale(1.05);
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    transform: scale(1.1);
 }
 
 .library-zoom-button:focus-visible {
