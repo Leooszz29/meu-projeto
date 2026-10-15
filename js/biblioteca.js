@@ -269,6 +269,13 @@ document.addEventListener('DOMContentLoaded', () => {
             grupo: 'Costas',
             musculos: 'Dorsais, romboides, trapézio e bíceps',
             instrucao: 'Incline o tronco mantendo a coluna neutra e puxe a barra em direção ao abdômen, retornando de forma controlada.'
+        },
+        {
+            id: 'barra-fixa',
+            nome: 'Barra fixa',
+            grupo: 'Costas',
+            musculos: 'Dorsais, bíceps e músculos das escápulas',
+            instrucao: 'Segure a barra com as mãos afastadas, mantenha o tronco firme e puxe o corpo até aproximar o queixo da barra. Retorne de forma controlada, sem balançar.'
         }
     ];
 
