@@ -565,3 +565,33 @@
     outline: 2px solid var(--accent);
     outline-offset: 3px;
 }
+
+/* =========================================
+   FITZONE - FILTROS HORIZONTAIS MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+
+    .library-filters {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 8px;
+
+        width: 100%;
+        max-width: 100%;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        padding: 4px 0 8px;
+
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    .library-filter {
+        flex-shrink: 0;
+        min-height: 44px;
+        white-space: nowrap;
+    }
+}
