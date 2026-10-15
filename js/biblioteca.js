@@ -113,7 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
         'remada-baixa': 'remada-baixa.webp',
         'remada-unilateral': 'remada-unilateral.webp',
         'remada-curvada': 'remada-curvada.webp',
-        'barra-fixa': 'barra-fixa.webp'
+        'barra-fixa': 'barra-fixa.webp',
+        'desenvolvimento': 'desenvolvimento.webp',
+        'elevacao-lateral': 'elevacao-lateral.webp',
+        'elevacao-frontal': 'elevacao-frontal.webp',
+        'crucifixo-inverso': 'crucifixo-inverso.webp',
+        'face-pull': 'face-pull.webp'
     };
 
     const exercicios = [
