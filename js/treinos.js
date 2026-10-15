@@ -3296,7 +3296,9 @@ window.addEventListener(
             'triceps-corda': 'Tríceps corda',
             'flexao-bracos': 'Flexão de braços',
             'remada-curvada': 'Remada curvada com barra',
-            'barra-fixa': 'Barra fixa'
+            'barra-fixa': 'Barra fixa',
+            'rosca-scott': 'Rosca Scott',
+            'triceps-frances': 'Tríceps francês com halter'
         };
 
         const parametrosBiblioteca =
