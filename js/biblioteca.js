@@ -118,7 +118,12 @@ document.addEventListener('DOMContentLoaded', () => {
         'elevacao-lateral': 'elevacao-lateral.webp',
         'elevacao-frontal': 'elevacao-frontal.webp',
         'crucifixo-inverso': 'crucifixo-inverso.webp',
-        'face-pull': 'face-pull.webp'
+        'face-pull': 'face-pull.webp',
+        'prancha': 'prancha.webp',
+        'abdominal-crunch': 'abdominal-crunch.webp',
+        'abdominal-infra': 'abdominal-infra.webp',
+        'abdominal-bicicleta': 'abdominal-bicicleta.webp',
+        'prancha-lateral': 'prancha-lateral.webp'
     };
 
     const exercicios = [
