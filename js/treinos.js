@@ -3295,7 +3295,8 @@ window.addEventListener(
             'rosca-barra-w': 'Rosca com barra W',
             'triceps-corda': 'Tríceps corda',
             'flexao-bracos': 'Flexão de braços',
-            'remada-curvada': 'Remada curvada com barra'
+            'remada-curvada': 'Remada curvada com barra',
+            'barra-fixa': 'Barra fixa'
         };
 
         const parametrosBiblioteca =
