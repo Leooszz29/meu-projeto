@@ -234,9 +234,16 @@ document.addEventListener('DOMContentLoaded', () => {
             grupo: 'Pernas',
             musculos: 'Gastrocnêmio e sóleo',
             instrucao: 'Eleve os calcanhares de forma controlada, mantenha o equilíbrio e retorne lentamente.'
+        },
+        {
+            id: 'peck-deck',
+            nome: 'Crucifixo na máquina (Peck Deck)',
+            grupo: 'Peito',
+            musculos: 'Peitoral e deltoide anterior',
+            instrucao: 'Ajuste o banco, mantenha as costas apoiadas e aproxime os braços à frente do peito de forma controlada.'
         }
     ];
-   
+
     /* =========================================
        EXIBIR EXERCICIOS NA BIBLIOTECA
     ========================================= */
