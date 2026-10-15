@@ -3290,7 +3290,8 @@ window.addEventListener(
             'abdominal-infra': 'Elevação de joelhos',
             'cadeira-extensora': 'Cadeira extensora',
             'elevacao-pelvica': 'Elevação pélvica',
-            'gemeos-em-pe': 'Gêmeos em pé (panturrilha)'
+            'gemeos-em-pe': 'Gêmeos em pé (panturrilha)',
+            'peck-deck': 'Crucifixo na máquina (Peck Deck)'
         };
 
         const parametrosBiblioteca =
