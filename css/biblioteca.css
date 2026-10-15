@@ -453,19 +453,13 @@
 .library-card .library-card-image {
     display: block;
     width: 100%;
-    height: 180px;
+    height: auto;
 
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
 
     background: rgba(0, 0, 0, 0.18);
 
     border: 1px solid rgba(var(--accent-rgb), 0.20);
     border-radius: 12px;
-}
-
-@media (max-width: 520px) {
-    .library-card .library-card-image {
-        height: 200px;
-    }
 }
