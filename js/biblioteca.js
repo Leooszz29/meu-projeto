@@ -255,6 +255,20 @@ document.addEventListener('DOMContentLoaded', () => {
             grupo: 'Braços',
             musculos: 'Tríceps braquial',
             instrucao: 'Na polia alta, mantenha os cotovelos próximos ao tronco, estenda os braços puxando a corda para baixo e retorne de forma controlada.'
+        },
+        {
+            id: 'flexao-bracos',
+            nome: 'Flexão de braços',
+            grupo: 'Peito',
+            musculos: 'Peitoral, tríceps e deltoide anterior',
+            instrucao: 'Com as mãos apoiadas no chão, mantenha o tronco alinhado, flexione os cotovelos e empurre o corpo de volta à posição inicial.'
+        },
+        {
+            id: 'remada-curvada',
+            nome: 'Remada curvada com barra',
+            grupo: 'Costas',
+            musculos: 'Dorsais, romboides, trapézio e bíceps',
+            instrucao: 'Incline o tronco mantendo a coluna neutra e puxe a barra em direção ao abdômen, retornando de forma controlada.'
         }
     ];
 
