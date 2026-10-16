@@ -5542,3 +5542,17 @@ right: 0;
         min-height: 44px;
     }
 }
+
+/* =========================================
+   FITZONE - CAMPOS DOS TREINOS NO MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+
+    .modal input[type="text"],
+    .modal input[type="number"],
+    .modal-select {
+        font-size: 16px;
+    }
+
+}
