@@ -242,10 +242,32 @@ function renderWorkouts() {
         empty.style.display = 'block';
         return;
     }
+
     empty.style.display = 'none';
 
-    workouts.forEach(workout => {
+    /* FILTRAR TREINOS PELO NOME */
+    const campoBusca = document.getElementById(
+        'workoutSearchInput'
+    );
+
+    const normalizarPesquisa = (texto) =>
+        texto
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLocaleLowerCase('pt-BR')
+            .trim();
+
+    const termoBusca = normalizarPesquisa(
+        campoBusca ? campoBusca.value : ''
+    );
+
+    const treinosFiltrados = workouts.filter(workout =>
+        normalizarPesquisa(workout.nome || '').includes(termoBusca)
+    );
+
+    treinosFiltrados.forEach(workout => {
         const card = document.createElement('div');
+
         card.className = 'workout-card';
         card.dataset.workoutId = workout.id;
 
