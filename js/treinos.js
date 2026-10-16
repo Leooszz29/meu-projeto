@@ -4016,3 +4016,58 @@ if (botaoExportarBackup) {
 
     botaoExportarBackup.disabled = false;
 }
+
+/* =========================================
+   FITZONE - VALIDAR ESTRUTURA DO BACKUP
+========================================= */
+
+function validarEstruturaBackupFitZone(backup) {
+    if (
+        !backup ||
+        typeof backup !== 'object' ||
+        Array.isArray(backup)
+    ) {
+        return false;
+    }
+
+    if (
+        backup.aplicativo !== 'FitZone' ||
+        backup.versaoBackup !== 1 ||
+        typeof backup.exportadoEm !== 'string' ||
+        !Number.isFinite(Date.parse(backup.exportadoEm))
+    ) {
+        return false;
+    }
+
+    const dados = backup.dados;
+
+    if (
+        !dados ||
+        typeof dados !== 'object' ||
+        Array.isArray(dados)
+    ) {
+        return false;
+    }
+
+    const categorias = [
+        'perfil',
+        'fotoPerfil',
+        'treinos',
+        'historico',
+        'progresso',
+        'treinoAtivo',
+        'checkins',
+        'metaMensal'
+    ];
+
+    return (
+        Object.keys(dados).length === categorias.length &&
+        categorias.every(categoria =>
+            Object.hasOwn(dados, categoria) &&
+            (
+                dados[categoria] === null ||
+                typeof dados[categoria] === 'string'
+            )
+        )
+    );
+}
