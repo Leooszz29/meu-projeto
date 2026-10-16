@@ -1520,6 +1520,16 @@ if (workoutId) {
         title.textContent = 'Novo treino';
         input.value = '';
     }
+    
+    /* ATUALIZAR CONTADOR AO ABRIR O TREINO */
+    const contadorNomeTreino = document.getElementById(
+        'workoutNameCounter'
+    );
+
+    if (contadorNomeTreino) {
+        contadorNomeTreino.textContent =
+            `${input.value.length} / ${input.maxLength} caracteres`;
+    }
 
     workoutModalTrigger = document.activeElement;
 
