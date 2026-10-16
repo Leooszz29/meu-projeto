@@ -1829,6 +1829,17 @@ function openExerciseModal(workoutId, exerciseId) {
         avisoValidacao.hidden = true;
         avisoValidacao.textContent = '';
     }
+    
+    /* LIMPAR AVISO DE DUPLICIDADE AO ABRIR */
+    const avisoDuplicidade = document.getElementById(
+        'exerciseDuplicateWarning'
+    );
+
+    if (avisoDuplicidade) {
+        avisoDuplicidade.hidden = true;
+        avisoDuplicidade.textContent = '';
+    }
+
     [
         nameInput,
         seriesInput,
