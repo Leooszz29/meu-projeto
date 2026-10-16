@@ -1847,6 +1847,17 @@ function openExerciseModal(workoutId, exerciseId) {
         input.oninput = () => {
             input.classList.remove('input-error');
             input.removeAttribute('aria-invalid');
+            
+            if (input === nameInput) {
+                const contador = document.getElementById(
+                    'exerciseNameCounter'
+                );
+
+                if (contador) {
+                    contador.textContent =
+                        `${nameInput.value.length} / ${nameInput.maxLength} caracteres`;
+                }
+            }
 
             const aviso = document.getElementById(
                 'exerciseValidationMessage'
@@ -1915,6 +1926,16 @@ function openExerciseModal(workoutId, exerciseId) {
         seriesInput.value = '';
         repsInput.value = '';
         restInput.value = '';
+    }
+    
+    /* ATUALIZAR CONTADOR AO ABRIR */
+    const contadorNome = document.getElementById(
+        'exerciseNameCounter'
+    );
+
+    if (contadorNome) {
+        contadorNome.textContent =
+            `${nameInput.value.length} / ${nameInput.maxLength} caracteres`;
     }
 
     // ========================================
