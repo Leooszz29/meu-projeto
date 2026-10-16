@@ -3657,3 +3657,16 @@ textarea::placeholder{
         height: 44px;
     }
 }
+
+/* =========================================
+   FITZONE - FECHAR DETALHES NO CELULAR
+========================================= */
+
+@media (max-width: 520px) {
+    .history-details-close {
+        width: 44px;
+        height: 44px;
+        top: 10px;
+        right: 10px;
+    }
+}
