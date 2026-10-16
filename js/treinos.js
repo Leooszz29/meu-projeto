@@ -3945,9 +3945,11 @@ function prepararDadosBackupFitZone() {
     return {
         aplicativo: 'FitZone',
         versaoBackup: 1,
+        contaEmail: email,
         exportadoEm: new Date().toISOString(),
         dados
     };
+
 }
 
 /* =========================================
