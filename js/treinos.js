@@ -1846,8 +1846,8 @@ function openExerciseModal(workoutId, exerciseId) {
     ].forEach(input => {
         input.oninput = () => {
             input.classList.remove('input-error');
-            input.removeAttribute('aria-invalid');
-            
+            input.removeAttribute('aria-invalid');            
+
             if (input === nameInput) {
                 const contador = document.getElementById(
                     'exerciseNameCounter'
@@ -1856,6 +1856,36 @@ function openExerciseModal(workoutId, exerciseId) {
                 if (contador) {
                     contador.textContent =
                         `${nameInput.value.length} / ${nameInput.maxLength} caracteres`;
+                }
+
+                /* VERIFICAR EXERCICIO DUPLICADO */
+                const avisoDuplicado = document.getElementById(
+                    'exerciseDuplicateWarning'
+                );
+
+                const normalizarNome = (texto) =>
+                    texto.trim().replace(/\s+/g, ' ').toLocaleLowerCase('pt-BR');
+
+                const nomeDigitado = normalizarNome(nameInput.value);
+
+                const treino = loadWorkouts().find(
+                    workout => workout.id === editingExerciseCtx?.workoutId
+                );
+
+                const duplicado = Boolean(
+                    nomeDigitado &&
+                    treino?.exercicios.some(exercicio =>
+                        exercicio.id !== editingExerciseCtx.exerciseId &&
+                        normalizarNome(exercicio.nome || '') === nomeDigitado
+                    )
+                );
+
+                if (avisoDuplicado) {
+                    avisoDuplicado.textContent = duplicado
+                        ? 'Este exercício já existe neste treino. Confira se deseja adicioná-lo novamente.'
+                        : '';
+
+                    avisoDuplicado.hidden = !duplicado;
                 }
             }
 
