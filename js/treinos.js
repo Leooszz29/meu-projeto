@@ -1908,6 +1908,25 @@ function duplicateWorkout(workoutId) {
     if (!salvou) return;
 
     renderWorkouts();
+    
+    /* DESTACAR O TREINO RECEM-DUPLICADO */
+    const cartaoDuplicado = Array.from(
+        document.querySelectorAll(
+            '#workoutsList .workout-card'
+        )
+    ).find(card =>
+        card.dataset.workoutId === novoTreino.id
+    );
+
+    if (cartaoDuplicado) {
+        cartaoDuplicado.classList.add('just-duplicated');
+
+        setTimeout(() => {
+            cartaoDuplicado.classList.remove(
+                'just-duplicated'
+            );
+        }, 4000);
+    }
 
     /* EXIBIR NOTIFICACAO DE SUCESSO */
     const notificacao = document.getElementById(
