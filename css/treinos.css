@@ -5578,3 +5578,13 @@ right: 0;
         transform: none;
     }
 }
+
+/* =========================================
+   FITZONE - ADICIONAR EXERCICIO TOUCH
+========================================= */
+
+@media (hover: none) {
+    .btn-add-exercise:hover {
+        transform: none;
+    }
+}
