@@ -5627,3 +5627,27 @@ right: 0;
     line-height: 1.4;
     text-align: right;
 }
+
+/* =========================================
+   FITZONE - AVISO DE EXERCICIO DUPLICADO
+========================================= */
+
+.exercise-duplicate-warning {
+    margin: -6px 0 18px;
+    padding: 12px 14px;
+
+    border: 1px solid rgba(234, 179, 8, 0.40);
+    border-left: 4px solid #eab308;
+    border-radius: 10px;
+
+    background: rgba(234, 179, 8, 0.08);
+    color: #facc15;
+
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.exercise-duplicate-warning[hidden] {
+    display: none;
+}
