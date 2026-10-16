@@ -1829,7 +1829,6 @@ function openExerciseModal(workoutId, exerciseId) {
         avisoValidacao.hidden = true;
         avisoValidacao.textContent = '';
     }
-
     [
         nameInput,
         seriesInput,
@@ -1837,6 +1836,7 @@ function openExerciseModal(workoutId, exerciseId) {
         restInput
     ].forEach(input => {
         input.classList.remove('input-error');
+        input.removeAttribute('aria-invalid');
     });
     [
         nameInput,
@@ -1846,6 +1846,7 @@ function openExerciseModal(workoutId, exerciseId) {
     ].forEach(input => {
         input.oninput = () => {
             input.classList.remove('input-error');
+            input.removeAttribute('aria-invalid');
 
             const aviso = document.getElementById(
                 'exerciseValidationMessage'
