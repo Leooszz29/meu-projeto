@@ -1820,6 +1820,16 @@ function openExerciseModal(workoutId, exerciseId) {
     const restInput =
         document.getElementById('exerciseRestInput');
 
+    /* LIMPAR AVISO AO ABRIR O FORMULARIO */
+    const avisoValidacao = document.getElementById(
+        'exerciseValidationMessage'
+    );
+
+    if (avisoValidacao) {
+        avisoValidacao.hidden = true;
+        avisoValidacao.textContent = '';
+    }
+
     [
         nameInput,
         seriesInput,
@@ -1828,7 +1838,6 @@ function openExerciseModal(workoutId, exerciseId) {
     ].forEach(input => {
         input.classList.remove('input-error');
     });
-
     [
         nameInput,
         seriesInput,
