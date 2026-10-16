@@ -5721,3 +5721,50 @@ right: 0;
         animation: none;
     }
 }
+
+/* =========================================
+   FITZONE - PESQUISA DE TREINOS
+========================================= */
+
+.workout-search {
+    margin: 0 0 24px;
+    max-width: 480px;
+}
+
+.workout-search label {
+    display: block;
+    margin-bottom: 8px;
+
+    color: var(--chalk-dim);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.workout-search input {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+
+    border: 1.5px solid var(--steel);
+    border-radius: 10px;
+
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--chalk);
+
+    font-family: inherit;
+    font-size: 16px;
+
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.workout-search input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15);
+}
+
+.workout-search input::placeholder {
+    color: var(--chalk-dim);
+    opacity: 0.75;
+}
