@@ -594,3 +594,23 @@
         letter-spacing: -0.4px;
     }
 }
+
+/* =========================================
+   FITZONE - FILTROS DO GRAFICO MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+
+    .training-chart-filter {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-height: 44px;
+        padding: 10px 8px;
+
+        text-align: center;
+        line-height: 1.3;
+    }
+
+}
