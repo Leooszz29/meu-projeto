@@ -3627,3 +3627,18 @@ textarea::placeholder{
         min-height: 44px;
     }
 }
+
+/* =========================================
+   FITZONE - CAMPOS DO PERFIL MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+
+    #profileForm input[type="text"],
+    #profileForm input[type="number"],
+    #profileForm select,
+    #profileForm textarea {
+        font-size: 16px;
+    }
+
+}
