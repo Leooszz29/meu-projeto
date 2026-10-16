@@ -5567,3 +5567,14 @@ right: 0;
         transform: none;
     }
 }
+
+/* =========================================
+   FITZONE - BOTOES DE TREINO TOUCH
+========================================= */
+
+@media (hover: none) {
+    .btn-start-workout:hover,
+    .btn-finish-workout:not(:disabled):hover {
+        transform: none;
+    }
+}
