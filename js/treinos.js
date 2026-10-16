@@ -2159,7 +2159,27 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
             ([, invalid]) => invalid
         );
 
-    if (possuiCampoInvalido) {
+    if (possuiCampoInvalido) {        
+        const mensagens = {
+            exerciseNameInput: 'Informe o nome do exercício.',
+            exerciseSeriesInput: 'Informe uma quantidade válida de séries.',
+            exerciseRepsInput: 'Informe uma quantidade válida de repetições.',
+            exerciseRestInput: 'Informe um tempo de descanso válido.'
+        };
+
+        const erros = camposInvalidos
+            .filter(([, invalido]) => invalido)
+            .map(([id]) => mensagens[id]);
+
+        const aviso = document.getElementById(
+            'exerciseValidationMessage'
+        );
+
+        if (aviso) {
+            aviso.textContent = erros.join(' ');
+            aviso.hidden = false;
+        }
+
         camposInvalidos.forEach(
             ([id, invalid]) => {
                 const input =
