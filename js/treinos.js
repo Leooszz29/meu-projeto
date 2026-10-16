@@ -1903,9 +1903,25 @@ function duplicateWorkout(workoutId) {
 
     const salvou = saveWorkouts(workouts);
 
+
     if (!salvou) return;
 
     renderWorkouts();
+
+    /* EXIBIR NOTIFICACAO DE SUCESSO */
+    const notificacao = document.getElementById(
+        'workoutDuplicateSuccess'
+    );
+
+    if (notificacao) {
+        notificacao.hidden = false;
+
+        clearTimeout(duplicateWorkout.notificationTimer);
+
+        duplicateWorkout.notificationTimer = setTimeout(() => {
+            notificacao.hidden = true;
+        }, 4000);
+    }
 }
 
 function deleteWorkout(workoutId) {
