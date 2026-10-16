@@ -1746,3 +1746,21 @@ if (btnEndSession) {
         }
     );
 }
+
+// ========================================
+// MOSTRAR PAGINA ATIVA NO MENU MOBILE
+// ========================================
+
+if (window.matchMedia('(max-width: 520px)').matches) {
+    const linkAtivo = document.querySelector(
+        '.app-nav-actions .app-nav-link.active'
+    );
+
+    if (linkAtivo) {
+        linkAtivo.scrollIntoView({
+            behavior: 'instant',
+            block: 'nearest',
+            inline: 'center'
+        });
+    }
+}
