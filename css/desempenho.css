@@ -626,3 +626,16 @@
         min-width: 44px;
     }
 }
+
+/* =========================================
+   FITZONE - SALVAR META NO CELULAR
+========================================= */
+
+@media (max-width: 520px) {
+    .monthly-goal-save {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
