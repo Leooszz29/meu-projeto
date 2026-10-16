@@ -1483,6 +1483,16 @@ if (avisoValidacaoTreino) {
 input.oninput = () => {
     input.classList.remove('input-error');
     input.removeAttribute('aria-invalid');
+    
+    /* ATUALIZAR CONTADOR DURANTE A DIGITACAO */
+    const contador = document.getElementById(
+        'workoutNameCounter'
+    );
+
+    if (contador) {
+        contador.textContent =
+            `${input.value.length} / ${input.maxLength} caracteres`;
+    }
 
     const aviso = document.getElementById(
         'workoutValidationMessage'
