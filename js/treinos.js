@@ -3999,3 +3999,20 @@ function exportarBackupFitZone() {
         );
     }
 }
+
+/* =========================================
+   FITZONE - ATIVAR EXPORTACAO DE BACKUP
+========================================= */
+
+const botaoExportarBackup = document.getElementById(
+    'btnExportWorkoutBackup'
+);
+
+if (botaoExportarBackup) {
+    botaoExportarBackup.addEventListener(
+        'click',
+        exportarBackupFitZone
+    );
+
+    botaoExportarBackup.disabled = false;
+}
