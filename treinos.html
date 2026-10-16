@@ -368,15 +368,24 @@
 
         <label for="exerciseRestInput">Descanso (segundos)</label>
         <input
-    type="number"
-    id="exerciseRestInput"
-    min="0"
-    step="5"
-    inputmode="numeric"
-    placeholder="60"
->
+            type="number"
+            id="exerciseRestInput"
+            min="0"
+            step="5"
+            inputmode="numeric"
+            placeholder="60"
+        >
+
+        <!-- MENSAGEM DE VALIDACAO DO EXERCICIO -->
+        <p
+            id="exerciseValidationMessage"
+            class="exercise-validation-message"
+            role="alert"
+            hidden
+        ></p>
 
         <div class="modal-actions">
+
 
     <button
         type="button"
