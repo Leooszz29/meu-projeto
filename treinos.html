@@ -253,12 +253,21 @@
         <h2 id="workoutModalTitle">Novo treino</h2>
         <label for="workoutNameInput">Nome do treino</label>
         <input
-    type="text"
-    id="workoutNameInput"
-    maxlength="50"
-    autocomplete="off"
-    placeholder="Ex: Peito e Tríceps"
->
+            type="text"
+            id="workoutNameInput"
+            maxlength="50"
+            autocomplete="off"
+            placeholder="Ex: Peito e Tríceps"
+        >
+
+        <!-- MENSAGEM DE VALIDACAO DO TREINO -->
+        <p
+            id="workoutValidationMessage"
+            class="exercise-validation-message"
+            role="alert"
+            hidden
+        ></p>
+
         <div class="modal-actions">
             <button
     type="button"
