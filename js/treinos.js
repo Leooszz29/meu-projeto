@@ -264,6 +264,16 @@ function renderWorkouts() {
     const treinosFiltrados = workouts.filter(workout =>
         normalizarPesquisa(workout.nome || '').includes(termoBusca)
     );
+    
+    /* EXIBIR MENSAGEM QUANDO NAO HOUVER RESULTADOS */
+    const mensagemSemResultados = document.getElementById(
+        'workoutSearchEmpty'
+    );
+
+    if (mensagemSemResultados) {
+        mensagemSemResultados.hidden =
+            treinosFiltrados.length > 0 || !termoBusca;
+    }
 
     treinosFiltrados.forEach(workout => {
         const card = document.createElement('div');
