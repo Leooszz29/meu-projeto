@@ -4149,3 +4149,75 @@ function validarTiposBackupFitZone(backup) {
         return false;
     }
 }
+
+/* =========================================
+   FITZONE - VALIDAR TREINOS DO BACKUP
+========================================= */
+
+function validarTreinosBackupFitZone(backup) {
+    if (!validarTiposBackupFitZone(backup)) {
+        return false;
+    }
+
+    try {
+        const valor = backup.dados.treinos;
+
+        if (valor === null) {
+            return true;
+        }
+
+        const treinos = JSON.parse(valor);
+
+        const validarExercicio = (exercicio) => {
+            if (
+                !exercicio ||
+                typeof exercicio !== 'object' ||
+                Array.isArray(exercicio)
+            ) {
+                return false;
+            }
+
+            return (
+                typeof exercicio.id === 'string' &&
+                exercicio.id.length > 0 &&
+                typeof exercicio.nome === 'string' &&
+                exercicio.nome.trim().length > 0 &&
+                Number.isInteger(exercicio.series) &&
+                exercicio.series >= 1 &&
+                Number.isInteger(exercicio.repeticoes) &&
+                exercicio.repeticoes >= 1 &&
+                Number.isInteger(exercicio.descanso) &&
+                exercicio.descanso >= 0 &&
+                (
+                    exercicio.grupoExecucao == null ||
+                    typeof exercicio.grupoExecucao === 'string'
+                ) &&
+                (
+                    exercicio.tipoExecucao == null ||
+                    ['individual', 'bisset', 'triset']
+                        .includes(exercicio.tipoExecucao)
+                )
+            );
+        };
+
+        return treinos.every(treino =>
+            treino !== null &&
+            typeof treino === 'object' &&
+            !Array.isArray(treino) &&
+            typeof treino.id === 'string' &&
+            treino.id.length > 0 &&
+            typeof treino.nome === 'string' &&
+            treino.nome.trim().length > 0 &&
+            Array.isArray(treino.exercicios) &&
+            treino.exercicios.every(validarExercicio)
+        );
+
+    } catch (erro) {
+        console.warn(
+            'Estrutura dos treinos do backup inválida:',
+            erro
+        );
+
+        return false;
+    }
+}
