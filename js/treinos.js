@@ -1468,6 +1468,17 @@ function openWorkoutModal(workoutId) {
     const input = document.getElementById('workoutNameInput');
 
 input.classList.remove('input-error');
+input.removeAttribute('aria-invalid');
+
+/* LIMPAR VALIDACAO AO ABRIR O TREINO */
+const avisoValidacaoTreino = document.getElementById(
+    'workoutValidationMessage'
+);
+
+if (avisoValidacaoTreino) {
+    avisoValidacaoTreino.hidden = true;
+    avisoValidacaoTreino.textContent = '';
+}
 
 input.oninput = () => {
     input.classList.remove('input-error');
