@@ -290,12 +290,20 @@
         <h2 id="exerciseModalTitle">Novo exercício</h2>
         <label for="exerciseNameInput">Nome do exercício</label>
         <input
-    type="text"
-    id="exerciseNameInput"
-    maxlength="60"
-    autocomplete="off"
-    placeholder="Ex: Supino reto"
->
+            type="text"
+            id="exerciseNameInput"
+            maxlength="60"
+            autocomplete="off"
+            placeholder="Ex: Supino reto"
+        >
+
+        <!-- CONTADOR DE CARACTERES -->
+        <small
+            id="exerciseNameCounter"
+            class="exercise-name-counter"
+        >
+            0 / 60 caracteres
+        </small>
 
         <label for="exerciseTypeInput">
     Tipo de execução
