@@ -1479,6 +1479,16 @@ if (avisoValidacaoTreino) {
     avisoValidacaoTreino.hidden = true;
     avisoValidacaoTreino.textContent = '';
 }
+    
+/* LIMPAR AVISO DE TREINO DUPLICADO AO ABRIR */
+const avisoDuplicidadeTreino = document.getElementById(
+    'workoutDuplicateWarning'
+);
+
+if (avisoDuplicidadeTreino) {
+    avisoDuplicidadeTreino.hidden = true;
+    avisoDuplicidadeTreino.textContent = '';
+}
 
 input.oninput = () => {
     input.classList.remove('input-error');
