@@ -5811,3 +5811,59 @@ right: 0;
 .workout-search-empty[hidden] {
     display: none;
 }
+
+/* =========================================
+   FITZONE - BOTAO EXPORTAR BACKUP
+========================================= */
+
+.workout-backup-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 24px;
+}
+
+.btn-export-backup {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    min-height: 46px;
+    padding: 12px 18px;
+
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+
+    background: rgba(var(--accent-rgb), 0.10);
+    color: var(--accent);
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: background 0.2s ease,
+                transform 0.2s ease;
+}
+
+.btn-export-backup:not(:disabled):hover {
+    background: rgba(var(--accent-rgb), 0.18);
+    transform: translateY(-1px);
+}
+
+.btn-export-backup:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.btn-export-backup:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+    .btn-export-backup {
+        width: 100%;
+    }
+}
