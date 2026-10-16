@@ -269,6 +269,22 @@ editBtn.setAttribute(
 );
 editBtn.innerHTML = '✎';
         editBtn.addEventListener('click', () => openWorkoutModal(workout.id));
+        
+        /* BOTAO DUPLICAR TREINO */
+        const duplicateBtn = document.createElement('button');
+
+        duplicateBtn.type = 'button';
+        duplicateBtn.className = 'icon-btn';
+        duplicateBtn.title = 'Duplicar treino';
+        duplicateBtn.setAttribute(
+            'aria-label',
+            'Duplicar treino'
+        );
+        duplicateBtn.textContent = '⧉';
+
+        duplicateBtn.addEventListener('click', () => {
+            duplicateWorkout(workout.id);
+        });
 
         const delBtn = document.createElement('button');
 
@@ -283,6 +299,7 @@ delBtn.innerHTML = '🗑';
         delBtn.addEventListener('click', () => deleteWorkout(workout.id));
 
         actionsEl.appendChild(editBtn);
+        actionsEl.appendChild(duplicateBtn);
         actionsEl.appendChild(delBtn);
         headerEl.appendChild(titleEl);
         headerEl.appendChild(actionsEl);
