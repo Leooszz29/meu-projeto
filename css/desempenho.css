@@ -614,3 +614,15 @@
     }
 
 }
+
+/* =========================================
+   FITZONE - BOTOES DA META MENSAL MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+    .monthly-goal-step {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+    }
+}
