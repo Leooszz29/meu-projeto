@@ -3900,3 +3900,52 @@ if (workoutSearchInput) {
         renderWorkouts();
     });
 }
+
+/* =========================================
+   FITZONE - PREPARAR DADOS DO BACKUP
+========================================= */
+
+function prepararDadosBackupFitZone() {
+    const sessao = carregarSessao();
+
+    if (
+        !sessao ||
+        sessao.autenticado !== true ||
+        typeof sessao.email !== 'string' ||
+        !sessao.email.trim()
+    ) {
+        throw new Error(
+            'É necessário estar autenticado para exportar o backup.'
+        );
+    }
+
+    const email = sessao.email.trim().toLowerCase();
+
+    const chaves = {
+        perfil: `fitzonePerfil:${email}`,
+        fotoPerfil: `fotoPerfilFitZone:${email}`,
+        treinos: `fitzoneTreinos:${email}`,
+        historico: `historicoTreinos:${email}`,
+        progresso: `progressoTreino:${email}`,
+        treinoAtivo: `treinoAtivo:${email}`,
+        checkins: `fitzoneCheckins:${email}`,
+        metaMensal: `metaMensalFitZone:${email}`
+    };
+
+    const dados = {};
+
+    Object.entries(chaves).forEach(([tipo, chave]) => {
+        const valor = localStorage.getItem(chave);
+
+        dados[tipo] = valor === null
+            ? null
+            : valor;
+    });
+
+    return {
+        aplicativo: 'FitZone',
+        versaoBackup: 1,
+        exportadoEm: new Date().toISOString(),
+        dados
+    };
+}
