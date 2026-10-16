@@ -1471,6 +1471,16 @@ input.classList.remove('input-error');
 
 input.oninput = () => {
     input.classList.remove('input-error');
+    input.removeAttribute('aria-invalid');
+
+    const aviso = document.getElementById(
+        'workoutValidationMessage'
+    );
+
+    if (aviso) {
+        aviso.hidden = true;
+        aviso.textContent = '';
+    }
 };
 
 input.onkeydown = (event) => {
