@@ -1830,6 +1830,67 @@ function resetActiveTraining() {
     finishButton.disabled = true;
 }
 
+/* =========================================
+   FITZONE - DUPLICAR TREINO
+========================================= */
+
+function duplicateWorkout(workoutId) {
+    const workouts = loadWorkouts();
+
+    const original = workouts.find(
+        workout => workout.id === workoutId
+    );
+
+    if (!original) return;
+
+    const gruposCopiados = new Map();
+
+    const exerciciosCopiados = (
+        original.exercicios || []
+    ).map(exercicio => {
+        let novoGrupo = null;
+
+        if (exercicio.grupoExecucao) {
+            if (!gruposCopiados.has(exercicio.grupoExecucao)) {
+                gruposCopiados.set(
+                    exercicio.grupoExecucao,
+                    uid()
+                );
+            }
+
+            novoGrupo = gruposCopiados.get(
+                exercicio.grupoExecucao
+            );
+        }
+
+        return {
+            ...exercicio,
+            id: uid(),
+            grupoExecucao: novoGrupo
+        };
+    });
+
+    const sufixo = ' (cópia)';
+
+    const nomeBase = original.nome
+        .slice(0, 50 - sufixo.length)
+        .trimEnd();
+
+    const novoTreino = {
+        id: uid(),
+        nome: nomeBase + sufixo,
+        exercicios: exerciciosCopiados
+    };
+
+    workouts.push(novoTreino);
+
+    const salvou = saveWorkouts(workouts);
+
+    if (!salvou) return;
+
+    renderWorkouts();
+}
+
 function deleteWorkout(workoutId) {
     askConfirm(
         'Excluir este treino e todos os seus exercícios?',
