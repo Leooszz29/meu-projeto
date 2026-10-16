@@ -2195,6 +2195,11 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
                     'input-error',
                     invalid
                 );
+
+                input.setAttribute(
+                    'aria-invalid',
+                    String(invalid)
+                );
             }
         );
 
