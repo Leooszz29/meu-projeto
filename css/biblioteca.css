@@ -595,3 +595,17 @@
         white-space: nowrap;
     }
 }
+
+/* =========================================
+   FITZONE - CARTOES EM TELAS TOUCH
+========================================= */
+
+@media (hover: none) {
+    .library-card:hover {
+        transform: none;
+    }
+
+    .library-card .btn-add-exercise:hover {
+        transform: none;
+    }
+}
