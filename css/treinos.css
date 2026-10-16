@@ -5588,3 +5588,27 @@ right: 0;
         transform: none;
     }
 }
+
+/* =========================================
+   FITZONE - MENSAGEM DE VALIDACAO EXERCICIO
+========================================= */
+
+.exercise-validation-message {
+    margin: 14px 0 4px;
+    padding: 12px 14px;
+
+    border: 1px solid rgba(193, 68, 60, 0.45);
+    border-left: 4px solid #ff6868;
+    border-radius: 10px;
+
+    background: rgba(193, 68, 60, 0.10);
+    color: #ffb4ae;
+
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.exercise-validation-message[hidden] {
+    display: none;
+}
