@@ -5768,3 +5768,46 @@ right: 0;
     color: var(--chalk-dim);
     opacity: 0.75;
 }
+
+/* =========================================
+   FITZONE - PESQUISA SEM RESULTADOS
+========================================= */
+
+.workout-search-empty {
+    padding: 36px 20px;
+    margin: 0 0 24px;
+
+    border: 1px dashed var(--steel);
+    border-radius: 14px;
+
+    background: rgba(0, 0, 0, 0.12);
+    text-align: center;
+}
+
+.workout-search-empty-icon {
+    display: block;
+    margin-bottom: 12px;
+
+    color: var(--chalk-dim);
+    font-size: 36px;
+    line-height: 1;
+}
+
+.workout-search-empty strong {
+    display: block;
+    margin-bottom: 8px;
+
+    color: var(--chalk);
+    font-size: 16px;
+}
+
+.workout-search-empty p {
+    margin: 0;
+    color: var(--chalk-dim);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.workout-search-empty[hidden] {
+    display: none;
+}
