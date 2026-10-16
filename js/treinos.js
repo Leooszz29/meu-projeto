@@ -2132,43 +2132,33 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
             .getElementById('exerciseGroupInput')
             .value;
 
-    const series =
-        parseInt(
-            document
-                .getElementById('exerciseSeriesInput')
-                .value,
-            10
-        );
+    const series = document
+        .getElementById('exerciseSeriesInput')
+        .valueAsNumber;
 
-    const repeticoes =
-        parseInt(
-            document
-                .getElementById('exerciseRepsInput')
-                .value,
-            10
-        );
+    const repeticoes = document
+        .getElementById('exerciseRepsInput')
+        .valueAsNumber;
 
-    const descanso =
-        parseInt(
-            document
-                .getElementById('exerciseRestInput')
-                .value,
-            10
+    const descanso = document
+        .getElementById('exerciseRestInput')
+        .valueAsNumber;
+
         );
 
     const camposInvalidos = [
         ['exerciseNameInput', !nome],
         [
             'exerciseSeriesInput',
-            isNaN(series) || series < 1
+            !Number.isInteger(series) || series < 1
         ],
         [
             'exerciseRepsInput',
-            isNaN(repeticoes) || repeticoes < 1
+            !Number.isInteger(repeticoes) || repeticoes < 1
         ],
         [
             'exerciseRestInput',
-            isNaN(descanso) || descanso < 0
+            !Number.isInteger(descanso) || descanso < 0
         ]
     ];
 
