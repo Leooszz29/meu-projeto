@@ -247,6 +247,7 @@ function renderWorkouts() {
     workouts.forEach(workout => {
         const card = document.createElement('div');
         card.className = 'workout-card';
+        card.dataset.workoutId = workout.id;
 
         const headerEl = document.createElement('div');
         headerEl.className = 'workout-header';
