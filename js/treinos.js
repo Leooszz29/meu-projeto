@@ -1837,6 +1837,15 @@ function openExerciseModal(workoutId, exerciseId) {
     ].forEach(input => {
         input.oninput = () => {
             input.classList.remove('input-error');
+
+            const aviso = document.getElementById(
+                'exerciseValidationMessage'
+            );
+
+            if (aviso) {
+                aviso.hidden = true;
+                aviso.textContent = '';
+            }
         };
     });
 
