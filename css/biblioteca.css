@@ -609,3 +609,13 @@
         transform: none;
     }
 }
+
+/* =========================================
+   FITZONE - PESQUISA MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+    #exerciseSearch {
+        font-size: 16px;
+    }
+}
