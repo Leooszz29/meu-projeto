@@ -1583,15 +1583,28 @@ document.getElementById('workoutModalOverlay').addEventListener('click', (e) => 
 
 document.getElementById('workoutSaveBtn').addEventListener('click', () => {
     const nome = document.getElementById('workoutNameInput').value.trim();
+
     if (!nome) {
-    const input =
-        document.getElementById('workoutNameInput');
+        const input = document.getElementById(
+            'workoutNameInput'
+        );
 
-    input.focus();
-input.classList.add('input-error');
+        const aviso = document.getElementById(
+            'workoutValidationMessage'
+        );
 
-    return;
-}
+        input.classList.add('input-error');
+        input.setAttribute('aria-invalid', 'true');
+
+        if (aviso) {
+            aviso.textContent =
+                'Informe um nome para o treino antes de salvar.';
+            aviso.hidden = false;
+        }
+
+        input.focus();
+        return;
+    }
 
     const workouts = loadWorkouts();
 
