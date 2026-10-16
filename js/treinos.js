@@ -4221,3 +4221,72 @@ function validarTreinosBackupFitZone(backup) {
         return false;
     }
 }
+
+/* =========================================
+   FITZONE - VALIDAR HISTORICO DO BACKUP
+========================================= */
+
+function validarHistoricoBackupFitZone(backup) {
+    if (!validarTreinosBackupFitZone(backup)) {
+        return false;
+    }
+
+    try {
+        const valor = backup.dados.historico;
+
+        if (valor === null) {
+            return true;
+        }
+
+        const historico = JSON.parse(valor);
+
+        if (!Array.isArray(historico)) {
+            return false;
+        }
+
+        return historico.every(registro => {
+            if (
+                !registro ||
+                typeof registro !== 'object' ||
+                Array.isArray(registro)
+            ) {
+                return false;
+            }
+
+            return (
+                typeof registro.workoutId === 'string' &&
+                registro.workoutId.length > 0 &&
+
+                typeof registro.nome === 'string' &&
+                registro.nome.trim().length > 0 &&
+
+                typeof registro.data === 'string' &&
+                Number.isFinite(
+                    Date.parse(registro.data)
+                ) &&
+
+                Array.isArray(registro.exercicios) &&
+
+                Number.isInteger(registro.totalExercicios) &&
+                registro.totalExercicios >= 0 &&
+
+                Number.isInteger(registro.seriesConcluidas) &&
+                registro.seriesConcluidas >= 0 &&
+
+                Number.isInteger(registro.seriesTotal) &&
+                registro.seriesTotal >= 0 &&
+
+                registro.seriesConcluidas <=
+                    registro.seriesTotal
+            );
+        });
+
+    } catch (erro) {
+        console.warn(
+            'Historico do backup invalido:',
+            erro
+        );
+
+        return false;
+    }
+}
