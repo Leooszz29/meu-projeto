@@ -3670,3 +3670,15 @@ textarea::placeholder{
         right: 10px;
     }
 }
+
+/* =========================================
+   FITZONE - BOTOES DO HISTORICO TOUCH
+========================================= */
+
+@media (hover: none) {
+    .history-details-btn:hover,
+    .history-delete-btn:hover,
+    .history-details-footer-btn:hover {
+        transform: none;
+    }
+}
