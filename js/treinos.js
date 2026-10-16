@@ -2143,9 +2143,7 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
     const descanso = document
         .getElementById('exerciseRestInput')
         .valueAsNumber;
-
-        );
-
+    
     const camposInvalidos = [
         ['exerciseNameInput', !nome],
         [
