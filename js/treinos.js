@@ -3949,3 +3949,53 @@ function prepararDadosBackupFitZone() {
         dados
     };
 }
+
+/* =========================================
+   FITZONE - GERAR ARQUIVO DE BACKUP
+========================================= */
+
+function exportarBackupFitZone() {
+    try {
+        const backup = prepararDadosBackupFitZone();
+
+        const conteudo = JSON.stringify(
+            backup,
+            null,
+            2
+        );
+
+        const arquivo = new Blob(
+            [conteudo],
+            { type: 'application/json;charset=utf-8' }
+        );
+
+        const url = URL.createObjectURL(arquivo);
+
+        const data = new Date()
+            .toISOString()
+            .slice(0, 10);
+
+        const link = document.createElement('a');
+
+        link.href = url;
+        link.download = `fitzone-backup-${data}.json`;
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+        }, 1000);
+
+    } catch (erro) {
+        console.error(
+            'Erro ao exportar backup do FitZone:',
+            erro
+        );
+
+        showWarningModal(
+            'Não foi possível preparar o backup. Tente novamente.'
+        );
+    }
+}
