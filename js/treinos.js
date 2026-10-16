@@ -1493,6 +1493,32 @@ input.oninput = () => {
         contador.textContent =
             `${input.value.length} / ${input.maxLength} caracteres`;
     }
+    
+    /* VERIFICAR NOME DE TREINO DUPLICADO */
+    const avisoDuplicado = document.getElementById(
+        'workoutDuplicateWarning'
+    );
+
+    const normalizarNome = (texto) =>
+        texto.trim().replace(/\s+/g, ' ').toLocaleLowerCase('pt-BR');
+
+    const nomeDigitado = normalizarNome(input.value);
+
+    const duplicado = Boolean(
+        nomeDigitado &&
+        loadWorkouts().some(treino =>
+            treino.id !== editingWorkoutId &&
+            normalizarNome(treino.nome || '') === nomeDigitado
+        )
+    );
+
+    if (avisoDuplicado) {
+        avisoDuplicado.textContent = duplicado
+            ? 'Já existe um treino com este nome. Confira se deseja criar outro.'
+            : '';
+
+        avisoDuplicado.hidden = !duplicado;
+    }
 
     const aviso = document.getElementById(
         'workoutValidationMessage'
