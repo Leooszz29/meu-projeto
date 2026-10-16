@@ -4071,3 +4071,81 @@ function validarEstruturaBackupFitZone(backup) {
         )
     );
 }
+
+/* =========================================
+   FITZONE - VALIDAR TIPOS DOS DADOS DO BACKUP
+========================================= */
+
+function validarTiposBackupFitZone(backup) {
+    if (!validarEstruturaBackupFitZone(backup)) {
+        return false;
+    }
+
+    const tiposEsperados = {
+        perfil: 'objeto',
+        treinos: 'lista',
+        historico: 'lista',
+        progresso: 'objeto',
+        treinoAtivo: 'objeto',
+        checkins: 'objeto'
+    };
+
+    try {
+        for (const [categoria, tipo] of Object.entries(tiposEsperados)) {
+            const valor = backup.dados[categoria];
+
+            if (valor === null) {
+                continue;
+            }
+
+            const dado = JSON.parse(valor);
+
+            if (tipo === 'lista' && !Array.isArray(dado)) {
+                return false;
+            }
+
+            if (
+                tipo === 'objeto' &&
+                (
+                    dado === null ||
+                    typeof dado !== 'object' ||
+                    Array.isArray(dado)
+                )
+            ) {
+                return false;
+            }
+        }
+
+        const foto = backup.dados.fotoPerfil;
+
+        if (
+            foto !== null &&
+            !/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(foto)
+        ) {
+            return false;
+        }
+
+        const meta = backup.dados.metaMensal;
+
+        if (
+            meta !== null &&
+            (
+                !/^\d+$/.test(meta) ||
+                Number(meta) < 1 ||
+                Number(meta) > 100
+            )
+        ) {
+            return false;
+        }
+
+        return true;
+
+    } catch (erro) {
+        console.warn(
+            'Backup com dados internos inválidos:',
+            erro
+        );
+
+        return false;
+    }
+}
