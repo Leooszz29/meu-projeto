@@ -3640,5 +3640,20 @@ textarea::placeholder{
     #profileForm textarea {
         font-size: 16px;
     }
+}
 
+/* =========================================
+   FITZONE - BOTOES DO HISTORICO MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+    .history-details-btn {
+        min-height: 44px;
+        padding: 0 12px;
+    }
+
+    .history-delete-btn {
+        width: 44px;
+        height: 44px;
+    }
 }
