@@ -166,3 +166,13 @@
 }
 
 /* Responsividade */
+
+/* =========================================
+   FITZONE - BOTAO MOTIVACIONAL TOUCH
+========================================= */
+
+@media (hover: none) {
+    #motivacaoModalBtn:hover {
+        transform: none;
+    }
+}
