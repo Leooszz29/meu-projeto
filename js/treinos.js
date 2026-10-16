@@ -4290,3 +4290,82 @@ function validarHistoricoBackupFitZone(backup) {
         return false;
     }
 }
+
+/* =========================================
+   FITZONE - VALIDAR EXERCICIOS DO HISTORICO
+========================================= */
+
+function validarExerciciosHistoricoBackupFitZone(backup) {
+    if (!validarHistoricoBackupFitZone(backup)) {
+        return false;
+    }
+
+    try {
+        const valor = backup.dados.historico;
+
+        if (valor === null) {
+            return true;
+        }
+
+        const historico = JSON.parse(valor);
+
+        return historico.every(registro => {
+            if (
+                registro.totalExercicios !==
+                registro.exercicios.length
+            ) {
+                return false;
+            }
+
+            return registro.exercicios.every(exercicio => {
+                if (
+                    !exercicio ||
+                    typeof exercicio !== 'object' ||
+                    Array.isArray(exercicio)
+                ) {
+                    return false;
+                }
+
+                return (
+                    (
+                        exercicio.id === null ||
+                        (
+                            typeof exercicio.id === 'string' &&
+                            exercicio.id.length > 0
+                        )
+                    ) &&
+
+                    typeof exercicio.nome === 'string' &&
+                    exercicio.nome.trim().length > 0 &&
+
+                    Number.isInteger(exercicio.seriesConcluidas) &&
+                    exercicio.seriesConcluidas >= 0 &&
+
+                    Number.isInteger(exercicio.seriesTotal) &&
+                    exercicio.seriesTotal >= 0 &&
+
+                    exercicio.seriesConcluidas <=
+                        exercicio.seriesTotal &&
+
+                    typeof exercicio.completo === 'boolean' &&
+
+                    ['individual', 'bisset', 'triset']
+                        .includes(exercicio.tipoExecucao) &&
+
+                    (
+                        exercicio.grupoExecucao === null ||
+                        typeof exercicio.grupoExecucao === 'string'
+                    )
+                );
+            });
+        });
+
+    } catch (erro) {
+        console.warn(
+            'Exercicios do historico do backup invalidos:',
+            erro
+        );
+
+        return false;
+    }
+}
