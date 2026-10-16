@@ -3876,3 +3876,17 @@ document.addEventListener(
         }
     }
 );
+
+/* =========================================
+   FITZONE - PESQUISA DE TREINOS EM TEMPO REAL
+========================================= */
+
+const workoutSearchInput = document.getElementById(
+    'workoutSearchInput'
+);
+
+if (workoutSearchInput) {
+    workoutSearchInput.addEventListener('input', () => {
+        renderWorkouts();
+    });
+}
