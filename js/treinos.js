@@ -4520,3 +4520,52 @@ function validarProgressoBackupFitZone(backup) {
         return false;
     }
 }
+
+/* =========================================
+   FITZONE - VALIDAR TREINO ATIVO DO BACKUP
+========================================= */
+
+function validarTreinoAtivoBackupFitZone(backup) {
+    if (!validarProgressoBackupFitZone(backup)) {
+        return false;
+    }
+
+    try {
+        const valor = backup.dados.treinoAtivo;
+
+        if (valor === null) {
+            return true;
+        }
+
+        const treinoAtivo = JSON.parse(valor);
+
+        if (
+            !treinoAtivo ||
+            typeof treinoAtivo !== 'object' ||
+            Array.isArray(treinoAtivo) ||
+            typeof treinoAtivo.id !== 'string' ||
+            !treinoAtivo.id.trim() ||
+            typeof treinoAtivo.nome !== 'string' ||
+            !treinoAtivo.nome.trim()
+        ) {
+            return false;
+        }
+
+        const treinos = backup.dados.treinos === null
+            ? []
+            : JSON.parse(backup.dados.treinos);
+
+        return treinos.some(treino =>
+            treino.id === treinoAtivo.id &&
+            treino.nome === treinoAtivo.nome
+        );
+
+    } catch (erro) {
+        console.warn(
+            'Treino ativo do backup inválido:',
+            erro
+        );
+
+        return false;
+    }
+}
