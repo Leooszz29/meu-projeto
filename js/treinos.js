@@ -4997,7 +4997,7 @@ function resumirPlanoRestauracaoFitZone(plano) {
 ========================================= */
 
 let restoreBackupPreviousFocus = null;
-
+let restoreBackupPendingPlan = null;
 
 function abrirModalRestauracaoFitZone(plano = null) {
     const modal = document.getElementById(
@@ -5044,6 +5044,8 @@ function abrirModalRestauracaoFitZone(plano = null) {
             'para visualizar as alterações.';
     }
 
+    restoreBackupPendingPlan = plano;
+
     restoreBackupPreviousFocus = document.activeElement;
 
     modal.classList.add('show');
@@ -5061,6 +5063,8 @@ function fecharModalRestauracaoFitZone() {
     }
 
     modal.classList.remove('show');
+
+    restoreBackupPendingPlan = null;
 
     if (
         restoreBackupPreviousFocus &&
