@@ -18,7 +18,9 @@ function carregarSessao() {
             Array.isArray(sessao) ||
             sessao.autenticado !== true ||
             typeof sessao.email !== 'string' ||
-            !sessao.email.trim()
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                sessao.email.trim()
+            )
         ) {
             console.warn(
                 'Estrutura da sessão FitZone inválida.'
