@@ -5068,6 +5068,27 @@ function abrirModalRestauracaoFitZone(plano = null) {
     cancelar.focus();
 }
 
+/* =========================================
+   FITZONE - VALIDAR PLANO PENDENTE
+========================================= */
+
+function validarPlanoPendenteRestauracaoFitZone() {
+    if (
+        !restoreBackupPendingPlan ||
+        !verificarPlanoRestauracaoFitZone(
+            restoreBackupPendingPlan
+        )
+    ) {
+        console.warn(
+            'Plano de restauração ausente ou desatualizado.'
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
 function fecharModalRestauracaoFitZone() {
     const modal = document.getElementById(
         'restoreBackupModalOverlay'
