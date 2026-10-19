@@ -5056,3 +5056,23 @@ if (restoreBackupCancelButton) {
         fecharModalRestauracaoFitZone
     );
 }
+
+/* =========================================
+   FITZONE - FECHAR RESTAURACAO COM ESC
+========================================= */
+
+document.addEventListener('keydown', (event) => {
+    const modal = document.getElementById(
+        'restoreBackupModalOverlay'
+    );
+
+    if (
+        event.key === 'Escape' &&
+        modal &&
+        modal.classList.contains('show')
+    ) {
+        event.preventDefault();
+
+        fecharModalRestauracaoFitZone();
+    }
+});
