@@ -5120,3 +5120,48 @@ document.addEventListener('keydown', (event) => {
         primeiro.focus();
     }
 });
+
+/* =========================================
+   FITZONE - MOSTRAR RESUMO DA RESTAURACAO
+========================================= */
+
+function mostrarResumoRestauracaoFitZone(plano) {
+    const elemento = document.getElementById(
+        'restoreBackupSummary'
+    );
+
+    if (!elemento) {
+        throw new Error(
+            'Área de resumo da restauração não encontrada.'
+        );
+    }
+
+    const resumo = resumirPlanoRestauracaoFitZone(plano);
+
+    const nomes = {
+        perfil: 'Perfil',
+        fotoPerfil: 'Foto de perfil',
+        treinos: 'Treinos',
+        historico: 'Histórico',
+        progresso: 'Progresso',
+        treinoAtivo: 'Treino ativo',
+        checkins: 'Check-ins',
+        metaMensal: 'Meta mensal'
+    };
+
+    const alteradas = resumo.categorias
+        .filter(item => item.seraAlterado)
+        .map(item => nomes[item.tipo]);
+
+    if (alteradas.length === 0) {
+        elemento.textContent =
+            'Nenhuma informação será alterada.';
+    } else {
+        elemento.textContent =
+            `${resumo.categoriasAlteradas} de ` +
+            `${resumo.totalCategorias} categorias serão alteradas: ` +
+            alteradas.join(', ') + '.';
+    }
+
+    return resumo;
+}
