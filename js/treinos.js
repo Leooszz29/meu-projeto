@@ -4953,3 +4953,41 @@ function verificarPlanoRestauracaoFitZone(plano) {
         return false;
     }
 }
+
+/* =========================================
+   FITZONE - RESUMO DA RESTAURACAO
+========================================= */
+
+function resumirPlanoRestauracaoFitZone(plano) {
+    if (!verificarPlanoRestauracaoFitZone(plano)) {
+        throw new Error(
+            'O plano de restauração não é válido.'
+        );
+    }
+
+    const categorias = plano.map(item => ({
+        tipo: item.tipo,
+        seraAlterado:
+            item.valorAnterior !== item.valorNovo,
+        possuiDadosAtuais:
+            item.valorAnterior !== null,
+        possuiDadosBackup:
+            item.valorNovo !== null
+    }));
+
+    return {
+        totalCategorias: categorias.length,
+
+        categoriasAlteradas:
+            categorias.filter(item =>
+                item.seraAlterado
+            ).length,
+
+        categoriasMantidas:
+            categorias.filter(item =>
+                !item.seraAlterado
+            ).length,
+
+        categorias
+    };
+}
