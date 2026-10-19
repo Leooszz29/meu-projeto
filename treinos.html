@@ -718,6 +718,57 @@
     </div>
 </div>
    
+<!-- MODAL DE CONFIRMACAO DA RESTAURACAO -->
+<div
+    class="modal-overlay"
+    id="restoreBackupModalOverlay"
+>
+    <div
+        class="modal"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="restoreBackupModalTitle"
+        aria-describedby="restoreBackupModalDescription"
+    >
+        <h2 id="restoreBackupModalTitle">
+            Confirmar restauração
+        </h2>
+
+        <p id="restoreBackupModalDescription">
+            A restauração poderá substituir ou remover
+            informações atuais do FitZone.
+        </p>
+
+        <p id="restoreBackupSummary">
+            Preparando resumo das alterações...
+        </p>
+
+        <p>
+            Antes de continuar, guarde uma cópia
+            de segurança dos seus dados atuais.
+        </p>
+
+        <div class="modal-actions">
+            <button
+                type="button"
+                class="btn btn-cancel"
+                id="restoreBackupCancelBtn"
+            >
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-save"
+                id="restoreBackupConfirmBtn"
+                disabled
+            >
+                Confirmar restauração
+            </button>
+        </div>
+    </div>
+</div>
+   
 <!-- NOTIFICACAO DE TREINO DUPLICADO -->
 <div
     id="workoutDuplicateSuccess"
