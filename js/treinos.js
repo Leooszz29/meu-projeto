@@ -4706,3 +4706,63 @@ function validarPerfilBackupFitZone(backup) {
         return false;
     }
 }
+
+/* =========================================
+   FITZONE - VALIDAR MEDIDAS DO PERFIL
+========================================= */
+
+function validarMedidasPerfilBackupFitZone(backup) {
+    if (!validarPerfilBackupFitZone(backup)) {
+        return false;
+    }
+
+    try {
+        const valor = backup.dados.perfil;
+
+        if (valor === null) {
+            return true;
+        }
+
+        const perfil = JSON.parse(valor);
+
+        const limites = {
+            idade: { minimo: 10, maximo: 120 },
+            peso: { minimo: 20, maximo: 400 },
+            altura: { minimo: 100, maximo: 250 }
+        };
+
+        return Object.entries(limites).every(
+            ([campo, limite]) => {
+                if (!Object.hasOwn(perfil, campo)) {
+                    return true;
+                }
+
+                const texto = perfil[campo].trim();
+
+                if (!texto) {
+                    return false;
+                }
+
+                const numero = Number(texto);
+
+                return (
+                    Number.isFinite(numero) &&
+                    numero >= limite.minimo &&
+                    numero <= limite.maximo &&
+                    (
+                        campo !== 'idade' ||
+                        Number.isInteger(numero)
+                    )
+                );
+            }
+        );
+
+    } catch (erro) {
+        console.warn(
+            'Medidas do perfil no backup inválidas:',
+            erro
+        );
+
+        return false;
+    }
+}
