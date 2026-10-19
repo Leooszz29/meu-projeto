@@ -27,7 +27,10 @@ function carregarSessao() {
             return null;
         }
 
-        return sessao;
+        return {
+            ...sessao,
+            email: sessao.email.trim().toLowerCase()
+        };
 
     } catch (error) {
 
