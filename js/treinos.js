@@ -4444,7 +4444,7 @@ async function lerArquivoBackupFitZone(arquivo) {
         );
     }
 
-    if (!validarContaBackupFitZone(backup)) {
+    if (!validarMedidasPerfilBackupFitZone(backup)) {
         throw new Error(
             'Backup inválido, incompatível ou de outra conta.'
         );
