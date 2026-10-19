@@ -5085,6 +5085,25 @@ if (restoreBackupCancelButton) {
 }
 
 /* =========================================
+   FITZONE - FECHAR MODAL CLICANDO FORA
+========================================= */
+
+const restoreBackupOverlay = document.getElementById(
+    'restoreBackupModalOverlay'
+);
+
+if (restoreBackupOverlay) {
+    restoreBackupOverlay.addEventListener(
+        'click',
+        (event) => {
+            if (event.target === restoreBackupOverlay) {
+                fecharModalRestauracaoFitZone();
+            }
+        }
+    );
+}
+
+/* =========================================
    FITZONE - FECHAR RESTAURACAO COM ESC
 ========================================= */
 
