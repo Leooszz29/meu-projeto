@@ -4568,3 +4568,77 @@ function validarTreinoAtivoBackupFitZone(backup) {
         return false;
     }
 }
+
+/* =========================================
+   FITZONE - VALIDAR CHECK-INS DO BACKUP
+========================================= */
+
+function validarCheckinsBackupFitZone(backup) {
+    if (!validarTreinoAtivoBackupFitZone(backup)) {
+        return false;
+    }
+
+    try {
+        const valor = backup.dados.checkins;
+
+        if (valor === null) {
+            return true;
+        }
+
+        const checkins = JSON.parse(valor);
+
+        if (
+            !checkins ||
+            typeof checkins !== 'object' ||
+            Array.isArray(checkins)
+        ) {
+            return false;
+        }
+
+        return Object.entries(checkins).every(
+            ([data, registro]) => {
+                if (
+                    !/^\d{4}-\d{2}-\d{2}$/.test(data)
+                ) {
+                    return false;
+                }
+
+                const [ano, mes, dia] =
+                    data.split('-').map(Number);
+
+                const dataVerificada =
+                    new Date(Date.UTC(ano, mes - 1, dia));
+
+                const dataValida =
+                    dataVerificada.getUTCFullYear() === ano &&
+                    dataVerificada.getUTCMonth() === mes - 1 &&
+                    dataVerificada.getUTCDate() === dia;
+
+                if (!dataValida) {
+                    return false;
+                }
+
+                if (
+                    !registro ||
+                    typeof registro !== 'object' ||
+                    Array.isArray(registro)
+                ) {
+                    return false;
+                }
+
+                return (
+                    typeof registro.checked === 'boolean' &&
+                    typeof registro.treino === 'string'
+                );
+            }
+        );
+
+    } catch (erro) {
+        console.warn(
+            'Check-ins do backup inválidos:',
+            erro
+        );
+
+        return false;
+    }
+}
