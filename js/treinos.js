@@ -5076,3 +5076,47 @@ document.addEventListener('keydown', (event) => {
         fecharModalRestauracaoFitZone();
     }
 });
+
+/* =========================================
+   FITZONE - CONTROLAR TAB NO MODAL
+========================================= */
+
+document.addEventListener('keydown', (event) => {
+    const modal = document.getElementById(
+        'restoreBackupModalOverlay'
+    );
+
+    if (
+        event.key !== 'Tab' ||
+        !modal ||
+        !modal.classList.contains('show')
+    ) {
+        return;
+    }
+
+    const botoes = Array.from(
+        modal.querySelectorAll('button:not(:disabled)')
+    ).filter(botao => !botao.hidden);
+
+    if (botoes.length === 0) {
+        event.preventDefault();
+        return;
+    }
+
+    const primeiro = botoes[0];
+    const ultimo = botoes[botoes.length - 1];
+
+    if (
+        !modal.contains(document.activeElement) ||
+        (event.shiftKey && document.activeElement === primeiro)
+    ) {
+        event.preventDefault();
+        (event.shiftKey ? ultimo : primeiro).focus();
+    } else if (
+        !event.shiftKey &&
+        document.activeElement === ultimo
+    ) {
+        event.preventDefault();
+        primeiro.focus();
+    }
+});
