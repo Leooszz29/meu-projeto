@@ -5243,3 +5243,62 @@ if (
         }
     );
 }
+
+/* =========================================
+   FITZONE - PROCESSAR ARQUIVO SELECIONADO
+========================================= */
+
+if (
+    inputArquivoBackupFitZone &&
+    btnRestaurarBackupFitZone
+) {
+    inputArquivoBackupFitZone.addEventListener(
+        'change',
+        async () => {
+            const arquivo =
+                inputArquivoBackupFitZone.files?.[0];
+
+            if (!arquivo) {
+                return;
+            }
+
+            btnRestaurarBackupFitZone.disabled = true;
+
+            try {
+                // Lê e valida o arquivo JSON
+                const backup =
+                    await lerArquivoBackupFitZone(arquivo);
+
+                // Prepara o plano de restauração
+                const plano =
+                    prepararPlanoRestauracaoFitZone(backup);
+
+                // Confere se o plano está consistente
+                if (!verificarPlanoRestauracaoFitZone(plano)) {
+                    throw new Error(
+                        'O plano de restauração não é válido.'
+                    );
+                }
+
+                // Abre a janela com o resumo
+                abrirModalRestauracaoFitZone(plano);
+
+            } catch (erro) {
+                console.warn(
+                    'Falha na validação do backup:',
+                    erro.message
+                );
+
+                showWarningModal(
+                    'Não foi possível validar o backup. ' +
+                    'Verifique se o arquivo é válido ' +
+                    'e pertence à conta atual.'
+                );
+
+            } finally {
+                inputArquivoBackupFitZone.value = '';
+                btnRestaurarBackupFitZone.disabled = false;
+            }
+        }
+    );
+}
