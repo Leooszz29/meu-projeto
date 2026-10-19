@@ -4452,3 +4452,71 @@ async function lerArquivoBackupFitZone(arquivo) {
 
     return backup;
 }
+
+/* =========================================
+   FITZONE - VALIDAR PROGRESSO DO BACKUP
+========================================= */
+
+function validarProgressoBackupFitZone(backup) {
+    if (!validarContaBackupFitZone(backup)) {
+        return false;
+    }
+
+    try {
+        const valor = backup.dados.progresso;
+
+        if (valor === null) {
+            return true;
+        }
+
+        const progresso = JSON.parse(valor);
+
+        if (
+            !progresso ||
+            typeof progresso !== 'object' ||
+            Array.isArray(progresso)
+        ) {
+            return false;
+        }
+
+        return Object.entries(progresso).every(
+            ([treinoId, exercicios]) => {
+                if (
+                    !treinoId ||
+                    !exercicios ||
+                    typeof exercicios !== 'object' ||
+                    Array.isArray(exercicios)
+                ) {
+                    return false;
+                }
+
+                return Object.entries(exercicios).every(
+                    ([exercicioId, series]) => {
+                        if (
+                            !exercicioId ||
+                            !Array.isArray(series)
+                        ) {
+                            return false;
+                        }
+
+                        return (
+                            series.every(numero =>
+                                Number.isInteger(numero) &&
+                                numero >= 1
+                            ) &&
+                            new Set(series).size === series.length
+                        );
+                    }
+                );
+            }
+        );
+
+    } catch (erro) {
+        console.warn(
+            'Progresso do backup inválido:',
+            erro
+        );
+
+        return false;
+    }
+}
