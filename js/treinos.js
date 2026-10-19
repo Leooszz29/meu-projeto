@@ -4888,3 +4888,68 @@ function baixarBackupSegurancaFitZone() {
         }, 1000);
     }
 }
+
+/* =========================================
+   FITZONE - VERIFICAR PLANO DE RESTAURACAO
+========================================= */
+
+function verificarPlanoRestauracaoFitZone(plano) {
+    if (
+        !Array.isArray(plano) ||
+        plano.length !== 8
+    ) {
+        return false;
+    }
+
+    try {
+        const chaves = obterChavesRestauracaoFitZone();
+
+        const categorias = Object.keys(chaves);
+
+        return categorias.every((tipo, indice) => {
+            const item = plano[indice];
+
+            if (
+                !item ||
+                typeof item !== 'object' ||
+                Array.isArray(item) ||
+                item.tipo !== tipo ||
+                item.chave !== chaves[tipo]
+            ) {
+                return false;
+            }
+
+            if (
+                !Object.hasOwn(item, 'valorAnterior') ||
+                !Object.hasOwn(item, 'valorNovo')
+            ) {
+                return false;
+            }
+
+            const valoresValidos = [
+                item.valorAnterior,
+                item.valorNovo
+            ].every(valor =>
+                valor === null ||
+                typeof valor === 'string'
+            );
+
+            if (!valoresValidos) {
+                return false;
+            }
+
+            return (
+                localStorage.getItem(item.chave) ===
+                item.valorAnterior
+            );
+        });
+
+    } catch (erro) {
+        console.warn(
+            'Plano de restauração inválido:',
+            erro
+        );
+
+        return false;
+    }
+}
