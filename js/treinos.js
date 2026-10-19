@@ -4798,3 +4798,23 @@ function obterChavesRestauracaoFitZone() {
         metaMensal: `metaMensalFitZone:${email}`
     };
 }
+
+/* =========================================
+   FITZONE - CAPTURAR DADOS ANTES DA RESTAURACAO
+========================================= */
+
+function capturarDadosAtuaisFitZone() {
+    const chaves = obterChavesRestauracaoFitZone();
+
+    const dadosAtuais = {};
+
+    Object.entries(chaves).forEach(([tipo, chave]) => {
+        const valor = localStorage.getItem(chave);
+
+        dadosAtuais[tipo] = valor === null
+            ? null
+            : valor;
+    });
+
+    return dadosAtuais;
+}
