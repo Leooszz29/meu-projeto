@@ -3543,12 +3543,7 @@ window.addEventListener(
         const sessao =
             carregarSessao();
         
-        if (
-            !sessao ||
-            sessao.autenticado !== true ||
-            typeof sessao.email !== 'string' ||
-            !sessao.email.trim()
-        ) {
+        if (!sessao) {
             window.location.href =
                 'login.html';
 
