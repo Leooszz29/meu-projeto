@@ -5073,14 +5073,21 @@ function abrirModalRestauracaoFitZone(plano = null) {
 ========================================= */
 
 function validarPlanoPendenteRestauracaoFitZone() {
+    const modal = document.getElementById(
+        'restoreBackupModalOverlay'
+    );
+
     if (
+        !modal ||
+        !modal.classList.contains('show') ||
         !restoreBackupPendingPlan ||
         !verificarPlanoRestauracaoFitZone(
             restoreBackupPendingPlan
         )
     ) {
         console.warn(
-            'Plano de restauração ausente ou desatualizado.'
+            'Restauração não autorizada: ' +
+            'janela fechada ou plano inválido.'
         );
 
         return false;
