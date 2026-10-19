@@ -5028,6 +5028,15 @@ function abrirModalRestauracaoFitZone(plano = null) {
     confirmar.disabled = true;
 
     if (plano !== null) {
+        if (!verificarPlanoRestauracaoFitZone(plano)) {
+            console.warn(
+                'Tentativa de abrir restauração com plano inválido.'
+            );
+
+            restoreBackupPendingPlan = null;
+            return;
+        }
+
         try {
             mostrarResumoRestauracaoFitZone(plano);
         } catch (erro) {
