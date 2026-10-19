@@ -4371,3 +4371,41 @@ function validarExerciciosHistoricoBackupFitZone(backup) {
         return false;
     }
 }
+
+/* =========================================
+   FITZONE - VALIDAR CONTA DO BACKUP
+========================================= */
+
+function validarContaBackupFitZone(backup) {
+    if (!validarExerciciosHistoricoBackupFitZone(backup)) {
+        return false;
+    }
+
+    const sessao = carregarSessao();
+
+    if (
+        !sessao ||
+        sessao.autenticado !== true ||
+        typeof sessao.email !== 'string' ||
+        !sessao.email.trim()
+    ) {
+        return false;
+    }
+
+    if (
+        typeof backup.contaEmail !== 'string' ||
+        !backup.contaEmail.trim()
+    ) {
+        return false;
+    }
+
+    const emailAtual = sessao.email
+        .trim()
+        .toLowerCase();
+
+    const emailBackup = backup.contaEmail
+        .trim()
+        .toLowerCase();
+
+    return emailAtual === emailBackup;
+}
