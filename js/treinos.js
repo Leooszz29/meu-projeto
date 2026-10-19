@@ -4642,3 +4642,67 @@ function validarCheckinsBackupFitZone(backup) {
         return false;
     }
 }
+
+/* =========================================
+   FITZONE - VALIDAR PERFIL DO BACKUP
+========================================= */
+
+function validarPerfilBackupFitZone(backup) {
+    if (!validarCheckinsBackupFitZone(backup)) {
+        return false;
+    }
+
+    try {
+        const valor = backup.dados.perfil;
+
+        if (valor === null) {
+            return true;
+        }
+
+        const perfil = JSON.parse(valor);
+
+        if (
+            !perfil ||
+            typeof perfil !== 'object' ||
+            Array.isArray(perfil)
+        ) {
+            return false;
+        }
+
+        const campos = [
+            'nome',
+            'idade',
+            'tipoSanguineo',
+            'peso',
+            'altura',
+            'treinador',
+            'infoPessoais'
+        ];
+
+        for (const campo of campos) {
+            if (
+                Object.hasOwn(perfil, campo) &&
+                typeof perfil[campo] !== 'string'
+            ) {
+                return false;
+            }
+        }
+
+        if (
+            Object.hasOwn(perfil, 'nome') &&
+            !perfil.nome.trim()
+        ) {
+            return false;
+        }
+
+        return true;
+
+    } catch (erro) {
+        console.warn(
+            'Perfil do backup inválido:',
+            erro
+        );
+
+        return false;
+    }
+}
