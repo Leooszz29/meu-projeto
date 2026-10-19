@@ -4818,3 +4818,28 @@ function capturarDadosAtuaisFitZone() {
 
     return dadosAtuais;
 }
+
+/* =========================================
+   FITZONE - PREPARAR PLANO DE RESTAURACAO
+========================================= */
+
+function prepararPlanoRestauracaoFitZone(backup) {
+    if (!validarMedidasPerfilBackupFitZone(backup)) {
+        throw new Error(
+            'O backup não passou nas validações.'
+        );
+    }
+
+    const chaves = obterChavesRestauracaoFitZone();
+
+    const dadosAtuais = capturarDadosAtuaisFitZone();
+
+    return Object.entries(chaves).map(
+        ([tipo, chave]) => ({
+            tipo: tipo,
+            chave: chave,
+            valorAnterior: dadosAtuais[tipo],
+            valorNovo: backup.dados[tipo]
+        })
+    );
+}
