@@ -3520,10 +3520,12 @@ window.addEventListener(
     () => {
         const sessao =
             carregarSessao();
-
+        
         if (
             !sessao ||
-            sessao.autenticado !== true
+            sessao.autenticado !== true ||
+            typeof sessao.email !== 'string' ||
+            !sessao.email.trim()
         ) {
             window.location.href =
                 'login.html';
