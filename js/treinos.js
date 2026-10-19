@@ -4991,3 +4991,68 @@ function resumirPlanoRestauracaoFitZone(plano) {
         categorias
     };
 }
+
+/* =========================================
+   FITZONE - MODAL DE RESTAURACAO
+========================================= */
+
+let restoreBackupPreviousFocus = null;
+
+function abrirModalRestauracaoFitZone() {
+    const modal = document.getElementById(
+        'restoreBackupModalOverlay'
+    );
+
+    const cancelar = document.getElementById(
+        'restoreBackupCancelBtn'
+    );
+
+    const confirmar = document.getElementById(
+        'restoreBackupConfirmBtn'
+    );
+
+    if (!modal || !cancelar || !confirmar) {
+        return;
+    }
+
+    restoreBackupPreviousFocus = document.activeElement;
+
+    confirmar.disabled = true;
+
+    modal.classList.add('show');
+
+    cancelar.focus();
+}
+
+function fecharModalRestauracaoFitZone() {
+    const modal = document.getElementById(
+        'restoreBackupModalOverlay'
+    );
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.remove('show');
+
+    if (
+        restoreBackupPreviousFocus &&
+        document.contains(restoreBackupPreviousFocus) &&
+        typeof restoreBackupPreviousFocus.focus === 'function'
+    ) {
+        restoreBackupPreviousFocus.focus();
+    }
+
+    restoreBackupPreviousFocus = null;
+}
+
+const restoreBackupCancelButton = document.getElementById(
+    'restoreBackupCancelBtn'
+);
+
+if (restoreBackupCancelButton) {
+    restoreBackupCancelButton.addEventListener(
+        'click',
+        fecharModalRestauracaoFitZone
+    );
+}
