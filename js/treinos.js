@@ -6,9 +6,28 @@ function carregarSessao() {
         const sessaoJSON =
             localStorage.getItem('fitzoneSessao');
 
-        return sessaoJSON
-            ? JSON.parse(sessaoJSON)
-            : null;
+        if (!sessaoJSON) {
+            return null;
+        }
+
+        const sessao = JSON.parse(sessaoJSON);
+
+        if (
+            !sessao ||
+            typeof sessao !== 'object' ||
+            Array.isArray(sessao) ||
+            sessao.autenticado !== true ||
+            typeof sessao.email !== 'string' ||
+            !sessao.email.trim()
+        ) {
+            console.warn(
+                'Estrutura da sessão FitZone inválida.'
+            );
+
+            return null;
+        }
+
+        return sessao;
 
     } catch (error) {
 
