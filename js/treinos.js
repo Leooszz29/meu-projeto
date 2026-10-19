@@ -4849,6 +4849,13 @@ function prepararPlanoRestauracaoFitZone(backup) {
 ========================================= */
 
 function baixarBackupSegurancaFitZone() {
+    if (!validarPlanoPendenteRestauracaoFitZone()) {
+        throw new Error(
+            'Não é possível gerar a cópia de segurança: ' +
+            'plano de restauração inválido ou desatualizado.'
+        );
+    }
+
     const backup = prepararDadosBackupFitZone();
 
     if (!validarMedidasPerfilBackupFitZone(backup)) {
