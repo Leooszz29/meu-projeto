@@ -4998,7 +4998,8 @@ function resumirPlanoRestauracaoFitZone(plano) {
 
 let restoreBackupPreviousFocus = null;
 
-function abrirModalRestauracaoFitZone() {
+
+function abrirModalRestauracaoFitZone(plano = null) {
     const modal = document.getElementById(
         'restoreBackupModalOverlay'
     );
@@ -5011,13 +5012,39 @@ function abrirModalRestauracaoFitZone() {
         'restoreBackupConfirmBtn'
     );
 
-    if (!modal || !cancelar || !confirmar) {
+    const resumoElemento = document.getElementById(
+        'restoreBackupSummary'
+    );
+
+    if (
+        !modal ||
+        !cancelar ||
+        !confirmar ||
+        !resumoElemento
+    ) {
         return;
     }
 
-    restoreBackupPreviousFocus = document.activeElement;
-
     confirmar.disabled = true;
+
+    if (plano !== null) {
+        try {
+            mostrarResumoRestauracaoFitZone(plano);
+        } catch (erro) {
+            console.warn(
+                'Não foi possível preparar o resumo:',
+                erro
+            );
+
+            return;
+        }
+    } else {
+        resumoElemento.textContent =
+            'Selecione um arquivo de backup válido ' +
+            'para visualizar as alterações.';
+    }
+
+    restoreBackupPreviousFocus = document.activeElement;
 
     modal.classList.add('show');
 
