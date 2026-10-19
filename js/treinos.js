@@ -5211,3 +5211,35 @@ function mostrarResumoRestauracaoFitZone(plano) {
 
     return resumo;
 }
+
+/* =========================================
+   FITZONE - SELECIONAR ARQUIVO DE BACKUP
+========================================= */
+
+const btnRestaurarBackupFitZone = document.getElementById(
+    'btnRestoreWorkoutBackup'
+);
+
+const inputArquivoBackupFitZone = document.getElementById(
+    'workoutBackupFileInput'
+);
+
+if (
+    btnRestaurarBackupFitZone &&
+    inputArquivoBackupFitZone
+) {
+    // Permite selecionar um arquivo
+    btnRestaurarBackupFitZone.disabled = false;
+    inputArquivoBackupFitZone.disabled = false;
+
+    btnRestaurarBackupFitZone.addEventListener(
+        'click',
+        () => {
+            // Limpa a seleção anterior
+            inputArquivoBackupFitZone.value = '';
+
+            // Abre o seletor de arquivos
+            inputArquivoBackupFitZone.click();
+        }
+    );
+}
