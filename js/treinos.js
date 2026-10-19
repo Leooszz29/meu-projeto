@@ -4556,8 +4556,7 @@ function validarTreinoAtivoBackupFitZone(backup) {
             : JSON.parse(backup.dados.treinos);
 
         return treinos.some(treino =>
-            treino.id === treinoAtivo.id &&
-            treino.nome === treinoAtivo.nome
+            treino.id === treinoAtivo.id
         );
 
     } catch (erro) {
