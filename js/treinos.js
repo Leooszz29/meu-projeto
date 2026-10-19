@@ -4409,3 +4409,46 @@ function validarContaBackupFitZone(backup) {
 
     return emailAtual === emailBackup;
 }
+
+/* =========================================
+   FITZONE - LER ARQUIVO DE BACKUP
+========================================= */
+
+async function lerArquivoBackupFitZone(arquivo) {
+    const tamanhoMaximo = 20 * 1024 * 1024;
+
+    if (!(arquivo instanceof File)) {
+        throw new Error(
+            'Selecione um arquivo de backup válido.'
+        );
+    }
+
+    if (
+        !arquivo.name.toLowerCase().endsWith('.json') ||
+        arquivo.size === 0 ||
+        arquivo.size > tamanhoMaximo
+    ) {
+        throw new Error(
+            'O arquivo deve ser um JSON de até 20 MB.'
+        );
+    }
+
+    let backup;
+
+    try {
+        const conteudo = await arquivo.text();
+        backup = JSON.parse(conteudo);
+    } catch (erro) {
+        throw new Error(
+            'Não foi possível ler o arquivo JSON.'
+        );
+    }
+
+    if (!validarContaBackupFitZone(backup)) {
+        throw new Error(
+            'Backup inválido, incompatível ou de outra conta.'
+        );
+    }
+
+    return backup;
+}
