@@ -5818,6 +5818,7 @@ right: 0;
 
 .workout-backup-actions {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 12px;
     margin: 0 0 24px;
