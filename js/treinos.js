@@ -4766,3 +4766,35 @@ function validarMedidasPerfilBackupFitZone(backup) {
         return false;
     }
 }
+
+/* =========================================
+   FITZONE - CHAVES PARA RESTAURACAO
+========================================= */
+
+function obterChavesRestauracaoFitZone() {
+    const sessao = carregarSessao();
+
+    if (
+        !sessao ||
+        sessao.autenticado !== true ||
+        typeof sessao.email !== 'string' ||
+        !sessao.email.trim()
+    ) {
+        throw new Error(
+            'Sessão inválida para restauração do backup.'
+        );
+    }
+
+    const email = sessao.email.trim().toLowerCase();
+
+    return {
+        perfil: `fitzonePerfil:${email}`,
+        fotoPerfil: `fotoPerfilFitZone:${email}`,
+        treinos: `fitzoneTreinos:${email}`,
+        historico: `historicoTreinos:${email}`,
+        progresso: `progressoTreino:${email}`,
+        treinoAtivo: `treinoAtivo:${email}`,
+        checkins: `fitzoneCheckins:${email}`,
+        metaMensal: `metaMensalFitZone:${email}`
+    };
+}
