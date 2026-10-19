@@ -117,8 +117,8 @@
         Novo treino
     </button>
 
-</div>
-   
+</div>   
+
 <!-- BACKUP DOS DADOS -->
 <div class="workout-backup-actions">
     <button
@@ -130,6 +130,26 @@
         <span aria-hidden="true">↓</span>
         Exportar backup
     </button>
+
+    <!-- RESTAURAR BACKUP -->
+    <button
+        type="button"
+        id="btnRestoreWorkoutBackup"
+        class="btn-export-backup"
+        disabled
+    >
+        <span aria-hidden="true">↑</span>
+        Restaurar backup
+    </button>
+
+    <input
+        type="file"
+        id="workoutBackupFileInput"
+        accept=".json,application/json"
+        hidden
+        disabled
+        aria-label="Selecionar arquivo de backup do FitZone"
+    >
 </div>
    
 <!-- PESQUISA DE TREINOS -->
