@@ -4843,3 +4843,48 @@ function prepararPlanoRestauracaoFitZone(backup) {
         })
     );
 }
+
+/* =========================================
+   FITZONE - BAIXAR BACKUP DE SEGURANCA
+========================================= */
+
+function baixarBackupSegurancaFitZone() {
+    const backup = prepararDadosBackupFitZone();
+
+    if (!validarMedidasPerfilBackupFitZone(backup)) {
+        throw new Error(
+            'Os dados atuais não passaram na validação.'
+        );
+    }
+
+    const conteudo = JSON.stringify(backup, null, 2);
+
+    const arquivo = new Blob(
+        [conteudo],
+        { type: 'application/json;charset=utf-8' }
+    );
+
+    const url = URL.createObjectURL(arquivo);
+
+    const data = new Date()
+        .toISOString()
+        .replace(/[:.]/g, '-');
+
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download =
+        `fitzone-seguranca-antes-restauracao-${data}.json`;
+
+    document.body.appendChild(link);
+
+    try {
+        link.click();
+    } finally {
+        link.remove();
+
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+        }, 1000);
+    }
+}
