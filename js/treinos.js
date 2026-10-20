@@ -3542,6 +3542,9 @@ document
    FITZONE - MONITORAR SESSAO ENTRE ABAS
 ========================================= */
 
+const emailSessaoInicialFitZone =
+    carregarSessao()?.email ?? null;
+
 window.addEventListener('storage', (event) => {
     if (event.key !== 'fitzoneSessao') {
         return;
@@ -3549,7 +3552,14 @@ window.addEventListener('storage', (event) => {
 
     const sessao = carregarSessao();
 
-    if (!sessao) {
+    if (
+        !sessao ||
+        sessao.email !== emailSessaoInicialFitZone
+    ) {
+        console.warn(
+            'Sessão encerrada ou alterada em outra aba.'
+        );
+
         window.location.replace('login.html');
     }
 });
