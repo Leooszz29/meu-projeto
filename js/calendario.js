@@ -7,7 +7,7 @@
 ========================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
-   
+
     /* =========================================
        PROTECAO DE ACESSO AO CALENDARIO
     ========================================= */
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.replace("login.html");
         return;
     }
-   
+
     /* =========================================
        MOSTRAR PAGINA ATIVA NO MENU MOBILE
     ========================================= */
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     }
-   
+
     /* =========================================
        TEMA DO CALENDARIO POR GENERO
     ========================================= */
@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     iniciarMotivacaoDiaria();
-   
+
     /* =========================================
        ENCERRAR SESSAO
     ========================================= */
@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentYear = today.getFullYear();
     let currentMonth = today.getMonth();
-    
+
     /* =========================================
        LEITURA SEGURA DOS CHECK-INS
     ========================================= */
@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return {};
         }
     }
-   
+
     /* =========================================
        SALVAMENTO SEGURO DOS CHECK-INS
     ========================================= */
@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return false;
         }
     }
-   
+
     /* =========================================
        SEQUENCIA DE CHECK-INS
     ========================================= */
@@ -422,12 +422,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return sequencia;
     }
-   
+
     const monthLabel = document.getElementById("monthLabel");
     const daysGrid = document.getElementById("daysGrid");
     const prevMonth = document.getElementById("prevMonth");
     const nextMonth = document.getElementById("nextMonth");
-   
+
     /* =========================================
        JANELA DE CHECK-IN
     ========================================= */
@@ -453,7 +453,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function openCheckinModal(dateKey, day) {
         const checkins = loadCheckins();
         const checkin = checkins[dateKey] || {};
-       
+
         selectedCheckinDateKey = dateKey;
 
         checkinModalTrigger = document.activeElement;
@@ -489,7 +489,7 @@ document.addEventListener("DOMContentLoaded", () => {
         checkinModalTrigger = null;
         selectedCheckinDateKey = null;
     }
-   
+
     /* =========================================
        CONTROLE VISUAL DO CHECK-IN
     ========================================= */
@@ -503,7 +503,7 @@ document.addEventListener("DOMContentLoaded", () => {
             String(isActive)
         );
     });
-   
+
     /* =========================================
        SALVAR CHECK-IN DO DIA SELECIONADO
     ========================================= */
@@ -566,7 +566,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function renderCalendar() {
-       
+
         const checkins = loadCheckins();
         let checkinsNoMes = 0;
 
@@ -603,7 +603,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             cell.className = "day-cell";
 
-           
             const month = String(currentMonth + 1).padStart(2, "0");
             const date = String(day).padStart(2, "0");
 
@@ -630,7 +629,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 cell.classList.add("today");
                 cell.setAttribute("aria-current", "date");
             }
-            
+
             cell.appendChild(number);
 
             if (checkin && checkin.checked === true) {
@@ -669,7 +668,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById("statMes").textContent =
             checkinsNoMes;
-       
+
         document.getElementById("statSequencia").textContent =
             calcularSequencia(checkins);
     }
