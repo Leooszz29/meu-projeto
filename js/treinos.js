@@ -403,7 +403,7 @@ function renderWorkouts() {
     const treinosFiltrados = workouts.filter(workout =>
         normalizarPesquisa(workout.nome || '').includes(termoBusca)
     );
-    
+
     /* EXIBIR MENSAGEM QUANDO NAO HOUVER RESULTADOS */
     const mensagemSemResultados = document.getElementById(
         'workoutSearchEmpty'
@@ -441,7 +441,7 @@ editBtn.setAttribute(
 );
 editBtn.innerHTML = '✎';
         editBtn.addEventListener('click', () => openWorkoutModal(workout.id));
-        
+
         /* BOTAO DUPLICAR TREINO */
         const duplicateBtn = document.createElement('button');
 
@@ -559,7 +559,6 @@ const tipoExecucao =
 const grupoExecucao =
     ex.grupoExecucao || null;
 
-
 // EXERCÍCIO INDIVIDUAL
 if (
     tipoExecucao === 'individual' ||
@@ -576,7 +575,6 @@ if (
             `[data-exercise-group="${grupoExecucao}"]`
         );
 
-
     // SE AINDA NÃO EXISTE, CRIA O GRUPO
     if (!groupContainer) {
 
@@ -589,13 +587,11 @@ if (
         groupContainer.dataset.exerciseGroup =
             grupoExecucao;
 
-
         const groupHeader =
             document.createElement('div');
 
         groupHeader.className =
             'exercise-group-header';
-
 
         const gruposDoMesmoTipo =
             workout.exercicios
@@ -606,14 +602,11 @@ if (
                 )
                 .map(item => item.grupoExecucao);
 
-
         const gruposUnicos =
             [...new Set(gruposDoMesmoTipo)];
 
-
         const numeroGrupo =
             gruposUnicos.indexOf(grupoExecucao) + 1;
-
 
        const quantidadeNoGrupo =
     workout.exercicios.filter(item =>
@@ -649,7 +642,6 @@ groupStatus.textContent =
 
 groupHeader.appendChild(groupStatus);
 
-
         groupContainer.appendChild(
             groupHeader
         );
@@ -663,7 +655,6 @@ groupHeader.appendChild(groupStatus);
         );
     }
 
-
     groupContainer.appendChild(row);
 }
             });
@@ -672,12 +663,12 @@ groupHeader.appendChild(groupStatus);
         const addExBtn = document.createElement('button');
 
         addExBtn.type = 'button';
-        
+
         addExBtn.className = 'btn-add-exercise';
         addExBtn.textContent = '+ Adicionar exercício';
         addExBtn.addEventListener('click', () => openExerciseModal(workout.id, null));
         card.appendChild(addExBtn);
-        
+
         // BOTÃO INICIAR TREINO
 
 const startBtn = document.createElement('button');
@@ -687,7 +678,7 @@ const startBtn = document.createElement('button');
 startBtn.className = 'btn-start-workout';
 
 startBtn.textContent = '▶ Iniciar treino';
-        
+
 // VERIFICA SE ESTE TREINO JÁ ESTÁ SELECIONADO
 
 const treinoAtivo =
@@ -716,7 +707,7 @@ startBtn.addEventListener('click', () => {
         hoje.getMonth(),
         hoje.getDate()
     );
-
+ 
     const jaConcluidoHoje = historicoHoje.some(registro => {
         const data = new Date(registro.data);
 
@@ -814,7 +805,6 @@ startBtn.addEventListener('click', () => {
 
         });
 
-
     // VOLTA TODOS OS BOTÕES AO TEXTO ORIGINAL
     document
         .querySelectorAll('.btn-start-workout')
@@ -824,7 +814,6 @@ startBtn.addEventListener('click', () => {
                 '▶ Iniciar treino';
 
         });
-
 
     // MARCA SOMENTE O TREINO ATUAL
     card.classList.add(
@@ -837,7 +826,6 @@ startBtn.addEventListener('click', () => {
     renderActiveTraining(workout);
 
 });
-
 
 card.appendChild(startBtn);
 
@@ -922,17 +910,14 @@ atualizarBotaoFinalizar();
     nameElement.textContent =
         workout.nome || 'Treino';
 
-
     // STATUS
 
     statusElement.textContent =
         'EM ANDAMENTO';
 
-
     // LIMPA A ÁREA
 
     exercisesElement.innerHTML = '';
-
 
     // VERIFICA SE EXISTEM EXERCÍCIOS
 
@@ -959,7 +944,6 @@ atualizarBotaoFinalizar();
         return;
     }
 
-
     // CRIA OS EXERCÍCIOS
 
 const gruposAtivosCriados = new Map();
@@ -972,7 +956,6 @@ exercicios.forEach((exercicio, index) => {
         exerciseItem.className =
             'active-exercise-item';
 
-
         const exerciseNumber =
             document.createElement('span');
 
@@ -982,13 +965,11 @@ exercicios.forEach((exercicio, index) => {
         exerciseNumber.textContent =
             String(index + 1).padStart(2, '0');
 
-
         const exerciseInfo =
             document.createElement('div');
 
         exerciseInfo.className =
             'active-exercise-info';
-
 
         const exerciseName =
             document.createElement('strong');
@@ -998,7 +979,6 @@ exercicios.forEach((exercicio, index) => {
 
         exerciseName.textContent =
             exercicio.nome || 'Exercício';
-
 
         const exerciseMeta =
             document.createElement('span');
@@ -1017,7 +997,6 @@ exercicios.forEach((exercicio, index) => {
 
         exerciseMeta.textContent =
             `${series} séries × ${reps} repetições • ${descanso}s descanso`;
-
 
         exerciseInfo.appendChild(
     exerciseName
@@ -1066,7 +1045,6 @@ exerciseInfo.appendChild(
     toggleIndividualBtn
 );
 
-
 // ========================================
 // CONTROLE DAS SÉRIES
 // ========================================
@@ -1077,7 +1055,6 @@ const seriesControls =
 seriesControls.className =
     'active-series-controls';
 
-
 const quantidadeSeries =
     parseInt(exercicio.series, 10) || 0;
 
@@ -1087,7 +1064,6 @@ const exerciseKey =
 const seriesConcluidas =
     progressoAtual[exerciseKey] || [];
 
-
 for (
     let numeroSerie = 1;
     numeroSerie <= quantidadeSeries;
@@ -1096,7 +1072,7 @@ for (
 
     const seriesButton =
         document.createElement('button');
-
+  
     seriesButton.type = 'button';
 
     seriesButton.className =
@@ -1116,7 +1092,6 @@ for (
         `Marcar série ${numeroSerie} como concluída`
     );
 
-
   seriesButton.addEventListener(
     'click',
     () => {
@@ -1130,21 +1105,17 @@ for (
                 'completed'
             );
 
-
         // BUSCA O PROGRESSO MAIS RECENTE
 
         const progressoSalvo =
     carregarProgressoTreino();
 
-
         if (!progressoSalvo[workout.id]) {
             progressoSalvo[workout.id] = {};
         }
 
-
         const seriesSalvas =
             progressoSalvo[workout.id][exerciseKey] || [];
-
 
         if (concluida) {
 
@@ -1213,19 +1184,15 @@ seriesButton.setAttribute(
     }
 );
 
-
-
     seriesControls.appendChild(
         seriesButton
     );
 
 }
 
-
 exerciseInfo.appendChild(
     seriesControls
 );
-
 
 exerciseItem.appendChild(
     exerciseNumber
@@ -1254,7 +1221,7 @@ if (
 
         const progressoAtual =
     carregarProgressoTreino();
-           
+
         const seriesConcluidas =
             progressoAtual[workout.id]?.[exerciseKey] || [];
 
@@ -1326,7 +1293,7 @@ statusIndividual.textContent =
 
 statusIndividual.hidden =
     !concluido;
-        
+
     };
 
     atualizarStatusIndividual();
@@ -1343,7 +1310,6 @@ statusIndividual.hidden =
         }
     );
 }
-
 
 // EXERCÍCIO INDIVIDUAL
 
@@ -1363,7 +1329,6 @@ if (
             grupoExecucao
         );
 
-
     // CRIA O GRUPO SOMENTE UMA VEZ
 
     if (!groupContainer) {
@@ -1377,13 +1342,11 @@ if (
         groupContainer.dataset.exerciseGroup =
             grupoExecucao;
 
-
         const groupHeader =
             document.createElement('div');
 
         groupHeader.className =
             'active-exercise-group-header';
-
 
         // DESCOBRE O NÚMERO DO GRUPO
 
@@ -1405,7 +1368,6 @@ if (
             gruposUnicos.indexOf(
                 grupoExecucao
             ) + 1;
-
 
         const nomeTreino =
     workout.nome || 'TREINO';
@@ -1567,7 +1529,7 @@ const rodadaAtual =
 roundInfo.textContent =
     `RODADA ${rodadaAtual} DE ${quantidadeSeries}`;
 }
-        
+
         atualizarRodadaGrupo();
 
 document.addEventListener(
@@ -1640,12 +1602,10 @@ groupContainer.appendChild(
         );
     }
 
-
     groupContainer.appendChild(
         exerciseItem
     );
 }
-
     });
 
 }
@@ -1668,7 +1628,7 @@ if (avisoValidacaoTreino) {
     avisoValidacaoTreino.hidden = true;
     avisoValidacaoTreino.textContent = '';
 }
-    
+
 /* LIMPAR AVISO DE TREINO DUPLICADO AO ABRIR */
 const avisoDuplicidadeTreino = document.getElementById(
     'workoutDuplicateWarning'
@@ -1682,7 +1642,7 @@ if (avisoDuplicidadeTreino) {
 input.oninput = () => {
     input.classList.remove('input-error');
     input.removeAttribute('aria-invalid');
-    
+
     /* ATUALIZAR CONTADOR DURANTE A DIGITACAO */
     const contador = document.getElementById(
         'workoutNameCounter'
@@ -1692,7 +1652,7 @@ input.oninput = () => {
         contador.textContent =
             `${input.value.length} / ${input.maxLength} caracteres`;
     }
-    
+
     /* VERIFICAR NOME DE TREINO DUPLICADO */
     const avisoDuplicado = document.getElementById(
         'workoutDuplicateWarning'
@@ -1745,7 +1705,7 @@ if (workoutId) {
         title.textContent = 'Novo treino';
         input.value = '';
     }
-    
+
     /* ATUALIZAR CONTADOR AO ABRIR O TREINO */
     const contadorNomeTreino = document.getElementById(
         'workoutNameCounter'
@@ -1901,7 +1861,7 @@ function askConfirm(
     confirmLabel = 'Excluir'
 ) {
     confirmModalTrigger = document.activeElement;
-    
+
     document.getElementById('confirmModalText').textContent = text;
 
     document.getElementById(
@@ -2075,11 +2035,10 @@ function duplicateWorkout(workoutId) {
 
     const salvou = saveWorkouts(workouts);
 
-
     if (!salvou) return;
 
     renderWorkouts();
-    
+
     /* DESTACAR O TREINO RECEM-DUPLICADO */
     const cartaoDuplicado = Array.from(
         document.querySelectorAll(
@@ -2204,7 +2163,7 @@ function openExerciseModal(workoutId, exerciseId) {
         avisoValidacao.hidden = true;
         avisoValidacao.textContent = '';
     }
-    
+
     /* LIMPAR AVISO DE DUPLICIDADE AO ABRIR */
     const avisoDuplicidade = document.getElementById(
         'exerciseDuplicateWarning'
@@ -2343,7 +2302,7 @@ function openExerciseModal(workoutId, exerciseId) {
         repsInput.value = '';
         restInput.value = '';
     }
-    
+
     /* ATUALIZAR CONTADOR AO ABRIR */
     const contadorNome = document.getElementById(
         'exerciseNameCounter'
@@ -2581,7 +2540,7 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
     const descanso = document
         .getElementById('exerciseRestInput')
         .valueAsNumber;
-    
+
     const camposInvalidos = [
         ['exerciseNameInput', !nome],
         [
@@ -2792,7 +2751,6 @@ function deleteExercise(workoutId, exerciseId) {
                         exercise.id !== exerciseId
                 );
 
-
             const salvou = saveWorkouts(workouts);
 
             if (!salvou) {
@@ -2921,7 +2879,7 @@ document
 
                 return;
             }
-    
+
             // Busca os dados completos do treino
             const workouts =
                 loadWorkouts();
@@ -3728,7 +3686,7 @@ window.addEventListener(
         if (!verificarContinuidadeSessaoFitZone(sessao)) {
             return;
         }
-        
+
         /* =========================================
            MOSTRAR PAGINA ATIVA NO MENU MOBILE
         ========================================= */
@@ -3746,7 +3704,7 @@ window.addEventListener(
                 });
             }
         }
-        
+
         const btnEndSession =
             document.getElementById(
                 'btnEndSession'
@@ -3810,7 +3768,7 @@ window.addEventListener(
         }
 
         renderWorkouts();
-        
+
         /* =========================================
            EXERCICIO RECEBIDO DA BIBLIOTECA
         ========================================= */
@@ -3864,7 +3822,7 @@ window.addEventListener(
             )
                 ? exerciciosBiblioteca[exercicioIdBiblioteca]
                 : null;
-        
+
         /* =========================================
            AVISO DO EXERCICIO SELECIONADO
         ========================================= */
