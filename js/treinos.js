@@ -267,6 +267,12 @@ function loadWorkouts() {
 
 function saveWorkouts(workouts) {
     try {
+        if (!Array.isArray(workouts)) {
+            throw new Error(
+                'Os novos dados dos treinos devem ser uma lista.'
+            );
+        }
+
         const chave = obterChaveTreinos();
         const dadosAtuais = localStorage.getItem(chave);
 
