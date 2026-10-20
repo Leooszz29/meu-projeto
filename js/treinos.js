@@ -707,7 +707,7 @@ startBtn.addEventListener('click', () => {
         hoje.getMonth(),
         hoje.getDate()
     );
- 
+
     const jaConcluidoHoje = historicoHoje.some(registro => {
         const data = new Date(registro.data);
 
