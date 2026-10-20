@@ -5215,7 +5215,7 @@ function abrirModalRestauracaoFitZone(plano = null) {
             'Selecione um arquivo de backup válido ' +
             'para visualizar as alterações.';
     }
-    
+
     restoreBackupPendingPlan = Array.isArray(plano)
         ? Object.freeze(
             plano.map(item =>
