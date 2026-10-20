@@ -1072,7 +1072,7 @@ for (
 
     const seriesButton =
         document.createElement('button');
-  
+
     seriesButton.type = 'button';
 
     seriesButton.className =
