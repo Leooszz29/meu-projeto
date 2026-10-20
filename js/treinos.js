@@ -300,6 +300,21 @@ function saveWorkouts(workouts) {
                 'Um ou mais treinos possuem uma lista de exercícios inválida.'
             );
         }
+                const registrosExerciciosValidos = workouts.every(
+            treino =>
+                treino.exercicios === undefined ||
+                treino.exercicios.every(exercicio =>
+                    exercicio !== null &&
+                    typeof exercicio === 'object' &&
+                    !Array.isArray(exercicio)
+                )
+        );
+
+        if (!registrosExerciciosValidos) {
+            throw new Error(
+                'A lista contém registros de exercícios inválidos.'
+            );
+        }
 
         const idsTreinos = workouts.map(
             treino => treino.id
