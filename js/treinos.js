@@ -3588,18 +3588,7 @@ window.addEventListener('storage', (event) => {
 ========================================= */
 
 window.addEventListener('pageshow', () => {
-    const sessao = carregarSessao();
-
-    if (
-        !sessao ||
-        sessao.email !== emailSessaoInicialFitZone
-    ) {
-        console.warn(
-            'Sessão inválida ao retornar à página.'
-        );
-
-        window.location.replace('login.html');
-    }
+    verificarContinuidadeSessaoFitZone();
 });
 
 /* =========================================
