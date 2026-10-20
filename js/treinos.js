@@ -3600,18 +3600,7 @@ document.addEventListener('visibilitychange', () => {
         return;
     }
 
-    const sessao = carregarSessao();
-
-    if (
-        !sessao ||
-        sessao.email !== emailSessaoInicialFitZone
-    ) {
-        console.warn(
-            'Sessão inválida ao retornar para a aba.'
-        );
-
-        window.location.replace('login.html');
-    }
+    verificarContinuidadeSessaoFitZone();
 });
 
 // ==================== INICIALIZAÇÃO ====================
