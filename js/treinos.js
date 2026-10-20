@@ -3567,6 +3567,7 @@ function verificarContinuidadeSessaoFitZone(
 
     return true;
 }
+
 window.addEventListener('storage', (event) => {
     if (event.storageArea !== localStorage) {
         return;
