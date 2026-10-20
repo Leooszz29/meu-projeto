@@ -3583,6 +3583,29 @@ window.addEventListener('pageshow', () => {
     }
 });
 
+/* =========================================
+   FITZONE - VERIFICAR SESSAO AO VOLTAR PARA ABA
+========================================= */
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible') {
+        return;
+    }
+
+    const sessao = carregarSessao();
+
+    if (
+        !sessao ||
+        sessao.email !== emailSessaoInicialFitZone
+    ) {
+        console.warn(
+            'Sessão inválida ao retornar para a aba.'
+        );
+
+        window.location.replace('login.html');
+    }
+});
+
 // ==================== INICIALIZAÇÃO ====================
 window.addEventListener(
     'DOMContentLoaded',
