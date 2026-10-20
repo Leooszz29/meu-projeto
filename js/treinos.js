@@ -3549,9 +3549,9 @@ const emailSessaoInicialFitZone =
    FITZONE - VERIFICAR CONTINUIDADE DA SESSAO
 ========================================= */
 
-function verificarContinuidadeSessaoFitZone() {
-    const sessao = carregarSessao();
-
+function verificarContinuidadeSessaoFitZone(
+    sessao = carregarSessao()
+) {
     if (
         !sessao ||
         sessao.email !== emailSessaoInicialFitZone
@@ -3567,7 +3567,6 @@ function verificarContinuidadeSessaoFitZone() {
 
     return true;
 }
-
 window.addEventListener('storage', (event) => {
     if (event.storageArea !== localStorage) {
         return;
