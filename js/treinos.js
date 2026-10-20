@@ -3538,6 +3538,22 @@ document
         }
     );
 
+/* =========================================
+   FITZONE - MONITORAR SESSAO ENTRE ABAS
+========================================= */
+
+window.addEventListener('storage', (event) => {
+    if (event.key !== 'fitzoneSessao') {
+        return;
+    }
+
+    const sessao = carregarSessao();
+
+    if (!sessao) {
+        window.location.replace('login.html');
+    }
+});
+
 // ==================== INICIALIZAÇÃO ====================
 window.addEventListener(
     'DOMContentLoaded',
