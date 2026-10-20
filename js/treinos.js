@@ -3545,6 +3545,29 @@ document
 const emailSessaoInicialFitZone =
     carregarSessao()?.email ?? null;
 
+/* =========================================
+   FITZONE - VERIFICAR CONTINUIDADE DA SESSAO
+========================================= */
+
+function verificarContinuidadeSessaoFitZone() {
+    const sessao = carregarSessao();
+
+    if (
+        !sessao ||
+        sessao.email !== emailSessaoInicialFitZone
+    ) {
+        console.warn(
+            'Sessão FitZone encerrada ou alterada.'
+        );
+
+        window.location.replace('login.html');
+
+        return false;
+    }
+
+    return true;
+}
+
 window.addEventListener('storage', (event) => {
     if (event.storageArea !== localStorage) {
         return;
