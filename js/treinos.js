@@ -289,6 +289,18 @@ function saveWorkouts(workouts) {
             );
         }
 
+        const idsTreinos = workouts.map(
+            treino => treino.id
+        );
+
+        const idsUnicos = new Set(idsTreinos);
+
+        if (idsUnicos.size !== idsTreinos.length) {
+            throw new Error(
+                'A lista contém treinos com IDs duplicados.'
+            );
+        }
+
         const chave = obterChaveTreinos();
         const dadosAtuais = localStorage.getItem(chave);
 
