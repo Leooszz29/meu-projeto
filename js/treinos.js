@@ -3609,7 +3609,7 @@ window.addEventListener(
         const sessao =
             carregarSessao();
 
-        if (!verificarContinuidadeSessaoFitZone()) {
+        if (!verificarContinuidadeSessaoFitZone(sessao)) {
             return;
         }
         
