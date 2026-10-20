@@ -95,6 +95,20 @@ function carregarTreinoAtivo() {
             return null;
         }
 
+        const treinos = loadWorkouts();
+
+        const treinoExiste = treinos.some(
+            treino => treino.id === treinoAtivo.id
+        );
+
+        if (!treinoExiste) {
+            console.warn(
+                'O treino ativo não existe mais na lista de treinos.'
+            );
+
+            return null;
+        }
+
         return treinoAtivo;
 
     } catch (error) {
