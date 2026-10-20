@@ -3546,7 +3546,10 @@ const emailSessaoInicialFitZone =
     carregarSessao()?.email ?? null;
 
 window.addEventListener('storage', (event) => {
-    if (event.key !== 'fitzoneSessao') {
+    if (
+        event.key !== 'fitzoneSessao' &&
+        event.key !== null
+    ) {
         return;
     }
 
