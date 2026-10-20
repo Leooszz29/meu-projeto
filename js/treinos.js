@@ -289,6 +289,18 @@ function saveWorkouts(workouts) {
             );
         }
 
+                const exerciciosValidos = workouts.every(
+            treino =>
+                treino.exercicios === undefined ||
+                Array.isArray(treino.exercicios)
+        );
+
+        if (!exerciciosValidos) {
+            throw new Error(
+                'Um ou mais treinos possuem uma lista de exercícios inválida.'
+            );
+        }
+
         const idsTreinos = workouts.map(
             treino => treino.id
         );
