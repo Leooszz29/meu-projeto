@@ -235,9 +235,26 @@ function obterChaveTreinos() {
 
 function loadWorkouts() {
     try {
-        return JSON.parse(
-            localStorage.getItem(obterChaveTreinos())
-        ) || [];
+        const dados = localStorage.getItem(
+            obterChaveTreinos()
+        );
+
+        if (dados === null) {
+            return [];
+        }
+
+        const treinos = JSON.parse(dados);
+
+        if (!Array.isArray(treinos)) {
+            console.warn(
+                'Formato inválido da lista de treinos.'
+            );
+
+            return [];
+        }
+
+        return treinos;
+
     } catch (erro) {
         console.error(
             'Erro ao carregar treinos:',
