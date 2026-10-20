@@ -71,9 +71,31 @@ function carregarTreinoAtivo() {
                 obterChaveTreinoAtivo()
             );
 
-        return treinoAtivoJSON
-            ? JSON.parse(treinoAtivoJSON)
-            : null;
+        if (!treinoAtivoJSON) {
+            return null;
+        }
+
+        const treinoAtivo = JSON.parse(
+            treinoAtivoJSON
+        );
+
+        if (
+            !treinoAtivo ||
+            typeof treinoAtivo !== 'object' ||
+            Array.isArray(treinoAtivo) ||
+            typeof treinoAtivo.id !== 'string' ||
+            !treinoAtivo.id.trim() ||
+            typeof treinoAtivo.nome !== 'string' ||
+            !treinoAtivo.nome.trim()
+        ) {
+            console.warn(
+                'Estrutura do treino ativo inválida.'
+            );
+
+            return null;
+        }
+
+        return treinoAtivo;
 
     } catch (error) {
 
