@@ -3580,18 +3580,7 @@ window.addEventListener('storage', (event) => {
         return;
     }
 
-    const sessao = carregarSessao();
-
-    if (
-        !sessao ||
-        sessao.email !== emailSessaoInicialFitZone
-    ) {
-        console.warn(
-            'Sessão encerrada ou alterada em outra aba.'
-        );
-
-        window.location.replace('login.html');
-    }
+    verificarContinuidadeSessaoFitZone();
 });
 
 /* =========================================
