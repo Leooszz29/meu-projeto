@@ -3609,11 +3609,8 @@ window.addEventListener(
     () => {
         const sessao =
             carregarSessao();
-        
-        if (!sessao) {
-            window.location.href =
-                'login.html';
 
+        if (!verificarContinuidadeSessaoFitZone()) {
             return;
         }
         
