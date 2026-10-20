@@ -571,7 +571,7 @@ function carregarGraficoMensal() {
     const quantidadeMeses = [3, 6, 12].includes(periodoSelecionado)
         ? periodoSelecionado
         : 6;
-    
+
     const descricaoGrafico =
         document.getElementById('chartDescription');
 
@@ -626,7 +626,6 @@ function carregarGraficoMensal() {
     );
 
     grafico.innerHTML = '';
-
 
     meses.forEach((mes) => {
         const coluna = document.createElement('div');
@@ -1145,7 +1144,7 @@ function exibirHistoricoDesempenho() {
                 if (!janela || !possuiDetalhes) {
                     return;
                 }
-                
+
                 botaoQueAbriuDetalhes = botaoDetalhes;
 
                 const titulo = document.getElementById(
@@ -1706,7 +1705,7 @@ if (botaoConfirmarExclusao) {
                 carregarGraficoMensal();
                 carregarIndicadoresHistorico();
                 exibirHistoricoDesempenho();
-                
+  
                 if (listaHistorico) {
                     listaHistorico.setAttribute('tabindex', '-1');
                     listaHistorico.focus();
