@@ -300,7 +300,7 @@ function saveWorkouts(workouts) {
                 'Um ou mais treinos possuem uma lista de exercícios inválida.'
             );
         }
-        
+
         const registrosExerciciosValidos = workouts.every(
             treino =>
                 treino.exercicios === undefined ||
