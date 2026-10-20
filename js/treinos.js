@@ -3564,6 +3564,25 @@ window.addEventListener('storage', (event) => {
     }
 });
 
+/* =========================================
+   FITZONE - VERIFICAR SESSAO AO REABRIR PAGINA
+========================================= */
+
+window.addEventListener('pageshow', () => {
+    const sessao = carregarSessao();
+
+    if (
+        !sessao ||
+        sessao.email !== emailSessaoInicialFitZone
+    ) {
+        console.warn(
+            'Sessão inválida ao retornar à página.'
+        );
+
+        window.location.replace('login.html');
+    }
+});
+
 // ==================== INICIALIZAÇÃO ====================
 window.addEventListener(
     'DOMContentLoaded',
