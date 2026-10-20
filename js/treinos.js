@@ -273,6 +273,22 @@ function saveWorkouts(workouts) {
             );
         }
 
+        const treinosValidos = workouts.every(treino =>
+            treino !== null &&
+            typeof treino === 'object' &&
+            !Array.isArray(treino) &&
+            typeof treino.id === 'string' &&
+            !!treino.id.trim() &&
+            typeof treino.nome === 'string' &&
+            !!treino.nome.trim()
+        );
+
+        if (!treinosValidos) {
+            throw new Error(
+                'A lista contém treinos sem identificação ou nome válido.'
+            );
+        }
+
         const chave = obterChaveTreinos();
         const dadosAtuais = localStorage.getItem(chave);
 
