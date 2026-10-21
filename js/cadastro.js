@@ -167,10 +167,24 @@
             usuarios.push(usuario);
 
             // Salva novamente a lista completa
-            localStorage.setItem(
-                'usuarios',
-                JSON.stringify(usuarios)
-            );
+            try {
+                localStorage.setItem(
+                    'usuarios',
+                    JSON.stringify(usuarios)
+                );
+            } catch (error) {
+                console.error(
+                    'Erro ao salvar o cadastro:',
+                    error
+                );
+
+                showError(
+                    'Não foi possível salvar sua conta. ' +
+                    'Verifique o armazenamento do navegador e tente novamente.'
+                );
+
+                return;
+            }
 
             // Desabilitar botão durante envio
             submitBtn.disabled = true;
