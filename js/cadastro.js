@@ -105,12 +105,11 @@
             }
             // Salvar dados do usuário no navegador
             const usuario = {
-    nome: name,
-    email: email,
-    senha: password,
-    genero: localStorage.getItem('generoFitZone')
-};
-
+                nome: name,
+                email: email,
+                senha: password,
+                genero: localStorage.getItem('generoFitZone')
+            };
 // Busca as contas já cadastradas
 let usuarios = [];
 
