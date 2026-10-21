@@ -677,7 +677,8 @@ togglePassword.addEventListener(
     }
 
     const email =
-    emailInput.value.trim().toLowerCase();
+        emailInput.value.trim().toLowerCase();
+
     const password = passwordInput.value;
 
             // Validação
@@ -696,37 +697,35 @@ togglePassword.addEventListener(
                 return;
             }
 
-           // Buscar usuário cadastrado
-const usuarioSalvo =
-    carregarUsuarioSalvo(email);
+    // Buscar usuário cadastrado
+    const usuarioSalvo =
+        carregarUsuarioSalvo(email);
 
-// Validar credenciais
-if (
-    !validarCredenciais(
-        usuarioSalvo,
-        email,
-        password
-    )
-) {
+    // Validar credenciais
+    if (
+        !validarCredenciais(
+            usuarioSalvo,
+            email,
+            password
+        )
+    ) {
+        showError(
+            'E-mail ou senha incorretos'
+        );
 
-    showError(
-        'E-mail ou senha incorretos'
-    );
+        return;
+    }
 
-    return;
-}
+    // Desabilitar botão durante envio
+    submitBtn.disabled = true;
 
-           // Desabilitar botão durante envio
+    submitBtn.classList.add('loading');
 
-submitBtn.disabled = true;
+    // Simular envio (remova isso quando conectar a um backend)
+    setTimeout(() => {
 
-submitBtn.classList.add('loading');
-
-          // Simular envio (remova isso quando conectar a um backend)
-setTimeout(() => {
-
-   // Armazenar ou remover preferência de lembrar
-atualizarPreferenciaEmail(email);
+        // Armazenar ou remover preferência de lembrar
+        atualizarPreferenciaEmail(email);
 
     try {
         localStorage.setItem(
@@ -826,11 +825,11 @@ function inicializarLogin() {
         document.getElementById('characterImg');
 
     const imagens = {
-    masculino: 'img/atleta-masculino.png',
-    feminino: 'img/atleta-feminino.png'
-};
+        masculino: 'img/atleta-masculino.png',
+        feminino: 'img/atleta-feminino.png'
+    };
 
-             if (genero === 'masculino') {
+    if (genero === 'masculino') {
 
         document.body.classList.add(
             'theme-masculino'
