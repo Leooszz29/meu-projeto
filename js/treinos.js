@@ -290,6 +290,8 @@ function loadWorkouts() {
                 return;
             }
 
+            const idsExerciciosEncontrados = new Set();
+
             treino.exercicios.forEach((exercicio, indiceExercicio) => {
                 if (
                     !exercicio ||
@@ -302,6 +304,29 @@ function loadWorkouts() {
                         indiceExercicio + 1
                     );
                     return;
+                }
+
+                if (
+                    typeof exercicio.id !== 'string' ||
+                    !exercicio.id.trim()
+                ) {
+                    console.warn(
+                        'FitZone: exercício antigo sem ID válido.',
+                        {
+                            treino: indiceTreino + 1,
+                            exercicio: indiceExercicio + 1
+                        }
+                    );
+                } else if (idsExerciciosEncontrados.has(exercicio.id)) {
+                    console.warn(
+                        'FitZone: exercício antigo com ID duplicado.',
+                        {
+                            treino: indiceTreino + 1,
+                            exercicio: indiceExercicio + 1
+                        }
+                    );
+                } else {
+                    idsExerciciosEncontrados.add(exercicio.id);
                 }
 
                 const dadosNumericosValidos =
