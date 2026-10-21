@@ -1705,7 +1705,7 @@ if (botaoConfirmarExclusao) {
                 carregarGraficoMensal();
                 carregarIndicadoresHistorico();
                 exibirHistoricoDesempenho();
-  
+
                 if (listaHistorico) {
                     listaHistorico.setAttribute('tabindex', '-1');
                     listaHistorico.focus();
