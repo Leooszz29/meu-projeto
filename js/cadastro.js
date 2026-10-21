@@ -110,8 +110,9 @@
                 senha: password,
                 genero: localStorage.getItem('generoFitZone')
             };
+
 // Busca as contas já cadastradas
-let usuarios = [];
+            let usuarios = [];
 
 try {
     const dadosSalvos =
