@@ -104,12 +104,28 @@
                 return;
             }
             // Salvar dados do usuário no navegador
-            const usuario = {
-                nome: name,
-                email: email,
-                senha: password,
-                genero: localStorage.getItem('generoFitZone')
-            };
+            let usuario;
+
+            try {
+                usuario = {
+                    nome: name,
+                    email: email,
+                    senha: password,
+                    genero: localStorage.getItem('generoFitZone')
+                };
+            } catch (error) {
+                console.error(
+                    'Erro ao carregar o gênero do cadastro:',
+                    error
+                );
+
+                showError(
+                    'Não foi possível acessar o armazenamento do navegador. ' +
+                    'Tente novamente.'
+                );
+
+                return;
+            }
 
             // Busca as contas já cadastradas
             let usuarios = [];
