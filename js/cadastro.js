@@ -148,7 +148,11 @@
             const emailJaCadastrado =
                 usuarios.some(
                     usuarioCadastrado =>
-                        usuarioCadastrado.email.toLowerCase() ===
+                        usuarioCadastrado !== null &&
+                        typeof usuarioCadastrado === 'object' &&
+                        !Array.isArray(usuarioCadastrado) &&
+                        typeof usuarioCadastrado.email === 'string' &&
+                        usuarioCadastrado.email.trim().toLowerCase() ===
                         email
                 );
 
