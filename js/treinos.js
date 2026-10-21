@@ -2202,6 +2202,17 @@ function deleteWorkout(workoutId) {
         () => {
             let workouts = loadWorkouts();
 
+            const treinoExiste = workouts.some(
+                workout => workout.id === workoutId
+            );
+
+            if (!treinoExiste) {
+                showWarningModal(
+                    'Este treino não foi encontrado. Atualize a página e tente novamente.'
+                );
+                return;
+            }
+
             workouts = workouts.filter(
                 workout => workout.id !== workoutId
             );
