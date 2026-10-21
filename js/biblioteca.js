@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'theme-feminino'
         );
     }
-   
+
     /* =========================================
        FAVORITOS POR USUARIO
     ========================================= */
@@ -81,11 +81,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const favoritos = new Set(favoritosSalvos);
-   
+
     /* =========================================
        CATALOGO DE EXERCICIOS
     ========================================= */
-   
+
     /* =========================================
        IMAGENS DOS EXERCICIOS
     ========================================= */
@@ -204,7 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
             musculos: 'Abdômen e estabilizadores do tronco',
             instrucao: 'Mantenha o corpo alinhado, com o abdômen contraído e sem prender a respiração.'
         },
-
         {
             id: 'abdominal-crunch',
             nome: 'Abdominal crunch',
@@ -379,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         libraryGrid.replaceChildren();
-       
+
         if (lista.length === 0) {
             const mensagem = document.createElement('p');
 
@@ -405,7 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lista.forEach((exercicio) => {
             const card = document.createElement('article');
             card.className = 'library-card';
-           
+
             /* IMAGEM DO EXERCICIO */
 
             const nomeImagem = imagensExercicios[exercicio.id];
@@ -456,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const titulo = document.createElement('h3');
             titulo.textContent = exercicio.nome;
-           
+
             if (exercicio.nome.length > 24) {
                 titulo.classList.add('library-title-long');
             }
@@ -465,13 +464,12 @@ document.addEventListener('DOMContentLoaded', () => {
             musculos.className = 'library-card-muscles';
             musculos.textContent = exercicio.musculos;
 
-
             const detalhes = document.createElement('details');
             detalhes.className = 'library-card-details';
 
             const resumo = document.createElement('summary');
             resumo.textContent = 'Ver execução';
-           
+
             detalhes.addEventListener('toggle', () => {
                 resumo.textContent = detalhes.open
                     ? 'Ocultar execução'
@@ -490,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 musculos,
                 detalhes
             );
-           
+
             const botaoFavorito =
                 document.createElement('button');
 
@@ -565,7 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsCount.textContent =
             `${lista.length} exercícios encontrados`;
     }
- 
+
     /* =========================================
        PESQUISA E FILTROS DA BIBLIOTECA
     ========================================= */
@@ -655,7 +653,7 @@ document.addEventListener('DOMContentLoaded', () => {
             atualizarBiblioteca
         );
     }
-   
+
     /* LIMPAR PESQUISA */
 
     const btnClearExerciseSearch =
@@ -675,7 +673,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /* EXIBICAO INICIAL */
 
     atualizarBiblioteca();
-   
+
     /* =========================================
        FECHAR IMAGEM AMPLIADA
     ========================================= */
@@ -715,7 +713,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         );
     }
-   
+
     /* =========================================
        MOSTRAR PAGINA ATIVA NO MENU MOBILE
     ========================================= */
