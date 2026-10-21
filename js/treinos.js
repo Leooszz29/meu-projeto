@@ -1947,8 +1947,18 @@ document.getElementById('workoutSaveBtn').addEventListener('click', () => {
     const workouts = loadWorkouts();
 
     if (editingWorkoutId) {
-        const workout = workouts.find(w => w.id === editingWorkoutId);
-        if (workout) workout.nome = nome;
+        const workout = workouts.find(
+            w => w.id === editingWorkoutId
+        );
+
+        if (!workout) {
+            showWarningModal(
+                'Este treino não foi encontrado. Atualize a página e tente novamente.'
+            );
+            return;
+        }
+
+        workout.nome = nome;
     } else {
         workouts.push({ id: uid(), nome, exercicios: [] });
     }
