@@ -2885,6 +2885,19 @@ function deleteExercise(workoutId, exerciseId) {
 
             if (!workout) return;
 
+            const exercicioExiste =
+                Array.isArray(workout.exercicios) &&
+                workout.exercicios.some(
+                    exercise => exercise?.id === exerciseId
+                );
+
+            if (!exercicioExiste) {
+                showWarningModal(
+                    'Este exercício não foi encontrado. Atualize a página e tente novamente.'
+                );
+                return;
+            }
+
             workout.exercicios =
                 workout.exercicios.filter(
                     exercise =>
