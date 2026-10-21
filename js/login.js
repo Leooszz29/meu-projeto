@@ -72,7 +72,6 @@ const saveNewPasswordBtn =
 
 let recoveryCodeGenerated = null;
 
-
 // ==================== FUNÇÕES AUXILIARES ====================
 
 function carregarSessao() {
@@ -148,7 +147,6 @@ function resetarCamposNovaSenha() {
     );
 }
 
-
 function validarCredenciais(usuarioSalvo, email, password) {
     if (
         !usuarioSalvo ||
@@ -198,7 +196,6 @@ function carregarUsuarioSalvo(email) {
 }
 
 // ==================== PREFERÊNCIA DE EMAIL ====================
-
 
 function atualizarPreferenciaEmail(email) {
     try {
@@ -293,7 +290,6 @@ recoveryError.textContent = '';
     recoveryEmail.focus();
 });
 
-
 passwordRecoveryClose.addEventListener('click', () => {
 
     passwordRecoveryOverlay.classList.remove('show');
@@ -330,9 +326,9 @@ recoveryCodeClose.addEventListener('click', () => {
     );
 
     recoveryCode.value = '';
-    
+
     recoveryCodeGenerated = null;
-    
+
     recoveryCodeError.classList.remove('show');
 });
 
@@ -628,7 +624,7 @@ localStorage.removeItem(
 );
 
 resetarCamposNovaSenha();
-    
+
 recoveryCode.value = '';
 
 passwordInput.value = '';
@@ -699,11 +695,11 @@ togglePassword.addEventListener(
                 showError('Senha deve ter no mínimo 6 caracteres');
                 return;
             }
-                
+
            // Buscar usuário cadastrado
 const usuarioSalvo =
     carregarUsuarioSalvo(email);
-            
+
 // Validar credenciais
 if (
     !validarCredenciais(
@@ -776,7 +772,7 @@ atualizarPreferenciaEmail(email);
             erro
         );
     }
-    
+
     showSuccess(
         'Login realizado com sucesso! Seja bem-vindo! 💪'
     );
