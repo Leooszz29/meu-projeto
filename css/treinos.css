@@ -92,7 +92,6 @@ header{
     margin-bottom: 14px;
 }
 
-
 /* GLOW ATRÁS DO ATLETA */
 
 .character-preview::before {
@@ -278,7 +277,6 @@ h1{
         background 0.25s ease;
 }
 
-
 /* BRILHO SUPERIOR */
 
 .empty-state::before {
@@ -301,7 +299,6 @@ h1{
 
     opacity: 0.7;
 }
-
 
 /* ==========================
    CARD VAZIO FITZONE
@@ -523,7 +520,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         rgba(0, 0, 0, 0.16);
 }
 
-
 /* MOBILE */
 
 @media (max-width: 520px) {
@@ -592,7 +588,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         0 16px 38px rgba(0,0,0,0.22);
 }
 
-
 /* CABEÇALHO */
 
 .active-training-header {
@@ -604,7 +599,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     margin-bottom: 20px;
 }
-
 
 .active-training-eyebrow {
     width: max-content;
@@ -631,7 +625,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     text-transform: uppercase;
 }
 
-
 .active-training-header h2 {
     margin: 0;
 
@@ -642,7 +635,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     line-height: 1.25;
 }
-
 
 /* STATUS */
 
@@ -664,7 +656,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     letter-spacing: 0.7px;
     text-transform: uppercase;
 }
-
 
 /* ÁREA DOS EXERCÍCIOS */
 
@@ -709,7 +700,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     background: rgba(var(--accent-rgb),0.04);
 }
 
-
 /* NÚMERO DO EXERCÍCIO */
 
 .active-exercise-number {
@@ -735,7 +725,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     letter-spacing: 0.5px;
 }
 
-
 /* INFORMAÇÕES */
 
 .active-exercise-info {
@@ -747,7 +736,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     gap: 5px;
 }
-
 
 /* NOME */
 
@@ -764,7 +752,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
 
 /* SÉRIES, REPETIÇÕES E DESCANSO */
 
@@ -898,7 +885,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     background: rgba(0,0,0,0.12);
 }
 
-
 .active-training-empty strong {
     display: block;
 
@@ -910,7 +896,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     font-weight: 750;
 }
 
-
 .active-training-empty p {
     max-width: 310px;
 
@@ -921,7 +906,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     font-size: 11.5px;
     line-height: 1.6;
 }
-
 
 /* =========================================
    TREINO EM ANDAMENTO - MOBILE
@@ -1173,7 +1157,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     gap: 5px;
 }
 
-
 .exercise-name {
     overflow: hidden;
 
@@ -1186,7 +1169,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
 
 /* INFORMAÇÕES: SÉRIES • REPETIÇÕES • DESCANSO */
 
@@ -1204,7 +1186,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     font-size: 11px;
     line-height: 1.4;
 }
-
 
 /* VALORES DESTACADOS */
 
@@ -1454,7 +1435,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         filter 0.2s ease;
 }
 
-
 /* BRILHO DISCRETO */
 
 .btn-finish-workout::before {
@@ -1480,7 +1460,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     transition: left 0.5s ease;
 }
 
-
 /* HOVER */
 
 .btn-finish-workout:hover {
@@ -1496,7 +1475,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     left: 140%;
 }
 
-
 /* CLIQUE */
 
 .btn-finish-workout:active {
@@ -1506,14 +1484,12 @@ body:not(.theme-feminino):not(.theme-masculino)
         0 6px 18px rgba(var(--accent-rgb), 0.22);
 }
 
-
 /* ACESSIBILIDADE */
 
 .btn-finish-workout:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
 }
-
 
 /* MOBILE */
 
@@ -1589,7 +1565,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     display: flex;
 }
 
-
 /* CARD DO MODAL */
 
 .modal {
@@ -1623,7 +1598,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     animation: modalIn 0.25s ease;
 }
 
-
 /* DETALHE SUPERIOR */
 
 .modal::before {
@@ -1648,7 +1622,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     opacity: 0.8;
 }
 
-
 /* ANIMAÇÃO */
 
 @keyframes modalIn {
@@ -1668,7 +1641,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     }
 }
 
-
 /* TÍTULO */
 
 .modal h2 {
@@ -1683,7 +1655,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     color: var(--chalk);
 }
-
 
 /* LABELS */
 
@@ -1700,7 +1671,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     letter-spacing: 0.8px;
     text-transform: uppercase;
 }
-
 
 /* CAMPOS */
 
@@ -1777,7 +1747,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         rgba(var(--accent-rgb), 0.25);
 }
 
-
 /* CAMPO SELECIONADO */
 
 .modal input[type="text"]:focus,
@@ -1810,7 +1779,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     box-shadow:
         0 0 0 3px rgba(193, 68, 60, 0.14);
 }
-
 
 /* PLACEHOLDER */
 
@@ -1845,7 +1813,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     gap: 12px;
 }
 
-
 /* BOTÕES */
 
 .modal-actions {
@@ -1862,7 +1829,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         1px solid rgba(255,255,255,0.06);
 }
 
-
 /* BARRA DE ROLAGEM */
 
 .modal::-webkit-scrollbar {
@@ -1875,7 +1841,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     border-radius: 10px;
 }
-
 
 /* MOBILE */
 
@@ -1932,7 +1897,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         color 0.2s ease;
 }
 
-
 /* SALVAR */
 
 .btn-save {
@@ -1963,7 +1927,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     transform: translateY(0);
 }
 
-
 /* CANCELAR */
 
 .btn-cancel {
@@ -1987,7 +1950,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 .btn-cancel:active {
     transform: translateY(0);
 }
-
 
 /* ACESSIBILIDADE PELO TECLADO */
 
@@ -2072,7 +2034,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         0 20px 50px rgba(0,0,0,0.25);
 }
 
-
 /* CABEÇALHO */
 
 .month-nav {
@@ -2097,7 +2058,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     color: var(--chalk);
 }
-
 
 /* SETAS */
 
@@ -2141,7 +2101,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     transform: translateY(-1px);
 }
 
-
 /* DIAS DA SEMANA */
 
 .weekdays {
@@ -2169,7 +2128,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     text-transform: uppercase;
 }
 
-
 /* GRADE */
 
 .days-grid {
@@ -2191,7 +2149,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     overflow: hidden;
 }
-
 
 /* DIA */
 
@@ -2228,7 +2185,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     pointer-events: none;
 }
 
-
 /* NÚMERO */
 
 .day-cell .num {
@@ -2264,7 +2220,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         transform 0.2s ease;
 }
 
-
 /* HOVER */
 
 .day-cell:not(.empty):hover {
@@ -2276,7 +2231,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     background:
         rgba(var(--accent-rgb), 0.05);
 }
-
 
 /* DIA ATUAL */
 
@@ -2361,13 +2315,11 @@ body:not(.theme-feminino):not(.theme-masculino)
     color: #08111a;
 }
 
-
 /* NOME DO TREINO */
 
 .day-cell .treino-label {
     display: none;
 }
-
 
 /* LEGENDA */
 
@@ -2413,7 +2365,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     box-shadow:
         0 0 8px rgba(53, 230, 122, 0.45);
 }
-
 
 /* MOBILE */
 
@@ -2599,7 +2550,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     text-align: center;
 }
 
-
 /* TÍTULO */
 
 .finish-modal h2 {
@@ -2610,7 +2560,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     font-size: 26px;
     letter-spacing: 1.3px;
 }
-
 
 /* MENSAGEM */
 
@@ -2624,7 +2573,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     font-size: 13.5px;
     line-height: 1.7;
 }
-
 
 /* BOTÃO FECHAR */
 
@@ -2644,7 +2592,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     padding: 34px 28px 30px;
     text-align: center;
 }
-
 
 /* ÍCONE DE AVISO */
 
@@ -2677,7 +2624,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         0 10px 28px rgba(var(--accent-rgb), 0.22);
 }
 
-
 /* TÍTULO */
 
 .select-workout-modal h2 {
@@ -2691,7 +2637,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     letter-spacing: 1px;
 }
 
-
 /* TEXTO */
 
 .select-workout-modal p {
@@ -2704,7 +2649,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     font-size: 13.5px;
     line-height: 1.7;
 }
-
 
 /* BOTÃO ENTENDI */
 
@@ -2985,7 +2929,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         0 16px 40px rgba(0, 0, 0, 0.20);
 }
 
-
 /* NAVEGAÇÃO DO MÊS */
 
 .month-nav {
@@ -3004,7 +2947,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     letter-spacing: -0.2px;
 }
-
 
 /* BOTÕES < > */
 
@@ -3055,7 +2997,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     transform: scale(1.05);
 }
 
-
 /* DIAS DA SEMANA */
 
 .weekdays {
@@ -3077,7 +3018,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     text-transform: uppercase;
 }
 
-
 /* GRADE DOS DIAS */
 
 .days-grid {
@@ -3086,7 +3026,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     gap: 8px;
     width: 100%;
 }
-
 
 /* LEGENDA */
 
@@ -3125,7 +3064,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     box-shadow:
         0 0 9px rgba(53, 230, 122, 0.45);
 }
-
 
 /* MOBILE */
 
@@ -3541,7 +3479,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     margin-bottom: 18px;
 }
 
-
 /* =========================================
    CAMPO DE GRUPO - BI-SET / TRI-SET
 ========================================= */
@@ -3559,7 +3496,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     display: block;
     margin-bottom: 8px;
 }
-
 
 /* SELECT DO GRUPO */
 
@@ -3615,7 +3551,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     color: var(--chalk);
 }
 
-
 /* TEXTO EXPLICATIVO */
 
 .exercise-group-field small {
@@ -3659,7 +3594,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         0 12px 28px rgba(0,0,0,0.12);
 }
 
-
 /* CABEÇALHO DO GRUPO */
 
 .exercise-group-header {
@@ -3683,13 +3617,11 @@ body:not(.theme-feminino):not(.theme-masculino)
     text-transform: uppercase;
 }
 
-
 /* EXERCÍCIOS DENTRO DO GRUPO */
 
 .exercise-group .exercise-row {
     margin: 0;
 }
-
 
 /* CONEXÃO VISUAL ENTRE OS EXERCÍCIOS */
 
@@ -3784,7 +3716,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         0 14px 32px rgba(0, 0, 0, 0.16);
 }
 
-
 /* TÍTULO DO GRUPO */
 
 .active-exercise-group-header {
@@ -3808,14 +3739,12 @@ body:not(.theme-feminino):not(.theme-masculino)
     text-transform: uppercase;
 }
 
-
 /* REMOVE ESPAÇAMENTO EXTERNO DOS EXERCÍCIOS
    QUANDO ESTÃO DENTRO DO GRUPO */
 
 .active-exercise-group .active-exercise-item {
     margin: 0;
 }
-
 
 /* EXERCÍCIOS A PARTIR DO SEGUNDO */
 
@@ -3824,7 +3753,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 .active-exercise-item {
     position: relative;
 }
-
 
 /* SÍMBOLO + ENTRE OS EXERCÍCIOS */
 
@@ -3929,14 +3857,12 @@ body:not(.theme-feminino):not(.theme-masculino)
     border-color: rgba(var(--accent-rgb), 0.45);
 }
 
-
 /* ESCONDE SOMENTE OS EXERCÍCIOS */
 
 .active-exercise-group.collapsed
 .active-exercise-item {
     display: none;
 }
-
 
 /* GRUPO RECOLHIDO FICA MAIS COMPACTO */
 
@@ -4128,7 +4054,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     border-bottom: none;
 }
 
-
 /* ÍCONE */
 
 .finish-exercise-status {
@@ -4145,7 +4070,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     font-weight: 900;
 }
 
-
 /* NOME */
 
 .finish-exercise-name {
@@ -4156,7 +4080,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     text-align: left;
 }
-
 
 /* CONTAGEM DAS SÉRIES */
 
@@ -4169,7 +4092,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     white-space: nowrap;
 }
 
-
 /* EXERCÍCIO COMPLETO */
 
 .finish-exercise-row.complete
@@ -4180,7 +4102,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     box-shadow:
         0 0 14px rgba(53, 230, 122, 0.20);
 }
-
 
 /* EXERCÍCIO INCOMPLETO */
 
@@ -4287,7 +4208,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     white-space: nowrap;
 }
 
-
 /* TODAS AS SÉRIES CONCLUÍDAS */
 
 .finish-summary-item.complete {
@@ -4301,7 +4221,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 .finish-summary-item.complete strong {
     color: #35e67a;
 }
-
 
 /* EXISTEM SÉRIES PENDENTES */
 
@@ -4346,7 +4265,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         0 0 45px rgba(var(--accent-rgb), 0.06);
 }
 
-
 /* ÍCONE DE SUCESSO */
 
 .finish-modal .success-icon {
@@ -4376,7 +4294,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         0 0 25px rgba(53, 230, 122, 0.18);
 }
 
-
 /* TÍTULO */
 
 .finish-modal h2 {
@@ -4389,7 +4306,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     letter-spacing: 0.3px;
 }
 
-
 /* SUBTÍTULO */
 
 .finish-message {
@@ -4400,7 +4316,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     font-size: 13px;
     line-height: 1.5;
 }
-
 
 /* ÁREA DOS EXERCÍCIOS */
 
@@ -4427,7 +4342,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     color: #35e67a;
 }
 
-
 /* FRASE MOTIVACIONAL */
 
 .finish-motivation {
@@ -4451,7 +4365,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     text-align: center;
 }
 
-
 /* BOTÃO CONTINUAR */
 
 .finish-modal #finishOkBtn {
@@ -4468,7 +4381,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 
     text-transform: uppercase;
 }
-
 
 /* RESPONSIVO */
 
@@ -4902,7 +4814,6 @@ right: 0;
     box-shadow: none;
 }
 
-
 /* MELHORIA VISUAL - CARTOES DE TREINOS */
 
 .workout-card {
@@ -4921,7 +4832,6 @@ right: 0;
             0 0 22px rgba(var(--accent-rgb), 0.10);
     }
 }
-
 
 /* MELHORIA VISUAL - BOTOES */
 
@@ -4945,7 +4855,6 @@ right: 0;
     outline: 2px solid var(--accent);
     outline-offset: 3px;
 }
-
 
 /* MELHORIA VISUAL - CAMPOS DOS FORMULARIOS */
 
