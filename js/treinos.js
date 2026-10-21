@@ -253,6 +253,50 @@ function loadWorkouts() {
             return [];
         }
 
+        // Verifica exercícios antigos sem alterar os dados
+        treinos.forEach((treino, indiceTreino) => {
+            if (
+                !treino ||
+                typeof treino !== 'object' ||
+                !Array.isArray(treino.exercicios)
+            ) {
+                return;
+            }
+
+            treino.exercicios.forEach((exercicio, indiceExercicio) => {
+                if (
+                    !exercicio ||
+                    typeof exercicio !== 'object' ||
+                    Array.isArray(exercicio)
+                ) {
+                    console.warn(
+                        'FitZone: registro de exercício inválido.',
+                        indiceTreino + 1,
+                        indiceExercicio + 1
+                    );
+                    return;
+                }
+
+                const dadosNumericosValidos =
+                    Number.isInteger(exercicio.series) &&
+                    exercicio.series >= 1 &&
+                    Number.isInteger(exercicio.repeticoes) &&
+                    exercicio.repeticoes >= 1 &&
+                    Number.isInteger(exercicio.descanso) &&
+                    exercicio.descanso >= 0;
+
+                if (!dadosNumericosValidos) {
+                    console.warn(
+                        'FitZone: exercício antigo com valores inválidos.',
+                        {
+                            treino: indiceTreino + 1,
+                            exercicio: indiceExercicio + 1
+                        }
+                    );
+                }
+            });
+        });
+
         return treinos;
 
     } catch (erro) {
