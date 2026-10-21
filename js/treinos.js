@@ -2812,6 +2812,13 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
                     editingExerciseCtx.exerciseId
             );
 
+        if (!exercise) {
+            showWarningModal(
+                'Este exercício não foi encontrado. Atualize a página e tente novamente.'
+            );
+            return;
+        }
+
         if (exercise) {
             exercise.nome = nome;
             exercise.tipoExecucao = tipoExecucao;
