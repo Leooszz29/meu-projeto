@@ -61,7 +61,6 @@ function loadProfile() {
     }
 }
 
-
 // ========================================
 // SALVAR PERFIL
 // ========================================
@@ -81,7 +80,6 @@ function saveProfile(data) {
     }
 }
 
-
 // ========================================
 // PEGAR VALOR DE UM CAMPO
 // ========================================
@@ -95,7 +93,6 @@ function getValue(id) {
 
     return element.value.trim();
 }
-
 
 // ========================================
 // PREENCHER FORMULÁRIO
@@ -144,13 +141,11 @@ function fillForm() {
             '';
     }
 
-
     const idade = document.getElementById('idade');
 
     if (idade) {
         idade.value = perfil.idade || '';
     }
-
 
     const tipoSanguineo =
         document.getElementById('tipoSanguineo');
@@ -160,20 +155,17 @@ function fillForm() {
             perfil.tipoSanguineo || '';
     }
 
-
     const peso = document.getElementById('peso');
 
     if (peso) {
         peso.value = perfil.peso || '';
     }
 
-
     const altura = document.getElementById('altura');
 
     if (altura) {
         altura.value = perfil.altura || '';
     }
-
 
     const treinador =
         document.getElementById('treinador');
@@ -183,7 +175,6 @@ function fillForm() {
             perfil.treinador || '';
     }
 
-
     const infoPessoais =
         document.getElementById('infoPessoais');
 
@@ -192,7 +183,6 @@ function fillForm() {
             perfil.infoPessoais || '';
     }
 }
-
 
 // ========================================
 // MOSTRAR SUCESSO
