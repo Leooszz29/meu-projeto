@@ -16,33 +16,33 @@
         });
         termsInput.addEventListener('change', clearError);
 
-       document.querySelectorAll('.toggle-password').forEach(btn => {
-    btn.addEventListener('click', function () {
-        const target = document.getElementById(this.dataset.target);
-        const iconEye = this.querySelector('.icon-eye');
-        const iconEyeOff = this.querySelector('.icon-eye-off');
+        document.querySelectorAll('.toggle-password').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const target = document.getElementById(this.dataset.target);
+                const iconEye = this.querySelector('.icon-eye');
+                const iconEyeOff = this.querySelector('.icon-eye-off');
 
-        // Se o tipo atual for password, mudamos para text (mostrar senha)
-        // Caso contrário, voltamos para password (ocultar senha)
-        if (target.type === 'password') {
-            target.type = 'text';
+                // Se o tipo atual for password, mudamos para text (mostrar senha)
+                // Caso contrário, voltamos para password (ocultar senha)
+                if (target.type === 'password') {
+                    target.type = 'text';
 
-            // Gerencia os elementos visuais garantindo consistência técnica
-            if (iconEye) iconEye.style.setProperty('display', 'none', 'important');
-            if (iconEyeOff) iconEyeOff.style.setProperty('display', 'block', 'important');
+                    // Gerencia os elementos visuais garantindo consistência técnica
+                    if (iconEye) iconEye.style.setProperty('display', 'none', 'important');
+                    if (iconEyeOff) iconEyeOff.style.setProperty('display', 'block', 'important');
 
-            this.setAttribute('aria-label', 'Ocultar senha');
-        } else {
-            target.type = 'password';
+                    this.setAttribute('aria-label', 'Ocultar senha');
+                } else {
+                    target.type = 'password';
 
-            // Restaura o olho padrão e oculta a versão riscada
-            if (iconEye) iconEye.style.setProperty('display', 'block', 'important');
-            if (iconEyeOff) iconEyeOff.style.setProperty('display', 'none', 'important');
+                    // Restaura o olho padrão e oculta a versão riscada
+                    if (iconEye) iconEye.style.setProperty('display', 'block', 'important');
+                    if (iconEyeOff) iconEyeOff.style.setProperty('display', 'none', 'important');
 
-            this.setAttribute('aria-label', 'Mostrar senha');
-        }
-    });
-});
+                    this.setAttribute('aria-label', 'Mostrar senha');
+                }
+            });
+        });
         // ==================== FUNÇÕES ====================
         function clearError() {
             errorMessage.classList.remove('show');
@@ -73,7 +73,7 @@
             const name = nameInput.value.trim();
 
             const email =
-    emailInput.value.trim().toLowerCase();
+                emailInput.value.trim().toLowerCase();
 
             const password = passwordInput.value;
             const confirmPassword = confirmPasswordInput.value;
@@ -111,62 +111,62 @@
                 genero: localStorage.getItem('generoFitZone')
             };
 
-// Busca as contas já cadastradas
+            // Busca as contas já cadastradas
             let usuarios = [];
 
-try {
-    const dadosSalvos =
-        localStorage.getItem('usuarios');
+            try {
+                const dadosSalvos =
+                    localStorage.getItem('usuarios');
 
-    const dadosConvertidos =
-        dadosSalvos
-            ? JSON.parse(dadosSalvos)
-            : [];
+                const dadosConvertidos =
+                    dadosSalvos
+                        ? JSON.parse(dadosSalvos)
+                        : [];
 
-    if (!Array.isArray(dadosConvertidos)) {
-        throw new Error(
-            'Formato inválido dos usuários'
-        );
-    }
+                if (!Array.isArray(dadosConvertidos)) {
+                    throw new Error(
+                        'Formato inválido dos usuários'
+                    );
+                }
 
-    usuarios = dadosConvertidos;
+                usuarios = dadosConvertidos;
 
-} catch (error) {
-    console.error(
-        'Erro ao carregar usuários:',
-        error
-    );
+            } catch (error) {
+                console.error(
+                    'Erro ao carregar usuários:',
+                    error
+                );
 
-    showError(
-        'Não foi possível carregar os cadastros. ' +
-        'Os dados existentes foram preservados.'
-    );
+                showError(
+                    'Não foi possível carregar os cadastros. ' +
+                    'Os dados existentes foram preservados.'
+                );
 
-    return;
-}
+                return;
+            }
 
-const emailJaCadastrado =
-    usuarios.some(
-        usuarioCadastrado =>
-            usuarioCadastrado.email.toLowerCase() ===
-            email
-    );
+            const emailJaCadastrado =
+                usuarios.some(
+                    usuarioCadastrado =>
+                        usuarioCadastrado.email.toLowerCase() ===
+                        email
+                );
 
-if (emailJaCadastrado) {
-    showError(
-        'Este e-mail já está cadastrado.'
-    );
-    return;
-}
+            if (emailJaCadastrado) {
+                showError(
+                    'Este e-mail já está cadastrado.'
+                );
+                return;
+            }
 
-// Adiciona a nova conta sem apagar as anteriores
-usuarios.push(usuario);
+            // Adiciona a nova conta sem apagar as anteriores
+            usuarios.push(usuario);
 
-// Salva novamente a lista completa
-localStorage.setItem(
-    'usuarios',
-    JSON.stringify(usuarios)
-);
+            // Salva novamente a lista completa
+            localStorage.setItem(
+                'usuarios',
+                JSON.stringify(usuarios)
+            );
 
             // Desabilitar botão durante envio
             submitBtn.disabled = true;
