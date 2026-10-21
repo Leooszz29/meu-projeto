@@ -513,7 +513,7 @@ verifyRecoveryCodeBtn.addEventListener('click', () => {
         return;
     }
 
-        recoveryCodeOverlay.classList.remove('show');
+    recoveryCodeOverlay.classList.remove('show');
 
     recoveryCodeOverlay.setAttribute(
         'aria-hidden',
@@ -569,14 +569,14 @@ saveNewPasswordBtn.addEventListener('click', () => {
     }
 
     const emailRecuperacao =
-    localStorage.getItem(
-        'emailRecuperacao'
-    );
+        localStorage.getItem(
+            'emailRecuperacao'
+        );
 
-const usuarioSalvo =
-    carregarUsuarioSalvo(
-        emailRecuperacao
-    );
+    const usuarioSalvo =
+        carregarUsuarioSalvo(
+            emailRecuperacao
+        );
 
     if (!usuarioSalvo) {
         newPasswordError.textContent =
@@ -588,52 +588,52 @@ const usuarioSalvo =
 
     usuarioSalvo.senha = novaSenha;
 
-const usuarios =
-    JSON.parse(
-        localStorage.getItem('usuarios')
-    ) || [];
+    const usuarios =
+        JSON.parse(
+            localStorage.getItem('usuarios')
+        ) || [];
 
-const indiceUsuario =
-    usuarios.findIndex(
-        usuario =>
-            usuario.email.toLowerCase() ===
-            emailRecuperacao.toLowerCase()
-    );
+    const indiceUsuario =
+        usuarios.findIndex(
+            usuario =>
+                usuario.email.toLowerCase() ===
+                emailRecuperacao.toLowerCase()
+        );
 
-if (indiceUsuario !== -1) {
-    usuarios[indiceUsuario] =
-        usuarioSalvo;
+    if (indiceUsuario !== -1) {
+        usuarios[indiceUsuario] =
+            usuarioSalvo;
 
-    localStorage.setItem(
-        'usuarios',
-        JSON.stringify(usuarios)
-    );
-}
+        localStorage.setItem(
+            'usuarios',
+            JSON.stringify(usuarios)
+        );
+    }
 
     newPasswordOverlay.classList.remove('show');
 
-newPasswordOverlay.setAttribute(
-    'aria-hidden',
-    'true'
-);
+    newPasswordOverlay.setAttribute(
+        'aria-hidden',
+        'true'
+    );
 
-recoveryCodeGenerated = null;
+    recoveryCodeGenerated = null;
 
-localStorage.removeItem(
-    'emailRecuperacao'
-);
+    localStorage.removeItem(
+        'emailRecuperacao'
+    );
 
-resetarCamposNovaSenha();
+    resetarCamposNovaSenha();
 
-recoveryCode.value = '';
+    recoveryCode.value = '';
 
-passwordInput.value = '';
+    passwordInput.value = '';
 
-showSuccess(
-    'Senha alterada com sucesso! Faça login com sua nova senha.'
-);
+    showSuccess(
+        'Senha alterada com sucesso! Faça login com sua nova senha.'
+    );
 
-passwordInput.focus();
+    passwordInput.focus();
 });
 
 form.addEventListener('submit', handleLogin);
