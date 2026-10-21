@@ -254,6 +254,8 @@ function loadWorkouts() {
         }
 
         // Verifica exercícios antigos sem alterar os dados
+        const idsEncontrados = new Set();
+
         treinos.forEach((treino, indiceTreino) => {
             if (
                 !treino ||
@@ -273,6 +275,15 @@ function loadWorkouts() {
                     { treino: indiceTreino + 1 }
                 );
                 return;
+            }
+
+            if (idsEncontrados.has(treino.id)) {
+                console.warn(
+                    'FitZone: treino antigo com ID duplicado.',
+                    { treino: indiceTreino + 1 }
+                );
+            } else {
+                idsEncontrados.add(treino.id);
             }
 
             if (!Array.isArray(treino.exercicios)) {
