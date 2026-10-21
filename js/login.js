@@ -301,8 +301,8 @@ passwordRecoveryClose.addEventListener('click', () => {
 
     recoveryEmail.value = '';
 
-recoveryError.classList.remove('show');
-recoveryError.textContent = '';
+    recoveryError.classList.remove('show');
+    recoveryError.textContent = '';
 
 });
 
