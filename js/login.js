@@ -303,7 +303,7 @@ passwordRecoveryClose.addEventListener('click', () => {
 
 recoveryError.classList.remove('show');
 recoveryError.textContent = '';
-    
+
 });
 
 recoveryCode.addEventListener('input', () => {
