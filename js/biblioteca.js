@@ -731,5 +731,5 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-   
+
 });
