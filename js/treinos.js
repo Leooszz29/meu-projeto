@@ -497,7 +497,23 @@ delBtn.innerHTML = '🗑';
 
                 const meta = document.createElement('div');
                 meta.className = 'exercise-meta';
-                meta.innerHTML = `<span>${ex.series}x${ex.repeticoes}</span> repetições · <span>${ex.descanso}s</span> descanso`;
+
+                const seriesInfo = document.createElement('span');
+                seriesInfo.textContent =
+                    `${ex.series}x${ex.repeticoes}`;
+
+                const descansoInfo = document.createElement('span');
+                descansoInfo.textContent =
+                    `${ex.descanso}s`;
+
+                meta.appendChild(seriesInfo);
+                meta.appendChild(
+                    document.createTextNode(' repetições · ')
+                );
+                meta.appendChild(descansoInfo);
+                meta.appendChild(
+                    document.createTextNode(' descanso')
+                );
 
                 const typeBadge = document.createElement('span');
 
