@@ -420,34 +420,34 @@ recoveryContinueBtn.addEventListener('click', () => {
     }
 
     if (!validateEmail(email)) {
-    recoveryError.textContent =
-        'Digite um e-mail válido.';
+        recoveryError.textContent =
+            'Digite um e-mail válido.';
 
-    recoveryError.classList.add('show');
-    return;
-}
+        recoveryError.classList.add('show');
+        return;
+    }
 
     const usuarioSalvo =
-    carregarUsuarioSalvo(email);
+        carregarUsuarioSalvo(email);
 
     if (
-    !usuarioSalvo ||
-    usuarioSalvo.email.toLowerCase() !== email
-) {
-    recoveryError.textContent =
-        'E-mail não cadastrado.';
+        !usuarioSalvo ||
+        usuarioSalvo.email.toLowerCase() !== email
+    ) {
+        recoveryError.textContent =
+            'E-mail não cadastrado.';
 
-    recoveryError.classList.add('show');
-    return;
-}
+        recoveryError.classList.add('show');
+        return;
+    }
 
-localStorage.setItem(
-    'emailRecuperacao',
-    email
-);
+    localStorage.setItem(
+        'emailRecuperacao',
+        email
+    );
 
-recoveryCodeGenerated =
-    gerarCodigoRecuperacao();
+    recoveryCodeGenerated =
+        gerarCodigoRecuperacao();
 
     console.log(
         'Código de recuperação (TESTE):',
@@ -464,22 +464,22 @@ recoveryCodeGenerated =
 
     passwordRecoveryOverlay.classList.remove('show');
 
-passwordRecoveryOverlay.setAttribute(
-    'aria-hidden',
-    'true'
-);
+    passwordRecoveryOverlay.setAttribute(
+        'aria-hidden',
+        'true'
+    );
 
-recoveryCodeOverlay.classList.add('show');
+    recoveryCodeOverlay.classList.add('show');
 
-recoveryCodeOverlay.setAttribute(
-    'aria-hidden',
-    'false'
-);
+    recoveryCodeOverlay.setAttribute(
+        'aria-hidden',
+        'false'
+    );
 
-recoveryCode.value = '';
-recoveryCodeError.classList.remove('show');
+    recoveryCode.value = '';
+    recoveryCodeError.classList.remove('show');
 
-recoveryCode.focus();
+    recoveryCode.focus();
 });
 
 verifyRecoveryCodeBtn.addEventListener('click', () => {
