@@ -668,7 +668,7 @@ togglePassword.addEventListener(
             return emailRegex.test(email);
         }
 
-        function handleLogin(e) {
+function handleLogin(e) {
     e.preventDefault();
     clearError();
 
@@ -681,21 +681,21 @@ togglePassword.addEventListener(
 
     const password = passwordInput.value;
 
-            // Validação
-            if (!email || !password) {
-                showError('Por favor, preencha todos os campos');
-                return;
-            }
+    // Validação
+    if (!email || !password) {
+        showError('Por favor, preencha todos os campos');
+        return;
+    }
 
-            if (!validateEmail(email)) {
-                showError('Por favor, digite um email válido');
-                return;
-            }
+    if (!validateEmail(email)) {
+        showError('Por favor, digite um email válido');
+        return;
+    }
 
-            if (password.length < 6) {
-                showError('Senha deve ter no mínimo 6 caracteres');
-                return;
-            }
+    if (password.length < 6) {
+        showError('Senha deve ter no mínimo 6 caracteres');
+        return;
+    }
 
     // Buscar usuário cadastrado
     const usuarioSalvo =
@@ -727,60 +727,60 @@ togglePassword.addEventListener(
         // Armazenar ou remover preferência de lembrar
         atualizarPreferenciaEmail(email);
 
-    try {
-        localStorage.setItem(
-            'fitzoneSessao',
-            JSON.stringify({
-                autenticado: true,
-                email: email
-            })
-        );
-    } catch (erro) {
-        console.error(
-            'Erro ao salvar a sessão:',
-            erro
-        );
-
-        showError(
-            'Não foi possível iniciar sua sessão. Tente novamente.'
-        );
-
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('loading');
-        return;
-    }
-
-    try {
-        const generoSelecionado =
-            usuarioSalvo.genero ||
-            localStorage.getItem(
-                `generoFitZone:${email.toLowerCase()}`
-            ) ||
-            localStorage.getItem('generoFitZone');
-
-        if (generoSelecionado) {
+        try {
             localStorage.setItem(
-                `generoFitZone:${email.toLowerCase()}`,
-                generoSelecionado
+                'fitzoneSessao',
+                JSON.stringify({
+                    autenticado: true,
+                    email: email
+                })
+            );
+        } catch (erro) {
+            console.error(
+                'Erro ao salvar a sessão:',
+                erro
+            );
+
+            showError(
+                'Não foi possível iniciar sua sessão. Tente novamente.'
+            );
+
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('loading');
+            return;
+        }
+
+        try {
+            const generoSelecionado =
+                usuarioSalvo.genero ||
+                localStorage.getItem(
+                    `generoFitZone:${email.toLowerCase()}`
+                ) ||
+                localStorage.getItem('generoFitZone');
+
+            if (generoSelecionado) {
+                localStorage.setItem(
+                    `generoFitZone:${email.toLowerCase()}`,
+                    generoSelecionado
+                );
+            }
+
+        } catch (erro) {
+            console.warn(
+                'Não foi possível atualizar o gênero do usuário:',
+                erro
             );
         }
 
-    } catch (erro) {
-        console.warn(
-            'Não foi possível atualizar o gênero do usuário:',
-            erro
+        showSuccess(
+            'Login realizado com sucesso! Seja bem-vindo! 💪'
         );
-    }
 
-    showSuccess(
-        'Login realizado com sucesso! Seja bem-vindo! 💪'
-    );
-
-    // Redirecionar para o calendario
-    setTimeout(() => {
-        window.location.href = 'calendario.html';
-    }, 700);
-}, 600);
+        // Redirecionar para o calendario
+        setTimeout(() => {
+            window.location.href = 'calendario.html';
+        }, 700);
+    }, 600);
 
 }
 
