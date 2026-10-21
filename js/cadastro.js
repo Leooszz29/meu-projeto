@@ -26,19 +26,19 @@
         // Caso contrário, voltamos para password (ocultar senha)
         if (target.type === 'password') {
             target.type = 'text';
-            
+
             // Gerencia os elementos visuais garantindo consistência técnica
             if (iconEye) iconEye.style.setProperty('display', 'none', 'important');
             if (iconEyeOff) iconEyeOff.style.setProperty('display', 'block', 'important');
-            
+
             this.setAttribute('aria-label', 'Ocultar senha');
         } else {
             target.type = 'password';
-            
+
             // Restaura o olho padrão e oculta a versão riscada
             if (iconEye) iconEye.style.setProperty('display', 'block', 'important');
             if (iconEyeOff) iconEyeOff.style.setProperty('display', 'none', 'important');
-            
+
             this.setAttribute('aria-label', 'Mostrar senha');
         }
     });
@@ -71,10 +71,10 @@
             clearError();
 
             const name = nameInput.value.trim();
-                
+
             const email =
     emailInput.value.trim().toLowerCase();
-                
+
             const password = passwordInput.value;
             const confirmPassword = confirmPasswordInput.value;
 
