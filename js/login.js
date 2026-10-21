@@ -645,28 +645,29 @@ togglePassword.addEventListener(
     alternarVisibilidadeSenha
 );
 
-        // ==================== FUNÇÕES ====================
-        function clearError() {
-            errorMessage.classList.remove('show');
-            successMessage.classList.remove('show');
-        }
+// ==================== FUNÇÕES ====================
 
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.classList.add('show');
-            successMessage.classList.remove('show');
-        }
+function clearError() {
+    errorMessage.classList.remove('show');
+    successMessage.classList.remove('show');
+}
 
-        function showSuccess(message) {
-            successMessage.textContent = message;
-            successMessage.classList.add('show');
-            errorMessage.classList.remove('show');
-        }
+function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.classList.add('show');
+    successMessage.classList.remove('show');
+}
 
-        function validateEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
+function showSuccess(message) {
+    successMessage.textContent = message;
+    successMessage.classList.add('show');
+    errorMessage.classList.remove('show');
+}
+
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
 
 function handleLogin(e) {
     e.preventDefault();
@@ -784,7 +785,7 @@ function handleLogin(e) {
 
 }
 
-        // ==================== INICIALIZAÇÃO ====================
+// ==================== INICIALIZAÇÃO ====================
 
 function inicializarLogin() {
 
