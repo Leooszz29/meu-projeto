@@ -564,7 +564,6 @@ textarea::placeholder{
     .form-card{padding:22px 18px;}
 }
 
-
 @media (max-width: 480px) {
     .field-row {
         grid-template-columns: minmax(0, 1fr);
@@ -643,7 +642,6 @@ textarea::placeholder{
     box-shadow: 0 14px 35px rgba(0,0,0,0.18);
 }
 
-
 /* CABEÇALHO */
 
 .summary-header {
@@ -693,7 +691,6 @@ textarea::placeholder{
     line-height: 1.5;
 }
 
-
 /* CARDS */
 
 .summary-grid {
@@ -734,7 +731,6 @@ textarea::placeholder{
     background: rgba(var(--accent-rgb), 0.04);
 }
 
-
 /* NÚMEROS */
 
 .summary-value {
@@ -749,7 +745,6 @@ textarea::placeholder{
     line-height: 1;
 }
 
-
 /* DESCRIÇÃO */
 
 .summary-label {
@@ -762,7 +757,6 @@ textarea::placeholder{
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
-
 
 /* MOBILE */
 
@@ -803,7 +797,6 @@ textarea::placeholder{
     }
 }
 
-
 /* =========================================
    HISTÓRICO DE TREINOS
 ========================================= */
@@ -825,7 +818,6 @@ textarea::placeholder{
 
     box-shadow: 0 14px 35px rgba(0,0,0,0.18);
 }
-
 
 /* CABEÇALHO */
 
@@ -875,7 +867,6 @@ textarea::placeholder{
     font-size: 12.5px;
     line-height: 1.5;
 }
-
 
 /* LISTA */
 
@@ -1013,7 +1004,6 @@ textarea::placeholder{
     display: none;
 }
 
-
 /* ITEM DO HISTÓRICO */
 
 /* AÇÕES DO ITEM DO HISTÓRICO */
@@ -1035,7 +1025,6 @@ textarea::placeholder{
     font-size: 12px;
     line-height: 1.5;
 }
-
 
 /* MOBILE DO HISTÓRICO */
 
@@ -1073,13 +1062,11 @@ textarea::placeholder{
     z-index: 100;
 }
 
-
 /* QUANDO O MODAL ESTIVER ABERTO */
 
 .history-modal-overlay.show {
     display: flex;
 }
-
 
 /* CAIXA DO MODAL */
 
@@ -1107,7 +1094,6 @@ textarea::placeholder{
         0 0 35px rgba(193,68,60,0.07);
 }
 
-
 /* ÍCONE */
 
 .history-delete-icon {
@@ -1131,7 +1117,6 @@ textarea::placeholder{
         0 0 0 6px rgba(193,68,60,0.04);
 }
 
-
 /* TÍTULO */
 
 .history-delete-modal h2 {
@@ -1145,7 +1130,6 @@ textarea::placeholder{
     letter-spacing: 0.8px;
 }
 
-
 /* MENSAGEM */
 
 .history-delete-modal p {
@@ -1158,7 +1142,6 @@ textarea::placeholder{
     font-size: 13px;
     line-height: 1.65;
 }
-
 
 /* BOTÕES */
 
@@ -1198,7 +1181,6 @@ textarea::placeholder{
         box-shadow 0.2s ease;
 }
 
-
 /* CANCELAR */
 
 .history-modal-cancel {
@@ -1217,7 +1199,6 @@ textarea::placeholder{
 
     color: var(--chalk);
 }
-
 
 /* EXCLUIR */
 
@@ -1244,14 +1225,12 @@ textarea::placeholder{
         0 9px 24px rgba(193,68,60,0.30);
 }
 
-
 /* CLIQUE */
 
 .history-modal-cancel:active,
 .history-modal-confirm:active {
     transform: translateY(0);
 }
-
 
 /* FOCO PELO TECLADO */
 
@@ -1262,7 +1241,6 @@ textarea::placeholder{
     box-shadow:
         0 0 0 3px rgba(var(--accent-rgb),0.16);
 }
-
 
 /* MOBILE */
 
@@ -1527,7 +1505,6 @@ textarea::placeholder{
     border-bottom: none;
 }
 
-
 /* ÍCONE */
 
 .history-details-exercise-status {
@@ -1543,7 +1520,6 @@ textarea::placeholder{
     font-size: 14px;
     font-weight: 900;
 }
-
 
 /* NOME */
 
@@ -1562,7 +1538,6 @@ textarea::placeholder{
     white-space: nowrap;
 }
 
-
 /* SÉRIES */
 
 .history-details-exercise-series {
@@ -1574,7 +1549,6 @@ textarea::placeholder{
     white-space: nowrap;
 }
 
-
 /* EXERCÍCIO COMPLETO */
 
 .history-details-exercise.complete
@@ -1585,7 +1559,6 @@ textarea::placeholder{
     box-shadow:
         0 0 15px rgba(53, 230, 122, 0.20);
 }
-
 
 /* EXERCÍCIO INCOMPLETO */
 
@@ -1625,13 +1598,11 @@ textarea::placeholder{
     z-index: 9999;
 }
 
-
 /* MOSTRA O MODAL */
 
 #historyDetailsModalOverlay.show {
     display: flex;
 }
-
 
 /* JANELA */
 
@@ -1670,7 +1641,6 @@ textarea::placeholder{
         historyDetailsModalIn 0.22s ease;
 }
 
-
 /* ANIMAÇÃO */
 
 @keyframes historyDetailsModalIn {
@@ -1689,7 +1659,6 @@ textarea::placeholder{
             scale(1);
     }
 }
-
 
 /* CELULAR */
 
@@ -1754,7 +1723,6 @@ textarea::placeholder{
     font-size: 11px;
     font-weight: 600;
 }
-
 
 /* CELULAR */
 
@@ -1836,7 +1804,6 @@ textarea::placeholder{
     line-height: 1.4;
 }
 
-
 /* COMPLETO */
 
 .history-details-status.complete {
@@ -1860,7 +1827,6 @@ textarea::placeholder{
 .history-details-status-text strong {
     color: #35e67a;
 }
-
 
 /* INCOMPLETO */
 
@@ -1894,7 +1860,6 @@ textarea::placeholder{
     font-size: 18px;
 }
 
-
 /* 100% CONCLUÍDO */
 
 .history-details-completion.complete {
@@ -1908,7 +1873,6 @@ textarea::placeholder{
 .history-details-completion.complete strong {
     color: #35e67a;
 }
-
 
 /* TREINO PARCIAL */
 
@@ -2019,7 +1983,6 @@ textarea::placeholder{
         rgba(var(--accent-rgb), 0.35);
 }
 
-
 /* CELULAR */
 
 @media (max-width: 560px) {
@@ -2061,7 +2024,6 @@ textarea::placeholder{
 
     overflow: hidden;
 }
-
 
 /* TÍTULO DO GRUPO */
 
@@ -2111,7 +2073,6 @@ textarea::placeholder{
     line-height: 1;
 }
 
-
 /* BI-SET */
 
 .history-details-group.biset {
@@ -2119,14 +2080,12 @@ textarea::placeholder{
         var(--accent);
 }
 
-
 /* TRI-SET */
 
 .history-details-group.triset {
     border-left: 3px solid
         var(--accent);
 }
-
 
 /* CELULAR */
 
@@ -2265,7 +2224,6 @@ textarea::placeholder{
         0 0 12px rgba(53, 230, 122, 0.10);
 }
 
-
 /* cria o centro vazio do círculo */
 
 .history-details-progress-icon::after {
@@ -2296,7 +2254,6 @@ textarea::placeholder{
 
     text-transform: uppercase;
 }
-
 
 /* VALORES */
 
@@ -2334,7 +2291,6 @@ textarea::placeholder{
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 
 /* STATUS */
 
@@ -2385,13 +2341,11 @@ textarea::placeholder{
     font-weight: 900;
 }
 
-
 /* SEPARADOR */
 
 .history-status-separator {
     opacity: 0.45;
 }
-
 
 /* ÁREA DA DIREITA */
 
@@ -2586,7 +2540,6 @@ textarea::placeholder{
         1px solid rgba(53, 230, 122, 0.22);
 }
 
-
 /* TREINO PARCIAL */
 
 .history-workout-status.incomplete {
@@ -2598,7 +2551,6 @@ textarea::placeholder{
     border:
         1px solid rgba(255, 104, 104, 0.20);
 }
-
 
 /* REGISTROS ANTIGOS */
 
@@ -2620,7 +2572,6 @@ textarea::placeholder{
 
     background: #35e67a;
 }
-
 
 /* ÍCONE PARCIAL */
 
@@ -2754,7 +2705,6 @@ textarea::placeholder{
         box-shadow 0.2s ease;
 }
 
-
 /* HOVER */
 
 .history-item:hover {
@@ -2794,7 +2744,6 @@ textarea::placeholder{
 
     flex-shrink: 0;
 }
-
 
 /* TREINOS COMPLETOS */
 
@@ -2837,7 +2786,6 @@ textarea::placeholder{
 
     font-size: 9px;
 }
-
 
 /* TREINOS PARCIAIS */
 
@@ -2909,7 +2857,6 @@ textarea::placeholder{
     margin: 18px 0 20px;
 }
 
-
 /* CARD */
 
 .history-overview-item {
@@ -2938,7 +2885,6 @@ textarea::placeholder{
         0 8px 20px rgba(0, 0, 0, 0.10);
 }
 
-
 /* NÚMERO */
 
 .history-overview-value {
@@ -2948,7 +2894,6 @@ textarea::placeholder{
     font-weight: 900;
     line-height: 1;
 }
-
 
 /* TEXTO */
 
@@ -2962,7 +2907,6 @@ textarea::placeholder{
     text-transform: uppercase;
 }
 
-
 /* COMPLETOS */
 
 .history-overview-item.complete {
@@ -2974,7 +2918,6 @@ textarea::placeholder{
 .history-overview-value {
     color: #35e67a;
 }
-
 
 /* PARCIAIS */
 
@@ -3025,7 +2968,6 @@ textarea::placeholder{
     background: rgba(0, 0, 0, 0.12);
 }
 
-
 /* TEXTO + PORCENTAGEM */
 
 .history-completion-info {
@@ -3071,7 +3013,6 @@ textarea::placeholder{
     letter-spacing: 0.3px;
 }
 
-
 /* TRILHO */
 
 .history-completion-track {
@@ -3084,7 +3025,6 @@ textarea::placeholder{
 
     background: rgba(255, 255, 255, 0.07);
 }
-
 
 /* BARRA */
 
@@ -3124,7 +3064,6 @@ textarea::placeholder{
     line-height: 1.1;
 }
 
-
 /* PRIMEIRA LINHA */
 
 .history-status-title {
@@ -3135,7 +3074,6 @@ textarea::placeholder{
 
     white-space: nowrap;
 }
-
 
 /* SEGUNDA LINHA */
 
