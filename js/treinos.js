@@ -258,8 +258,24 @@ function loadWorkouts() {
             if (
                 !treino ||
                 typeof treino !== 'object' ||
-                !Array.isArray(treino.exercicios)
+                Array.isArray(treino) ||
+                typeof treino.id !== 'string' ||
+                !treino.id.trim() ||
+                typeof treino.nome !== 'string' ||
+                !treino.nome.trim() ||
+                (
+                    treino.exercicios !== undefined &&
+                    !Array.isArray(treino.exercicios)
+                )
             ) {
+                console.warn(
+                    'FitZone: treino antigo com estrutura inválida.',
+                    { treino: indiceTreino + 1 }
+                );
+                return;
+            }
+
+            if (!Array.isArray(treino.exercicios)) {
                 return;
             }
 
