@@ -5621,6 +5621,12 @@ if (
 }
 
 /* =========================================
+   FITZONE - CONTROLE DE TESTE DA RESTAURACAO
+========================================= */
+
+const FITZONE_RESTAURACAO_TESTE = true;
+
+/* =========================================
    FITZONE - PREPARAR CONFIRMACAO DA RESTAURACAO
 ========================================= */
 
@@ -5642,10 +5648,17 @@ if (restoreBackupConfirmButton) {
                     );
                 }
 
-                // A aplicação do plano permanece desabilitada.
+                if (FITZONE_RESTAURACAO_TESTE) {
+                    console.info(
+                        'FitZone: modo de teste ativo. ' +
+                        'Nenhum dado foi restaurado.'
+                    );
+                    return;
+                }
+
+                // A aplicação real será integrada após os testes.
                 console.info(
-                    'FitZone: plano autorizado e disponível. ' +
-                    'A restauração ainda não foi executada.'
+                    'FitZone: aguardando ativação da restauração.'
                 );
 
             } catch (erro) {
