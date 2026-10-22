@@ -5510,6 +5510,36 @@ function fecharModalRestauracaoFitZone() {
     restoreBackupPreviousFocus = null;
 }
 
+/* =========================================
+   FITZONE - SOLICITAR BACKUP DE SEGURANCA
+========================================= */
+
+function solicitarBackupSegurancaFitZone() {
+    if (!validarPlanoPendenteRestauracaoFitZone()) {
+        showWarningModal(
+            'O plano de restauração não é mais válido.'
+        );
+        return false;
+    }
+
+    try {
+        baixarBackupSegurancaFitZone();
+        return true;
+
+    } catch (erro) {
+        console.error(
+            'Erro ao preparar a cópia de segurança:',
+            erro
+        );
+
+        showWarningModal(
+            'Não foi possível preparar a cópia de segurança. A restauração não será iniciada.'
+        );
+
+        return false;
+    }
+}
+
 const restoreBackupCancelButton = document.getElementById(
     'restoreBackupCancelBtn'
 );
