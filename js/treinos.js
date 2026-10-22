@@ -5185,6 +5185,16 @@ function aplicarPlanoRestauracaoFitZone(plano) {
             }
         });
 
+        const gravacaoConfirmada = plano.every(item =>
+            localStorage.getItem(item.chave) === item.valorNovo
+        );
+
+        if (!gravacaoConfirmada) {
+            throw new Error(
+                'Os dados gravados não correspondem ao backup.'
+            );
+        }
+
         return true;
 
     } catch (erro) {
