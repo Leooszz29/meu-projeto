@@ -5739,17 +5739,22 @@ document.addEventListener('keydown', (event) => {
         return;
     }
 
-    const botoes = Array.from(
-        modal.querySelectorAll('button:not(:disabled)')
-    ).filter(botao => !botao.hidden);
+    const elementosFocaveis = Array.from(
+        modal.querySelectorAll(
+            'input:not(:disabled), button:not(:disabled)'
+        )
+    ).filter(elemento =>
+        !elemento.hidden &&
+        elemento.getClientRects().length > 0
+    );
 
-    if (botoes.length === 0) {
+    if (elementosFocaveis.length === 0) {
         event.preventDefault();
         return;
     }
 
-    const primeiro = botoes[0];
-    const ultimo = botoes[botoes.length - 1];
+    const primeiro = elementosFocaveis[0];
+    const ultimo = elementosFocaveis[elementosFocaveis.length - 1];
 
     if (
         !modal.contains(document.activeElement) ||
