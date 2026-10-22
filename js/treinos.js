@@ -5546,6 +5546,44 @@ function solicitarBackupSegurancaFitZone() {
     }
 }
 
+/* =========================================
+   FITZONE - CONTROLAR CONFIRMACAO DE SEGURANCA
+========================================= */
+
+const restoreBackupSafetyCheckbox = document.getElementById(
+    'restoreBackupSafetyConfirm'
+);
+
+const restoreBackupConfirmButton = document.getElementById(
+    'restoreBackupConfirmBtn'
+);
+
+if (
+    restoreBackupSafetyCheckbox &&
+    restoreBackupConfirmButton
+) {
+    restoreBackupSafetyCheckbox.addEventListener(
+        'change',
+        () => {
+            const planoValido =
+                validarPlanoPendenteRestauracaoFitZone();
+
+            const segurancaConfirmada =
+                restoreBackupSafetyCheckbox.checked;
+
+            // A restauração permanece bloqueada nesta etapa.
+            restoreBackupConfirmButton.disabled = true;
+
+            if (segurancaConfirmada && planoValido) {
+                console.info(
+                    'FitZone: confirmação de segurança registrada. ' +
+                    'A restauração ainda não está habilitada.'
+                );
+            }
+        }
+    );
+}
+
 const restoreBackupCancelButton = document.getElementById(
     'restoreBackupCancelBtn'
 );
