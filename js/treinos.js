@@ -5550,6 +5550,22 @@ function solicitarBackupSegurancaFitZone() {
    FITZONE - CONTROLAR CONFIRMACAO DE SEGURANCA
 ========================================= */
 
+/* =========================================
+   FITZONE - VERIFICAR AUTORIZACAO DA RESTAURACAO
+========================================= */
+
+function restauracaoAutorizadaFitZone() {
+    const confirmacao = document.getElementById(
+        'restoreBackupSafetyConfirm'
+    );
+
+    if (!confirmacao || !confirmacao.checked) {
+        return false;
+    }
+
+    return validarPlanoPendenteRestauracaoFitZone();
+}
+
 const restoreBackupSafetyCheckbox = document.getElementById(
     'restoreBackupSafetyConfirm'
 );
