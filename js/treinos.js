@@ -5597,6 +5597,30 @@ if (
     );
 }
 
+/* =========================================
+   FITZONE - PREPARAR CONFIRMACAO DA RESTAURACAO
+========================================= */
+
+if (restoreBackupConfirmButton) {
+    restoreBackupConfirmButton.addEventListener(
+        'click',
+        () => {
+            if (!restauracaoAutorizadaFitZone()) {
+                showWarningModal(
+                    'A restauração não foi autorizada. Verifique o backup e a confirmação de segurança.'
+                );
+                return;
+            }
+
+            // A gravação será integrada em uma etapa posterior.
+            console.info(
+                'FitZone: autorização validada. ' +
+                'A aplicação do backup ainda está desabilitada.'
+            );
+        }
+    );
+}
+
 const restoreBackupCancelButton = document.getElementById(
     'restoreBackupCancelBtn'
 );
