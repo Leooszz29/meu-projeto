@@ -5219,7 +5219,20 @@ function aplicarPlanoRestauracaoFitZone(plano) {
             }
         });
 
-        if (falhasReversao.length > 0) {
+        const reversaoConfirmada = [...alterados].every(item => {
+            try {
+                return localStorage.getItem(item.chave) ===
+                    item.valorAnterior;
+            } catch (erroVerificacao) {
+                console.error(
+                    'Erro ao verificar recuperação dos dados:',
+                    erroVerificacao
+                );
+                return false;
+            }
+        });
+
+        if (falhasReversao.length > 0 || !reversaoConfirmada) {
             console.error(
                 'Falha ao reverter parte da restauração:',
                 falhasReversao
