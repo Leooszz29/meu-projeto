@@ -5406,16 +5406,22 @@ function abrirModalRestauracaoFitZone(plano = null) {
         'restoreBackupSummary'
     );
 
+    const confirmacaoSeguranca = document.getElementById(
+        'restoreBackupSafetyConfirm'
+    );
+
     if (
         !modal ||
         !cancelar ||
         !confirmar ||
-        !resumoElemento
+        !resumoElemento ||
+        !confirmacaoSeguranca
     ) {
         return;
     }
 
     confirmar.disabled = true;
+    confirmacaoSeguranca.checked = false;
 
     if (plano !== null) {
         if (!verificarPlanoRestauracaoFitZone(plano)) {
