@@ -5612,11 +5612,30 @@ if (restoreBackupConfirmButton) {
                 return;
             }
 
-            // A gravação será integrada em uma etapa posterior.
-            console.info(
-                'FitZone: autorização validada. ' +
-                'A aplicação do backup ainda está desabilitada.'
-            );
+            try {
+                if (!restoreBackupPendingPlan) {
+                    throw new Error(
+                        'Nenhum plano de restauração disponível.'
+                    );
+                }
+
+                // A aplicação do plano permanece desabilitada.
+                console.info(
+                    'FitZone: plano autorizado e disponível. ' +
+                    'A restauração ainda não foi executada.'
+                );
+
+            } catch (erro) {
+                console.error(
+                    'FitZone: falha ao preparar a restauração:',
+                    erro
+                );
+
+                showWarningModal(
+                    'Não foi possível preparar a restauração. ' +
+                    'Seus dados não foram alterados.'
+                );
+            }
         }
     );
 }
