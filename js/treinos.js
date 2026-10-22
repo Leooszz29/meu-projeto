@@ -5154,6 +5154,80 @@ function prepararPlanoRestauracaoFitZone(backup) {
 }
 
 /* =========================================
+   FITZONE - APLICAR PLANO DE RESTAURACAO
+========================================= */
+
+function aplicarPlanoRestauracaoFitZone(plano) {
+    if (!verificarPlanoRestauracaoFitZone(plano)) {
+        throw new Error(
+            'O plano de restauração é inválido ou está desatualizado.'
+        );
+    }
+
+    const alterados = [];
+
+    try {
+        plano.forEach(item => {
+            if (item.valorAnterior === item.valorNovo) {
+                return;
+            }
+
+            // Registra a chave antes de tentar modificá-la.
+            alterados.push(item);
+
+            if (item.valorNovo === null) {
+                localStorage.removeItem(item.chave);
+            } else {
+                localStorage.setItem(
+                    item.chave,
+                    item.valorNovo
+                );
+            }
+        });
+
+        return true;
+
+    } catch (erro) {
+        const falhasReversao = [];
+
+        // Tenta recuperar os valores anteriores.
+        [...alterados].reverse().forEach(item => {
+            try {
+                if (item.valorAnterior === null) {
+                    localStorage.removeItem(item.chave);
+                } else {
+                    localStorage.setItem(
+                        item.chave,
+                        item.valorAnterior
+                    );
+                }
+            } catch (erroReversao) {
+                falhasReversao.push({
+                    tipo: item.tipo,
+                    erro: erroReversao
+                });
+            }
+        });
+
+        if (falhasReversao.length > 0) {
+            console.error(
+                'Falha ao reverter parte da restauração:',
+                falhasReversao
+            );
+
+            throw new Error(
+                'A restauração falhou e alguns dados podem não ter sido recuperados.'
+            );
+        }
+
+        throw new Error(
+            'A restauração falhou. Os valores anteriores foram recuperados.',
+            { cause: erro }
+        );
+    }
+}
+
+/* =========================================
    FITZONE - BAIXAR BACKUP DE SEGURANCA
 ========================================= */
 
