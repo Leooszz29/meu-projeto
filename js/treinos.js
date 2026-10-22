@@ -5581,16 +5581,13 @@ if (
     restoreBackupSafetyCheckbox.addEventListener(
         'change',
         () => {
-            const planoValido =
-                validarPlanoPendenteRestauracaoFitZone();
-
-            const segurancaConfirmada =
-                restoreBackupSafetyCheckbox.checked;
+            const autorizado =
+                restauracaoAutorizadaFitZone();
 
             // A restauração permanece bloqueada nesta etapa.
             restoreBackupConfirmButton.disabled = true;
 
-            if (segurancaConfirmada && planoValido) {
+            if (autorizado) {
                 console.info(
                     'FitZone: confirmação de segurança registrada. ' +
                     'A restauração ainda não está habilitada.'
