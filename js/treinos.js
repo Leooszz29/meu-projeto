@@ -5607,13 +5607,13 @@ if (
             const autorizado =
                 restauracaoAutorizadaFitZone();
 
-            // A restauração permanece bloqueada nesta etapa.
-            restoreBackupConfirmButton.disabled = true;
+            // Libera a confirmação somente com autorização válida.
+            restoreBackupConfirmButton.disabled = !autorizado;
 
             if (autorizado) {
                 console.info(
-                    'FitZone: confirmação de segurança registrada. ' +
-                    'A restauração ainda não está habilitada.'
+                    'FitZone: confirmação autorizada. ' +
+                    'A gravação dos dados ainda está desativada.'
                 );
             }
         }
