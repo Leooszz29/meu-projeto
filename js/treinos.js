@@ -5648,18 +5648,33 @@ if (restoreBackupConfirmButton) {
                     );
                 }
 
-                if (FITZONE_RESTAURACAO_TESTE) {
+                if (
+                    FITZONE_RESTAURACAO_TESTE &&
+                    sessionStorage.getItem(
+                        'fitzone-restauracao-teste'
+                    ) !== 'liberado'
+                ) {
                     console.info(
-                        'FitZone: modo de teste ativo. ' +
-                        'Nenhum dado foi restaurado.'
+                        'FitZone: restauração bloqueada. ' +
+                        'Ambiente de teste não autorizado.'
                     );
                     return;
                 }
 
-                // A aplicação real será integrada após os testes.
-                console.info(
-                    'FitZone: aguardando ativação da restauração.'
+                const restaurou = aplicarPlanoRestauracaoFitZone(
+                    restoreBackupPendingPlan
                 );
+
+                if (restaurou) {
+                    fecharModalRestauracaoFitZone();
+
+                    alert(
+                        'Backup restaurado com sucesso! ' +
+                        'A página será atualizada.'
+                    );
+
+                    window.location.reload();
+                }
 
             } catch (erro) {
                 console.error(
@@ -5668,8 +5683,8 @@ if (restoreBackupConfirmButton) {
                 );
 
                 showWarningModal(
-                    'Não foi possível preparar a restauração. ' +
-                    'Seus dados não foram alterados.'
+                    'Não foi possível concluir a restauração. ' +
+                    'Confira o erro no Console e verifique seus dados antes de tentar novamente.'
                 );
             }
         }
