@@ -5612,19 +5612,13 @@ if (
 
             if (autorizado) {
                 console.info(
-                    'FitZone: confirmação autorizada. ' +
-                    'A gravação dos dados ainda está desativada.'
+                    'FitZone: restauração autorizada. ' +
+                    'Aguardando confirmação do usuário.'
                 );
             }
         }
     );
 }
-
-/* =========================================
-   FITZONE - CONTROLE DE TESTE DA RESTAURACAO
-========================================= */
-
-const FITZONE_RESTAURACAO_TESTE = true;
 
 /* =========================================
    FITZONE - PREPARAR CONFIRMACAO DA RESTAURACAO
@@ -5646,19 +5640,6 @@ if (restoreBackupConfirmButton) {
                     throw new Error(
                         'Nenhum plano de restauração disponível.'
                     );
-                }
-
-                if (
-                    FITZONE_RESTAURACAO_TESTE &&
-                    sessionStorage.getItem(
-                        'fitzone-restauracao-teste'
-                    ) !== 'liberado'
-                ) {
-                    console.info(
-                        'FitZone: restauração bloqueada. ' +
-                        'Ambiente de teste não autorizado.'
-                    );
-                    return;
                 }
 
                 const restaurou = aplicarPlanoRestauracaoFitZone(
