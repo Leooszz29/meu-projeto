@@ -5659,14 +5659,43 @@ if (restoreBackupConfirmButton) {
 
             } catch (erro) {
                 console.error(
-                    'FitZone: falha ao preparar a restauração:',
+                    'FitZone: falha durante a restauração:',
                     erro
                 );
 
-                showWarningModal(
-                    'Não foi possível concluir a restauração. ' +
-                    'Confira o erro no Console e verifique seus dados antes de tentar novamente.'
-                );
+                const mensagemErro =
+                    erro instanceof Error ? erro.message : '';
+
+                if (
+                    mensagemErro.includes(
+                        'alguns dados podem não ter sido recuperados'
+                    )
+                ) {
+                    showWarningModal(
+                        'Atenção: a restauração falhou e não foi possível ' +
+                        'confirmar a recuperação de todos os dados anteriores. ' +
+                        'Não tente restaurar novamente antes de verificar ' +
+                        'suas informações e seu arquivo de segurança.'
+                    );
+
+                } else if (
+                    mensagemErro.includes(
+                        'Os valores anteriores foram recuperados'
+                    )
+                ) {
+                    showWarningModal(
+                        'A restauração não foi concluída, mas os dados ' +
+                        'anteriores foram recuperados. ' +
+                        'Nenhuma nova tentativa foi realizada.'
+                    );
+
+                } else {
+                    showWarningModal(
+                        'Não foi possível concluir a restauração. ' +
+                        'Seus dados precisam ser verificados antes ' +
+                        'de uma nova tentativa.'
+                    );
+                }
             }
         }
     );
