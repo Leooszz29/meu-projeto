@@ -907,6 +907,80 @@ function calcularProgressoConquistas() {
     });
 }
 
+/* =========================================
+   FITZONE - EXIBIR CARDS DE CONQUISTAS
+========================================= */
+
+function exibirConquistasFitZone() {
+    const grade = document.getElementById(
+        'fitzoneAchievementsGrid'
+    );
+
+    if (!grade) {
+        return;
+    }
+
+    const conquistas = calcularProgressoConquistas();
+
+    grade.replaceChildren();
+
+    conquistas.forEach(conquista => {
+        const card = document.createElement('article');
+        card.className = 'fitzone-achievement-card';
+
+        card.classList.add(
+            conquista.desbloqueada
+                ? 'unlocked'
+                : 'locked'
+        );
+
+        const icone = document.createElement('span');
+        icone.className = 'fitzone-achievement-icon';
+        icone.textContent = conquista.icone;
+        icone.setAttribute('aria-hidden', 'true');
+
+        const nome = document.createElement('h3');
+        nome.className = 'fitzone-achievement-name';
+        nome.textContent = conquista.nome;
+
+        const descricao = document.createElement('p');
+        descricao.className = 'fitzone-achievement-description';
+        descricao.textContent = conquista.descricao;
+
+        const progresso = document.createElement('span');
+        progresso.className = 'fitzone-achievement-progress';
+
+        const valorAtual = Math.min(
+            conquista.progresso,
+            conquista.meta
+        );
+
+        progresso.textContent =
+            `${valorAtual} de ${conquista.meta}${
+                conquista.tipo === 'dias-semana'
+                    ? ' dias'
+                    : ' treinos'
+            }`;
+
+        const status = document.createElement('span');
+        status.className = 'fitzone-achievement-status';
+
+        status.textContent = conquista.desbloqueada
+            ? 'DESBLOQUEADA ✓'
+            : 'BLOQUEADA';
+
+        card.append(
+            icone,
+            nome,
+            descricao,
+            progresso,
+            status
+        );
+
+        grade.appendChild(card);
+    });
+}
+
 // ========================================
 // CARREGAR INDICADORES DO HISTÓRICO
 // ========================================
