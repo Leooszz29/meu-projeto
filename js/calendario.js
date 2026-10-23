@@ -588,11 +588,17 @@ function agruparHistoricoCalendarioPorDia() {
                 concluidas >= 0;
 
             if (!possuiDetalhes) {
+                item.classList.add('registro-anterior');
+
                 detalhes.textContent = 'Registro anterior';
             } else if (concluidas >= total) {
+                item.classList.add('treino-completo');
+
                 detalhes.textContent =
                     `Completo · ${concluidas} de ${total} séries`;
             } else {
+                item.classList.add('treino-parcial');
+
                 detalhes.textContent =
                     `Parcial · ${concluidas} de ${total} séries`;
             }
