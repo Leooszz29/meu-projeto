@@ -865,3 +865,52 @@ function obterChavePreferenciasFitZone() {
         return null;
     }
 }
+
+/* =========================================
+   FITZONE - CARREGAR PREFERENCIAS DO USUARIO
+========================================= */
+
+function carregarPreferenciasFitZone() {
+    const chave = obterChavePreferenciasFitZone();
+
+    const preferenciasPadrao = {
+        mensagensMotivacionais: true
+    };
+
+    if (!chave) {
+        return preferenciasPadrao;
+    }
+
+    try {
+        const dados = localStorage.getItem(chave);
+
+        if (!dados) {
+            return preferenciasPadrao;
+        }
+
+        const preferencias = JSON.parse(dados);
+
+        if (
+            !preferencias ||
+            typeof preferencias !== 'object' ||
+            Array.isArray(preferencias)
+        ) {
+            return preferenciasPadrao;
+        }
+
+        return {
+            mensagensMotivacionais:
+                typeof preferencias.mensagensMotivacionais === 'boolean'
+                    ? preferencias.mensagensMotivacionais
+                    : true
+        };
+
+    } catch (erro) {
+        console.warn(
+            'Não foi possível carregar as preferências:',
+            erro
+        );
+
+        return preferenciasPadrao;
+    }
+}
