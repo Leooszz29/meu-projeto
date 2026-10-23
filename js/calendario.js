@@ -177,6 +177,24 @@ document.addEventListener("DOMContentLoaded", () => {
             const email = sessao.email.trim().toLowerCase();
             const hoje = obterDataLocal();
 
+            /* Verificar preferencia de motivacao do usuario */
+            const chavePreferencias = `fitzonePreferencias:${email}`;
+            const preferenciasJSON = localStorage.getItem(
+                chavePreferencias
+            );
+
+            if (preferenciasJSON) {
+                const preferencias = JSON.parse(preferenciasJSON);
+
+                if (
+                    preferencias &&
+                    !Array.isArray(preferencias) &&
+                    preferencias.mensagensMotivacionais === false
+                ) {
+                    return;
+                }
+            }
+
             const chave = `fitzoneMotivacao:${email}`;
 
             if (localStorage.getItem(chave) === hoje) {
