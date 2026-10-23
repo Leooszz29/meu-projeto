@@ -536,6 +536,74 @@ function agruparHistoricoCalendarioPorDia() {
     let checkinModalTrigger = null;
     let selectedCheckinDateKey = null;
 
+    /* =========================================
+       FITZONE - HISTORICO DO DIA SELECIONADO
+    ========================================= */
+
+    function atualizarHistoricoDiaCalendario(dateKey) {
+        const secao = document.getElementById(
+            'historicoDiaCalendario'
+        );
+
+        const lista = document.getElementById(
+            'historicoDiaLista'
+        );
+
+        if (!secao || !lista) {
+            return;
+        }
+
+        lista.replaceChildren();
+
+        const historicoPorDia =
+            agruparHistoricoCalendarioPorDia();
+
+        const treinosDoDia = historicoPorDia[dateKey] || [];
+
+        if (treinosDoDia.length === 0) {
+            secao.hidden = true;
+            return;
+        }
+
+        treinosDoDia.forEach(registro => {
+            const item = document.createElement('div');
+            item.className = 'historico-dia-item';
+
+            const nome = document.createElement('strong');
+            nome.className = 'historico-dia-nome';
+            nome.textContent = registro.nome || 'Treino';
+
+            const detalhes = document.createElement('span');
+            detalhes.className = 'historico-dia-status';
+
+            const total = Number(registro.seriesTotal);
+            const concluidas = Number(registro.seriesConcluidas);
+
+            const possuiDetalhes =
+                registro.seriesTotal != null &&
+                registro.seriesConcluidas != null &&
+                Number.isFinite(total) &&
+                Number.isFinite(concluidas) &&
+                total > 0 &&
+                concluidas >= 0;
+
+            if (!possuiDetalhes) {
+                detalhes.textContent = 'Registro anterior';
+            } else if (concluidas >= total) {
+                detalhes.textContent =
+                    `Completo · ${concluidas} de ${total} séries`;
+            } else {
+                detalhes.textContent =
+                    `Parcial · ${concluidas} de ${total} séries`;
+            }
+
+            item.append(nome, detalhes);
+            lista.appendChild(item);
+        });
+
+        secao.hidden = false;
+    }
+
     function openCheckinModal(dateKey, day) {
         const checkins = loadCheckins();
         const checkin = checkins[dateKey] || {};
