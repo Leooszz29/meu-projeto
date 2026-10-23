@@ -3955,6 +3955,31 @@ body:not(.theme-feminino):not(.theme-masculino)
 }
 
 /* =========================================
+   FITZONE - ESTADOS DO CHECKLIST
+========================================= */
+
+/* EXERCICIO PENDENTE */
+.active-individual-status.pending {
+    color: #b0b8c4;
+    background: rgba(176, 184, 196, 0.08);
+    border-color: rgba(176, 184, 196, 0.25);
+}
+
+/* EXERCICIO EM ANDAMENTO */
+.active-individual-status.in-progress {
+    color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.10);
+    border-color: rgba(var(--accent-rgb), 0.35);
+}
+
+/* EXERCICIO CONCLUIDO */
+.active-individual-status:not(.pending):not(.in-progress) {
+    color: #35e67a;
+    background: rgba(53, 230, 122, 0.08);
+    border-color: rgba(53, 230, 122, 0.30);
+}
+
+/* =========================================
    RECOLHER EXERCÍCIO INDIVIDUAL
 ========================================= */
 
