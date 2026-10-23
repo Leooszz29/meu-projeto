@@ -1017,6 +1017,75 @@ function atualizarBotaoFinalizar() {
 
 atualizarBotaoFinalizar();
 
+    // FITZONE - INDICADOR GERAL DE PROGRESSO
+const indicadorProgresso = document.createElement('div');
+indicadorProgresso.className = 'fitzone-workout-progress';
+
+const textoProgresso = document.createElement('p');
+textoProgresso.className = 'fitzone-workout-progress-text';
+
+const barraProgresso = document.createElement('progress');
+barraProgresso.className = 'fitzone-workout-progress-bar';
+barraProgresso.max = 100;
+barraProgresso.value = 0;
+barraProgresso.setAttribute(
+    'aria-label',
+    'Progresso geral do treino'
+);
+
+indicadorProgresso.append(
+    textoProgresso,
+    barraProgresso
+);
+
+function atualizarIndicadorProgresso() {
+    const exercicios = Array.isArray(workout.exercicios)
+        ? workout.exercicios
+        : [];
+
+    const progresso =
+        carregarProgressoTreino()[workout.id] || {};
+
+    const total = exercicios.length;
+
+    const concluidos = exercicios.filter((exercicio, index) => {
+        const chave = exercicio.id || `exercise-${index}`;
+        const series = progresso[chave] || [];
+        const quantidade = Number(exercicio.series) || 0;
+
+        return quantidade > 0 &&
+            Array.isArray(series) &&
+            Array.from(
+                { length: quantidade },
+                (_, i) => i + 1
+            ).every(numero => series.includes(numero));
+    }).length;
+
+    const percentual = total > 0
+        ? Math.round((concluidos / total) * 100)
+        : 0;
+
+    textoProgresso.textContent =
+        `${concluidos} de ${total} exercícios concluídos (${percentual}%)`;
+
+    barraProgresso.value = percentual;
+}
+
+exercisesElement.before(indicadorProgresso);
+atualizarIndicadorProgresso();
+
+document.addEventListener(
+    'progressoTreinoAtualizado',
+    event => {
+        if (
+            event.detail.workoutId === workout.id &&
+            indicadorProgresso.isConnected
+        ) {
+            atualizarIndicadorProgresso();
+        }
+    }
+);
+
 // NOME DO TREINO
 
     nameElement.textContent =
