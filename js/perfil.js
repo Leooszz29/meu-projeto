@@ -829,3 +829,39 @@ if (document.readyState === 'loading') {
 
     initializeProfile();
 }
+
+/* =========================================
+   FITZONE - CHAVE DAS PREFERENCIAS DO USUARIO
+========================================= */
+
+function obterChavePreferenciasFitZone() {
+    try {
+        const sessaoJSON =
+            localStorage.getItem('fitzoneSessao');
+
+        const sessao = sessaoJSON
+            ? JSON.parse(sessaoJSON)
+            : null;
+
+        if (
+            !sessao ||
+            sessao.autenticado !== true ||
+            typeof sessao.email !== 'string' ||
+            !sessao.email.trim()
+        ) {
+            return null;
+        }
+
+        const email = sessao.email.trim().toLowerCase();
+
+        return `fitzonePreferencias:${email}`;
+
+    } catch (erro) {
+        console.warn(
+            'Não foi possível identificar as preferências:',
+            erro
+        );
+
+        return null;
+    }
+}
