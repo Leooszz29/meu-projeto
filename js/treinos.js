@@ -1475,13 +1475,27 @@ if (!statusIndividual) {
     );
 }
 
-statusIndividual.textContent =
-    concluido
-        ? 'CONCLUÍDO ✓'
-        : '';
+const possuiSeriesConcluidas =
+    Array.isArray(seriesConcluidas) &&
+    seriesConcluidas.length > 0;
 
-statusIndividual.hidden =
-    !concluido;
+statusIndividual.textContent = concluido
+    ? 'CONCLUÍDO ✓'
+    : possuiSeriesConcluidas
+        ? 'EM ANDAMENTO'
+        : 'PENDENTE';
+
+statusIndividual.hidden = false;
+
+statusIndividual.classList.toggle(
+    'pending',
+    !concluido && !possuiSeriesConcluidas
+);
+
+statusIndividual.classList.toggle(
+    'in-progress',
+    !concluido && possuiSeriesConcluidas
+);
 
     };
 
