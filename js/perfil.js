@@ -914,3 +914,60 @@ function carregarPreferenciasFitZone() {
         return preferenciasPadrao;
     }
 }
+
+/* =========================================
+   FITZONE - SALVAR PREFERENCIAS DO USUARIO
+========================================= */
+
+function salvarPreferenciasFitZone(preferencias) {
+    const chave = obterChavePreferenciasFitZone();
+
+    if (!chave) {
+        console.warn(
+            'Não foi possível salvar: sessão inválida.'
+        );
+
+        return false;
+    }
+
+    try {
+        const dadosAtuais = localStorage.getItem(chave);
+
+        let preferenciasAtuais = {};
+
+        if (dadosAtuais !== null) {
+            preferenciasAtuais = JSON.parse(dadosAtuais);
+
+            if (
+                !preferenciasAtuais ||
+                typeof preferenciasAtuais !== 'object' ||
+                Array.isArray(preferenciasAtuais)
+            ) {
+                throw new Error(
+                    'Preferências existentes inválidas.'
+                );
+            }
+        }
+
+        const dadosAtualizados = {
+            ...preferenciasAtuais,
+            mensagensMotivacionais:
+                preferencias.mensagensMotivacionais === true
+        };
+
+        localStorage.setItem(
+            chave,
+            JSON.stringify(dadosAtualizados)
+        );
+
+        return true;
+
+    } catch (erro) {
+        console.error(
+            'Erro ao salvar preferências:',
+            erro
+        );
+
+        return false;
+    }
+}
