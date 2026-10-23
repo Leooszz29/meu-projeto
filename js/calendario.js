@@ -315,6 +315,45 @@ function carregarHistoricoCalendario() {
     }
 }
 
+   {`/* =========================================
+   FITZONE - AGRUPAR HISTORICO POR DIA
+========================================= */
+
+function agruparHistoricoCalendarioPorDia() {
+    const historico = carregarHistoricoCalendario();
+    const registrosPorDia = {};
+
+    historico.forEach(registro => {
+        if (
+            !registro ||
+            typeof registro !== 'object' ||
+            typeof registro.data !== 'string'
+        ) {
+            return;
+        }
+
+        const data = new Date(registro.data);
+
+        if (Number.isNaN(data.getTime())) {
+            return;
+        }
+
+        const ano = data.getFullYear();
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const dia = String(data.getDate()).padStart(2, '0');
+
+        const chaveData = `${ano}-${mes}-${dia}`;
+
+        if (!registrosPorDia[chaveData]) {
+            registrosPorDia[chaveData] = [];
+        }
+
+        registrosPorDia[chaveData].push(registro);
+    });
+
+    return registrosPorDia;
+}`}
+
     /* =========================================
        LEITURA SEGURA DOS CHECK-INS
     ========================================= */
