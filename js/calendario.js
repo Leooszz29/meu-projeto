@@ -268,6 +268,53 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentYear = today.getFullYear();
     let currentMonth = today.getMonth();
 
+   /* =========================================
+   FITZONE - HISTORICO VISUAL DO CALENDARIO
+========================================= */
+
+function carregarHistoricoCalendario() {
+    try {
+        const sessaoJSON =
+            localStorage.getItem('fitzoneSessao');
+
+        const sessao = sessaoJSON
+            ? JSON.parse(sessaoJSON)
+            : null;
+
+        if (
+            !sessao ||
+            sessao.autenticado !== true ||
+            typeof sessao.email !== 'string' ||
+            !sessao.email.trim()
+        ) {
+            return [];
+        }
+
+        const email = sessao.email.trim().toLowerCase();
+
+        const chave = `historicoTreinos:${email}`;
+        const dados = localStorage.getItem(chave);
+
+        if (!dados) {
+            return [];
+        }
+
+        const historico = JSON.parse(dados);
+
+        return Array.isArray(historico)
+            ? historico
+            : [];
+
+    } catch (erro) {
+        console.warn(
+            'Não foi possível consultar o histórico do calendário:',
+            erro
+        );
+
+        return [];
+    }
+}
+
     /* =========================================
        LEITURA SEGURA DOS CHECK-INS
     ========================================= */
