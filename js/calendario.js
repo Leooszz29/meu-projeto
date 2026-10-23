@@ -654,6 +654,8 @@ function agruparHistoricoCalendarioPorDia() {
     function renderCalendar() {
 
         const checkins = loadCheckins();
+        const historicoPorDia = agruparHistoricoCalendarioPorDia();
+
         let checkinsNoMes = 0;
 
         monthLabel.textContent =
@@ -695,6 +697,12 @@ function agruparHistoricoCalendarioPorDia() {
             const dateKey = `${currentYear}-${month}-${date}`;
 
             const checkin = checkins[dateKey];
+
+            const treinosDoDia = historicoPorDia[dateKey] || [];
+
+            if (treinosDoDia.length > 0) {
+            cell.classList.add('has-workout-history');
+           }
 
             if (checkin && checkin.checked === true) {
                 cell.classList.add("checked");
