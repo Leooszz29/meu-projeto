@@ -1071,6 +1071,14 @@ function atualizarIndicadorProgresso() {
     barraProgresso.value = percentual;
 }
 
+const indicadorAnterior = document.querySelector(
+    '.fitzone-workout-progress'
+);
+
+if (indicadorAnterior) {
+    indicadorAnterior.remove();
+}
+
 exercisesElement.before(indicadorProgresso);
 atualizarIndicadorProgresso();
 
