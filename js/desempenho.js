@@ -758,6 +758,56 @@ function carregarResumoDesempenho() {
 
 carregarResumoDesempenho();
 
+/* =========================================
+   FITZONE - CONFIGURACAO DAS CONQUISTAS
+========================================= */
+
+const conquistasFitZone = [
+    {
+        id: 'primeiro-passo',
+        nome: 'Primeiro Passo',
+        icone: '🥉',
+        descricao: 'Conclua seu primeiro registro de treino.',
+        meta: 1
+    },
+    {
+        id: 'em-evolucao',
+        nome: 'Em Evolução',
+        icone: '🥈',
+        descricao: 'Registre 5 treinos.',
+        meta: 5
+    },
+    {
+        id: 'determinacao',
+        nome: 'Determinação',
+        icone: '🥇',
+        descricao: 'Registre 10 treinos.',
+        meta: 10
+    },
+    {
+        id: 'consistencia',
+        nome: 'Consistência',
+        icone: '🏆',
+        descricao: 'Registre 25 treinos.',
+        meta: 25
+    },
+    {
+        id: 'semana-ativa',
+        nome: 'Semana Ativa',
+        icone: '🔥',
+        descricao: 'Treine em 3 dias diferentes nos últimos 7 dias.',
+        meta: 3,
+        tipo: 'dias-semana'
+    },
+    {
+        id: 'elite-fitzone',
+        nome: 'Elite FitZone',
+        icone: '💎',
+        descricao: 'Registre 50 treinos.',
+        meta: 50
+    }
+];
+
 // ========================================
 // CARREGAR INDICADORES DO HISTÓRICO
 // ========================================
