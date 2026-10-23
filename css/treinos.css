@@ -5777,3 +5777,67 @@ right: 0;
         width: 100%;
     }
 }
+/* =========================================
+   FITZONE - PROGRESSO GERAL DO TREINO
+========================================= */
+
+.fitzone-workout-progress {
+    margin: 18px 0;
+    padding: 16px;
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
+    border-radius: 12px;
+    background: rgba(var(--accent-rgb), 0.06);
+}
+
+.fitzone-workout-progress-text {
+    margin: 0 0 12px;
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.fitzone-workout-progress-bar {
+    display: block;
+    width: 100%;
+    height: 10px;
+    border: none;
+    border-radius: 999px;
+    overflow: hidden;
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.fitzone-workout-progress-bar::-webkit-progress-bar {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+}
+
+.fitzone-workout-progress-bar::-webkit-progress-value {
+    background: var(--accent);
+    border-radius: 999px;
+    transition: width 0.25s ease;
+}
+
+.fitzone-workout-progress-bar::-moz-progress-bar {
+    background: var(--accent);
+    border-radius: 999px;
+}
+
+@media (max-width: 480px) {
+    .fitzone-workout-progress {
+        margin: 14px 0;
+        padding: 12px;
+    }
+
+    .fitzone-workout-progress-text {
+        font-size: 13px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fitzone-workout-progress-bar::-webkit-progress-value {
+        transition: none;
+    }
+}
