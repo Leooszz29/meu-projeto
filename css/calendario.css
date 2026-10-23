@@ -176,3 +176,17 @@
         transform: none;
     }
 }
+
+/* =========================================
+   FITZONE - HISTORICO VISUAL DE TREINOS
+========================================= */
+
+/* Dia com treino registrado no historico */
+.day-cell.has-workout-history {
+    box-shadow: inset 0 -3px 0 var(--accent);
+}
+
+/* Mantem o indicador visivel ao passar o mouse */
+.day-cell.has-workout-history:hover {
+    box-shadow: inset 0 -3px 0 var(--accent);
+}
