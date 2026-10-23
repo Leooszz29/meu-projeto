@@ -276,3 +276,39 @@
         font-size: 14px;
     }
 }
+
+/* =========================================
+   FITZONE - CORES DOS CARDS DO HISTORICO
+========================================= */
+
+/* Treino completo */
+.historico-dia-item.treino-completo {
+    border-color: rgba(53, 230, 122, 0.35);
+    border-left: 3px solid #35e67a;
+    background: rgba(53, 230, 122, 0.07);
+}
+
+.historico-dia-item.treino-completo .historico-dia-status {
+    color: #35e67a;
+}
+
+/* Treino parcial */
+.historico-dia-item.treino-parcial {
+    border-color: rgba(240, 180, 41, 0.35);
+    border-left: 3px solid #f0b429;
+    background: rgba(240, 180, 41, 0.07);
+}
+
+.historico-dia-item.treino-parcial .historico-dia-status {
+    color: #f0b429;
+}
+
+/* Registro anterior */
+.historico-dia-item.registro-anterior {
+    border-color: rgba(var(--accent-rgb), 0.20);
+    border-left: 3px solid var(--accent);
+}
+
+.historico-dia-item.registro-anterior .historico-dia-status {
+    color: var(--accent);
+}
