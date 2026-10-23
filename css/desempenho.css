@@ -639,3 +639,83 @@
         justify-content: center;
     }
 }
+
+/* =========================================
+   FITZONE - SECAO MINHAS CONQUISTAS
+========================================= */
+
+.fitzone-achievements {
+    margin-top: 32px;
+    padding: 28px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.20);
+    border-radius: 20px;
+
+    background: rgba(var(--accent-rgb), 0.04);
+}
+
+.fitzone-achievements-header {
+    margin-bottom: 24px;
+}
+
+.fitzone-achievements-eyebrow {
+    display: block;
+    margin-bottom: 8px;
+
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.fitzone-achievements-header h2 {
+    margin: 0 0 10px;
+    color: var(--chalk);
+    font-size: clamp(22px, 4vw, 28px);
+}
+
+.fitzone-achievements-header p {
+    margin: 0;
+    color: var(--chalk-dim);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.fitzone-achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.fitzone-achievements-empty {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 24px;
+
+    border: 1px dashed rgba(var(--accent-rgb), 0.25);
+    border-radius: 12px;
+
+    color: var(--chalk-dim);
+    font-size: 13px;
+    text-align: center;
+}
+
+/* Tablets */
+@media (max-width: 800px) {
+    .fitzone-achievements-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+    .fitzone-achievements {
+        margin-top: 24px;
+        padding: 18px;
+    }
+
+    .fitzone-achievements-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
