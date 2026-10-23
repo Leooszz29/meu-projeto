@@ -701,8 +701,8 @@ function agruparHistoricoCalendarioPorDia() {
             const treinosDoDia = historicoPorDia[dateKey] || [];
 
             if (treinosDoDia.length > 0) {
-            cell.classList.add('has-workout-history');
-           }
+                cell.classList.add('has-workout-history');
+            }
 
             if (checkin && checkin.checked === true) {
                 cell.classList.add("checked");
