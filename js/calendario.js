@@ -626,6 +626,9 @@ function agruparHistoricoCalendarioPorDia() {
 
         checkinTreinoInput.value = checkin.treino || "";
 
+        // Exibe o historico de treinos do dia selecionado
+        atualizarHistoricoDiaCalendario(dateKey);
+
         checkinModal.classList.add("show");
         checkinCancelBtn.focus();
     }
