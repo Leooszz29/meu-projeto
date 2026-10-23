@@ -1930,6 +1930,7 @@ if (botaoConfirmarExclusao) {
                 carregarGraficoMensal();
                 carregarIndicadoresHistorico();
                 exibirHistoricoDesempenho();
+                exibirConquistasFitZone();
 
                 if (listaHistorico) {
                     listaHistorico.setAttribute('tabindex', '-1');
