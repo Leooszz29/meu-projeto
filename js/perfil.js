@@ -971,3 +971,47 @@ function salvarPreferenciasFitZone(preferencias) {
         return false;
     }
 }
+
+/* =========================================
+   FITZONE - CONTROLE DAS MENSAGENS MOTIVACIONAIS
+========================================= */
+
+function iniciarConfiguracoesFitZone() {
+    const checkbox = document.getElementById(
+        'fitzoneMotivacaoAtiva'
+    );
+
+    if (!checkbox) {
+        return;
+    }
+
+    const preferencias = carregarPreferenciasFitZone();
+
+    checkbox.checked = preferencias.mensagensMotivacionais;
+
+    checkbox.addEventListener('change', () => {
+        const valorAnterior =
+            !checkbox.checked;
+
+        const salvou = salvarPreferenciasFitZone({
+            mensagensMotivacionais: checkbox.checked
+        });
+
+        if (!salvou) {
+            checkbox.checked = valorAnterior;
+
+            alert(
+                'Não foi possível salvar a preferência. Tente novamente.'
+            );
+        }
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener(
+        'DOMContentLoaded',
+        iniciarConfiguracoesFitZone
+    );
+} else {
+    iniciarConfiguracoesFitZone();
+}
