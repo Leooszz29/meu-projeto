@@ -315,7 +315,7 @@ function carregarHistoricoCalendario() {
     }
 }
 
-   {`/* =========================================
+/* =========================================
    FITZONE - AGRUPAR HISTORICO POR DIA
 ========================================= */
 
@@ -352,7 +352,7 @@ function agruparHistoricoCalendarioPorDia() {
     });
 
     return registrosPorDia;
-}`}
+}
 
     /* =========================================
        LEITURA SEGURA DOS CHECK-INS
