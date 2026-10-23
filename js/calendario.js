@@ -702,6 +702,33 @@ function agruparHistoricoCalendarioPorDia() {
 
             if (treinosDoDia.length > 0) {
                 cell.classList.add('has-workout-history');
+
+                const treinosComDetalhes = treinosDoDia.filter(registro => {
+                    const total = Number(registro.seriesTotal);
+                    const concluidas = Number(registro.seriesConcluidas);
+
+                    return (
+                        registro.seriesTotal != null &&
+                        registro.seriesConcluidas != null &&
+                        Number.isFinite(total) &&
+                        Number.isFinite(concluidas) &&
+                        total > 0 &&
+                        concluidas >= 0
+                    );
+                });
+
+                if (treinosComDetalhes.length > 0) {
+                    const todosCompletos = treinosComDetalhes.every(registro => {
+                        return Number(registro.seriesConcluidas) >=
+                            Number(registro.seriesTotal);
+                    });
+
+                    cell.classList.add(
+                        todosCompletos
+                            ? 'workout-complete'
+                            : 'workout-partial'
+                    );
+                }
             }
 
             if (checkin && checkin.checked === true) {
