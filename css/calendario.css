@@ -190,3 +190,19 @@
 .day-cell.has-workout-history:hover {
     box-shadow: inset 0 -3px 0 var(--accent);
 }
+
+/* =========================================
+   FITZONE - CORES DO HISTORICO DE TREINOS
+========================================= */
+
+/* Treinos completos */
+.day-cell.has-workout-history.workout-complete,
+.day-cell.has-workout-history.workout-complete:hover {
+    box-shadow: inset 0 -3px 0 #35e67a;
+}
+
+/* Treinos parciais */
+.day-cell.has-workout-history.workout-partial,
+.day-cell.has-workout-history.workout-partial:hover {
+    box-shadow: inset 0 -3px 0 #f0b429;
+}
