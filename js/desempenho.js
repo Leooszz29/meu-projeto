@@ -856,6 +856,57 @@ function carregarHistoricoConquistas() {
     }
 }
 
+/* =========================================
+   FITZONE - CALCULAR PROGRESSO DAS CONQUISTAS
+========================================= */
+
+function calcularProgressoConquistas() {
+    const historico = carregarHistoricoConquistas();
+
+    const totalTreinos = historico.length;
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    const inicioPeriodo = new Date(hoje);
+    inicioPeriodo.setDate(inicioPeriodo.getDate() - 6);
+
+    const diasComTreino = new Set();
+
+    historico.forEach(registro => {
+        const data = new Date(registro.data);
+        data.setHours(0, 0, 0, 0);
+
+        if (data >= inicioPeriodo && data <= hoje) {
+            const ano = data.getFullYear();
+            const mes = String(
+                data.getMonth() + 1
+            ).padStart(2, '0');
+
+            const dia = String(
+                data.getDate()
+            ).padStart(2, '0');
+
+            diasComTreino.add(
+                `${ano}-${mes}-${dia}`
+            );
+        }
+    });
+
+    return conquistasFitZone.map(conquista => {
+        const progresso =
+            conquista.tipo === 'dias-semana'
+                ? diasComTreino.size
+                : totalTreinos;
+
+        return {
+            ...conquista,
+            progresso,
+            desbloqueada: progresso >= conquista.meta
+        };
+    });
+}
+
 // ========================================
 // CARREGAR INDICADORES DO HISTÓRICO
 // ========================================
