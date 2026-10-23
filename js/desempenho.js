@@ -981,6 +981,8 @@ function exibirConquistasFitZone() {
     });
 }
 
+exibirConquistasFitZone();
+
 // ========================================
 // CARREGAR INDICADORES DO HISTÓRICO
 // ========================================
