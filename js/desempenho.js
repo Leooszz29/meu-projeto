@@ -808,6 +808,54 @@ const conquistasFitZone = [
     }
 ];
 
+/* =========================================
+   FITZONE - HISTORICO PARA CONQUISTAS
+========================================= */
+
+function carregarHistoricoConquistas() {
+    const chave = obterChaveHistoricoDesempenho();
+
+    if (!chave) {
+        return [];
+    }
+
+    try {
+        const dados = localStorage.getItem(chave);
+
+        if (!dados) {
+            return [];
+        }
+
+        const historico = JSON.parse(dados);
+
+        if (!Array.isArray(historico)) {
+            return [];
+        }
+
+        return historico.filter(registro => {
+            if (
+                !registro ||
+                typeof registro !== 'object' ||
+                !registro.data
+            ) {
+                return false;
+            }
+
+            const data = new Date(registro.data);
+
+            return !Number.isNaN(data.getTime());
+        });
+
+    } catch (erro) {
+        console.warn(
+            'Erro ao consultar histórico das conquistas:',
+            erro
+        );
+
+        return [];
+    }
+}
+
 // ========================================
 // CARREGAR INDICADORES DO HISTÓRICO
 // ========================================
