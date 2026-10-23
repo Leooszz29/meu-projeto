@@ -312,3 +312,46 @@
 .historico-dia-item.registro-anterior .historico-dia-status {
     color: var(--accent);
 }
+/* =========================================
+   FITZONE - LEGENDA DO HISTORICO VISUAL
+========================================= */
+
+.legenda-historico {
+    display: inline-block;
+    width: 16px;
+    height: 4px;
+    margin-right: 6px;
+    border-radius: 4px;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+/* Treino completo */
+.legenda-historico.legenda-completo {
+    background: #35e67a;
+}
+
+/* Treino parcial */
+.legenda-historico.legenda-parcial {
+    background: #f0b429;
+}
+
+/* Registro anterior */
+.legenda-historico.legenda-anterior {
+    background: var(--accent);
+}
+
+/* Organizacao da legenda em telas menores */
+@media (max-width: 480px) {
+    .legend {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 14px;
+    }
+
+    .legend > span {
+        display: inline-flex;
+        align-items: center;
+    }
+}
