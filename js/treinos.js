@@ -1729,8 +1729,18 @@ delete groupContainer.dataset.autoCollapsed;
 const rodadaAtual =
     rodadasConcluidas + 1;
 
-roundInfo.textContent =
-    `RODADA ${rodadaAtual} DE ${quantidadeSeries}`;
+const algumaSerieMarcada = exerciciosGrupo.some(item => {
+    const itemIndex = exercicios.indexOf(item);
+    const chave = item.id || `exercise-${itemIndex}`;
+
+    const series = progressoAtual[workout.id]?.[chave] || [];
+
+    return Array.isArray(series) && series.length > 0;
+});
+
+roundInfo.textContent = algumaSerieMarcada
+    ? `EM ANDAMENTO · RODADA ${rodadaAtual} DE ${quantidadeSeries}`
+    : `PENDENTE · 0 DE ${quantidadeSeries} RODADAS`;
 }
 
         atualizarRodadaGrupo();
