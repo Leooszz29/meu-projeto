@@ -483,24 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
             instrucao.textContent = exercicio.instrucao;
 
             detalhes.append(resumo, instrucao);
-
-            if (exercicio.dica) {
-                const dica = document.createElement('p');
-                dica.className = 'library-card-tip';
-                dica.textContent = '💡 Dica: ' + exercicio.dica;
-
-                detalhes.appendChild(dica);
-            }
-
-            if (exercicio.erroComum) {
-                const erroComum = document.createElement('p');
-                erroComum.className = 'library-card-mistake';
-                erroComum.textContent =
-                    '⚠️ Erro comum: ' + exercicio.erroComum;
-
-                detalhes.appendChild(erroComum);
-            }
-
+           
             card.append(
                 grupo,
                 titulo,
