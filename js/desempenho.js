@@ -1872,7 +1872,7 @@ const botaoConfirmarExclusao = document.getElementById(
 if (botaoConfirmarExclusao) {
     botaoConfirmarExclusao.addEventListener(
         'click',
-        () => {           
+        () => {
             if (!modalExcluirTreino) {
                 return;
             }
