@@ -214,13 +214,6 @@
                     window.location.href = 'login.html';
                 }, 1800);
             }, 1200);
-
-            // Log para desenvolvimento
-            console.log('Tentativa de cadastro:', {
-                nome: name,
-                email: email,
-                timestamp: new Date().toLocaleString('pt-BR')
-            });
         }
 
         // ==================== INICIALIZAÇÃO ====================
