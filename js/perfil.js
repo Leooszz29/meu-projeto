@@ -874,7 +874,8 @@ function carregarPreferenciasFitZone() {
     const chave = obterChavePreferenciasFitZone();
 
     const preferenciasPadrao = {
-        mensagensMotivacionais: true
+        mensagensMotivacionais: true,
+        paginaInicial: 'calendario.html'
     };
 
     if (!chave) {
@@ -898,11 +899,22 @@ function carregarPreferenciasFitZone() {
             return preferenciasPadrao;
         }
 
+        const paginasPermitidas = [
+            'calendario.html',
+            'treinos.html',
+            'desempenho.html'
+        ];
+
         return {
             mensagensMotivacionais:
                 typeof preferencias.mensagensMotivacionais === 'boolean'
                     ? preferencias.mensagensMotivacionais
-                    : true
+                    : true,
+
+            paginaInicial:
+                paginasPermitidas.includes(preferencias.paginaInicial)
+                    ? preferencias.paginaInicial
+                    : 'calendario.html'
         };
 
     } catch (erro) {
