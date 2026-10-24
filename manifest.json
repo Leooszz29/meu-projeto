@@ -1,0 +1,11 @@
+{
+    "name": "FitZone",
+    "short_name": "FitZone",
+    "description": "Seu espaço para organizar treinos e acompanhar sua evolução.",
+    "lang": "pt-BR",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#1a1b1d",
+    "theme_color": "#1a1b1d"
+}
