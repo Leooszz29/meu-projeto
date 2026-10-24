@@ -74,6 +74,56 @@ let recoveryCodeGenerated = null;
 
 // ==================== FUNÇÕES AUXILIARES ====================
 
+/* =========================================
+   FITZONE - OBTER PAGINA INICIAL DO USUARIO
+========================================= */
+
+function obterPaginaInicialFitZone(email) {
+    const paginaPadrao = 'calendario.html';
+
+    if (typeof email !== 'string' || !email.trim()) {
+        return paginaPadrao;
+    }
+
+    try {
+        const chave = `fitzonePreferencias:${email.trim().toLowerCase()}`;
+
+        const dados = localStorage.getItem(chave);
+
+        if (!dados) {
+            return paginaPadrao;
+        }
+
+        const preferencias = JSON.parse(dados);
+
+        if (
+            !preferencias ||
+            typeof preferencias !== 'object' ||
+            Array.isArray(preferencias)
+        ) {
+            return paginaPadrao;
+        }
+
+        const paginasPermitidas = [
+            'calendario.html',
+            'treinos.html',
+            'desempenho.html'
+        ];
+
+        return paginasPermitidas.includes(preferencias.paginaInicial)
+            ? preferencias.paginaInicial
+            : paginaPadrao;
+
+    } catch (erro) {
+        console.warn(
+            'Não foi possível carregar a página inicial:',
+            erro
+        );
+
+        return paginaPadrao;
+    }
+}
+
 function carregarSessao() {
 
     try {
