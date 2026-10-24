@@ -132,7 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
             nome: 'Supino reto',
             grupo: 'Peito',
             musculos: 'Peitoral, tríceps e ombros',
-            instrucao: 'Deitado no banco, empurre a barra para cima e retorne de forma controlada.'
+            instrucao: 'Deitado no banco, empurre a barra para cima e retorne de forma controlada.',
+            dica: 'Mantenha os pés apoiados no chão, os ombros estabilizados e controle a descida da barra.',
+            erroComum: 'Usar carga excessiva, perder a estabilidade dos ombros ou deixar a barra descer sem controle.'
         },
         {
             id: 'crucifixo',
