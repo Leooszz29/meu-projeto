@@ -852,7 +852,9 @@ function inicializarLogin() {
             carregarUsuarioSalvo(sessao.email.trim());
 
         if (usuarioDaSessao) {
-            window.location.href = 'calendario.html';
+            window.location.href = obterPaginaInicialFitZone(
+                sessao.email
+            );
             return;
         }
 
