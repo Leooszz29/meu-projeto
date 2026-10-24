@@ -1035,6 +1035,38 @@ function iniciarConfiguracoesFitZone() {
             );
         }
     });
+
+    /* =========================================
+       PAGINA INICIAL PREFERIDA
+    ========================================= */
+
+    const seletorPagina = document.getElementById(
+        'fitzonePaginaInicial'
+    );
+
+    if (seletorPagina) {
+        seletorPagina.value = preferencias.paginaInicial;
+
+        seletorPagina.addEventListener('change', () => {
+            const novaPagina = seletorPagina.value;
+
+            const salvou = salvarPreferenciasFitZone({
+                paginaInicial: novaPagina
+            });
+
+            if (!salvou) {
+                const preferenciasAtuais =
+                    carregarPreferenciasFitZone();
+
+                seletorPagina.value =
+                    preferenciasAtuais.paginaInicial;
+
+                alert(
+                    'Não foi possível salvar a página inicial. Tente novamente.'
+                );
+            }
+        });
+    }
 }
 
 if (document.readyState === 'loading') {
