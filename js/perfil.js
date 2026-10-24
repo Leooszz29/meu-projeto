@@ -962,10 +962,28 @@ function salvarPreferenciasFitZone(preferencias) {
         }
 
         const dadosAtualizados = {
-            ...preferenciasAtuais,
-            mensagensMotivacionais:
-                preferencias.mensagensMotivacionais === true
+            ...preferenciasAtuais
         };
+
+        if (typeof preferencias.mensagensMotivacionais === 'boolean') {
+            dadosAtualizados.mensagensMotivacionais =
+                preferencias.mensagensMotivacionais;
+        }
+
+        if (typeof preferencias.paginaInicial === 'string') {
+            const paginasPermitidas = [
+                'calendario.html',
+                'treinos.html',
+                'desempenho.html'
+            ];
+
+            if (!paginasPermitidas.includes(preferencias.paginaInicial)) {
+                throw new Error('Página inicial inválida.');
+            }
+
+            dadosAtualizados.paginaInicial =
+                preferencias.paginaInicial;
+        }
 
         localStorage.setItem(
             chave,
