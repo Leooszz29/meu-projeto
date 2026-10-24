@@ -481,7 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
             instrucao.textContent = exercicio.instrucao;
 
             detalhes.append(resumo, instrucao);
-           
+
             card.append(
                 grupo,
                 titulo,
