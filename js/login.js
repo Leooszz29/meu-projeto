@@ -827,9 +827,9 @@ function handleLogin(e) {
             'Login realizado com sucesso! Seja bem-vindo! 💪'
         );
 
-        // Redirecionar para o calendario
+        // Redirecionar para a pagina inicial preferida
         setTimeout(() => {
-            window.location.href = 'calendario.html';
+            window.location.href = obterPaginaInicialFitZone(email);
         }, 700);
     }, 600);
 
