@@ -94,6 +94,14 @@
 <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
+                        const avisoAtualizacao = document.getElementById('fitzoneUpdateNotice');
+            const botaoAtualizarDepois = document.getElementById('fitzoneUpdateLater');
+
+            if (avisoAtualizacao && botaoAtualizarDepois) {
+                botaoAtualizarDepois.addEventListener('click', () => {
+                    avisoAtualizacao.hidden = true;
+                });
+            }
             navigator.serviceWorker.register('./sw.js')
                 .then((registro) => {
                     if (registro.waiting && navigator.serviceWorker.controller) {
