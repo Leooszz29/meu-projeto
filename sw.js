@@ -58,7 +58,8 @@ self.addEventListener('activate', (event) => {
                 cacheNames
                     .filter((name) =>
                         name.startsWith('fitzone-') &&
-                        name !== CACHE_NAME
+                        name !== CACHE_NAME &&
+                        name !== IMAGE_CACHE_NAME
                     )
                     .map((name) => caches.delete(name))
             );
