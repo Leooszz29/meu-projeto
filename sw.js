@@ -66,3 +66,28 @@ self.addEventListener('activate', (event) => {
 
     console.info('FitZone: service worker ativado.');
 });
+
+// Prioriza a rede e utiliza o cache quando necessário
+self.addEventListener('fetch', (event) => {
+    const request = event.request;
+
+    if (request.method !== 'GET') {
+        return;
+    }
+
+    if (new URL(request.url).origin !== self.location.origin) {
+        return;
+    }
+
+    event.respondWith(
+        fetch(request).catch(async () => {
+            const cachedResponse = await caches.match(request);
+
+            if (cachedResponse) {
+                return cachedResponse;
+            }
+
+            return Response.error();
+        })
+    );
+});
