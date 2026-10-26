@@ -120,6 +120,12 @@
                                 console.info(
                                     'FitZone: nova versão instalada e aguardando ativação.'
                                 );
+
+                                const aviso = document.getElementById('fitzoneUpdateNotice');
+
+                                if (aviso) {
+                                    aviso.hidden = false;
+                                }
                             }
                         });
                     });
