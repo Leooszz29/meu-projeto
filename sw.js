@@ -3,6 +3,7 @@
 ========================================= */
 
 const CACHE_NAME = 'fitzone-v2';
+const IMAGE_CACHE_NAME = 'fitzone-images-v1';
 
 // Arquivos essenciais para funcionamento offline
 const APP_SHELL = [
