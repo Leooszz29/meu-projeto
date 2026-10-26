@@ -50,6 +50,19 @@ self.addEventListener('install', (event) => {
     console.info('FitZone: arquivos essenciais preparados para uso offline.');
 });
 
-self.addEventListener('activate', () => {
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames
+                    .filter((name) =>
+                        name.startsWith('fitzone-') &&
+                        name !== CACHE_NAME
+                    )
+                    .map((name) => caches.delete(name))
+            );
+        })
+    );
+
     console.info('FitZone: service worker ativado.');
 });
