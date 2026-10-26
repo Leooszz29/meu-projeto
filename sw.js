@@ -89,7 +89,7 @@ self.addEventListener('fetch', (event) => {
                 .then((response) => {
                     if (response.ok || response.type === 'opaque') {
                         event.waitUntil(
-                            caches.open(CACHE_NAME).then((cache) => {
+                            caches.open(IMAGE_CACHE_NAME).then((cache) => {
                                 return cache.put(request, response.clone());
                             })
                         );
@@ -124,7 +124,7 @@ self.addEventListener('fetch', (event) => {
                     url.pathname.startsWith(pastaExercicios.pathname) &&
                     url.pathname.endsWith('.webp')
                 ) {
-                    const cache = await caches.open(CACHE_NAME);
+                    const cache = await caches.open(IMAGE_CACHE_NAME);
                     await cache.put(request, response.clone());
                 }
 
