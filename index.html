@@ -101,6 +101,19 @@
 <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
+            let atualizacaoSolicitada = false;
+
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!atualizacaoSolicitada) {
+                    return;
+                }
+
+                atualizacaoSolicitada = false;
+                console.info(
+                    'FitZone: nova versão assumiu o controle do aplicativo.'
+                );
+            });
+            
             const avisoAtualizacao = document.getElementById('fitzoneUpdateNotice');
             const botaoAtualizarDepois = document.getElementById('fitzoneUpdateLater');
 
