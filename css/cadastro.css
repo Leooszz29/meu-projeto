@@ -253,13 +253,13 @@
     cursor: pointer;
 }
 input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            margin-top: 2px;
-            cursor: pointer;
-            accent-color: var(--accent);
-            flex-shrink: 0;
-        }
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+}
 
         .terms-group a {
             color: var(--accent);
