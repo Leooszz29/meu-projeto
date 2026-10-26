@@ -79,6 +79,10 @@
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js')
                 .then((registro) => {
+                    if (registro.waiting && navigator.serviceWorker.controller) {
+                        console.info('FitZone: atualização disponível.');
+                    }
+
                     registro.update().catch((erro) => {
                         console.warn(
                             'Não foi possível verificar atualizações do FitZone:',
