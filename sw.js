@@ -2,7 +2,7 @@
    FITZONE - SERVICE WORKER
 ========================================= */
 
-const CACHE_NAME = 'fitzone-v5';
+const CACHE_NAME = 'fitzone-v6';
 const IMAGE_CACHE_NAME = 'fitzone-images-v1';
 
 // Arquivos essenciais para funcionamento offline
