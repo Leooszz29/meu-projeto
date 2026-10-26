@@ -142,3 +142,10 @@ self.addEventListener('fetch', (event) => {
             })
     );
 });
+
+// Ativacao controlada de uma nova versao
+self.addEventListener('message', (event) => {
+    if (event.data?.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
+});
