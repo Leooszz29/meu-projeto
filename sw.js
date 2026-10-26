@@ -80,14 +80,33 @@ self.addEventListener('fetch', (event) => {
     }
 
     event.respondWith(
-        fetch(request).catch(async () => {
-            const cachedResponse = await caches.match(request);
+        fetch(request)
+            .then(async (response) => {
+                const url = new URL(request.url);
+                const pastaExercicios = new URL(
+                    './img/exercicios/',
+                    self.registration.scope
+                );
 
-            if (cachedResponse) {
-                return cachedResponse;
-            }
+                if (
+                    response.ok &&
+                    url.pathname.startsWith(pastaExercicios.pathname) &&
+                    url.pathname.endsWith('.webp')
+                ) {
+                    const cache = await caches.open(CACHE_NAME);
+                    await cache.put(request, response.clone());
+                }
 
-            return Response.error();
-        })
+                return response;
+            })
+            .catch(async () => {
+                const cachedResponse = await caches.match(request);
+
+                if (cachedResponse) {
+                    return cachedResponse;
+                }
+
+                return Response.error();
+            })
     );
 });
