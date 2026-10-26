@@ -98,6 +98,12 @@
                 .then((registro) => {
                     if (registro.waiting && navigator.serviceWorker.controller) {
                         console.info('FitZone: atualização disponível.');
+
+                        const aviso = document.getElementById('fitzoneUpdateNotice');
+
+                        if (aviso) {
+                            aviso.hidden = false;
+                        }
                     }
                     registro.addEventListener('updatefound', () => {
                         const novoWorker = registro.installing;
