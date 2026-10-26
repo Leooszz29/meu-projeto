@@ -111,6 +111,23 @@
             }
             navigator.serviceWorker.register('./sw.js')
                 .then((registro) => {
+                    const botaoAtualizarAgora = document.getElementById('fitzoneUpdateNow');
+
+                    if (botaoAtualizarAgora) {
+                        botaoAtualizarAgora.addEventListener('click', () => {
+                            if (!registro.waiting) {
+                                console.warn(
+                                    'FitZone: nenhuma atualização aguardando ativação.'
+                                );
+                                return;
+                            }
+
+                            console.info(
+                                'FitZone: atualização pronta para ser aplicada.'
+                            );
+                        });
+                    }
+
                     if (registro.waiting && navigator.serviceWorker.controller) {
                         console.info('FitZone: atualização disponível.');
 
