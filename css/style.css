@@ -232,3 +232,60 @@ h1{
   .ring{width:100px; height:100px;}
   .spotlight{width:220px; height:220px; top:-20px;}
 }
+
+/* =========================================
+   AVISO DE ATUALIZACAO DO FITZONE
+========================================= */
+
+.fitzone-update-notice {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000;
+    width: min(360px, calc(100% - 40px));
+    padding: 18px;
+    background: #24262a;
+    color: var(--chalk);
+    border: 1px solid var(--amber);
+    border-radius: 12px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+}
+
+.fitzone-update-notice[hidden] {
+    display: none;
+}
+
+.fitzone-update-notice p {
+    margin: 0 0 14px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.fitzone-update-notice button {
+    padding: 10px 16px;
+    background: var(--amber);
+    color: #1a1b1d;
+    border: none;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.fitzone-update-notice button:focus-visible {
+    outline: 2px solid var(--chalk);
+    outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+    .fitzone-update-notice {
+        right: 12px;
+        bottom: 12px;
+        width: calc(100% - 24px);
+        padding: 16px;
+    }
+
+    .fitzone-update-notice button {
+        width: 100%;
+    }
+}
