@@ -75,7 +75,37 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    if (new URL(request.url).origin !== self.location.origin) {
+    const urlRequisicao = new URL(request.url);
+
+    const imagensPerfil = [
+        'https://cdn-icons-png.flaticon.com/512/4140/4140048.png',
+        'https://cdn-icons-png.flaticon.com/512/4140/4140047.png'
+    ];
+
+    if (imagensPerfil.includes(urlRequisicao.href)) {
+        event.respondWith(
+            fetch(request)
+                .then((response) => {
+                    if (response.ok || response.type === 'opaque') {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME).then((cache) => {
+                                return cache.put(request, response.clone());
+                            })
+                        );
+                    }
+
+                    return response;
+                })
+                .catch(async () => {
+                    const imagemSalva = await caches.match(request);
+                    return imagemSalva || Response.error();
+                })
+        );
+
+        return;
+    }
+
+    if (urlRequisicao.origin !== self.location.origin) {
         return;
     }
 
