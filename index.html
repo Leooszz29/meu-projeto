@@ -109,9 +109,12 @@
                 }
 
                 atualizacaoSolicitada = false;
+
                 console.info(
                     'FitZone: nova versão assumiu o controle do aplicativo.'
                 );
+
+                window.location.reload();
             });
             
             const avisoAtualizacao = document.getElementById('fitzoneUpdateNotice');
