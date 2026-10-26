@@ -3,6 +3,7 @@
     "short_name": "FitZone",
     "description": "Seu espaço para organizar treinos e acompanhar sua evolução.",
     "lang": "pt-BR",
+    "id": "./",
     "start_url": "./",
     "scope": "./",
     "display": "standalone",
