@@ -123,8 +123,12 @@
                             }
 
                             console.info(
-                                'FitZone: atualização pronta para ser aplicada.'
+                                'FitZone: solicitando ativação da nova versão.'
                             );
+
+                            registro.waiting.postMessage({
+                                type: 'SKIP_WAITING'
+                            });
                         });
                     }
 
