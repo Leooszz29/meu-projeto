@@ -41,8 +41,13 @@ const APP_SHELL = [
     './img/atleta-feminino.webp'
 ];
 
-self.addEventListener('install', () => {
-    console.info('FitZone: service worker instalado.');
+self.addEventListener('install', (event) => {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then((cache) => cache.addAll(APP_SHELL))
+    );
+
+    console.info('FitZone: arquivos essenciais preparados para uso offline.');
 });
 
 self.addEventListener('activate', () => {
