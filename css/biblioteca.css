@@ -619,3 +619,64 @@
         font-size: 16px;
     }
 }
+
+/* =========================================
+   FITZONE - BOTAO VOLTAR AO TOPO
+========================================= */
+
+.btn-voltar-topo {
+    position: fixed;
+    right: 20px;
+    bottom: 24px;
+    z-index: 1000;
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.5);
+    border-radius: 50%;
+
+    background: var(--accent);
+    color: var(--concrete-2);
+
+    font-size: 26px;
+    font-weight: 700;
+
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-voltar-topo[hidden] {
+    display: none;
+}
+
+.btn-voltar-topo:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 24px rgba(0, 0, 0, 0.45);
+}
+
+.btn-voltar-topo:focus-visible {
+    outline: 3px solid var(--chalk);
+    outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+    .btn-voltar-topo {
+        right: 16px;
+        bottom: 86px;
+
+        width: 46px;
+        height: 46px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-voltar-topo {
+        transition: none;
+    }
+}
