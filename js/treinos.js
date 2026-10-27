@@ -4339,7 +4339,9 @@ function prepararDadosBackupFitZone() {
         progresso: `progressoTreino:${email}`,
         treinoAtivo: `treinoAtivo:${email}`,
         checkins: `fitzoneCheckins:${email}`,
-        metaMensal: `metaMensalFitZone:${email}`
+        metaMensal: `metaMensalFitZone:${email}`,
+        favoritos: `fitzoneFavoritos:${email}`,
+        secoesDesempenho: `fitzoneSecoesDesempenho:${email}`
     };
 
     const dados = {};
