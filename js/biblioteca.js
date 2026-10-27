@@ -792,4 +792,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /* =========================================
+       BOTAO VOLTAR AO TOPO DA BIBLIOTECA
+    ========================================= */
+
+    const botaoVoltarTopo = document.getElementById(
+        'btnVoltarTopoBiblioteca'
+    );
+
+    if (botaoVoltarTopo) {
+        function atualizarVisibilidadeBotaoTopo() {
+            botaoVoltarTopo.hidden = window.scrollY <= 300;
+        }
+
+        window.addEventListener(
+            'scroll',
+            atualizarVisibilidadeBotaoTopo,
+            { passive: true }
+        );
+
+        botaoVoltarTopo.addEventListener('click', () => {
+            const movimentoReduzido = window.matchMedia(
+                '(prefers-reduced-motion: reduce)'
+            ).matches;
+
+            window.scrollTo({
+                top: 0,
+                behavior: movimentoReduzido ? 'instant' : 'smooth'
+            });
+        });
+
+        atualizarVisibilidadeBotaoTopo();
+    }
 });
