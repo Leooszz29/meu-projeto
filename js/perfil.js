@@ -22,6 +22,55 @@ function carregarSessao() {
     }
 }
 
+// ========================================
+// PROTEGER PERFIL CONTRA TROCA DE CONTA
+// ========================================
+
+const sessaoInicialPerfil = carregarSessao();
+
+const emailSessaoInicialPerfil =
+    sessaoInicialPerfil?.autenticado === true &&
+    typeof sessaoInicialPerfil.email === 'string'
+        ? sessaoInicialPerfil.email.trim().toLowerCase()
+        : null;
+
+function verificarContinuidadeSessaoPerfil() {
+    const sessaoAtual = carregarSessao();
+
+    if (
+        !emailSessaoInicialPerfil ||
+        !sessaoAtual ||
+        sessaoAtual.autenticado !== true ||
+        typeof sessaoAtual.email !== 'string' ||
+        sessaoAtual.email.trim().toLowerCase() !== emailSessaoInicialPerfil
+    ) {
+        window.location.replace('login.html');
+        return false;
+    }
+
+    return true;
+}
+
+window.addEventListener('storage', (event) => {
+    if (
+        event.storageArea === localStorage &&
+        (event.key === 'fitzoneSessao' || event.key === null)
+    ) {
+        verificarContinuidadeSessaoPerfil();
+    }
+});
+
+window.addEventListener(
+    'pageshow',
+    verificarContinuidadeSessaoPerfil
+);
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        verificarContinuidadeSessaoPerfil();
+    }
+});
+
 function obterChavePerfil() {
     const sessao = carregarSessao();
 
