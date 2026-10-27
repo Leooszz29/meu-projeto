@@ -2056,3 +2056,85 @@ if (window.matchMedia('(max-width: 520px)').matches) {
         });
     }
 }
+
+// ========================================
+// EXPANDIR E RECOLHER SECOES DO DESEMPENHO
+// ========================================
+
+function iniciarSecoesRecolhiveisDesempenho() {
+    const configuracoes = [
+        ['.training-summary', '.summary-header'],
+        ['.training-streak', '.summary-header'],
+        ['.monthly-goal', '.summary-header'],
+        ['.monthly-comparison', '.summary-header'],
+        ['.training-chart', '.summary-header'],
+        ['.fitzone-achievements', '.fitzone-achievements-header'],
+        ['.workout-history', '.history-header']
+    ];
+
+    configuracoes.forEach(([seletorSecao, seletorCabecalho]) => {
+        const secao = document.querySelector(seletorSecao);
+
+        if (!secao) {
+            return;
+        }
+
+        const cabecalho = secao.querySelector(seletorCabecalho);
+
+        if (!cabecalho) {
+            return;
+        }
+
+        if (cabecalho.querySelector('.fitzone-section-toggle')) {
+            return;
+        }
+
+        const conteudos = Array.from(secao.children).filter(
+            elemento => elemento !== cabecalho
+        );
+
+        if (conteudos.length === 0) {
+            return;
+        }
+
+        const botao = document.createElement('button');
+
+        botao.type = 'button';
+        botao.className = 'fitzone-section-toggle';
+        botao.textContent = 'Recolher ▲';
+        botao.setAttribute('aria-expanded', 'true');
+
+        cabecalho.appendChild(botao);
+
+        conteudos.forEach(elemento => {
+            elemento.classList.add('fitzone-section-content');
+        });
+
+        botao.addEventListener('click', () => {
+            const expandido =
+                botao.getAttribute('aria-expanded') === 'true';
+
+            conteudos.forEach(elemento => {
+                elemento.hidden = expandido;
+            });
+
+            botao.setAttribute(
+                'aria-expanded',
+                String(!expandido)
+            );
+
+            botao.textContent = expandido
+                ? 'Expandir ▼'
+                : 'Recolher ▲';
+        });
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener(
+        'DOMContentLoaded',
+        iniciarSecoesRecolhiveisDesempenho
+    );
+} else {
+    iniciarSecoesRecolhiveisDesempenho();
+}
