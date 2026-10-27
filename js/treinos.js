@@ -4461,7 +4461,7 @@ function validarEstruturaBackupFitZone(backup) {
         return false;
     }
 
-    const categorias = [
+    const categoriasObrigatorias = [
         'perfil',
         'fotoPerfil',
         'treinos',
@@ -4472,10 +4472,24 @@ function validarEstruturaBackupFitZone(backup) {
         'metaMensal'
     ];
 
+    const categoriasOpcionais = [
+        'favoritos',
+        'secoesDesempenho'
+    ];
+
+    const categoriasPermitidas = [
+        ...categoriasObrigatorias,
+        ...categoriasOpcionais
+    ];
+
+    const categoriasPresentes = Object.keys(dados);
+
     return (
-        Object.keys(dados).length === categorias.length &&
-        categorias.every(categoria =>
-            Object.hasOwn(dados, categoria) &&
+        categoriasObrigatorias.every(categoria =>
+            Object.hasOwn(dados, categoria)
+        ) &&
+        categoriasPresentes.every(categoria =>
+            categoriasPermitidas.includes(categoria) &&
             (
                 dados[categoria] === null ||
                 typeof dados[categoria] === 'string'
