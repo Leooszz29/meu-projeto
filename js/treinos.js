@@ -4564,6 +4564,56 @@ function validarTiposBackupFitZone(backup) {
             return false;
         }
 
+        const favoritos = backup.dados.favoritos;
+
+        if (favoritos !== undefined && favoritos !== null) {
+            const lista = JSON.parse(favoritos);
+
+            if (
+                !Array.isArray(lista) ||
+                !lista.every(id =>
+                    typeof id === 'string' ||
+                    typeof id === 'number'
+                )
+            ) {
+                return false;
+            }
+        }
+
+        const secoes = backup.dados.secoesDesempenho;
+
+        if (secoes !== undefined && secoes !== null) {
+            const preferencias = JSON.parse(secoes);
+
+            if (
+                !preferencias ||
+                typeof preferencias !== 'object' ||
+                Array.isArray(preferencias)
+            ) {
+                return false;
+            }
+
+            const secoesPermitidas = [
+                '.training-summary',
+                '.training-streak',
+                '.monthly-goal',
+                '.monthly-comparison',
+                '.training-chart',
+                '.fitzone-achievements',
+                '.workout-history'
+            ];
+
+            if (
+                !Object.entries(preferencias).every(
+                    ([secao, expandida]) =>
+                        secoesPermitidas.includes(secao) &&
+                        typeof expandida === 'boolean'
+                )
+            ) {
+                return false;
+            }
+        }
+
         return true;
 
     } catch (erro) {
