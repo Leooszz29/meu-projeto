@@ -5313,12 +5313,21 @@ function prepararPlanoRestauracaoFitZone(backup) {
     const dadosAtuais = capturarDadosAtuaisFitZone();
 
     return Object.entries(chaves).map(
-        ([tipo, chave]) => ({
-            tipo: tipo,
-            chave: chave,
-            valorAnterior: dadosAtuais[tipo],
-            valorNovo: backup.dados[tipo]
-        })
+        ([tipo, chave]) => {
+            const possuiCategoria = Object.hasOwn(
+                backup.dados,
+                tipo
+            );
+
+            return {
+                tipo: tipo,
+                chave: chave,
+                valorAnterior: dadosAtuais[tipo],
+                valorNovo: possuiCategoria
+                    ? backup.dados[tipo]
+                    : dadosAtuais[tipo]
+            };
+        }
     );
 }
 
