@@ -271,22 +271,22 @@ input[type="checkbox"] {
     text-decoration: underline;
 }
 
-        .btn-signup {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-alt) 100%);
-            color: var(--concrete-2);
-            border: none;
-            border-radius: 6px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.3);
-        }
+.btn-signup {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-alt) 100%);
+    color: var(--concrete-2);
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.3);
+}
 
         .btn-signup:hover {
             background: linear-gradient(135deg, var(--accent-alt) 0%, var(--accent) 100%);
