@@ -2062,6 +2062,40 @@ if (window.matchMedia('(max-width: 520px)').matches) {
 // ========================================
 
 function iniciarSecoesRecolhiveisDesempenho() {
+    const email = obterEmailSessaoDesempenho();
+
+    if (!email) {
+        return;
+    }
+
+    const chavePreferencias =
+        `fitzoneSecoesDesempenho:${email}`;
+
+    let secoesSalvas = {};
+
+    try {
+        const dadosSalvos = localStorage.getItem(
+            chavePreferencias
+        );
+
+        if (dadosSalvos) {
+            const dados = JSON.parse(dadosSalvos);
+
+            if (
+                dados &&
+                typeof dados === 'object' &&
+                !Array.isArray(dados)
+            ) {
+                secoesSalvas = dados;
+            }
+        }
+    } catch (erro) {
+        console.warn(
+            'Não foi possível carregar as seções do desempenho:',
+            erro
+        );
+    }
+
     const configuracoes = [
         ['.training-summary', '.summary-header'],
         ['.training-streak', '.summary-header'],
