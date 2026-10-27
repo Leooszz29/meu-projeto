@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-       // Monitorar troca ou encerramento de sessão
+    // Monitorar troca ou encerramento de sessão
     const sessaoInicial = JSON.parse(
         localStorage.getItem("fitzoneSessao")
     );
