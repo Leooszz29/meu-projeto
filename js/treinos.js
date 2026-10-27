@@ -1355,7 +1355,7 @@ const eventoProgresso =
                 workoutId: workout.id
             }
         }
-    );    
+    );
 
 document.dispatchEvent(
     eventoProgresso
@@ -2425,7 +2425,7 @@ function openExerciseModal(workoutId, exerciseId) {
     ].forEach(input => {
         input.oninput = () => {
             input.classList.remove('input-error');
-            input.removeAttribute('aria-invalid');            
+            input.removeAttribute('aria-invalid');
 
             if (input === nameInput) {
                 const contador = document.getElementById(
@@ -2796,7 +2796,7 @@ document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
             ([, invalid]) => invalid
         );
 
-    if (possuiCampoInvalido) {        
+    if (possuiCampoInvalido) {
         const mensagens = {
             exerciseNameInput: 'Informe o nome do exercício.',
             exerciseSeriesInput: 'Informe uma quantidade válida de séries.',
