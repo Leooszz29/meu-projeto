@@ -41,6 +41,54 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
+       // Monitorar troca ou encerramento de sessão
+    const sessaoInicial = JSON.parse(
+        localStorage.getItem("fitzoneSessao")
+    );
+
+    const emailSessaoInicial = sessaoInicial.email
+        .trim()
+        .toLowerCase();
+
+    function verificarContinuidadeSessaoCalendario() {
+        try {
+            const dados = localStorage.getItem("fitzoneSessao");
+            const sessaoAtual = dados ? JSON.parse(dados) : null;
+
+            if (
+                !sessaoAtual ||
+                sessaoAtual.autenticado !== true ||
+                typeof sessaoAtual.email !== "string" ||
+                sessaoAtual.email.trim().toLowerCase() !== emailSessaoInicial
+            ) {
+                window.location.replace("login.html");
+            }
+        } catch (erro) {
+            console.warn("Sessão do calendário inválida:", erro);
+            window.location.replace("login.html");
+        }
+    }
+
+    window.addEventListener("storage", (event) => {
+        if (
+            event.storageArea === localStorage &&
+            (event.key === "fitzoneSessao" || event.key === null)
+        ) {
+            verificarContinuidadeSessaoCalendario();
+        }
+    });
+
+    window.addEventListener(
+        "pageshow",
+        verificarContinuidadeSessaoCalendario
+    );
+
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+            verificarContinuidadeSessaoCalendario();
+        }
+    });
+
     /* =========================================
        MOSTRAR PAGINA ATIVA NO MENU MOBILE
     ========================================= */
