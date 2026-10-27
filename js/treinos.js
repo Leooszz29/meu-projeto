@@ -5485,19 +5485,17 @@ function baixarBackupSegurancaFitZone() {
 ========================================= */
 
 function verificarPlanoRestauracaoFitZone(plano) {
-    const totalCategorias = Object.keys(
-        obterChavesRestauracaoFitZone()
-    ).length;
-
-    if (
-        !Array.isArray(plano) ||
-        plano.length !== totalCategorias
-    ) {
-        return false;
-    }
-
     try {
         const chaves = obterChavesRestauracaoFitZone();
+
+        const totalCategorias = Object.keys(chaves).length;
+
+        if (
+            !Array.isArray(plano) ||
+            plano.length !== totalCategorias
+        ) {
+            return false;
+        }
 
         const categorias = Object.keys(chaves);
 
