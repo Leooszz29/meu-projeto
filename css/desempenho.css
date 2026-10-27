@@ -818,3 +818,56 @@
         font-size: 38px;
     }
 }
+
+/* =========================================
+   FITZONE - EXPANDIR E RECOLHER SECOES
+========================================= */
+
+.fitzone-section-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    margin-top: 14px;
+    padding: 10px 16px;
+
+    background: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent);
+
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.fitzone-section-toggle:hover {
+    background: rgba(var(--accent-rgb), 0.2);
+}
+
+.fitzone-section-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.fitzone-section-content[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 520px) {
+    .fitzone-section-toggle {
+        min-height: 44px;
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fitzone-section-toggle {
+        transition: none;
+    }
+}
