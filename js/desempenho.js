@@ -39,6 +39,73 @@ function verificarSessaoDesempenho() {
 verificarSessaoDesempenho();
 
 // ========================================
+// PROTEGER DESEMPENHO CONTRA TROCA DE CONTA
+// ========================================
+
+function obterEmailSessaoDesempenho() {
+    try {
+        const dados = localStorage.getItem('fitzoneSessao');
+        const sessao = dados ? JSON.parse(dados) : null;
+
+        if (
+            !sessao ||
+            sessao.autenticado !== true ||
+            typeof sessao.email !== 'string' ||
+            !sessao.email.trim()
+        ) {
+            return null;
+        }
+
+        return sessao.email.trim().toLowerCase();
+
+    } catch (erro) {
+        console.warn(
+            'Não foi possível consultar a sessão do desempenho:',
+            erro
+        );
+
+        return null;
+    }
+}
+
+const emailSessaoInicialDesempenho =
+    obterEmailSessaoDesempenho();
+
+function verificarContinuidadeSessaoDesempenho() {
+    const emailAtual = obterEmailSessaoDesempenho();
+
+    if (
+        !emailSessaoInicialDesempenho ||
+        emailAtual !== emailSessaoInicialDesempenho
+    ) {
+        window.location.replace('login.html');
+        return false;
+    }
+
+    return true;
+}
+
+window.addEventListener('storage', (event) => {
+    if (
+        event.storageArea === localStorage &&
+        (event.key === 'fitzoneSessao' || event.key === null)
+    ) {
+        verificarContinuidadeSessaoDesempenho();
+    }
+});
+
+window.addEventListener(
+    'pageshow',
+    verificarContinuidadeSessaoDesempenho
+);
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        verificarContinuidadeSessaoDesempenho();
+    }
+});
+
+// ========================================
 // APLICAR TEMA DO USUÁRIO
 // ========================================
 
