@@ -2104,7 +2104,13 @@ function iniciarSecoesRecolhiveisDesempenho() {
         botao.textContent = 'Recolher ▲';
         botao.setAttribute('aria-expanded', 'true');
 
-        cabecalho.appendChild(botao);
+        const titulo = cabecalho.querySelector('h2');
+
+        if (titulo) {
+            titulo.appendChild(botao);
+        } else {
+            cabecalho.appendChild(botao);
+        }
 
         conteudos.forEach(elemento => {
             elemento.classList.add('fitzone-section-content');
