@@ -2133,10 +2133,19 @@ function iniciarSecoesRecolhiveisDesempenho() {
 
         const botao = document.createElement('button');
 
+        const expandidoInicial =
+            secoesSalvas[seletorSecao] !== false;
+
         botao.type = 'button';
         botao.className = 'fitzone-section-toggle';
-        botao.textContent = 'Recolher ▲';
-        botao.setAttribute('aria-expanded', 'true');
+        botao.textContent = expandidoInicial
+            ? 'Recolher ▲'
+            : 'Expandir ▼';
+
+        botao.setAttribute(
+            'aria-expanded',
+            String(expandidoInicial)
+        );
 
         const titulo = cabecalho.querySelector('h2');
 
@@ -2148,6 +2157,7 @@ function iniciarSecoesRecolhiveisDesempenho() {
 
         conteudos.forEach(elemento => {
             elemento.classList.add('fitzone-section-content');
+            elemento.hidden = !expandidoInicial;
         });
 
         botao.addEventListener('click', () => {
@@ -2166,6 +2176,20 @@ function iniciarSecoesRecolhiveisDesempenho() {
             botao.textContent = expandido
                 ? 'Expandir ▼'
                 : 'Recolher ▲';
+
+            secoesSalvas[seletorSecao] = !expandido;
+
+            try {
+                localStorage.setItem(
+                    chavePreferencias,
+                    JSON.stringify(secoesSalvas)
+                );
+            } catch (erro) {
+                console.warn(
+                    'Não foi possível salvar a preferência da seção:',
+                    erro
+                );
+            }
         });
     });
 }
