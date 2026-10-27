@@ -36,6 +36,66 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* =========================================
+       PROTEGER BIBLIOTECA CONTRA TROCA DE CONTA
+    ========================================= */
+
+    const emailSessaoInicialBiblioteca =
+        sessao.email.trim().toLowerCase();
+
+    function verificarContinuidadeSessaoBiblioteca() {
+        try {
+            const dadosSessao =
+                localStorage.getItem('fitzoneSessao');
+
+            const sessaoAtual = dadosSessao
+                ? JSON.parse(dadosSessao)
+                : null;
+
+            if (
+                !sessaoAtual ||
+                sessaoAtual.autenticado !== true ||
+                typeof sessaoAtual.email !== 'string' ||
+                sessaoAtual.email.trim().toLowerCase() !==
+                    emailSessaoInicialBiblioteca
+            ) {
+                window.location.replace('login.html');
+                return false;
+            }
+
+            return true;
+
+        } catch (erro) {
+            console.warn(
+                'Não foi possível verificar a sessão da biblioteca:',
+                erro
+            );
+
+            window.location.replace('login.html');
+            return false;
+        }
+    }
+
+    window.addEventListener('storage', (event) => {
+        if (
+            event.storageArea === localStorage &&
+            (event.key === 'fitzoneSessao' || event.key === null)
+        ) {
+            verificarContinuidadeSessaoBiblioteca();
+        }
+    });
+
+    window.addEventListener(
+        'pageshow',
+        verificarContinuidadeSessaoBiblioteca
+    );
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            verificarContinuidadeSessaoBiblioteca();
+        }
+    });
+
+    /* =========================================
        TEMA POR GENERO
     ========================================= */
 
