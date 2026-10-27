@@ -2,7 +2,7 @@
    FITZONE - SERVICE WORKER
 ========================================= */
 
-const CACHE_NAME = 'fitzone-v6';
+const CACHE_NAME = 'fitzone-v7';
 const IMAGE_CACHE_NAME = 'fitzone-images-v1';
 
 // Arquivos essenciais para funcionamento offline
@@ -126,6 +126,17 @@ self.addEventListener('fetch', (event) => {
                     url.pathname.endsWith('.webp')
                 ) {
                     const cache = await caches.open(IMAGE_CACHE_NAME);
+                    await cache.put(request, response.clone());
+                } else if (
+                    response.ok &&
+                    APP_SHELL.some((arquivo) => {
+                        return new URL(
+                            arquivo,
+                            self.registration.scope
+                        ).href === url.href;
+                    })
+                ) {
+                    const cache = await caches.open(CACHE_NAME);
                     await cache.put(request, response.clone());
                 }
 
