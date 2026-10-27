@@ -871,3 +871,38 @@
         transition: none;
     }
 }
+/* =========================================
+   FITZONE - BOTOES AO LADO DOS TITULOS
+========================================= */
+
+.summary-header h2,
+.fitzone-achievements-header h2,
+.history-header h2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.fitzone-section-toggle {
+    flex-shrink: 0;
+    margin-top: 0;
+    margin-left: auto;
+    white-space: nowrap;
+    font-family: inherit;
+}
+
+@media (max-width: 520px) {
+    .summary-header h2,
+    .fitzone-achievements-header h2,
+    .history-header h2 {
+        gap: 8px;
+        font-size: clamp(16px, 4vw, 22px);
+    }
+
+    .fitzone-section-toggle {
+        padding: 8px 10px;
+        min-height: 40px;
+        font-size: 11px;
+    }
+}
