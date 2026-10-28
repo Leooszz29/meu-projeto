@@ -63,10 +63,34 @@ document.addEventListener("DOMContentLoaded", async () => {
                 await identificarAcessoSupabaseCalendario();
 
             if (acessoSupabase.autenticado) {
-                console.info(
-                    'FitZone: sessão Supabase reconhecida. ' +
-                    'Aguardando integração segura do calendário.'
-                );
+                const aviso = document.createElement('main');
+
+                aviso.style.cssText =
+                    'min-height:100vh;' +
+                    'display:flex;' +
+                    'flex-direction:column;' +
+                    'align-items:center;' +
+                    'justify-content:center;' +
+                    'gap:16px;' +
+                    'padding:24px;' +
+                    'text-align:center;';
+
+                const titulo = document.createElement('h1');
+                titulo.textContent = 'FitZone';
+
+                const mensagem = document.createElement('p');
+                mensagem.textContent =
+                    'Conta Supabase autenticada. ' +
+                    'O calendário está sendo integrado.';
+
+                const voltar = document.createElement('a');
+                voltar.href = 'login.html';
+                voltar.textContent = 'Voltar ao login';
+
+                aviso.append(titulo, mensagem, voltar);
+                document.body.replaceChildren(aviso);
+
+                return;
             }
 
         } catch (erro) {
