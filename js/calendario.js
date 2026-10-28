@@ -9,6 +9,27 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     /* =========================================
+       FITZONE - IDENTIFICAR ACESSO SUPABASE
+    ========================================= */
+
+    async function identificarAcessoSupabaseCalendario() {
+        const identidade =
+            await obterIdentidadeSupabaseFitZone();
+
+        if (!identidade) {
+            return {
+                autenticado: false,
+                identificador: null
+            };
+        }
+
+        return {
+            autenticado: true,
+            identificador: 'supabase:' + identidade.id
+        };
+    }
+
+    /* =========================================
        PROTECAO DE ACESSO AO CALENDARIO
     ========================================= */
 
