@@ -410,14 +410,25 @@
                         );
                     }
 
-                    const { error } = await cliente
-                        .from('fitzone_perfis')
-                        .select('id')
-                        .limit(1);
+                    const resposta = await fetch(
+                        FITZONE_SUPABASE_URL + '/auth/v1/health',
+                        {
+                            method: 'GET',
+                            headers: {
+                                apikey: FITZONE_SUPABASE_PUBLISHABLE_KEY
+                            }
+                        }
+                    );
 
-                    resultado.textContent = error
-                        ? 'Erro Supabase: ' + error.message
-                        : 'Conexão com Supabase realizada!';
+                    if (!resposta.ok) {
+                        throw new Error(
+                            'HTTP ' + resposta.status
+                        );
+                    }
+
+                    resultado.textContent =
+                        'Conexão com Supabase Auth realizada!';
+
                 } catch (erro) {
                     resultado.textContent =
                         'Falha de conexão: ' + erro.message;
