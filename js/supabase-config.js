@@ -134,3 +134,52 @@ async function obterIdentidadeSupabaseFitZone() {
         email: usuario.email.trim().toLowerCase()
     };
 }
+
+/* =========================================
+   FITZONE - CRIAR PERFIL SUPABASE
+========================================= */
+
+async function criarPerfilSupabaseFitZone(nome) {
+    const cliente = inicializarSupabaseFitZone();
+    const identidade = await obterIdentidadeSupabaseFitZone();
+
+    if (!cliente || !identidade) {
+        throw new Error(
+            'Usuário Supabase não autenticado.'
+        );
+    }
+
+    const { data: perfilExistente, error: erroConsulta } =
+        await cliente
+            .from('fitzone_perfis')
+            .select('id')
+            .eq('id', identidade.id)
+            .maybeSingle();
+
+    if (erroConsulta) {
+        throw erroConsulta;
+    }
+
+    if (perfilExistente) {
+        return {
+            criado: false,
+            motivo: 'Perfil já cadastrado.'
+        };
+    }
+
+    const { error } = await cliente
+        .from('fitzone_perfis')
+        .insert({
+            id: identidade.id,
+            nome: nome.trim()
+        });
+
+    if (error) {
+        throw error;
+    }
+
+    return {
+        criado: true,
+        motivo: 'Perfil criado com sucesso.'
+    };
+}
