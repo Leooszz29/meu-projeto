@@ -463,6 +463,37 @@ function agruparHistoricoCalendarioPorDia() {
     }
 
     /* =========================================
+       FITZONE - LER CHECK-INS SUPABASE
+    ========================================= */
+
+    async function carregarCheckinsSupabase() {
+        const chaves =
+            await obterChavesCalendarioSupabase();
+
+        const dadosSalvos = localStorage.getItem(
+            chaves.checkins
+        );
+
+        if (!dadosSalvos) {
+            return {};
+        }
+
+        const checkins = JSON.parse(dadosSalvos);
+
+        if (
+            !checkins ||
+            typeof checkins !== 'object' ||
+            Array.isArray(checkins)
+        ) {
+            throw new Error(
+                'Formato inválido dos check-ins Supabase.'
+            );
+        }
+
+        return checkins;
+    }
+
+    /* =========================================
        LEITURA SEGURA DOS CHECK-INS
     ========================================= */
 
