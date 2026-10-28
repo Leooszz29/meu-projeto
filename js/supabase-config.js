@@ -183,3 +183,30 @@ async function criarPerfilSupabaseFitZone(nome) {
         motivo: 'Perfil criado com sucesso.'
     };
 }
+
+/* =========================================
+   FITZONE - CONSULTAR PERFIL SUPABASE
+========================================= */
+
+async function consultarPerfilSupabaseFitZone() {
+    const cliente = inicializarSupabaseFitZone();
+    const identidade = await obterIdentidadeSupabaseFitZone();
+
+    if (!cliente || !identidade) {
+        throw new Error(
+            'Usuário Supabase não autenticado.'
+        );
+    }
+
+    const { data, error } = await cliente
+        .from('fitzone_perfis')
+        .select('id, nome, criado_em')
+        .eq('id', identidade.id)
+        .maybeSingle();
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
+}
