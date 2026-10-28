@@ -535,5 +535,52 @@
             Teste ainda não realizado.
         </p>
     </div>
+
+    <script>
+        document.getElementById('btnPerfilSupabase')
+            .addEventListener('click', async () => {
+                const resultado = document.getElementById(
+                    'resultadoPerfilSupabase'
+                );
+
+                const nome = prompt(
+                    'Digite o nome do perfil de teste:'
+                );
+
+                if (nome === null) return;
+
+                if (!nome.trim()) {
+                    resultado.textContent =
+                        'Informe um nome válido.';
+                    return;
+                }
+
+                resultado.textContent =
+                    'Verificando usuário Supabase...';
+
+                try {
+                    const identidade =
+                        await obterIdentidadeSupabaseFitZone();
+
+                    if (!identidade) {
+                        resultado.textContent =
+                            'Faça login no Supabase antes do teste.';
+                        return;
+                    }
+
+                    resultado.textContent =
+                        'Criando perfil no Supabase...';
+
+                    const dados =
+                        await criarPerfilSupabaseFitZone(nome);
+
+                    resultado.textContent = dados.motivo;
+
+                } catch (erro) {
+                    resultado.textContent =
+                        'Erro ao criar perfil: ' + erro.message;
+                }
+            });
+    </script>
     </body>
     </html>
