@@ -6,7 +6,7 @@
    Exibicao e navegacao entre meses
 ========================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
     /* =========================================
        FITZONE - IDENTIFICAR ACESSO SUPABASE
