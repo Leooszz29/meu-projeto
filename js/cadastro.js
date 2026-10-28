@@ -21,6 +21,34 @@ function obterSupabaseCadastro() {
     return inicializarSupabaseFitZone();
 }
 
+async function cadastrarUsuarioSupabase(nome, email, senha) {
+    const cliente = obterSupabaseCadastro();
+
+    if (!cliente) {
+        throw new Error(
+            'Não foi possível inicializar o Supabase.'
+        );
+    }
+
+    const { data, error } = await cliente.auth.signUp({
+        email: email,
+        password: senha,
+        options: {
+            data: {
+                nome: nome
+            },
+            emailRedirectTo:
+                window.location.origin + '/meu-projeto/login.html'
+        }
+    });
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
+}
+
 // ==================== EVENT LISTENERS ====================
 form.addEventListener('submit', handleSignup);
 [nameInput, emailInput, passwordInput, confirmPasswordInput].forEach(el => {
