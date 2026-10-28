@@ -458,5 +458,44 @@
             Teste ainda não realizado.
         </p>
     </div>
+
+    <script>
+        document.getElementById('btnLoginSupabase')
+            .addEventListener('click', async () => {
+                const resultado = document.getElementById(
+                    'resultadoLoginSupabase'
+                );
+
+                const email = prompt('E-mail da conta de teste:');
+                if (email === null) return;
+
+                const senha = prompt('Senha da conta de teste:');
+                if (senha === null) return;
+
+                if (!email.trim() || !senha) {
+                    resultado.textContent =
+                        'Informe o e-mail e a senha.';
+                    return;
+                }
+
+                resultado.textContent =
+                    'Autenticando no Supabase...';
+
+                try {
+                    const dados = await autenticarUsuarioSupabase(
+                        email,
+                        senha
+                    );
+
+                    resultado.textContent = dados.user
+                        ? 'Login Supabase realizado com sucesso!'
+                        : 'Nenhum usuário retornado.';
+
+                } catch (erro) {
+                    resultado.textContent =
+                        'Erro no login: ' + erro.message;
+                }
+            });
+    </script>
     </body>
     </html>
