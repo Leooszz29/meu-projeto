@@ -369,6 +369,61 @@
  
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="js/supabase-config.js"></script>
+    
+    <!-- TESTE TEMPORARIO DE CONEXAO SUPABASE -->
+    <div
+        id="testeConexaoSupabase"
+        style="position: fixed; bottom: 16px; left: 16px;
+               right: 16px; z-index: 9999; padding: 12px;
+               background: #202428; color: #ffffff;
+               border: 1px solid #35e67a; border-radius: 10px;
+               text-align: center;"
+    >
+        <button
+            type="button"
+            id="btnTestarSupabase"
+            style="padding: 10px 16px; cursor: pointer;"
+        >
+            Testar conexão Supabase
+        </button>
+
+        <p id="resultadoTesteSupabase" aria-live="polite">
+            Teste ainda não realizado.
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('btnTestarSupabase')
+            .addEventListener('click', async () => {
+                const resultado = document.getElementById(
+                    'resultadoTesteSupabase'
+                );
+
+                resultado.textContent = 'Verificando conexão...';
+
+                try {
+                    const cliente = inicializarSupabaseFitZone();
+
+                    if (!cliente) {
+                        throw new Error(
+                            'Biblioteca Supabase indisponível.'
+                        );
+                    }
+
+                    const { error } = await cliente
+                        .from('fitzone_perfis')
+                        .select('id')
+                        .limit(1);
+
+                    resultado.textContent = error
+                        ? 'Erro Supabase: ' + error.message
+                        : 'Conexão com Supabase realizada!';
+                } catch (erro) {
+                    resultado.textContent =
+                        'Falha de conexão: ' + erro.message;
+                }
+            });
+    </script>
 
     <script src="js/login.js"></script>
     </body>
