@@ -122,5 +122,53 @@
             Teste ainda não realizado.
         </p>
     </div>
+
+    <script>
+        document.getElementById('btnCadastroSupabase')
+            .addEventListener('click', async () => {
+                const resultado = document.getElementById(
+                    'resultadoCadastroSupabase'
+                );
+
+                const nome = prompt('Nome do usuário de teste:');
+                if (nome === null) return;
+
+                const email = prompt('E-mail de teste:');
+                if (email === null) return;
+
+                const senha = prompt(
+                    'Senha de teste (mínimo de 8 caracteres):'
+                );
+                if (senha === null) return;
+
+                if (
+                    !nome.trim() ||
+                    !email.trim() ||
+                    senha.length < 8
+                ) {
+                    resultado.textContent =
+                        'Preencha os dados corretamente.';
+                    return;
+                }
+
+                resultado.textContent =
+                    'Enviando cadastro ao Supabase...';
+
+                try {
+                    const dados = await cadastrarUsuarioSupabase(
+                        nome.trim(),
+                        email.trim().toLowerCase(),
+                        senha
+                    );
+
+                    resultado.textContent = dados.user
+                        ? 'Cadastro enviado! Verifique seu e-mail.'
+                        : 'Nenhum usuário retornado pelo Supabase.';
+                } catch (erro) {
+                    resultado.textContent =
+                        'Erro: ' + erro.message;
+                }
+            });
+    </script>
 </body>
 </html>
