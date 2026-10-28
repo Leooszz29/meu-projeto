@@ -488,10 +488,15 @@
                     );
 
                     if (dados.autenticado) {
+                        const sessao =
+                            await consultarOrigemSessaoFitZone();
+
                         resultado.textContent =
-                            'Login híbrido realizado! Origem: ' +
-                            dados.origem;
+                            'Login híbrido: ' + dados.origem +
+                            ' | Sessão: ' + sessao.origem +
+                            ' | Autenticado: ' + sessao.autenticado;
                     } else {
+
                         resultado.textContent =
                             'Credenciais inválidas. Origem: ' +
                             dados.origem;
