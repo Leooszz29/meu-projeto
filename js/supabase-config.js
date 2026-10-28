@@ -64,3 +64,49 @@ async function consultarUsuarioSupabaseFitZone() {
 
     return data.user || null;
 }
+
+/* =========================================
+   FITZONE - CONSULTAR ORIGEM DA SESSAO
+========================================= */
+
+async function consultarOrigemSessaoFitZone() {
+    let sessaoLocal = null;
+
+    try {
+        const dados = localStorage.getItem('fitzoneSessao');
+
+        sessaoLocal = dados ? JSON.parse(dados) : null;
+    } catch (erro) {
+        console.warn(
+            'Não foi possível consultar a sessão local:',
+            erro
+        );
+    }
+
+    if (
+        sessaoLocal &&
+        sessaoLocal.autenticado === true &&
+        typeof sessaoLocal.email === 'string' &&
+        sessaoLocal.email.trim()
+    ) {
+        return {
+            origem: 'local',
+            autenticado: true
+        };
+    }
+
+    const usuarioSupabase =
+        await consultarUsuarioSupabaseFitZone();
+
+    if (usuarioSupabase) {
+        return {
+            origem: 'supabase',
+            autenticado: true
+        };
+    }
+
+    return {
+        origem: 'nenhuma',
+        autenticado: false
+    };
+}
