@@ -494,6 +494,35 @@ function agruparHistoricoCalendarioPorDia() {
     }
 
     /* =========================================
+       FITZONE - SALVAR CHECK-INS SUPABASE
+    ========================================= */
+
+    async function salvarCheckinsSupabase(dados) {
+        if (
+            !dados ||
+            typeof dados !== 'object' ||
+            Array.isArray(dados)
+        ) {
+            throw new Error(
+                'Formato inválido dos check-ins.'
+            );
+        }
+
+        const chaves =
+            await obterChavesCalendarioSupabase();
+
+        // Verificar os dados existentes antes de salvar.
+        await carregarCheckinsSupabase();
+
+        localStorage.setItem(
+            chaves.checkins,
+            JSON.stringify(dados)
+        );
+
+        return true;
+    }
+
+    /* =========================================
        LEITURA SEGURA DOS CHECK-INS
     ========================================= */
 
