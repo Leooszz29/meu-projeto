@@ -35,3 +35,32 @@ function inicializarSupabaseFitZone() {
 
     return fitzoneSupabase;
 }
+
+/* =========================================
+   FITZONE - CONSULTAR USUARIO SUPABASE
+========================================= */
+
+async function consultarUsuarioSupabaseFitZone() {
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error(
+            'Não foi possível inicializar o Supabase.'
+        );
+    }
+
+    const { data, error } = await cliente.auth.getUser();
+
+    if (error) {
+        if (
+            error.name === 'AuthSessionMissingError' ||
+            error.message === 'Auth session missing!'
+        ) {
+            return null;
+        }
+
+        throw error;
+    }
+
+    return data.user || null;
+}
