@@ -135,6 +135,46 @@ function identificarTipoContaFitZone(email) {
     return 'nao_encontrado_localmente';
 }
 
+/* =========================================
+   FITZONE - VALIDAR LOGIN HIBRIDO
+========================================= */
+
+async function validarLoginHibridoFitZone(email, senha) {
+    const emailNormalizado = email.trim().toLowerCase();
+
+    if (!emailNormalizado || !senha) {
+        throw new Error(
+            'Informe o e-mail e a senha.'
+        );
+    }
+
+    const usuarioLocal = carregarUsuarioSalvo(
+        emailNormalizado
+    );
+
+    if (usuarioLocal) {
+        return {
+            origem: 'local',
+            autenticado: validarCredenciais(
+                usuarioLocal,
+                emailNormalizado,
+                senha
+            )
+        };
+    }
+
+    const dados = await autenticarUsuarioSupabase(
+        emailNormalizado,
+        senha
+    );
+
+    return {
+        origem: 'supabase',
+        autenticado: Boolean(dados.user),
+        usuario: dados.user || null
+    };
+}
+
 // ==================== FUNÇÕES AUXILIARES ====================
 
 /* =========================================
