@@ -58,6 +58,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (!sessaoValida) {
+        try {
+            const acessoSupabase =
+                await identificarAcessoSupabaseCalendario();
+
+            if (acessoSupabase.autenticado) {
+                console.info(
+                    'FitZone: sessão Supabase reconhecida. ' +
+                    'Aguardando integração segura do calendário.'
+                );
+            }
+
+        } catch (erro) {
+            console.warn(
+                'Não foi possível verificar a sessão Supabase:',
+                erro
+            );
+        }
+
         window.location.replace("login.html");
         return;
     }
