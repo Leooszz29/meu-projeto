@@ -126,6 +126,17 @@ async function verificarSessaoSupabaseFitZone() {
     const { data, error } = await cliente.auth.getUser();
 
     if (error) {
+        if (
+            error.name === 'AuthSessionMissingError' ||
+            error.message === 'Auth session missing!'
+        ) {
+            return {
+                autenticado: false,
+                email: null,
+                id: null
+            };
+        }
+
         throw error;
     }
 
