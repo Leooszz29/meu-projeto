@@ -504,13 +504,25 @@
                                 'supabase:' + identidade.id
                         );
 
+                        const chaveArmazenamento =
+                            dados.origem === 'supabase'
+                                ? await obterChaveArmazenamentoSupabaseFitZone(
+                                    'perfil'
+                                )
+                                : null;
+
+                        const armazenamentoValido = Boolean(
+                            chaveValida &&
+                            chaveArmazenamento ===
+                                'fitzone:perfil:supabase:' + identidade.id
+                        );
+
                         resultado.textContent =
                             'Login: ' + dados.origem +
-                            ' | Sessão: ' + sessao.origem +
                             ' | Identidade: ' +
                             (identidade ? 'validada' : 'ausente') +
-                            ' | Chave: ' +
-                            (chaveValida ? 'válida' : 'inválida');
+                            ' | Armazenamento: ' +
+                            (armazenamentoValido ? 'válido' : 'inválido');
 
                     } else {
 
