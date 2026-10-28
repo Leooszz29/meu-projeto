@@ -225,3 +225,29 @@ async function obterChaveUsuarioSupabaseFitZone() {
 
     return 'supabase:' + identidade.id;
 }
+
+/* =========================================
+   FITZONE - CHAVE DE ARMAZENAMENTO SUPABASE
+========================================= */
+
+async function obterChaveArmazenamentoSupabaseFitZone(tipo) {
+    if (
+        typeof tipo !== 'string' ||
+        !/^[a-z0-9_-]+$/.test(tipo)
+    ) {
+        throw new Error(
+            'Tipo de armazenamento inválido.'
+        );
+    }
+
+    const chaveUsuario =
+        await obterChaveUsuarioSupabaseFitZone();
+
+    if (!chaveUsuario) {
+        throw new Error(
+            'Usuário Supabase não autenticado.'
+        );
+    }
+
+    return 'fitzone:' + tipo + ':' + chaveUsuario;
+}
