@@ -574,7 +574,13 @@
                     const dados =
                         await criarPerfilSupabaseFitZone(nome);
 
-                    resultado.textContent = dados.motivo;
+                    const perfil =
+                        await consultarPerfilSupabaseFitZone();
+
+                    resultado.textContent = perfil
+                        ? dados.motivo +
+                          ' | Perfil encontrado: ' + perfil.nome
+                        : 'Perfil não encontrado no Supabase.';
 
                 } catch (erro) {
                     resultado.textContent =
