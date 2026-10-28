@@ -421,6 +421,27 @@ function agruparHistoricoCalendarioPorDia() {
 }
 
     /* =========================================
+       FITZONE - CHAVES DO CALENDARIO SUPABASE
+    ========================================= */
+
+    async function obterChavesCalendarioSupabase() {
+        const chaveCheckins =
+            await obterChaveArmazenamentoSupabaseFitZone(
+                'checkins'
+            );
+
+        const chaveHistorico =
+            await obterChaveArmazenamentoSupabaseFitZone(
+                'historico'
+            );
+
+        return {
+            checkins: chaveCheckins,
+            historico: chaveHistorico
+        };
+    }
+
+    /* =========================================
        LEITURA SEGURA DOS CHECK-INS
     ========================================= */
 
