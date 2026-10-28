@@ -116,6 +116,25 @@ function usuarioExisteLocalmente(email) {
     return Boolean(usuario);
 }
 
+/* =========================================
+   FITZONE - IDENTIFICAR TIPO DE CONTA
+========================================= */
+
+function identificarTipoContaFitZone(email) {
+    if (
+        typeof email !== 'string' ||
+        !email.trim()
+    ) {
+        return 'invalido';
+    }
+
+    if (usuarioExisteLocalmente(email)) {
+        return 'local';
+    }
+
+    return 'nao_encontrado_localmente';
+}
+
 // ==================== FUNÇÕES AUXILIARES ====================
 
 /* =========================================
