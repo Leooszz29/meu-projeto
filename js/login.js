@@ -104,6 +104,18 @@ async function autenticarUsuarioSupabase(email, senha) {
     return data;
 }
 
+/* =========================================
+   FITZONE - IDENTIFICAR USUARIO LOCAL
+========================================= */
+
+function usuarioExisteLocalmente(email) {
+    const usuario = carregarUsuarioSalvo(
+        email.trim().toLowerCase()
+    );
+
+    return Boolean(usuario);
+}
+
 // ==================== FUNÇÕES AUXILIARES ====================
 
 /* =========================================
