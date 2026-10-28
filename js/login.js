@@ -105,6 +105,38 @@ async function autenticarUsuarioSupabase(email, senha) {
 }
 
 /* =========================================
+   FITZONE - VERIFICAR SESSAO SUPABASE
+========================================= */
+
+async function verificarSessaoSupabaseFitZone() {
+    if (typeof inicializarSupabaseFitZone !== 'function') {
+        throw new Error(
+            'Configuração do Supabase indisponível.'
+        );
+    }
+
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error(
+            'Não foi possível inicializar o Supabase.'
+        );
+    }
+
+    const { data, error } = await cliente.auth.getUser();
+
+    if (error) {
+        throw error;
+    }
+
+    return {
+        autenticado: Boolean(data.user),
+        email: data.user?.email || null,
+        id: data.user?.id || null
+    };
+}
+
+/* =========================================
    FITZONE - IDENTIFICAR USUARIO LOCAL
 ========================================= */
 
