@@ -110,3 +110,27 @@ async function consultarOrigemSessaoFitZone() {
         autenticado: false
     };
 }
+
+/* =========================================
+   FITZONE - IDENTIDADE SUPABASE VALIDADA
+========================================= */
+
+async function obterIdentidadeSupabaseFitZone() {
+    const usuario = await consultarUsuarioSupabaseFitZone();
+
+    if (!usuario) {
+        return null;
+    }
+
+    if (!usuario.id || !usuario.email) {
+        throw new Error(
+            'Identidade Supabase incompleta.'
+        );
+    }
+
+    return {
+        origem: 'supabase',
+        id: usuario.id,
+        email: usuario.email.trim().toLowerCase()
+    };
+}
