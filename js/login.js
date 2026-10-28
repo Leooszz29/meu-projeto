@@ -148,6 +148,46 @@ async function verificarSessaoSupabaseFitZone() {
 }
 
 /* =========================================
+   FITZONE - IDENTIFICAR SESSAO HIBRIDA
+========================================= */
+
+async function identificarSessaoHibridaFitZone() {
+    const sessaoLocal = carregarSessao();
+
+    if (
+        sessaoLocal &&
+        sessaoLocal.autenticado === true &&
+        typeof sessaoLocal.email === 'string' &&
+        sessaoLocal.email.trim() &&
+        carregarUsuarioSalvo(sessaoLocal.email)
+    ) {
+        return {
+            origem: 'local',
+            autenticado: true,
+            email: sessaoLocal.email
+        };
+    }
+
+    const sessaoSupabase =
+        await verificarSessaoSupabaseFitZone();
+
+    if (sessaoSupabase.autenticado) {
+        return {
+            origem: 'supabase',
+            autenticado: true,
+            email: sessaoSupabase.email,
+            id: sessaoSupabase.id
+        };
+    }
+
+    return {
+        origem: 'nenhuma',
+        autenticado: false,
+        email: null
+    };
+}
+
+/* =========================================
    FITZONE - IDENTIFICAR USUARIO LOCAL
 ========================================= */
 
