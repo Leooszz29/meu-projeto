@@ -72,6 +72,38 @@ const saveNewPasswordBtn =
 
 let recoveryCodeGenerated = null;
 
+/* =========================================
+   FITZONE - LOGIN COM SUPABASE AUTH
+========================================= */
+
+async function autenticarUsuarioSupabase(email, senha) {
+    if (typeof inicializarSupabaseFitZone !== 'function') {
+        throw new Error(
+            'Configuração do Supabase indisponível.'
+        );
+    }
+
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error(
+            'Não foi possível inicializar o Supabase.'
+        );
+    }
+
+    const { data, error } =
+        await cliente.auth.signInWithPassword({
+            email: email.trim().toLowerCase(),
+            password: senha
+        });
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
+}
+
 // ==================== FUNÇÕES AUXILIARES ====================
 
 /* =========================================
