@@ -495,11 +495,22 @@
                         const identidade =
                             await obterIdentidadeSupabaseFitZone();
 
+                        const chaveUsuario =
+                            await obterChaveUsuarioSupabaseFitZone();
+
+                        const chaveValida = Boolean(
+                            identidade &&
+                            chaveUsuario ===
+                                'supabase:' + identidade.id
+                        );
+
                         resultado.textContent =
                             'Login: ' + dados.origem +
                             ' | Sessão: ' + sessao.origem +
-                            ' | Identidade Supabase: ' +
-                            (identidade ? 'validada' : 'ausente');
+                            ' | Identidade: ' +
+                            (identidade ? 'validada' : 'ausente') +
+                            ' | Chave: ' +
+                            (chaveValida ? 'válida' : 'inválida');
 
                     } else {
 
