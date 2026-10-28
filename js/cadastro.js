@@ -9,6 +9,18 @@ const confirmPasswordInput = document.getElementById('confirmPassword');
 const termsInput = document.getElementById('terms');
 const submitBtn = document.getElementById('submitBtn');
 
+// ==================== SUPABASE ====================
+function obterSupabaseCadastro() {
+    if (typeof inicializarSupabaseFitZone !== 'function') {
+        console.warn(
+            'Configuração do Supabase indisponível no cadastro.'
+        );
+        return null;
+    }
+
+    return inicializarSupabaseFitZone();
+}
+
 // ==================== EVENT LISTENERS ====================
 form.addEventListener('submit', handleSignup);
 [nameInput, emailInput, passwordInput, confirmPasswordInput].forEach(el => {
