@@ -488,13 +488,19 @@
                     );
 
                     if (dados.autenticado) {
+
                         const sessao =
                             await consultarOrigemSessaoFitZone();
 
+                        const identidade =
+                            await obterIdentidadeSupabaseFitZone();
+
                         resultado.textContent =
-                            'Login híbrido: ' + dados.origem +
+                            'Login: ' + dados.origem +
                             ' | Sessão: ' + sessao.origem +
-                            ' | Autenticado: ' + sessao.autenticado;
+                            ' | Identidade Supabase: ' +
+                            (identidade ? 'validada' : 'ausente');
+
                     } else {
 
                         resultado.textContent =
