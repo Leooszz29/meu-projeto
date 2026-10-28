@@ -210,3 +210,18 @@ async function consultarPerfilSupabaseFitZone() {
 
     return data;
 }
+
+/* =========================================
+   FITZONE - CHAVE DO USUARIO SUPABASE
+========================================= */
+
+async function obterChaveUsuarioSupabaseFitZone() {
+    const identidade =
+        await obterIdentidadeSupabaseFitZone();
+
+    if (!identidade) {
+        return null;
+    }
+
+    return 'supabase:' + identidade.id;
+}
