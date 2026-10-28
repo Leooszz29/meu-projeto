@@ -7,4 +7,4 @@ const FITZONE_SUPABASE_URL =
 
 // Substituir pela Publishable key do seu projeto.
 const FITZONE_SUPABASE_PUBLISHABLE_KEY =
-    'COLE_SUA_PUBLISHABLE_KEY_AQUI';
+    'sb_publishable_9viROz4cpNBRds8aW5isQA_hYUpRdfH';
