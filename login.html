@@ -482,14 +482,20 @@
                     'Autenticando no Supabase...';
 
                 try {
-                    const dados = await autenticarUsuarioSupabase(
+                    const dados = await validarLoginHibridoFitZone(
                         email,
                         senha
                     );
 
-                    resultado.textContent = dados.user
-                        ? 'Login Supabase realizado com sucesso!'
-                        : 'Nenhum usuário retornado.';
+                    if (dados.autenticado) {
+                        resultado.textContent =
+                            'Login híbrido realizado! Origem: ' +
+                            dados.origem;
+                    } else {
+                        resultado.textContent =
+                            'Credenciais inválidas. Origem: ' +
+                            dados.origem;
+                    }
 
                 } catch (erro) {
                     resultado.textContent =
