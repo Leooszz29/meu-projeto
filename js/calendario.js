@@ -90,6 +90,50 @@ document.addEventListener("DOMContentLoaded", async () => {
                 aviso.append(titulo, mensagem, voltar);
                 document.body.replaceChildren(aviso);
 
+                const identificadorInicial =
+                    acessoSupabase.identificador;
+
+                let verificandoSessaoSupabase = false;
+
+                async function verificarSessaoSupabaseCalendario() {
+                    if (verificandoSessaoSupabase) {
+                        return;
+                    }
+
+                    verificandoSessaoSupabase = true;
+
+                    try {
+                        const acessoAtual =
+                            await identificarAcessoSupabaseCalendario();
+
+                        if (
+                            !acessoAtual.autenticado ||
+                            acessoAtual.identificador !== identificadorInicial
+                        ) {
+                            window.location.replace('login.html');
+                        }
+                    } catch (erro) {
+                        console.warn(
+                            'Falha ao verificar sessão Supabase:',
+                            erro
+                        );
+
+                        window.location.replace('login.html');
+                    } finally {
+                        verificandoSessaoSupabase = false;
+                    }
+                }
+
+                window.addEventListener('pageshow', () => {
+                    void verificarSessaoSupabaseCalendario();
+                });
+
+                document.addEventListener('visibilitychange', () => {
+                    if (document.visibilityState === 'visible') {
+                        void verificarSessaoSupabaseCalendario();
+                    }
+                });
+
                 return;
             }
 
