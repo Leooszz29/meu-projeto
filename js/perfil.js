@@ -854,7 +854,7 @@ function initializeProfilePhoto() {
     });
 }
 
-function initializeProfile() {
+async function initializeProfile() {
     const sessao =
         carregarSessao();
 
