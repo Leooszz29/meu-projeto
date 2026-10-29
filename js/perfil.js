@@ -862,9 +862,48 @@ async function initializeProfile() {
         !sessao ||
         sessao.autenticado !== true
     ) {
-        window.location.href =
-            'login.html';
+        try {
+            const acessoSupabase =
+                await identificarAcessoSupabasePerfil();
 
+            if (acessoSupabase.autenticado) {
+                const aviso = document.createElement('main');
+
+                aviso.style.cssText =
+                    'min-height:100vh;' +
+                    'display:flex;' +
+                    'flex-direction:column;' +
+                    'align-items:center;' +
+                    'justify-content:center;' +
+                    'gap:16px;' +
+                    'padding:24px;' +
+                    'text-align:center;';
+
+                const titulo = document.createElement('h1');
+                titulo.textContent = 'FitZone';
+
+                const mensagem = document.createElement('p');
+                mensagem.textContent =
+                    'Conta Supabase reconhecida com sucesso!';
+
+                const voltar = document.createElement('a');
+                voltar.href = 'calendario.html';
+                voltar.textContent = 'Voltar ao calendário';
+
+                aviso.append(titulo, mensagem, voltar);
+
+                document.body.replaceChildren(aviso);
+                return;
+            }
+
+        } catch (erro) {
+            console.error(
+                'Erro ao identificar conta Supabase no perfil:',
+                erro
+            );
+        }
+
+        window.location.replace('login.html');
         return;
     }
 
