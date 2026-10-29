@@ -974,9 +974,17 @@ async function handleLogin(e) {
                 erro
             );
 
-            showError(
-                'Não foi possível entrar. Verifique suas credenciais e conexão.'
-            );
+            const credenciaisInvalidas =
+                erro.code === 'invalid_credentials' ||
+                erro.status === 400;
+
+            if (credenciaisInvalidas) {
+                showError('E-mail ou senha incorretos.');
+            } else {
+                showError(
+                    'Não foi possível conectar ao Supabase. Tente novamente.'
+                );
+            }
 
         } finally {
             submitBtn.disabled = false;
