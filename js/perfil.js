@@ -1032,6 +1032,11 @@ async function initializeProfile() {
                     mensagem.textContent =
                         'Conta reconhecida, mas não foi possível ' +
                         'consultar o perfil.';
+
+                    aviso.append(titulo, mensagem);
+
+                    document.body.replaceChildren(aviso);
+                    return;
                 }
 
                 const voltar = document.createElement('a');
