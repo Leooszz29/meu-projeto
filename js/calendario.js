@@ -122,7 +122,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     informacaoCheckins.textContent =
                         'Seus dias com check-in: ' +
-                        Object.keys(checkins).length;
+                        Object.keys(checkins).filter(data => (
+                            /^\d{4}-\d{2}-\d{2}$/.test(data) &&
+                            checkins[data]?.checked === true
+                        )).length;
 
                     const datasCheckins = Object.keys(checkins)
                         .filter(data => (
