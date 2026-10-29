@@ -1109,7 +1109,12 @@ function inicializarLogin() {
         const usuarioDaSessao =
             carregarUsuarioSalvo(sessao.email.trim());
 
-        if (usuarioDaSessao) {
+        const trocarConta =
+            new URLSearchParams(
+                window.location.search
+            ).get('trocar') === '1';
+
+        if (usuarioDaSessao && !trocarConta) {
             window.location.href = obterPaginaInicialFitZone(
                 sessao.email
             );
