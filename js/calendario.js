@@ -166,9 +166,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         voltar
                     );
 
-                    /* =========================================
-                       CALENDARIO MENSAL SUPABASE
-                    ========================================= */
+                    /* Calendário mensal com navegação */
 
                     const calendarioSupabase =
                         document.createElement('section');
@@ -176,18 +174,36 @@ document.addEventListener("DOMContentLoaded", async () => {
                     calendarioSupabase.style.cssText =
                         'width:100%;max-width:380px;';
 
+                    const cabecalhoMes =
+                        document.createElement('div');
+
+                    cabecalhoMes.style.cssText =
+                        'display:flex;align-items:center;' +
+                        'justify-content:space-between;gap:12px;';
+
+                    const botaoAnterior =
+                        document.createElement('button');
+
+                    botaoAnterior.type = 'button';
+                    botaoAnterior.textContent = '‹ Anterior';
+
                     const tituloMes =
                         document.createElement('h2');
 
-                    const agora = new Date();
-                    const anoAtual = agora.getFullYear();
-                    const mesAtual = agora.getMonth();
+                    tituloMes.style.cssText =
+                        'margin:0;font-size:18px;text-transform:capitalize;';
 
-                    tituloMes.textContent =
-                        agora.toLocaleDateString('pt-BR', {
-                            month: 'long',
-                            year: 'numeric'
-                        });
+                    const botaoProximo =
+                        document.createElement('button');
+
+                    botaoProximo.type = 'button';
+                    botaoProximo.textContent = 'Próximo ›';
+
+                    cabecalhoMes.append(
+                        botaoAnterior,
+                        tituloMes,
+                        botaoProximo
+                    );
 
                     const grade =
                         document.createElement('div');
@@ -197,54 +213,90 @@ document.addEventListener("DOMContentLoaded", async () => {
                         'grid-template-columns:repeat(7,1fr);' +
                         'gap:6px;margin-top:16px;';
 
-                    ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
-                        .forEach(dia => {
-                            const cabecalho =
-                                document.createElement('strong');
+                    const agora = new Date();
 
-                            cabecalho.textContent = dia;
-                            grade.appendChild(cabecalho);
-                        });
+                    let anoAtual = agora.getFullYear();
+                    let mesAtual = agora.getMonth();
 
-                    const primeiroDia =
-                        new Date(anoAtual, mesAtual, 1).getDay();
+                    function renderizarMesSupabase() {
+                        const dataMes =
+                            new Date(anoAtual, mesAtual, 1);
 
-                    const totalDias =
-                        new Date(anoAtual, mesAtual + 1, 0).getDate();
+                        anoAtual = dataMes.getFullYear();
+                        mesAtual = dataMes.getMonth();
 
-                    for (let i = 0; i < primeiroDia; i++) {
-                        grade.appendChild(
-                            document.createElement('span')
-                        );
+                        tituloMes.textContent =
+                            dataMes.toLocaleDateString('pt-BR', {
+                                month: 'long',
+                                year: 'numeric'
+                            });
+
+                        grade.replaceChildren();
+
+                        ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
+                            .forEach(dia => {
+                                const cabecalho =
+                                    document.createElement('strong');
+
+                                cabecalho.textContent = dia;
+                                grade.appendChild(cabecalho);
+                            });
+
+                        const primeiroDia =
+                            dataMes.getDay();
+
+                        const totalDias =
+                            new Date(
+                                anoAtual,
+                                mesAtual + 1,
+                                0
+                            ).getDate();
+
+                        for (let i = 0; i < primeiroDia; i++) {
+                            const vazio =
+                                document.createElement('span');
+
+                            grade.appendChild(vazio);
+                        }
+
+                        for (let dia = 1; dia <= totalDias; dia++) {
+                            const celula =
+                                document.createElement('div');
+
+                            const data =
+                                anoAtual + '-' +
+                                String(mesAtual + 1).padStart(2, '0') + '-' +
+                                String(dia).padStart(2, '0');
+
+                            const marcado =
+                                datasCheckins.includes(data);
+
+                            celula.textContent = String(dia);
+
+                            celula.style.cssText =
+                                'padding:10px 0;' +
+                                'border-radius:8px;' +
+                                'text-align:center;' +
+                                (marcado
+                                    ? 'background:#16a34a;color:white;font-weight:bold;'
+                                    : 'background:rgba(128,128,128,.12);');
+
+                            grade.appendChild(celula);
+                        }
                     }
 
-                    for (let dia = 1; dia <= totalDias; dia++) {
-                        const celula =
-                            document.createElement('div');
+                    botaoAnterior.addEventListener('click', () => {
+                        mesAtual--;
+                        renderizarMesSupabase();
+                    });
 
-                        const data =
-                            anoAtual + '-' +
-                            String(mesAtual + 1).padStart(2, '0') + '-' +
-                            String(dia).padStart(2, '0');
-
-                        const marcado =
-                            datasCheckins.includes(data);
-
-                        celula.textContent = String(dia);
-
-                        celula.style.cssText =
-                            'padding:10px 0;' +
-                            'border-radius:8px;' +
-                            'text-align:center;' +
-                            (marcado
-                                ? 'background:#16a34a;color:white;font-weight:bold;'
-                                : 'background:rgba(128,128,128,.12);');
-
-                        grade.appendChild(celula);
-                    }
+                    botaoProximo.addEventListener('click', () => {
+                        mesAtual++;
+                        renderizarMesSupabase();
+                    });
 
                     calendarioSupabase.append(
-                        tituloMes,
+                        cabecalhoMes,
                         grade
                     );
 
@@ -252,6 +304,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                         calendarioSupabase,
                         voltar
                     );
+
+                    renderizarMesSupabase();
 
                 } catch (erro) {
                     console.error(
