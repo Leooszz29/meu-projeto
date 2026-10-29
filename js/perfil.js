@@ -739,6 +739,57 @@ function initializeProfileActionsSupabase() {
         return;
     }
 
+    const botaoSair =
+        document.getElementById('btnEndSession');
+
+    if (botaoSair) {
+        botaoSair.addEventListener('click', async () => {
+            const confirmar = confirm(
+                'Deseja realmente sair da sua conta?'
+            );
+
+            if (!confirmar) {
+                return;
+            }
+
+            botaoSair.disabled = true;
+
+            try {
+                const cliente =
+                    inicializarSupabaseFitZone();
+
+                if (!cliente) {
+                    throw new Error(
+                        'Supabase indisponível.'
+                    );
+                }
+
+                const { error } =
+                    await cliente.auth.signOut({
+                        scope: 'local'
+                    });
+
+                if (error) {
+                    throw error;
+                }
+
+                window.location.replace('login.html');
+
+            } catch (erro) {
+                console.error(
+                    'Erro ao sair do perfil Supabase:',
+                    erro
+                );
+
+                alert(
+                    'Não foi possível encerrar a sessão.'
+                );
+
+                botaoSair.disabled = false;
+            }
+        });
+    }
+
     formulario.addEventListener('submit', async (event) => {
         event.preventDefault();
 
