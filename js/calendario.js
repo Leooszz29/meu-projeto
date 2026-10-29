@@ -261,9 +261,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                         for (let dia = 1; dia <= totalDias; dia++) {
                             const celula =
-                                document.createElement('div');
+                                document.createElement('button');
 
-                            const data =
+                            celula.type = 'button';
                                 anoAtual + '-' +
                                 String(mesAtual + 1).padStart(2, '0') + '-' +
                                 String(dia).padStart(2, '0');
@@ -280,6 +280,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 (marcado
                                     ? 'background:#16a34a;color:white;font-weight:bold;'
                                     : 'background:rgba(128,128,128,.12);');
+
+                            celula.setAttribute(
+                                'aria-label',
+                                `${dia}/${String(mesAtual + 1).padStart(2, '0')}/${anoAtual}`
+                            );
+
+                            celula.addEventListener('click', () => {
+                                const possuiCheckin =
+                                    checkins[data]?.checked === true;
+
+                                const mensagemDia = possuiCheckin
+                                    ? 'Check-in registrado.'
+                                    : 'Nenhum check-in registrado.';
+
+                                alert(
+                                    `Data: ${data}\n${mensagemDia}`
+                                );
+                            });
 
                             grade.appendChild(celula);
                         }
