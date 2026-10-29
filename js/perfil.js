@@ -1,5 +1,28 @@
 const PROFILE_STORAGE_KEY = 'fitzonePerfil';
 
+/* =========================================
+   FITZONE - IDENTIFICAR CONTA SUPABASE
+========================================= */
+
+async function identificarAcessoSupabasePerfil() {
+    const identidade =
+        await obterIdentidadeSupabaseFitZone();
+
+    if (!identidade) {
+        return {
+            autenticado: false,
+            id: null,
+            email: null
+        };
+    }
+
+    return {
+        autenticado: true,
+        id: identidade.id,
+        email: identidade.email
+    };
+}
+
 function carregarSessao() {
 
     try {
