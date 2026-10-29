@@ -58,6 +58,10 @@ const emailSessaoInicialPerfil =
         : null;
 
 function verificarContinuidadeSessaoPerfil() {
+    if (!emailSessaoInicialPerfil) {
+        return true;
+    }
+
     const sessaoAtual = carregarSessao();
 
     if (
