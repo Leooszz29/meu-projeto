@@ -886,6 +886,32 @@ async function initializeProfile() {
                 mensagem.textContent =
                     'Conta Supabase reconhecida com sucesso!';
 
+                /* Consultar nome salvo no perfil Supabase */
+                try {
+                    const perfilSupabase =
+                        await consultarPerfilSupabaseFitZone();
+
+                    if (perfilSupabase?.nome) {
+                        mensagem.textContent =
+                            'Bem-vindo(a), ' +
+                            perfilSupabase.nome + '!';
+                    } else {
+                        mensagem.textContent =
+                            'Conta Supabase reconhecida. ' +
+                            'Perfil ainda não cadastrado.';
+                    }
+
+                } catch (erro) {
+                    console.error(
+                        'Erro ao consultar perfil Supabase:',
+                        erro
+                    );
+
+                    mensagem.textContent =
+                        'Conta reconhecida, mas não foi possível ' +
+                        'consultar o perfil.';
+                }
+
                 const voltar = document.createElement('a');
                 voltar.href = 'calendario.html';
                 voltar.textContent = 'Voltar ao calendário';
