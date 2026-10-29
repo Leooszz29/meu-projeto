@@ -337,13 +337,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 const possuiCheckin =
                                     checkins[data]?.checked === true;
 
-                                if (possuiCheckin) {
-                                    alert('Este dia já possui um check-in.');
-                                    return;
-                                }
-
                                 const confirmar = confirm(
-                                    `Registrar check-in em ${data}?`
+                                    possuiCheckin
+                                        ? `Remover o check-in de ${data}?`
+                                        : `Registrar check-in em ${data}?`
                                 );
 
                                 if (!confirmar) {
@@ -374,10 +371,26 @@ document.addEventListener("DOMContentLoaded", async () => {
                                         return;
                                     }
 
-                                    dadosAtuais[data] = {
-                                        ...dadosAtuais[data],
-                                        checked: true
-                                    };
+                                    if (possuiCheckin) {
+                                        const registroAtual =
+                                            dadosAtuais[data];
+
+                                        if (registroAtual?.checked !== true) {
+                                            Object.assign(checkins, dadosAtuais);
+                                            atualizarVisualizacaoCheckinsSupabase();
+                                            return;
+                                        }
+
+                                        dadosAtuais[data] = {
+                                            ...registroAtual,
+                                            checked: false
+                                        };
+                                    } else {
+                                        dadosAtuais[data] = {
+                                            ...dadosAtuais[data],
+                                            checked: true
+                                        };
+                                    }
 
                                     await salvarCheckinsSupabase(dadosAtuais);
 
