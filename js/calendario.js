@@ -333,17 +333,70 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 `${dia}/${String(mesAtual + 1).padStart(2, '0')}/${anoAtual}`
                             );
 
-                            celula.addEventListener('click', () => {
+                            celula.addEventListener('click', async () => {
                                 const possuiCheckin =
                                     checkins[data]?.checked === true;
 
-                                const mensagemDia = possuiCheckin
-                                    ? 'Check-in registrado.'
-                                    : 'Nenhum check-in registrado.';
+                                if (possuiCheckin) {
+                                    alert('Este dia já possui um check-in.');
+                                    return;
+                                }
 
-                                alert(
-                                    `Data: ${data}\n${mensagemDia}`
+                                const confirmar = confirm(
+                                    `Registrar check-in em ${data}?`
                                 );
+
+                                if (!confirmar) {
+                                    return;
+                                }
+
+                                celula.disabled = true;
+
+                                try {
+                                    const acessoAtual =
+                                        await identificarAcessoSupabaseCalendario();
+
+                                    if (
+                                        !acessoAtual.autenticado ||
+                                        acessoAtual.identificador !==
+                                            acessoSupabase.identificador
+                                    ) {
+                                        window.location.replace('login.html');
+                                        return;
+                                    }
+
+                                    const dadosAtuais =
+                                        await carregarCheckinsSupabase();
+
+                                    if (dadosAtuais[data]?.checked === true) {
+                                        Object.assign(checkins, dadosAtuais);
+                                        atualizarVisualizacaoCheckinsSupabase();
+                                        return;
+                                    }
+
+                                    dadosAtuais[data] = {
+                                        ...dadosAtuais[data],
+                                        checked: true
+                                    };
+
+                                    await salvarCheckinsSupabase(dadosAtuais);
+
+                                    Object.assign(checkins, dadosAtuais);
+
+                                    atualizarVisualizacaoCheckinsSupabase();
+
+                                } catch (erro) {
+                                    console.error(
+                                        'Erro ao registrar check-in:',
+                                        erro
+                                    );
+
+                                    alert(
+                                        'Não foi possível salvar o check-in.'
+                                    );
+                                } finally {
+                                    celula.disabled = false;
+                                }
                             });
 
                             grade.appendChild(celula);
