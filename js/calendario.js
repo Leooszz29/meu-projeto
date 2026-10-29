@@ -365,7 +365,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                                     const dadosAtuais =
                                         await carregarCheckinsSupabase();
 
-                                    if (dadosAtuais[data]?.checked === true) {
+                                    if (
+                                        !possuiCheckin &&
+                                        dadosAtuais[data]?.checked === true
+                                    ) {
                                         Object.assign(checkins, dadosAtuais);
                                         atualizarVisualizacaoCheckinsSupabase();
                                         return;
