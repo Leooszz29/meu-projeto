@@ -921,6 +921,8 @@ async function initializeProfile() {
                     const perfilSupabase =
                         await consultarPerfilSupabaseFitZone();
 
+                    preencherFormularioSupabase(perfilSupabase);
+
                     if (perfilSupabase?.nome) {
                         mensagem.textContent =
                             'Bem-vindo(a), ' +
