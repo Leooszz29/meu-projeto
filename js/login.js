@@ -905,7 +905,7 @@ function validateEmail(email) {
     return emailRegex.test(email);
 }
 
-function handleLogin(e) {
+async function handleLogin(e) {
     e.preventDefault();
     clearError();
 
