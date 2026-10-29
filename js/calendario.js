@@ -166,6 +166,93 @@ document.addEventListener("DOMContentLoaded", async () => {
                         voltar
                     );
 
+                    /* =========================================
+                       CALENDARIO MENSAL SUPABASE
+                    ========================================= */
+
+                    const calendarioSupabase =
+                        document.createElement('section');
+
+                    calendarioSupabase.style.cssText =
+                        'width:100%;max-width:380px;';
+
+                    const tituloMes =
+                        document.createElement('h2');
+
+                    const agora = new Date();
+                    const anoAtual = agora.getFullYear();
+                    const mesAtual = agora.getMonth();
+
+                    tituloMes.textContent =
+                        agora.toLocaleDateString('pt-BR', {
+                            month: 'long',
+                            year: 'numeric'
+                        });
+
+                    const grade =
+                        document.createElement('div');
+
+                    grade.style.cssText =
+                        'display:grid;' +
+                        'grid-template-columns:repeat(7,1fr);' +
+                        'gap:6px;margin-top:16px;';
+
+                    ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
+                        .forEach(dia => {
+                            const cabecalho =
+                                document.createElement('strong');
+
+                            cabecalho.textContent = dia;
+                            grade.appendChild(cabecalho);
+                        });
+
+                    const primeiroDia =
+                        new Date(anoAtual, mesAtual, 1).getDay();
+
+                    const totalDias =
+                        new Date(anoAtual, mesAtual + 1, 0).getDate();
+
+                    for (let i = 0; i < primeiroDia; i++) {
+                        grade.appendChild(
+                            document.createElement('span')
+                        );
+                    }
+
+                    for (let dia = 1; dia <= totalDias; dia++) {
+                        const celula =
+                            document.createElement('div');
+
+                        const data =
+                            anoAtual + '-' +
+                            String(mesAtual + 1).padStart(2, '0') + '-' +
+                            String(dia).padStart(2, '0');
+
+                        const marcado =
+                            datasCheckins.includes(data);
+
+                        celula.textContent = String(dia);
+
+                        celula.style.cssText =
+                            'padding:10px 0;' +
+                            'border-radius:8px;' +
+                            'text-align:center;' +
+                            (marcado
+                                ? 'background:#16a34a;color:white;font-weight:bold;'
+                                : 'background:rgba(128,128,128,.12);');
+
+                        grade.appendChild(celula);
+                    }
+
+                    calendarioSupabase.append(
+                        tituloMes,
+                        grade
+                    );
+
+                    aviso.insertBefore(
+                        calendarioSupabase,
+                        voltar
+                    );
+
                 } catch (erro) {
                     console.error(
                         'Erro ao consultar check-ins Supabase:',
