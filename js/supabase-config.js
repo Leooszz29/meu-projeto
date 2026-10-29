@@ -200,7 +200,7 @@ async function consultarPerfilSupabaseFitZone() {
 
     const { data, error } = await cliente
         .from('fitzone_perfis')
-        .select('id, nome, criado_em')
+        .select('*')
         .eq('id', identidade.id)
         .maybeSingle();
 
