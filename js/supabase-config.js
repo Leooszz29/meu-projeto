@@ -212,6 +212,52 @@ async function consultarPerfilSupabaseFitZone() {
 }
 
 /* =========================================
+   FITZONE - SALVAR PERFIL SUPABASE
+========================================= */
+
+async function salvarPerfilSupabaseFitZone(perfil) {
+    const cliente = inicializarSupabaseFitZone();
+    const identidade = await obterIdentidadeSupabaseFitZone();
+
+    if (!cliente || !identidade) {
+        throw new Error(
+            'Usuário Supabase não autenticado.'
+        );
+    }
+
+    if (!perfil || !String(perfil.nome || '').trim()) {
+        throw new Error(
+            'O nome do perfil é obrigatório.'
+        );
+    }
+
+    const dados = {
+        id: identidade.id,
+        nome: String(perfil.nome).trim(),
+        idade: perfil.idade,
+        tipo_sanguineo: perfil.tipoSanguineo,
+        peso: perfil.peso,
+        altura: perfil.altura,
+        treinador: perfil.treinador,
+        info_pessoais: perfil.infoPessoais
+    };
+
+    const { data, error } = await cliente
+        .from('fitzone_perfis')
+        .upsert(dados, {
+            onConflict: 'id'
+        })
+        .select('*')
+        .single();
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
+}
+
+/* =========================================
    FITZONE - CHAVE DO USUARIO SUPABASE
 ========================================= */
 
