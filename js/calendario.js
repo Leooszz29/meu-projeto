@@ -124,6 +124,48 @@ document.addEventListener("DOMContentLoaded", async () => {
                         'Seus dias com check-in: ' +
                         Object.keys(checkins).length;
 
+                    const datasCheckins = Object.keys(checkins)
+                        .filter(data => (
+                            /^\d{4}-\d{2}-\d{2}$/.test(data) &&
+                            checkins[data]?.checked === true
+                        ))
+                        .sort()
+                        .reverse();
+
+                    const listaDatas =
+                        document.createElement('ul');
+
+                    listaDatas.id =
+                        'listaCheckinsSupabase';
+
+                    if (datasCheckins.length === 0) {
+                        const item =
+                            document.createElement('li');
+
+                        item.textContent =
+                            'Nenhum check-in registrado.';
+
+                        listaDatas.appendChild(item);
+                    } else {
+                        datasCheckins.forEach(data => {
+                            const item =
+                                document.createElement('li');
+
+                            const [ano, mes, dia] =
+                                data.split('-');
+
+                            item.textContent =
+                                `${dia}/${mes}/${ano}`;
+
+                            listaDatas.appendChild(item);
+                        });
+                    }
+
+                    aviso.insertBefore(
+                        listaDatas,
+                        voltar
+                    );
+
                 } catch (erro) {
                     console.error(
                         'Erro ao consultar check-ins Supabase:',
