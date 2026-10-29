@@ -1030,6 +1030,36 @@ async function handleLogin(e) {
 
     submitBtn.classList.add('loading');
 
+    /* Encerrar sessão Supabase antes de entrar na conta local */
+    try {
+        const clienteSupabase =
+            inicializarSupabaseFitZone();
+
+        const { error: erroLogout } =
+            await clienteSupabase.auth.signOut({
+                scope: 'local'
+            });
+
+        if (erroLogout) {
+            throw erroLogout;
+        }
+
+    } catch (erro) {
+        console.error(
+            'Erro ao encerrar sessão Supabase:',
+            erro
+        );
+
+        showError(
+            'Não foi possível alternar de conta. Tente novamente.'
+        );
+
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+
+        return;
+    }
+
     // Simular envio (remova isso quando conectar a um backend)
     setTimeout(() => {
 
