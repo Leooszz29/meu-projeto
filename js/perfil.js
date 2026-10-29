@@ -471,6 +471,68 @@ function handleSaveProfile() {
     showSuccess();
 }
 
+/* =========================================
+   FITZONE - SALVAR FORMULARIO SUPABASE
+========================================= */
+
+async function handleSaveProfileSupabase() {
+    const nome = getValue('nome');
+
+    if (!nome) {
+        alert('O campo Nome é obrigatório.');
+        document.getElementById('nome')?.focus();
+        return;
+    }
+
+    const idade = Number(getValue('idade'));
+    const peso = Number(getValue('peso'));
+    const altura = Number(getValue('altura'));
+
+    if (
+        !Number.isInteger(idade) ||
+        idade < 10 || idade > 120 ||
+        !Number.isFinite(peso) ||
+        peso < 20 || peso > 400 ||
+        !Number.isFinite(altura) ||
+        altura < 100 || altura > 250
+    ) {
+        alert(
+            'Verifique idade, peso e altura antes de salvar.'
+        );
+        return;
+    }
+
+    const perfil = {
+        nome,
+        idade,
+        tipoSanguineo: getValue('tipoSanguineo'),
+        peso,
+        altura,
+        treinador: getValue('treinador'),
+        infoPessoais: getValue('infoPessoais')
+    };
+
+    const botao = document.getElementById('btnSaveProfile');
+
+    if (botao) {
+        botao.disabled = true;
+    }
+
+    try {
+        await salvarPerfilSupabaseFitZone(perfil);
+        showSuccess();
+    } catch (erro) {
+        console.error('Erro ao salvar perfil Supabase:', erro);
+        alert(
+            'Não foi possível salvar o perfil no Supabase.'
+        );
+    } finally {
+        if (botao) {
+            botao.disabled = false;
+        }
+    }
+}
+
 // ========================================
 // FINALIZAR SESSÃO
 // ========================================
