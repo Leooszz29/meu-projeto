@@ -938,6 +938,54 @@ async function handleLogin(e) {
     const usuarioSalvo =
         carregarUsuarioSalvo(email);
 
+    /* =========================================
+       LOGIN PRINCIPAL - CONTA SUPABASE
+    ========================================= */
+
+    if (!usuarioSalvo) {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+
+        try {
+            const resultado =
+                await validarLoginHibridoFitZone(
+                    email,
+                    password
+                );
+
+            if (!resultado.autenticado ||
+                resultado.origem !== 'supabase') {
+                showError('E-mail ou senha incorretos.');
+                return;
+            }
+
+            atualizarPreferenciaEmail(email);
+
+            showSuccess(
+                'Login realizado com sucesso! Seja bem-vindo! 💪'
+            );
+
+            window.location.href = 'calendario.html';
+            return;
+
+        } catch (erro) {
+            console.error(
+                'Erro na autenticação Supabase:',
+                erro
+            );
+
+            showError(
+                'Não foi possível entrar. Verifique suas credenciais e conexão.'
+            );
+
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('loading');
+        }
+
+        return;
+    }
+
     // Validar credenciais
     if (
         !validarCredenciais(
