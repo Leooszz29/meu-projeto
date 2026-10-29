@@ -1047,14 +1047,13 @@ async function initializeProfile() {
                 initializeIMC();
                 initializeProfileActionsSupabase();
 
-                /* Exibir o formulário Supabase para conferência */
+                /* Habilitar salvamento do perfil Supabase */
                 const botaoSalvar =
                     document.getElementById('btnSaveProfile');
 
                 if (botaoSalvar) {
-                    botaoSalvar.disabled = true;
-                    botaoSalvar.title =
-                        'Salvamento em preparação';
+                    botaoSalvar.disabled = false;
+                    botaoSalvar.removeAttribute('title');
                 }
 
                 aviso.style.cssText =
