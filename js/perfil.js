@@ -1038,6 +1038,10 @@ async function initializeProfile() {
                 voltar.href = 'calendario.html';
                 voltar.textContent = 'Voltar ao calendário';
 
+                /* Preparar o formulário exclusivo Supabase */
+                initializeIMC();
+                initializeProfileActionsSupabase();
+
                 aviso.append(titulo, mensagem, voltar);
 
                 document.body.replaceChildren(aviso);
