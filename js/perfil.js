@@ -260,6 +260,36 @@ function fillForm() {
     }
 }
 
+/* =========================================
+   FITZONE - PREENCHER PERFIL SUPABASE
+========================================= */
+
+function preencherFormularioSupabase(perfil) {
+    if (!perfil) {
+        return;
+    }
+
+    const campos = {
+        nome: perfil.nome,
+        idade: perfil.idade,
+        tipoSanguineo: perfil.tipo_sanguineo,
+        peso: perfil.peso,
+        altura: perfil.altura,
+        treinador: perfil.treinador,
+        infoPessoais: perfil.info_pessoais
+    };
+
+    Object.entries(campos).forEach(([id, valor]) => {
+        const campo = document.getElementById(id);
+
+        if (campo) {
+            campo.value = valor ?? '';
+        }
+    });
+
+    calcularIMC();
+}
+
 // ========================================
 // MOSTRAR SUCESSO
 // ========================================
