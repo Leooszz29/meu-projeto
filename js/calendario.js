@@ -136,6 +136,68 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 document.body.replaceChildren(aviso);
 
+                const botaoCheckin =
+                    document.createElement('button');
+
+                botaoCheckin.type = 'button';
+                botaoCheckin.textContent =
+                    'Registrar check-in de teste';
+
+                aviso.insertBefore(botaoCheckin, voltar);
+
+                botaoCheckin.addEventListener('click', async () => {
+                    botaoCheckin.disabled = true;
+
+                    try {
+                        const acessoAtual =
+                            await identificarAcessoSupabaseCalendario();
+
+                        if (
+                            !acessoAtual.autenticado ||
+                            acessoAtual.identificador !==
+                                acessoSupabase.identificador
+                        ) {
+                            window.location.replace('login.html');
+                            return;
+                        }
+
+                        const checkins =
+                            await carregarCheckinsSupabase();
+
+                        const hoje = new Date();
+
+                        const data =
+                            hoje.getFullYear() + '-' +
+                            String(hoje.getMonth() + 1).padStart(2, '0') + '-' +
+                            String(hoje.getDate()).padStart(2, '0');
+
+                        if (!checkins[data]) {
+                            checkins[data] = {
+                                checked: true,
+                                treino: ''
+                            };
+
+                            await salvarCheckinsSupabase(checkins);
+                        }
+
+                        informacaoCheckins.textContent =
+                            'Seus dias com check-in: ' +
+                            Object.keys(checkins).length;
+
+                        botaoCheckin.textContent =
+                            'Check-in de hoje registrado';
+
+                    } catch (erro) {
+                        console.error(
+                            'Erro no check-in de teste:',
+                            erro
+                        );
+
+                        alert('Não foi possível registrar o check-in.');
+                        botaoCheckin.disabled = false;
+                    }
+                });
+
                 const identificadorInicial =
                     acessoSupabase.identificador;
 
