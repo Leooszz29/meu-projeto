@@ -83,9 +83,53 @@ document.addEventListener("DOMContentLoaded", async () => {
                     'Conta Supabase autenticada. ' +
                     'O calendário está sendo integrado.';
 
-                const voltar = document.createElement('a');
-                voltar.href = 'login.html';
-                voltar.textContent = 'Voltar ao login';
+                const voltar = document.createElement('button');
+
+                voltar.type = 'button';
+                voltar.textContent = 'Sair da conta Supabase';
+
+                voltar.addEventListener('click', async () => {
+                    const confirmar = confirm(
+                        'Deseja realmente sair da sua conta?'
+                    );
+
+                    if (!confirmar) {
+                        return;
+                    }
+
+                    voltar.disabled = true;
+                    voltar.textContent = 'Saindo...';
+
+                    try {
+                        const cliente =
+                            inicializarSupabaseFitZone();
+
+                        const { error } =
+                            await cliente.auth.signOut({
+                                scope: 'local'
+                            });
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        window.location.replace('login.html');
+
+                    } catch (erro) {
+                        console.error(
+                            'Erro ao sair da conta Supabase:',
+                            erro
+                        );
+
+                        alert(
+                            'Não foi possível encerrar a sessão.'
+                        );
+
+                        voltar.disabled = false;
+                        voltar.textContent =
+                            'Sair da conta Supabase';
+                    }
+                });
 
                 const informacaoCheckins =
                     document.createElement('p');
