@@ -1047,9 +1047,30 @@ async function initializeProfile() {
                 initializeIMC();
                 initializeProfileActionsSupabase();
 
-                aviso.append(titulo, mensagem, voltar);
+                /* Exibir o formulário Supabase para conferência */
+                const botaoSalvar =
+                    document.getElementById('btnSaveProfile');
 
-                document.body.replaceChildren(aviso);
+                if (botaoSalvar) {
+                    botaoSalvar.disabled = true;
+                    botaoSalvar.title =
+                        'Salvamento em preparação';
+                }
+
+                aviso.style.cssText =
+                    'padding:16px;' +
+                    'text-align:center;' +
+                    'margin-bottom:16px;';
+
+                aviso.append(mensagem, voltar);
+
+                const pagina =
+                    document.querySelector('.page');
+
+                if (pagina) {
+                    pagina.prepend(aviso);
+                }
+
                 return;
             }
 
