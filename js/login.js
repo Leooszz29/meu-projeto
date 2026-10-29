@@ -1121,13 +1121,15 @@ function inicializarLogin() {
             return;
         }
 
-        try {
-            localStorage.removeItem('fitzoneSessao');
-        } catch (erro) {
-            console.warn(
-                'Não foi possível limpar a sessão inválida:',
-                erro
-            );
+        if (!usuarioDaSessao) {
+            try {
+                localStorage.removeItem('fitzoneSessao');
+            } catch (erro) {
+                console.warn(
+                    'Não foi possível limpar a sessão inválida:',
+                    erro
+                );
+            }
         }
     }
 
