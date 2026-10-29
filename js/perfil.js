@@ -727,6 +727,34 @@ function initializeIMC() {
     }
 }
 
+/* =========================================
+   FITZONE - ACOES DO PERFIL SUPABASE
+========================================= */
+
+function initializeProfileActionsSupabase() {
+    const formulario =
+        document.getElementById('profileForm');
+
+    if (!formulario) {
+        return;
+    }
+
+    formulario.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const acesso =
+            await identificarAcessoSupabasePerfil();
+
+        if (!acesso.autenticado) {
+            alert('Sua sessão expirou. Entre novamente.');
+            window.location.replace('login.html');
+            return;
+        }
+
+        await handleSaveProfileSupabase();
+    });
+}
+
 function initializeProfileActions() {
     const profileForm =
         document.getElementById('profileForm');
