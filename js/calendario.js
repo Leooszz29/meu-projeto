@@ -218,6 +218,50 @@ document.addEventListener("DOMContentLoaded", async () => {
                     let anoAtual = agora.getFullYear();
                     let mesAtual = agora.getMonth();
 
+                    function atualizarVisualizacaoCheckinsSupabase() {
+                        const datasAtualizadas = Object.keys(checkins)
+                            .filter(data => (
+                                /^\d{4}-\d{2}-\d{2}$/.test(data) &&
+                                checkins[data]?.checked === true
+                            ))
+                            .sort()
+                            .reverse();
+
+                        datasCheckins.length = 0;
+                        datasCheckins.push(...datasAtualizadas);
+
+                        informacaoCheckins.textContent =
+                            'Seus dias com check-in: ' +
+                            datasAtualizadas.length;
+
+                        listaDatas.replaceChildren();
+
+                        if (datasAtualizadas.length === 0) {
+                            const item =
+                                document.createElement('li');
+
+                            item.textContent =
+                                'Nenhum check-in registrado.';
+
+                            listaDatas.appendChild(item);
+                        } else {
+                            datasAtualizadas.forEach(data => {
+                                const item =
+                                    document.createElement('li');
+
+                                const [ano, mes, dia] =
+                                    data.split('-');
+
+                                item.textContent =
+                                    `${dia}/${mes}/${ano}`;
+
+                                listaDatas.appendChild(item);
+                            });
+                        }
+
+                        renderizarMesSupabase();
+                    }
+
                     function renderizarMesSupabase() {
                         const dataMes =
                             new Date(anoAtual, mesAtual, 1);
