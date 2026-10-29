@@ -578,7 +578,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 typeof sessaoAtual.email !== "string" ||
                 sessaoAtual.email.trim().toLowerCase() !== emailSessaoInicial
             ) {
-                window.location.replace("login.html");
+                window.location.replace("calendario.html");
             }
         } catch (erro) {
             console.warn("Sessão do calendário inválida:", erro);
