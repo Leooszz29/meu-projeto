@@ -959,6 +959,22 @@ async function handleLogin(e) {
                 return;
             }
 
+            /* Evitar conflito com uma sessão local anterior */
+            try {
+                localStorage.removeItem('fitzoneSessao');
+            } catch (erro) {
+                console.error(
+                    'Não foi possível limpar a sessão local:',
+                    erro
+                );
+
+                showError(
+                    'Não foi possível alternar de conta. Tente novamente.'
+                );
+
+                return;
+            }
+
             atualizarPreferenciaEmail(email);
 
             showSuccess(
