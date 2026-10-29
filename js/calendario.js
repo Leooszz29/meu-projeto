@@ -87,7 +87,53 @@ document.addEventListener("DOMContentLoaded", async () => {
                 voltar.href = 'login.html';
                 voltar.textContent = 'Voltar ao login';
 
-                aviso.append(titulo, mensagem, voltar);
+                const informacaoCheckins =
+                    document.createElement('p');
+
+                informacaoCheckins.textContent =
+                    'Consultando seus check-ins...';
+
+                aviso.append(
+                    titulo,
+                    mensagem,
+                    informacaoCheckins,
+                    voltar
+                );
+
+                try {
+                    const chave =
+                        await obterChaveArmazenamentoSupabaseFitZone(
+                            'checkins'
+                        );
+
+                    const dadosSalvos = localStorage.getItem(chave);
+
+                    const checkins = dadosSalvos
+                        ? JSON.parse(dadosSalvos)
+                        : {};
+
+                    if (
+                        !checkins ||
+                        typeof checkins !== 'object' ||
+                        Array.isArray(checkins)
+                    ) {
+                        throw new Error('Dados de check-in inválidos.');
+                    }
+
+                    informacaoCheckins.textContent =
+                        'Seus dias com check-in: ' +
+                        Object.keys(checkins).length;
+
+                } catch (erro) {
+                    console.error(
+                        'Erro ao consultar check-ins Supabase:',
+                        erro
+                    );
+
+                    informacaoCheckins.textContent =
+                        'Não foi possível consultar seus check-ins.';
+                }
+
                 document.body.replaceChildren(aviso);
 
                 const identificadorInicial =
