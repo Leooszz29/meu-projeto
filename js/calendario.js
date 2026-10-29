@@ -260,10 +260,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                         }
 
                         for (let dia = 1; dia <= totalDias; dia++) {
+
                             const celula =
                                 document.createElement('button');
 
                             celula.type = 'button';
+
+                            const data =
                                 anoAtual + '-' +
                                 String(mesAtual + 1).padStart(2, '0') + '-' +
                                 String(dia).padStart(2, '0');
