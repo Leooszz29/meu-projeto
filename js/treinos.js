@@ -4554,6 +4554,85 @@ window.addEventListener(
                     lista.appendChild(item);
                 });
 
+                /* =========================================
+                   BOTAO TEMPORARIO DE TESTE SUPABASE
+                ========================================= */
+
+                const botaoTeste =
+                    document.createElement('button');
+
+                botaoTeste.type = 'button';
+                botaoTeste.textContent =
+                    'Criar treino de teste';
+
+                botaoTeste.style.cssText =
+                    'display:block;margin:20px 0;' +
+                    'padding:12px 18px;cursor:pointer;';
+
+                painel.insertBefore(botaoTeste, voltar);
+
+                botaoTeste.addEventListener(
+                    'click',
+                    async () => {
+                        botaoTeste.disabled = true;
+                        mensagem.textContent =
+                            'Salvando treino no Supabase...';
+
+                        try {
+                            const sessaoValida =
+                                await conferirSessaoHibridaTreinos(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            if (!sessaoValida) {
+                                window.location.replace(
+                                    'login.html'
+                                );
+                                return;
+                            }
+
+                            const treinoTeste = {
+                                id: 'teste-' + crypto.randomUUID(),
+                                nome: 'Treino de teste Supabase',
+                                exercicios: []
+                            };
+
+                            await salvarTreinoBancoSupabase(
+                                treinoTeste
+                            );
+
+                            const treinosAtualizados =
+                                await consultarTreinosBancoSupabase();
+
+                            lista.replaceChildren();
+
+                            treinosAtualizados.forEach(treino => {
+                                const item =
+                                    document.createElement('li');
+
+                                item.textContent =
+                                    treino.nome || 'Treino sem nome';
+
+                                lista.appendChild(item);
+                            });
+
+                            mensagem.textContent =
+                                'Treino salvo com sucesso no Supabase!';
+
+                        } catch (erro) {
+                            console.error(
+                                'Erro ao salvar treino:',
+                                erro
+                            );
+
+                            mensagem.textContent =
+                                'Erro ao salvar treino no Supabase.';
+                        } finally {
+                            botaoTeste.disabled = false;
+                        }
+                    }
+                );
+
             } catch (erro) {
                 console.error(
                     'Erro ao consultar treinos Supabase:',
