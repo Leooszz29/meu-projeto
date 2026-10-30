@@ -195,6 +195,61 @@ async function consultarTreinosBancoSupabase() {
     }));
 }
 
+/* =========================================
+   FITZONE - SALVAR TREINO NO BANCO SUPABASE
+========================================= */
+
+async function salvarTreinoBancoSupabase(treino) {
+    if (
+        !treino ||
+        typeof treino !== 'object' ||
+        Array.isArray(treino) ||
+        typeof treino.id !== 'string' ||
+        !treino.id.trim()
+    ) {
+        throw new Error(
+            'Treino inválido para salvar no Supabase.'
+        );
+    }
+
+    const acesso =
+        await identificarAcessoSupabaseTreinos();
+
+    if (!acesso.autenticado) {
+        throw new Error(
+            'Usuário Supabase não autenticado.'
+        );
+    }
+
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error(
+            'Não foi possível conectar ao Supabase.'
+        );
+    }
+
+    const { error } = await cliente
+        .from('fitzone_treinos')
+        .upsert(
+            {
+                usuario_id: acesso.id,
+                treino_id: treino.id,
+                dados: treino,
+                atualizado_em: new Date().toISOString()
+            },
+            {
+                onConflict: 'usuario_id,treino_id'
+            }
+        );
+
+    if (error) {
+        throw error;
+    }
+
+    return true;
+}
+
 // ==================== SESSÃO ====================
 function carregarSessao() {
 
