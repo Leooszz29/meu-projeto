@@ -4288,6 +4288,45 @@ async function verificarContinuidadeSupabaseTreinos(
 }
 
 /* =========================================
+   FITZONE - CONFERIR SESSAO HIBRIDA
+========================================= */
+
+async function conferirSessaoHibridaTreinos(
+    acessoInicial
+) {
+    if (
+        !acessoInicial ||
+        acessoInicial.autenticado !== true
+    ) {
+        return false;
+    }
+
+    const acessoAtual =
+        await verificarOrigemAcessoTreinos();
+
+    if (
+        !acessoAtual.autenticado ||
+        acessoAtual.origem !== acessoInicial.origem
+    ) {
+        return false;
+    }
+
+    if (acessoInicial.origem === 'local') {
+        return (
+            acessoAtual.email === acessoInicial.email
+        );
+    }
+
+    if (acessoInicial.origem === 'supabase') {
+        return (
+            acessoAtual.id === acessoInicial.id
+        );
+    }
+
+    return false;
+}
+
+/* =========================================
    FITZONE - VERIFICAR CONTINUIDADE DA SESSAO
 ========================================= */
 
