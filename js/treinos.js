@@ -109,6 +109,32 @@ async function obterChaveHistoricoSupabase() {
     );
 }
 
+/* =========================================
+   FITZONE - CARREGAR HISTORICO SUPABASE
+   Armazenamento local temporario por UUID
+========================================= */
+
+async function carregarHistoricoSupabase() {
+    const chave =
+        await obterChaveHistoricoSupabase();
+
+    const dados = localStorage.getItem(chave);
+
+    if (!dados) {
+        return [];
+    }
+
+    const historico = JSON.parse(dados);
+
+    if (!Array.isArray(historico)) {
+        throw new Error(
+            'Formato inválido do histórico Supabase.'
+        );
+    }
+
+    return historico;
+}
+
 // ==================== SESSÃO ====================
 function carregarSessao() {
 
