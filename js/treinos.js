@@ -4632,7 +4632,7 @@ window.addEventListener(
                         }
                     }
                 );
-x
+
                 /* =========================================
                    EXCLUIR TREINO DE TESTE SUPABASE
                 ========================================= */
