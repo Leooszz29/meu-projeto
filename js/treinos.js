@@ -4737,6 +4737,25 @@ window.addEventListener(
                 titulo.remove();
             }
 
+            /* =========================================
+               PLANEJAMENTO ORIGINAL PARA SUPABASE
+            ========================================= */
+
+            const planejamentoOriginal =
+                document.querySelector(
+                    '.page .workouts-heading'
+                );
+
+            if (planejamentoOriginal) {
+                const planejamentoSupabase =
+                    planejamentoOriginal.cloneNode(true);
+
+                painel.insertBefore(
+                    planejamentoSupabase,
+                    mensagem
+                );
+            }
+
             try {
                 const resultado =
                     await prepararTreinosSupabaseFitZone();
