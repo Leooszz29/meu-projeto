@@ -4465,6 +4465,26 @@ document.addEventListener('visibilitychange', async () => {
 window.addEventListener(
     'DOMContentLoaded',
     async () => {
+
+        /* =========================================
+           IDENTIFICAR ORIGEM DA SESSAO
+        ========================================= */
+
+        let acessoPagina;
+
+        try {
+            acessoPagina =
+                await verificarOrigemAcessoTreinos();
+        } catch (erro) {
+            console.error(
+                'Erro ao identificar a sessão:',
+                erro
+            );
+
+            window.location.replace('login.html');
+            return;
+        }
+
         const sessao =
             carregarSessao();
 
