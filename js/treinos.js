@@ -4636,11 +4636,7 @@ window.addEventListener(
             const lista = document.createElement('div');
             lista.className = 'workouts-list';
 
-            const voltar = document.createElement('a');
-            voltar.href = 'calendario.html';
-            voltar.textContent = 'Voltar ao calendário';
-
-            painel.append(titulo, mensagem, lista, voltar);
+            painel.append(titulo, mensagem, lista);
 
             const conteudoOriginal = document.body;
 
