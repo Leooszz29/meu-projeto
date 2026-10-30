@@ -250,6 +250,50 @@ async function salvarTreinoBancoSupabase(treino) {
     return true;
 }
 
+/* =========================================
+   FITZONE - EXCLUIR TREINO NO BANCO SUPABASE
+========================================= */
+
+async function excluirTreinoBancoSupabase(treinoId) {
+    if (
+        typeof treinoId !== 'string' ||
+        !treinoId.trim()
+    ) {
+        throw new Error(
+            'Identificador do treino inválido.'
+        );
+    }
+
+    const acesso =
+        await identificarAcessoSupabaseTreinos();
+
+    if (!acesso.autenticado) {
+        throw new Error(
+            'Usuário Supabase não autenticado.'
+        );
+    }
+
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error(
+            'Não foi possível conectar ao Supabase.'
+        );
+    }
+
+    const { error } = await cliente
+        .from('fitzone_treinos')
+        .delete()
+        .eq('usuario_id', acesso.id)
+        .eq('treino_id', treinoId);
+
+    if (error) {
+        throw error;
+    }
+
+    return true;
+}
+
 // ==================== SESSÃO ====================
 function carregarSessao() {
 
