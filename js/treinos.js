@@ -4606,7 +4606,8 @@ window.addEventListener(
             mensagem.textContent =
                 'Consultando seus treinos no Supabase...';
 
-            const lista = document.createElement('ul');
+            const lista = document.createElement('div');
+            lista.className = 'workouts-list';
 
             const voltar = document.createElement('a');
             voltar.href = 'calendario.html';
