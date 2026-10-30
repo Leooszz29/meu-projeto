@@ -4702,6 +4702,77 @@ window.addEventListener(
                 painel.appendChild(modalTreinoOriginal);
             }
 
+            /* =========================================
+               ABRIR FORMULARIO ORIGINAL NO SUPABASE
+            ========================================= */
+
+            const botaoNovoOriginal =
+                document.getElementById('btnNewWorkout');
+
+            if (botaoNovoOriginal && modalTreinoOriginal) {
+                painel.insertBefore(
+                    botaoNovoOriginal,
+                    mensagem
+                );
+
+                const campoNome =
+                    document.getElementById(
+                        'workoutNameInput'
+                    );
+
+                const botaoSalvar =
+                    document.getElementById(
+                        'workoutSaveBtn'
+                    );
+
+                const botaoCancelar =
+                    document.getElementById(
+                        'workoutCancelBtn'
+                    );
+
+                if (botaoSalvar) {
+                    botaoSalvar.disabled = true;
+                }
+
+                botaoNovoOriginal.addEventListener(
+                    'click',
+                    () => {
+                        if (campoNome) {
+                            campoNome.value = '';
+                        }
+
+                        const tituloModal =
+                            document.getElementById(
+                                'workoutModalTitle'
+                            );
+
+                        if (tituloModal) {
+                            tituloModal.textContent =
+                                'Novo treino';
+                        }
+
+                        modalTreinoOriginal.classList.add(
+                            'show'
+                        );
+
+                        if (campoNome) {
+                            campoNome.focus();
+                        }
+                    }
+                );
+
+                if (botaoCancelar) {
+                    botaoCancelar.addEventListener(
+                        'click',
+                        () => {
+                            modalTreinoOriginal.classList.remove(
+                                'show'
+                            );
+                        }
+                    );
+                }
+            }
+
             try {
                 const resultado =
                     await prepararTreinosSupabaseFitZone();
