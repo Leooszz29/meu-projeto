@@ -4631,6 +4631,35 @@ window.addEventListener(
             conteudoOriginal.appendChild(painel);
 
             /* =========================================
+               PREPARAR NAVEGACAO SUPABASE
+            ========================================= */
+
+            const navegacaoOriginal =
+                document.querySelector('.page > .app-nav');
+
+            if (navegacaoOriginal) {
+                const navegacaoSupabase =
+                    navegacaoOriginal.cloneNode(true);
+
+                const botaoSairSupabase =
+                    navegacaoSupabase.querySelector(
+                        '#btnEndSession'
+                    );
+
+                if (botaoSairSupabase) {
+                    botaoSairSupabase.removeAttribute('id');
+                    botaoSairSupabase.disabled = true;
+                }
+
+                navegacaoSupabase.hidden = true;
+
+                painel.insertBefore(
+                    navegacaoSupabase,
+                    painel.firstChild
+                );
+            }
+
+            /* =========================================
                CABECALHO ORIGINAL PARA SUPABASE
             ========================================= */
 
