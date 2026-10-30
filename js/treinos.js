@@ -4402,6 +4402,16 @@ window.addEventListener(
         }
 
         /* =========================================
+           REGISTRAR IDENTIDADE DA CONTA TRADICIONAL
+        ========================================= */
+
+        acessoInicialTreinosFitZone = {
+            origem: 'local',
+            autenticado: true,
+            email: sessao.email
+        };
+
+        /* =========================================
            MOSTRAR PAGINA ATIVA NO MENU MOBILE
         ========================================= */
 
