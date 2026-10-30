@@ -4595,12 +4595,10 @@ window.addEventListener(
                         ? 'Nenhum treino cadastrado no banco.'
                         : 'Treinos encontrados (somente leitura):';
 
-                resultado.treinos.forEach(treino => {
-                    const item = document.createElement('li');
-                    item.textContent =
-                        treino.nome || 'Treino sem nome';
-                    lista.appendChild(item);
-                });
+                renderizarCartoesSupabase(
+                    resultado.treinos,
+                    lista
+                );
 
                 /* =========================================
                    BOTAO TEMPORARIO DE TESTE SUPABASE
