@@ -4649,6 +4649,49 @@ window.addEventListener(
                 if (botaoSairSupabase) {
                     botaoSairSupabase.removeAttribute('id');
                     botaoSairSupabase.disabled = true;
+
+                    botaoSairSupabase.addEventListener(
+                        'click',
+                        async () => {
+                            botaoSairSupabase.disabled = true;
+
+                            try {
+                                const cliente =
+                                    inicializarSupabaseFitZone();
+
+                                if (!cliente) {
+                                    throw new Error(
+                                        'Supabase indisponível.'
+                                    );
+                                }
+
+                                const { error } =
+                                    await cliente.auth.signOut({
+                                        scope: 'local'
+                                    });
+
+                                if (error) {
+                                    throw error;
+                                }
+
+                                window.location.replace(
+                                    'login.html'
+                                );
+
+                            } catch (erro) {
+                                console.error(
+                                    'Erro ao sair do Supabase:',
+                                    erro
+                                );
+
+                                alert(
+                                    'Não foi possível encerrar a sessão.'
+                                );
+
+                                botaoSairSupabase.disabled = false;
+                            }
+                        }
+                    );
                 }
 
                 navegacaoSupabase.hidden = true;
