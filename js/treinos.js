@@ -4355,7 +4355,7 @@ function verificarContinuidadeSessaoFitZone(
     return true;
 }
 
-window.addEventListener('storage', (event) => {
+window.addEventListener('storage', async (event) => {
     if (event.storageArea !== localStorage) {
         return;
     }
@@ -4367,7 +4367,31 @@ window.addEventListener('storage', (event) => {
         return;
     }
 
-    verificarContinuidadeSessaoFitZone();
+    if (!acessoInicialTreinosFitZone) {
+        return;
+    }
+
+    try {
+        const sessaoValida =
+            await conferirSessaoHibridaTreinos(
+                acessoInicialTreinosFitZone
+            );
+
+        if (!sessaoValida) {
+            console.warn(
+                'Sessão FitZone encerrada ou alterada.'
+            );
+
+            window.location.replace('login.html');
+        }
+    } catch (erro) {
+        console.error(
+            'Erro ao verificar a sessão:',
+            erro
+        );
+
+        window.location.replace('login.html');
+    }
 });
 
 /* =========================================
