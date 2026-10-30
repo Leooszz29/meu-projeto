@@ -4650,17 +4650,10 @@ window.addEventListener(
                             const treinosAtualizados =
                                 await consultarTreinosBancoSupabase();
 
-                            lista.replaceChildren();
-
-                            treinosAtualizados.forEach(treino => {
-                                const item =
-                                    document.createElement('li');
-
-                                item.textContent =
-                                    treino.nome || 'Treino sem nome';
-
-                                lista.appendChild(item);
-                            });
+                            renderizarCartoesSupabase(
+                                treinosAtualizados,
+                                lista
+                            );
 
                             mensagem.textContent =
                                 'Treino salvo com sucesso no Supabase!';
