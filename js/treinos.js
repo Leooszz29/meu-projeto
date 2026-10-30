@@ -4327,6 +4327,12 @@ async function conferirSessaoHibridaTreinos(
 }
 
 /* =========================================
+   FITZONE - IDENTIDADE INICIAL DA PAGINA
+========================================= */
+
+let acessoInicialTreinosFitZone = null;
+
+/* =========================================
    FITZONE - VERIFICAR CONTINUIDADE DA SESSAO
 ========================================= */
 
