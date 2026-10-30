@@ -4738,17 +4738,10 @@ window.addEventListener(
                             const atualizados =
                                 await consultarTreinosBancoSupabase();
 
-                            lista.replaceChildren();
-
-                            atualizados.forEach(treino => {
-                                const item =
-                                    document.createElement('li');
-
-                                item.textContent =
-                                    treino.nome || 'Treino sem nome';
-
-                                lista.appendChild(item);
-                            });
+                            renderizarCartoesSupabase(
+                                atualizados,
+                                lista
+                            );
 
                             mensagem.textContent =
                                 'Treino de teste excluído com sucesso!';
