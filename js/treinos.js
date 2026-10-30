@@ -4507,12 +4507,64 @@ window.addEventListener(
         ) {
             acessoInicialTreinosFitZone = acessoPagina;
 
-            console.info(
-                'Conta Supabase identificada. ' +
-                'Integração dos treinos em preparação.'
-            );
+            const painel = document.createElement('main');
+            painel.style.cssText =
+                'max-width:700px;margin:40px auto;' +
+                'padding:24px;font-family:inherit;';
 
-            window.location.replace('calendario.html');
+            const titulo = document.createElement('h1');
+            titulo.textContent = 'Meus Treinos';
+
+            const mensagem = document.createElement('p');
+            mensagem.textContent =
+                'Consultando seus treinos no Supabase...';
+
+            const lista = document.createElement('ul');
+
+            const voltar = document.createElement('a');
+            voltar.href = 'calendario.html';
+            voltar.textContent = 'Voltar ao calendário';
+
+            painel.append(titulo, mensagem, lista, voltar);
+            document.body.replaceChildren(painel);
+
+            try {
+                const resultado =
+                    await prepararTreinosSupabaseFitZone();
+
+                const sessaoValida =
+                    await conferirSessaoHibridaTreinos(
+                        acessoInicialTreinosFitZone
+                    );
+
+                if (!sessaoValida) {
+                    window.location.replace('login.html');
+                    return;
+                }
+
+                mensagem.textContent =
+                    resultado.treinos.length === 0
+                        ? 'Nenhum treino cadastrado no banco.'
+                        : 'Treinos encontrados (somente leitura):';
+
+                resultado.treinos.forEach(treino => {
+                    const item = document.createElement('li');
+                    item.textContent =
+                        treino.nome || 'Treino sem nome';
+                    lista.appendChild(item);
+                });
+
+            } catch (erro) {
+                console.error(
+                    'Erro ao consultar treinos Supabase:',
+                    erro
+                );
+
+                mensagem.textContent =
+                    'Não foi possível carregar os treinos. ' +
+                    'Verifique a conexão e tente novamente.';
+            }
+
             return;
         }
 
