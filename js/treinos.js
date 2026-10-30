@@ -1,3 +1,27 @@
+
+/* =========================================
+   FITZONE - IDENTIFICAR CONTA SUPABASE
+========================================= */
+
+async function identificarAcessoSupabaseTreinos() {
+    const identidade =
+        await obterIdentidadeSupabaseFitZone();
+
+    if (!identidade) {
+        return {
+            autenticado: false,
+            id: null,
+            email: null
+        };
+    }
+
+    return {
+        autenticado: true,
+        id: identidade.id,
+        email: identidade.email
+    };
+}
+
 // ==================== SESSÃO ====================
 function carregarSessao() {
 
