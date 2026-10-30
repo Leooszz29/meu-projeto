@@ -4195,7 +4195,7 @@ async function prepararTreinosSupabaseFitZone() {
     }
 
     const treinos =
-        await consultarTreinosBancoSupabase();
+        await carregarTreinosPorOrigem(acesso);
 
     if (!Array.isArray(treinos)) {
         throw new Error(
