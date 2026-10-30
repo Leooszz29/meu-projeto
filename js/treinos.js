@@ -4464,7 +4464,7 @@ document.addEventListener('visibilitychange', async () => {
 // ==================== INICIALIZAÇÃO ====================
 window.addEventListener(
     'DOMContentLoaded',
-    () => {
+    async () => {
         const sessao =
             carregarSessao();
 
