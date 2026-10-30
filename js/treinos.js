@@ -4689,6 +4689,19 @@ window.addEventListener(
                 );
             }
 
+            /* =========================================
+               FORMULARIO ORIGINAL PARA SUPABASE
+            ========================================= */
+
+            const modalTreinoOriginal =
+                document.getElementById(
+                    'workoutModalOverlay'
+                );
+
+            if (modalTreinoOriginal) {
+                painel.appendChild(modalTreinoOriginal);
+            }
+
             try {
                 const resultado =
                     await prepararTreinosSupabaseFitZone();
