@@ -4596,8 +4596,9 @@ window.addEventListener(
 
             const painel = document.createElement('main');
             painel.style.cssText =
-                'max-width:700px;margin:40px auto;' +
-                'padding:24px;font-family:inherit;';
+                'width:100%;max-width:560px;' +
+                'margin:0 auto;padding:0 12px 24px;' +
+                'font-family:inherit;';
 
             const titulo = document.createElement('h1');
             titulo.textContent = 'Meus Treinos';
