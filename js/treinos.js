@@ -806,6 +806,45 @@ function renderizarCartoesSupabase(treinos, lista) {
                 : `${quantidade} exercício(s) cadastrados`;
 
         card.appendChild(detalhes);
+
+        /* =========================================
+           EXIBIR EXERCICIOS DO TREINO SUPABASE
+        ========================================= */
+
+        if (quantidade > 0) {
+            treino.exercicios.forEach(exercicio => {
+                const linha = document.createElement('div');
+                linha.className = 'exercise-row';
+
+                const informacoes = document.createElement('div');
+                informacoes.className = 'exercise-info';
+
+                const nome = document.createElement('div');
+                nome.className = 'exercise-name';
+                nome.textContent =
+                    exercicio.nome || 'Exercício sem nome';
+
+                const detalhesExercicio =
+                    document.createElement('div');
+
+                detalhesExercicio.className = 'exercise-meta';
+
+                const series = exercicio.series ?? '-';
+                const repeticoes = exercicio.repeticoes ?? '-';
+                const descanso = exercicio.descanso ?? '-';
+
+                detalhesExercicio.textContent =
+                    `${series}x${repeticoes} repetições · ` +
+                    `${descanso}s descanso`;
+
+                informacoes.appendChild(nome);
+                informacoes.appendChild(detalhesExercicio);
+
+                linha.appendChild(informacoes);
+                card.appendChild(linha);
+            });
+        }
+
         lista.appendChild(card);
     });
 }
