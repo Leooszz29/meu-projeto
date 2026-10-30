@@ -4169,6 +4169,39 @@ const emailSessaoInicialFitZone =
     carregarSessao()?.email ?? null;
 
 /* =========================================
+   FITZONE - VERIFICAR ORIGEM DO ACESSO
+========================================= */
+
+async function verificarOrigemAcessoTreinos() {
+    const sessaoLocal = carregarSessao();
+
+    if (sessaoLocal) {
+        return {
+            origem: 'local',
+            autenticado: true,
+            email: sessaoLocal.email
+        };
+    }
+
+    const acessoSupabase =
+        await identificarAcessoSupabaseTreinos();
+
+    if (acessoSupabase.autenticado) {
+        return {
+            origem: 'supabase',
+            autenticado: true,
+            id: acessoSupabase.id,
+            email: acessoSupabase.email
+        };
+    }
+
+    return {
+        origem: 'nenhuma',
+        autenticado: false
+    };
+}
+
+/* =========================================
    FITZONE - VERIFICAR CONTINUIDADE DA SESSAO
 ========================================= */
 
