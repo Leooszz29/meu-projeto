@@ -90,6 +90,25 @@ async function salvarTreinosSupabase(treinos) {
     return true;
 }
 
+/* =========================================
+   FITZONE - CHAVE DO HISTORICO SUPABASE
+========================================= */
+
+async function obterChaveHistoricoSupabase() {
+    const acesso =
+        await identificarAcessoSupabaseTreinos();
+
+    if (!acesso.autenticado) {
+        throw new Error(
+            'Usuário Supabase não autenticado.'
+        );
+    }
+
+    return obterChaveArmazenamentoSupabaseFitZone(
+        'historico-treinos'
+    );
+}
+
 // ==================== SESSÃO ====================
 function carregarSessao() {
 
