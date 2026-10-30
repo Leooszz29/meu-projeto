@@ -135,6 +135,29 @@ async function carregarHistoricoSupabase() {
     return historico;
 }
 
+/* =========================================
+   FITZONE - SALVAR HISTORICO SUPABASE
+   Armazenamento local temporario por UUID
+========================================= */
+
+async function salvarHistoricoSupabase(historico) {
+    if (!Array.isArray(historico)) {
+        throw new Error(
+            'O histórico deve ser uma lista.'
+        );
+    }
+
+    const chave =
+        await obterChaveHistoricoSupabase();
+
+    localStorage.setItem(
+        chave,
+        JSON.stringify(historico)
+    );
+
+    return true;
+}
+
 // ==================== SESSÃO ====================
 function carregarSessao() {
 
