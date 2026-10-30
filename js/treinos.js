@@ -4202,6 +4202,37 @@ async function verificarOrigemAcessoTreinos() {
 }
 
 /* =========================================
+   FITZONE - VALIDAR ACESSO AOS TREINOS
+========================================= */
+
+async function validarAcessoTreinosFitZone() {
+    const acesso = await verificarOrigemAcessoTreinos();
+
+    if (!acesso.autenticado) {
+        return {
+            permitido: false,
+            origem: 'nenhuma',
+            motivo: 'Usuário não autenticado.'
+        };
+    }
+
+    if (acesso.origem === 'local') {
+        return {
+            permitido: true,
+            origem: 'local',
+            email: acesso.email
+        };
+    }
+
+    return {
+        permitido: false,
+        origem: 'supabase',
+        id: acesso.id,
+        motivo: 'Integração dos treinos em preparação.'
+    };
+}
+
+/* =========================================
    FITZONE - VERIFICAR CONTINUIDADE DA SESSAO
 ========================================= */
 
