@@ -888,7 +888,31 @@ function renderizarCartoesSupabase(treinos, lista) {
                 editarExercicio.dataset.treinoExercicioSupabase =
                     treino.id;
 
-                linha.append(informacoes, editarExercicio);
+                const excluirExercicio =
+                    document.createElement('button');
+
+                excluirExercicio.type = 'button';
+                excluirExercicio.className = 'icon-btn';
+                excluirExercicio.textContent = '✕';
+                excluirExercicio.title = 'Excluir exercício';
+
+                excluirExercicio.setAttribute(
+                    'aria-label',
+                    'Excluir exercício'
+                );
+
+                excluirExercicio.dataset.excluirExercicioSupabase =
+                    exercicio.id;
+
+                excluirExercicio.dataset.treinoExercicioSupabase =
+                    treino.id;
+
+                linha.append(
+                    informacoes,
+                    editarExercicio,
+                    excluirExercicio
+                );
+
                 card.appendChild(linha);
 
             });
@@ -5498,6 +5522,123 @@ window.addEventListener(
 
                         } finally {
                             salvar.disabled = false;
+                        }
+                    }
+                );
+
+                /* =========================================
+                   EXCLUIR EXERCICIOS SUPABASE
+                ========================================= */
+
+                lista.addEventListener(
+                    'click',
+                    async evento => {
+                        const botao = evento.target.closest(
+                            'button[data-excluir-exercicio-supabase]'
+                        );
+
+                        if (
+                            !botao ||
+                            !lista.contains(botao) ||
+                            botao.disabled
+                        ) {
+                            return;
+                        }
+
+                        const confirmado = window.confirm(
+                            'Deseja realmente excluir este exercício?'
+                        );
+
+                        if (!confirmado) {
+                            return;
+                        }
+
+                        botao.disabled = true;
+
+                        try {
+                            const sessaoValida =
+                                await conferirSessaoHibridaTreinos(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            if (!sessaoValida) {
+                                window.location.replace(
+                                    'login.html'
+                                );
+                                return;
+                            }
+
+                            const treinoId =
+                                botao.dataset.treinoExercicioSupabase;
+
+                            const exercicioId =
+                                botao.dataset.excluirExercicioSupabase;
+
+                            const treinos =
+                                await carregarTreinosPorOrigem(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            const treino = treinos.find(
+                                item => item.id === treinoId
+                            );
+
+                            if (
+                                !treino ||
+                                !Array.isArray(treino.exercicios)
+                            ) {
+                                throw new Error(
+                                    'Treino não encontrado.'
+                                );
+                            }
+
+                            const quantidadeAnterior =
+                                treino.exercicios.length;
+
+                            treino.exercicios =
+                                treino.exercicios.filter(
+                                    item => item.id !== exercicioId
+                                );
+
+                            if (
+                                treino.exercicios.length ===
+                                quantidadeAnterior
+                            ) {
+                                throw new Error(
+                                    'Exercício não encontrado.'
+                                );
+                            }
+
+                            await salvarTreinoPorOrigem(
+                                acessoInicialTreinosFitZone,
+                                treino
+                            );
+
+                            const atualizados =
+                                await carregarTreinosPorOrigem(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            renderizarCartoesSupabase(
+                                atualizados,
+                                lista
+                            );
+
+                            mensagem.textContent =
+                                'Exercício excluído com sucesso!';
+
+                        } catch (erro) {
+                            console.error(
+                                'Erro ao excluir exercício Supabase:',
+                                erro
+                            );
+
+                            alert(
+                                'Não foi possível excluir o exercício.'
+                            );
+
+                        } finally {
+                            botao.disabled = false;
                         }
                     }
                 );
