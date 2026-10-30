@@ -776,7 +776,40 @@ function renderizarCartoesSupabase(treinos, lista) {
         botaoEditarNome.dataset.editarTreinoSupabase =
             treino.id;
 
-        acoes.appendChild(botaoEditarNome);
+        const botaoDuplicar =
+            document.createElement('button');
+
+        botaoDuplicar.type = 'button';
+        botaoDuplicar.className = 'icon-btn';
+        botaoDuplicar.textContent = '⧉';
+        botaoDuplicar.title = 'Duplicar treino';
+        botaoDuplicar.setAttribute(
+            'aria-label',
+            'Duplicar treino'
+        );
+        botaoDuplicar.dataset.duplicarTreinoSupabase =
+            treino.id;
+
+        const botaoExcluirTreino =
+            document.createElement('button');
+
+        botaoExcluirTreino.type = 'button';
+        botaoExcluirTreino.className = 'icon-btn';
+        botaoExcluirTreino.textContent = '✕';
+        botaoExcluirTreino.title = 'Excluir treino';
+        botaoExcluirTreino.setAttribute(
+            'aria-label',
+            'Excluir treino'
+        );
+        botaoExcluirTreino.dataset.excluirTreinoSupabase =
+            treino.id;
+
+        acoes.append(
+            botaoEditarNome,
+            botaoDuplicar,
+            botaoExcluirTreino
+        );
+
         cabecalho.append(titulo, acoes);
         card.appendChild(cabecalho);
 
@@ -4829,6 +4862,163 @@ window.addEventListener(
 
                         } finally {
                             botaoEditar.disabled = false;
+                        }
+                    }
+                );
+
+                /* =========================================
+                   DUPLICAR E EXCLUIR TREINOS SUPABASE
+                ========================================= */
+
+                lista.addEventListener(
+                    'click',
+                    async (evento) => {
+                        const botao = evento.target.closest(
+                            'button[data-duplicar-treino-supabase], ' +
+                            'button[data-excluir-treino-supabase]'
+                        );
+
+                        if (
+                            !botao ||
+                            !lista.contains(botao) ||
+                            botao.disabled
+                        ) {
+                            return;
+                        }
+
+                        const duplicar =
+                            botao.hasAttribute(
+                                'data-duplicar-treino-supabase'
+                            );
+
+                        const treinoId = duplicar
+                            ? botao.dataset.duplicarTreinoSupabase
+                            : botao.dataset.excluirTreinoSupabase;
+
+                        botao.disabled = true;
+
+                        try {
+                            const sessaoValida =
+                                await conferirSessaoHibridaTreinos(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            if (!sessaoValida) {
+                                window.location.replace(
+                                    'login.html'
+                                );
+                                return;
+                            }
+
+                            const treinos =
+                                await carregarTreinosPorOrigem(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            const original = treinos.find(
+                                treino => treino.id === treinoId
+                            );
+
+                            if (!original) {
+                                throw new Error(
+                                    'Treino não encontrado.'
+                                );
+                            }
+
+                            if (duplicar) {
+                                const gruposCopiados = new Map();
+
+                                const exerciciosCopiados = (
+                                    original.exercicios || []
+                                ).map(exercicio => {
+                                    let novoGrupo = null;
+
+                                    if (exercicio.grupoExecucao) {
+                                        if (
+                                            !gruposCopiados.has(
+                                                exercicio.grupoExecucao
+                                            )
+                                        ) {
+                                            gruposCopiados.set(
+                                                exercicio.grupoExecucao,
+                                                crypto.randomUUID()
+                                            );
+                                        }
+
+                                        novoGrupo = gruposCopiados.get(
+                                            exercicio.grupoExecucao
+                                        );
+                                    }
+
+                                    return {
+                                        ...exercicio,
+                                        id: crypto.randomUUID(),
+                                        grupoExecucao: novoGrupo
+                                    };
+                                });
+
+                                const sufixo = ' (cópia)';
+
+                                const nomeBase = original.nome
+                                    .slice(
+                                        0,
+                                        50 - sufixo.length
+                                    )
+                                    .trimEnd();
+
+                                const novoTreino = {
+                                    id: crypto.randomUUID(),
+                                    nome: nomeBase + sufixo,
+                                    exercicios: exerciciosCopiados
+                                };
+
+                                await salvarTreinoPorOrigem(
+                                    acessoInicialTreinosFitZone,
+                                    novoTreino
+                                );
+
+                                mensagem.textContent =
+                                    'Treino duplicado com sucesso!';
+
+                            } else {
+                                const confirmado = window.confirm(
+                                    `Deseja realmente excluir o treino "${original.nome}"?`
+                                );
+
+                                if (!confirmado) {
+                                    return;
+                                }
+
+                                await excluirTreinoBancoSupabase(
+                                    original.id
+                                );
+
+                                mensagem.textContent =
+                                    'Treino excluído com sucesso!';
+                            }
+
+                            const atualizados =
+                                await carregarTreinosPorOrigem(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            renderizarCartoesSupabase(
+                                atualizados,
+                                lista
+                            );
+
+                        } catch (erro) {
+                            console.error(
+                                'Erro na operação do treino Supabase:',
+                                erro
+                            );
+
+                            alert(
+                                'Não foi possível concluir a operação.'
+                            );
+
+                        } finally {
+                            botao.disabled = false;
                         }
                     }
                 );
