@@ -4473,8 +4473,20 @@ window.addEventListener(
         let acessoPagina;
 
         try {
-            acessoPagina =
-                await verificarOrigemAcessoTreinos();
+            const sessaoTradicional =
+                carregarSessao();
+
+            if (sessaoTradicional) {
+                acessoPagina = {
+                    origem: 'local',
+                    autenticado: true,
+                    email: sessaoTradicional.email
+                };
+            } else {
+                acessoPagina =
+                    await verificarOrigemAcessoTreinos();
+            }
+
         } catch (erro) {
             console.error(
                 'Erro ao identificar a sessão:',
