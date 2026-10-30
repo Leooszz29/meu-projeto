@@ -196,6 +196,32 @@ async function consultarTreinosBancoSupabase() {
 }
 
 /* =========================================
+   FITZONE - CARREGAMENTO UNIFICADO DE TREINOS
+========================================= */
+
+async function carregarTreinosPorOrigem(acesso) {
+    if (
+        acesso &&
+        acesso.autenticado === true &&
+        acesso.origem === 'supabase'
+    ) {
+        return await consultarTreinosBancoSupabase();
+    }
+
+    if (
+        acesso &&
+        acesso.autenticado === true &&
+        acesso.origem === 'local'
+    ) {
+        return loadWorkouts();
+    }
+
+    throw new Error(
+        'Sessão inválida para carregar treinos.'
+    );
+}
+
+/* =========================================
    FITZONE - SALVAR TREINO NO BANCO SUPABASE
 ========================================= */
 
