@@ -4679,7 +4679,22 @@ window.addEventListener(
                             const treinoTeste = {
                                 id: 'teste-' + crypto.randomUUID(),
                                 nome: 'Treino de teste Supabase',
-                                exercicios: []
+                                exercicios: [
+                                    {
+                                        id: crypto.randomUUID(),
+                                        nome: 'Supino reto',
+                                        series: 3,
+                                        repeticoes: 12,
+                                        descanso: 60
+                                    },
+                                    {
+                                        id: crypto.randomUUID(),
+                                        nome: 'Crucifixo',
+                                        series: 3,
+                                        repeticoes: 10,
+                                        descanso: 45
+                                    }
+                                ]
                             };
 
                             await salvarTreinoBancoSupabase(
