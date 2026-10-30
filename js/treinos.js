@@ -2372,6 +2372,12 @@ document.getElementById('workoutModalOverlay').addEventListener('click', (e) => 
 });
 
 document.getElementById('workoutSaveBtn').addEventListener('click', () => {
+    if (
+        acessoInicialTreinosFitZone?.origem === 'supabase'
+    ) {
+        return;
+    }
+
     const nome = document.getElementById('workoutNameInput').value.trim();
 
     if (!nome) {
