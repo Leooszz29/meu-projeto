@@ -4497,6 +4497,25 @@ window.addEventListener(
             return;
         }
 
+        /* =========================================
+           TRATAR ACESSO SUPABASE SEPARADAMENTE
+        ========================================= */
+
+        if (
+            acessoPagina.autenticado === true &&
+            acessoPagina.origem === 'supabase'
+        ) {
+            acessoInicialTreinosFitZone = acessoPagina;
+
+            console.info(
+                'Conta Supabase identificada. ' +
+                'Integração dos treinos em preparação.'
+            );
+
+            window.location.replace('calendario.html');
+            return;
+        }
+
         const sessao =
             carregarSessao();
 
