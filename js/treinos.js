@@ -4613,7 +4613,21 @@ window.addEventListener(
             voltar.textContent = 'Voltar ao calendário';
 
             painel.append(titulo, mensagem, lista, voltar);
-            document.body.replaceChildren(painel);
+
+            const conteudoOriginal = document.body;
+
+            Array.from(conteudoOriginal.children).forEach(
+                elemento => {
+                    if (
+                        elemento.tagName !== 'SCRIPT' &&
+                        elemento !== painel
+                    ) {
+                        elemento.hidden = true;
+                    }
+                }
+            );
+
+            conteudoOriginal.appendChild(painel);
 
             try {
                 const resultado =
