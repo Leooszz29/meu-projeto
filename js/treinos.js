@@ -4814,6 +4814,111 @@ window.addEventListener(
                     }
                 );
 
+                /* =========================================
+                   EDITAR TREINO DE TESTE SUPABASE
+                ========================================= */
+
+                const botaoEditar =
+                    document.createElement('button');
+
+                botaoEditar.type = 'button';
+                botaoEditar.textContent =
+                    'Editar treino de teste';
+
+                botaoEditar.style.cssText =
+                    'display:block;margin:12px 0;' +
+                    'padding:12px 18px;cursor:pointer;';
+
+                painel.insertBefore(botaoEditar, voltar);
+
+                botaoEditar.addEventListener(
+                    'click',
+                    async () => {
+                        botaoEditar.disabled = true;
+
+                        try {
+                            const sessaoValida =
+                                await conferirSessaoHibridaTreinos(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            if (!sessaoValida) {
+                                window.location.replace('login.html');
+                                return;
+                            }
+
+                            const treinos =
+                                await consultarTreinosBancoSupabase();
+
+                            const treinoTeste = treinos.find(
+                                treino =>
+                                    typeof treino.id === 'string' &&
+                                    treino.id.startsWith('teste-') &&
+                                    treino.nome ===
+                                        'Treino de teste Supabase' &&
+                                    Array.isArray(treino.exercicios) &&
+                                    treino.exercicios.some(
+                                        exercicio =>
+                                            exercicio.nome === 'Supino reto'
+                                    )
+                            );
+
+                            if (!treinoTeste) {
+                                mensagem.textContent =
+                                    'Treino de teste não encontrado.';
+                                return;
+                            }
+
+                            const confirmar = window.confirm(
+                                'Alterar Supino reto para 15 repetições?'
+                            );
+
+                            if (!confirmar) {
+                                return;
+                            }
+
+                            const treinoEditado = {
+                                ...treinoTeste,
+                                exercicios: treinoTeste.exercicios.map(
+                                    exercicio =>
+                                        exercicio.nome === 'Supino reto'
+                                            ? {
+                                                ...exercicio,
+                                                repeticoes: 15
+                                            }
+                                            : exercicio
+                                )
+                            };
+
+                            await salvarTreinoBancoSupabase(
+                                treinoEditado
+                            );
+
+                            const atualizados =
+                                await consultarTreinosBancoSupabase();
+
+                            renderizarCartoesSupabase(
+                                atualizados,
+                                lista
+                            );
+
+                            mensagem.textContent =
+                                'Treino atualizado no Supabase!';
+
+                        } catch (erro) {
+                            console.error(
+                                'Erro ao editar treino:',
+                                erro
+                            );
+
+                            mensagem.textContent =
+                                'Não foi possível editar o treino.';
+                        } finally {
+                            botaoEditar.disabled = false;
+                        }
+                    }
+                );
+
             } catch (erro) {
                 console.error(
                     'Erro ao consultar treinos Supabase:',
