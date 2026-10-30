@@ -4233,6 +4233,38 @@ async function validarAcessoTreinosFitZone() {
 }
 
 /* =========================================
+   FITZONE - PREPARAR TREINOS SUPABASE
+========================================= */
+
+async function prepararTreinosSupabaseFitZone() {
+    const acesso = await verificarOrigemAcessoTreinos();
+
+    if (
+        !acesso.autenticado ||
+        acesso.origem !== 'supabase'
+    ) {
+        throw new Error(
+            'Acesso Supabase inválido.'
+        );
+    }
+
+    const treinos =
+        await consultarTreinosBancoSupabase();
+
+    if (!Array.isArray(treinos)) {
+        throw new Error(
+            'Resposta inválida do banco de treinos.'
+        );
+    }
+
+    return {
+        usuarioId: acesso.id,
+        treinos: treinos,
+        somenteLeitura: true
+    };
+}
+
+/* =========================================
    FITZONE - VERIFICAR CONTINUIDADE DA SESSAO
 ========================================= */
 
