@@ -86,6 +86,84 @@ async function carregarTreinosPorOrigem(acesso) {
 }
 
 /* =========================================
+   FITZONE - SALVAMENTO UNIFICADO DE TREINOS
+========================================= */
+
+async function salvarTreinoPorOrigem(acesso, treino) {
+    if (
+        !acesso ||
+        acesso.autenticado !== true
+    ) {
+        throw new Error(
+            'Sessão inválida para salvar treino.'
+        );
+    }
+
+    if (
+        !treino ||
+        typeof treino !== 'object' ||
+        Array.isArray(treino) ||
+        typeof treino.id !== 'string' ||
+        !treino.id.trim() ||
+        typeof treino.nome !== 'string' ||
+        !treino.nome.trim() ||
+        (
+            treino.exercicios !== undefined &&
+            !Array.isArray(treino.exercicios)
+        )
+    ) {
+        throw new Error(
+            'Dados do treino inválidos.'
+        );
+    }
+
+    if (acesso.origem === 'supabase') {
+        return await salvarTreinoBancoSupabase(treino);
+    }
+
+    if (acesso.origem === 'local') {
+        const sessaoAtual = carregarSessao();
+
+        if (
+            !sessaoAtual ||
+            sessaoAtual.email?.trim().toLowerCase() !==
+                acesso.email?.trim().toLowerCase()
+        ) {
+            throw new Error(
+                'A sessão tradicional foi alterada.'
+            );
+        }
+
+        const treinos =
+            await carregarTreinosPorOrigem(acesso);
+
+        const indice = treinos.findIndex(
+            item => item.id === treino.id
+        );
+
+        if (indice >= 0) {
+            treinos[indice] = treino;
+        } else {
+            treinos.push(treino);
+        }
+
+        const salvo = saveWorkouts(treinos);
+
+        if (!salvo) {
+            throw new Error(
+                'Falha ao salvar treino local.'
+            );
+        }
+
+        return true;
+    }
+
+    throw new Error(
+        'Origem da conta não reconhecida.'
+    );
+}
+
+/* =========================================
    FITZONE - SALVAR TREINO NO BANCO SUPABASE
 ========================================= */
 
