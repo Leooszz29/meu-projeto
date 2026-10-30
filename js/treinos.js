@@ -4730,8 +4730,81 @@ window.addEventListener(
                         'workoutCancelBtn'
                     );
 
-                if (botaoSalvar) {
-                    botaoSalvar.disabled = true;
+
+                if (botaoSalvar && campoNome) {
+                    botaoSalvar.disabled = false;
+
+                    botaoSalvar.addEventListener(
+                        'click',
+                        async () => {
+                            const nome = campoNome.value.trim();
+
+                            if (!nome) {
+                                alert('Informe o nome do treino.');
+                                campoNome.focus();
+                                return;
+                            }
+
+                            botaoSalvar.disabled = true;
+
+                            try {
+                                const sessaoValida =
+                                    await conferirSessaoHibridaTreinos(
+                                        acessoInicialTreinosFitZone
+                                    );
+
+                                if (!sessaoValida) {
+                                    window.location.replace(
+                                        'login.html'
+                                    );
+                                    return;
+                                }
+
+                                const novoTreino = {
+                                    id: crypto.randomUUID(),
+                                    nome: nome,
+                                    exercicios: []
+                                };
+
+                                await salvarTreinoPorOrigem(
+                                    acessoInicialTreinosFitZone,
+                                    novoTreino
+                                );
+
+                                const treinosAtualizados =
+                                    await carregarTreinosPorOrigem(
+                                        acessoInicialTreinosFitZone
+                                    );
+
+                                renderizarCartoesSupabase(
+                                    treinosAtualizados,
+                                    lista
+                                );
+
+                                mensagem.textContent =
+                                    'Treino salvo com sucesso!';
+
+                                modalTreinoOriginal.classList.remove(
+                                    'show'
+                                );
+
+                                campoNome.value = '';
+
+                            } catch (erro) {
+                                console.error(
+                                    'Erro ao salvar treino Supabase:',
+                                    erro
+                                );
+
+                                alert(
+                                    'Não foi possível salvar o treino.'
+                                );
+
+                            } finally {
+                                botaoSalvar.disabled = false;
+                            }
+                        }
+                    );
                 }
 
                 botaoNovoOriginal.addEventListener(
