@@ -4630,6 +4630,36 @@ window.addEventListener(
 
             conteudoOriginal.appendChild(painel);
 
+            /* =========================================
+               CABECALHO ORIGINAL PARA SUPABASE
+            ========================================= */
+
+            const cabecalhoOriginal =
+                document.querySelector('.page > header');
+
+            if (cabecalhoOriginal) {
+                const cabecalhoSupabase =
+                    cabecalhoOriginal.cloneNode(true);
+
+                const imagemPersonagem =
+                    cabecalhoSupabase.querySelector(
+                        '#characterImg'
+                    );
+
+                if (imagemPersonagem) {
+                    imagemPersonagem.removeAttribute('id');
+                    imagemPersonagem.removeAttribute('src');
+                    imagemPersonagem.style.display = 'none';
+                }
+
+                painel.insertBefore(
+                    cabecalhoSupabase,
+                    titulo
+                );
+
+                titulo.remove();
+            }
+
             try {
                 const resultado =
                     await prepararTreinosSupabaseFitZone();
