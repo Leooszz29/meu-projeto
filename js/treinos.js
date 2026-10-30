@@ -4694,7 +4694,11 @@ window.addEventListener(
                     );
                 }
 
-                navegacaoSupabase.hidden = true;
+                if (botaoSairSupabase) {
+                    botaoSairSupabase.disabled = false;
+                }
+
+                navegacaoSupabase.hidden = false;
 
                 painel.insertBefore(
                     navegacaoSupabase,
