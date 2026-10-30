@@ -4265,6 +4265,29 @@ async function prepararTreinosSupabaseFitZone() {
 }
 
 /* =========================================
+   FITZONE - VERIFICAR CONTINUIDADE SUPABASE
+========================================= */
+
+async function verificarContinuidadeSupabaseTreinos(
+    usuarioId
+) {
+    if (
+        typeof usuarioId !== 'string' ||
+        !usuarioId.trim()
+    ) {
+        return false;
+    }
+
+    const acesso =
+        await identificarAcessoSupabaseTreinos();
+
+    return (
+        acesso.autenticado === true &&
+        acesso.id === usuarioId
+    );
+}
+
+/* =========================================
    FITZONE - VERIFICAR CONTINUIDADE DA SESSAO
 ========================================= */
 
