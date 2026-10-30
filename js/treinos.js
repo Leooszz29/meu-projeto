@@ -4632,6 +4632,101 @@ window.addEventListener(
                         }
                     }
                 );
+x
+                /* =========================================
+                   EXCLUIR TREINO DE TESTE SUPABASE
+                ========================================= */
+
+                const botaoExcluir =
+                    document.createElement('button');
+
+                botaoExcluir.type = 'button';
+                botaoExcluir.textContent =
+                    'Excluir treino de teste';
+
+                botaoExcluir.style.cssText =
+                    'display:block;margin:12px 0;' +
+                    'padding:12px 18px;cursor:pointer;';
+
+                painel.insertBefore(botaoExcluir, voltar);
+
+                botaoExcluir.addEventListener(
+                    'click',
+                    async () => {
+                        const treinos =
+                            await consultarTreinosBancoSupabase();
+
+                        const treinoTeste = treinos.find(
+                            treino =>
+                                treino.id.startsWith('teste-') &&
+                                treino.nome ===
+                                    'Treino de teste Supabase'
+                        );
+
+                        if (!treinoTeste) {
+                            mensagem.textContent =
+                                'Nenhum treino de teste encontrado.';
+                            return;
+                        }
+
+                        const confirmar = window.confirm(
+                            'Excluir o treino de teste?'
+                        );
+
+                        if (!confirmar) {
+                            return;
+                        }
+
+                        botaoExcluir.disabled = true;
+
+                        try {
+                            const sessaoValida =
+                                await conferirSessaoHibridaTreinos(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            if (!sessaoValida) {
+                                window.location.replace(
+                                    'login.html'
+                                );
+                                return;
+                            }
+
+                            await excluirTreinoBancoSupabase(
+                                treinoTeste.id
+                            );
+
+                            const atualizados =
+                                await consultarTreinosBancoSupabase();
+
+                            lista.replaceChildren();
+
+                            atualizados.forEach(treino => {
+                                const item =
+                                    document.createElement('li');
+
+                                item.textContent =
+                                    treino.nome || 'Treino sem nome';
+
+                                lista.appendChild(item);
+                            });
+
+                            mensagem.textContent =
+                                'Treino de teste excluído com sucesso!';
+
+                        } catch (erro) {
+                            console.error(
+                                'Erro ao excluir treino:',
+                                erro
+                            );
+
+                            mensagem.textContent =
+                                'Não foi possível excluir o treino.';
+                        } finally {
+                            botaoExcluir.disabled = false;
+                        }
+                    }
+                );
 
             } catch (erro) {
                 console.error(
