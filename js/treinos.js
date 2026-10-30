@@ -826,6 +826,17 @@ function renderizarCartoesSupabase(treinos, lista) {
 
         card.appendChild(detalhes);
 
+        const adicionarExercicio =
+            document.createElement('button');
+
+        adicionarExercicio.type = 'button';
+        adicionarExercicio.className = 'btn-add-exercise';
+        adicionarExercicio.textContent = '+ Adicionar exercício';
+        adicionarExercicio.dataset.adicionarExercicioSupabase =
+            treino.id;
+
+        card.appendChild(adicionarExercicio);
+
         /* =========================================
            EXIBIR EXERCICIOS DO TREINO SUPABASE
         ========================================= */
@@ -859,8 +870,27 @@ function renderizarCartoesSupabase(treinos, lista) {
                 informacoes.appendChild(nome);
                 informacoes.appendChild(detalhesExercicio);
 
-                linha.appendChild(informacoes);
+                const editarExercicio =
+                    document.createElement('button');
+
+                editarExercicio.type = 'button';
+                editarExercicio.className = 'icon-btn';
+                editarExercicio.textContent = '✎';
+                editarExercicio.title = 'Editar exercício';
+                editarExercicio.setAttribute(
+                    'aria-label',
+                    'Editar exercício'
+                );
+
+                editarExercicio.dataset.editarExercicioSupabase =
+                    exercicio.id;
+
+                editarExercicio.dataset.treinoExercicioSupabase =
+                    treino.id;
+
+                linha.append(informacoes, editarExercicio);
                 card.appendChild(linha);
+
             });
         }
 
@@ -3153,6 +3183,12 @@ document.getElementById('exerciseModalOverlay').addEventListener('click', (e) =>
 });
 
 document.getElementById('exerciseSaveBtn').addEventListener('click', () => {
+    if (
+        acessoInicialTreinosFitZone?.origem === 'supabase'
+    ) {
+        return;
+    }
+
     if (!editingExerciseCtx) return;
 
     const nome =
@@ -4759,6 +4795,15 @@ window.addEventListener(
                 painel.appendChild(modalTreinoOriginal);
             }
 
+            const modalExercicioSupabase =
+                document.getElementById(
+                    'exerciseModalOverlay'
+                );
+
+            if (modalExercicioSupabase) {
+                painel.appendChild(modalExercicioSupabase);
+            }
+
             /* =========================================
                ABRIR FORMULARIO ORIGINAL NO SUPABASE
             ========================================= */
@@ -5146,6 +5191,316 @@ window.addEventListener(
                         }
                     );
                 }
+            }
+
+            /* =========================================
+               EXERCICIOS INDIVIDUAIS SUPABASE
+            ========================================= */
+
+            if (modalExercicioSupabase) {
+                let contextoExercicioSupabase = null;
+
+                const campo = id =>
+                    document.getElementById(id);
+
+                const fecharExercicioSupabase = () => {
+                    modalExercicioSupabase.classList.remove(
+                        'show'
+                    );
+
+                    contextoExercicioSupabase = null;
+                };
+
+                lista.addEventListener(
+                    'click',
+                    async evento => {
+                        const botao = evento.target.closest(
+                            'button[data-adicionar-exercicio-supabase], ' +
+                            'button[data-editar-exercicio-supabase]'
+                        );
+
+                        if (!botao || !lista.contains(botao)) {
+                            return;
+                        }
+
+                        botao.disabled = true;
+
+                        try {
+                            const sessaoValida =
+                                await conferirSessaoHibridaTreinos(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            if (!sessaoValida) {
+                                window.location.replace(
+                                    'login.html'
+                                );
+                                return;
+                            }
+
+                            const treinoId =
+                                botao.dataset
+                                    .adicionarExercicioSupabase ||
+                                botao.dataset
+                                    .treinoExercicioSupabase;
+
+                            const exercicioId =
+                                botao.dataset
+                                    .editarExercicioSupabase || null;
+
+                            const treinos =
+                                await carregarTreinosPorOrigem(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            const treino = treinos.find(
+                                item => item.id === treinoId
+                            );
+
+                            if (!treino) {
+                                throw new Error(
+                                    'Treino não encontrado.'
+                                );
+                            }
+
+                            const exercicio = exercicioId
+                                ? (treino.exercicios || []).find(
+                                    item => item.id === exercicioId
+                                )
+                                : null;
+
+                            if (exercicioId && !exercicio) {
+                                throw new Error(
+                                    'Exercício não encontrado.'
+                                );
+                            }
+
+                            contextoExercicioSupabase = {
+                                treinoId,
+                                exercicioId
+                            };
+
+                            campo('exerciseModalTitle').textContent =
+                                exercicio
+                                    ? 'Editar exercício'
+                                    : 'Novo exercício';
+
+                            campo('exerciseNameInput').value =
+                                exercicio?.nome || '';
+
+                            campo('exerciseSeriesInput').value =
+                                exercicio?.series ?? '';
+
+                            campo('exerciseRepsInput').value =
+                                exercicio?.repeticoes ?? '';
+
+                            campo('exerciseRestInput').value =
+                                exercicio?.descanso ?? '';
+
+                            campo('exerciseTypeInput').value =
+                                'individual';
+
+                            campo('exerciseTypeInput').disabled =
+                                true;
+
+                            campo('exerciseGroupField').hidden =
+                                true;
+
+                            const aviso =
+                                campo('exerciseValidationMessage');
+
+                            aviso.hidden = true;
+                            aviso.textContent = '';
+
+                            modalExercicioSupabase.classList.add(
+                                'show'
+                            );
+
+                            campo('exerciseNameInput').focus();
+
+                        } catch (erro) {
+                            console.error(
+                                'Erro ao abrir exercício Supabase:',
+                                erro
+                            );
+
+                            alert(
+                                'Não foi possível abrir o exercício.'
+                            );
+
+                        } finally {
+                            botao.disabled = false;
+                        }
+                    }
+                );
+
+                campo('exerciseCancelBtn').addEventListener(
+                    'click',
+                    fecharExercicioSupabase
+                );
+
+                modalExercicioSupabase.addEventListener(
+                    'click',
+                    evento => {
+                        if (
+                            evento.target ===
+                            modalExercicioSupabase
+                        ) {
+                            fecharExercicioSupabase();
+                        }
+                    }
+                );
+
+                campo('exerciseSaveBtn').addEventListener(
+                    'click',
+                    async () => {
+                        if (!contextoExercicioSupabase) {
+                            return;
+                        }
+
+                        const nome =
+                            campo('exerciseNameInput').value.trim();
+
+                        const series =
+                            campo('exerciseSeriesInput').valueAsNumber;
+
+                        const repeticoes =
+                            campo('exerciseRepsInput').valueAsNumber;
+
+                        const descanso =
+                            campo('exerciseRestInput').valueAsNumber;
+
+                        if (
+                            !nome ||
+                            !Number.isInteger(series) ||
+                            series < 1 ||
+                            !Number.isInteger(repeticoes) ||
+                            repeticoes < 1 ||
+                            !Number.isInteger(descanso) ||
+                            descanso < 0
+                        ) {
+                            const aviso =
+                                campo('exerciseValidationMessage');
+
+                            aviso.textContent =
+                                'Preencha nome, séries, repetições ' +
+                                'e descanso com valores válidos.';
+
+                            aviso.hidden = false;
+                            return;
+                        }
+
+                        const salvar =
+                            campo('exerciseSaveBtn');
+
+                        if (salvar.disabled) {
+                            return;
+                        }
+
+                        salvar.disabled = true;
+
+                        try {
+                            const sessaoValida =
+                                await conferirSessaoHibridaTreinos(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            if (!sessaoValida) {
+                                window.location.replace(
+                                    'login.html'
+                                );
+                                return;
+                            }
+
+                            const treinos =
+                                await carregarTreinosPorOrigem(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            const treino = treinos.find(
+                                item =>
+                                    item.id ===
+                                    contextoExercicioSupabase.treinoId
+                            );
+
+                            if (!treino) {
+                                throw new Error(
+                                    'Treino não encontrado.'
+                                );
+                            }
+
+                            if (!Array.isArray(treino.exercicios)) {
+                                treino.exercicios = [];
+                            }
+
+                            const exercicioId =
+                                contextoExercicioSupabase.exercicioId;
+
+                            const existente = exercicioId
+                                ? treino.exercicios.find(
+                                    item => item.id === exercicioId
+                                )
+                                : null;
+
+                            if (exercicioId && !existente) {
+                                throw new Error(
+                                    'Exercício não encontrado.'
+                                );
+                            }
+
+                            const dados = {
+                                nome,
+                                series,
+                                repeticoes,
+                                descanso
+                            };
+
+                            if (existente) {
+                                Object.assign(existente, dados);
+                            } else {
+                                treino.exercicios.push({
+                                    id: crypto.randomUUID(),
+                                    tipoExecucao: 'individual',
+                                    grupoExecucao: null,
+                                    ...dados
+                                });
+                            }
+
+                            await salvarTreinoPorOrigem(
+                                acessoInicialTreinosFitZone,
+                                treino
+                            );
+
+                            const atualizados =
+                                await carregarTreinosPorOrigem(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            renderizarCartoesSupabase(
+                                atualizados,
+                                lista
+                            );
+
+                            mensagem.textContent =
+                                'Exercício salvo com sucesso!';
+
+                            fecharExercicioSupabase();
+
+                        } catch (erro) {
+                            console.error(
+                                'Erro ao salvar exercício:',
+                                erro
+                            );
+
+                            alert(
+                                'Não foi possível salvar o exercício.'
+                            );
+
+                        } finally {
+                            salvar.disabled = false;
+                        }
+                    }
+                );
             }
 
             try {
