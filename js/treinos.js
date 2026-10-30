@@ -41,6 +41,32 @@ async function obterChaveTreinosSupabase() {
     );
 }
 
+/* =========================================
+   FITZONE - CARREGAR TREINOS SUPABASE
+   Armazenamento local temporário por UUID
+========================================= */
+
+async function carregarTreinosSupabase() {
+    const chave =
+        await obterChaveTreinosSupabase();
+
+    const dados = localStorage.getItem(chave);
+
+    if (!dados) {
+        return [];
+    }
+
+    const treinos = JSON.parse(dados);
+
+    if (!Array.isArray(treinos)) {
+        throw new Error(
+            'Formato inválido dos treinos Supabase.'
+        );
+    }
+
+    return treinos;
+}
+
 // ==================== SESSÃO ====================
 function carregarSessao() {
 
