@@ -759,7 +759,25 @@ function renderizarCartoesSupabase(treinos, lista) {
         titulo.textContent =
             treino.nome || 'Treino sem nome';
 
-        cabecalho.appendChild(titulo);
+        const acoes = document.createElement('div');
+        acoes.className = 'workout-actions';
+
+        const botaoEditarNome =
+            document.createElement('button');
+
+        botaoEditarNome.type = 'button';
+        botaoEditarNome.className = 'icon-btn';
+        botaoEditarNome.textContent = '✎';
+        botaoEditarNome.title = 'Editar nome do treino';
+        botaoEditarNome.setAttribute(
+            'aria-label',
+            'Editar nome do treino'
+        );
+        botaoEditarNome.dataset.editarTreinoSupabase =
+            treino.id;
+
+        acoes.appendChild(botaoEditarNome);
+        cabecalho.append(titulo, acoes);
         card.appendChild(cabecalho);
 
         const quantidade = Array.isArray(treino.exercicios)
@@ -4736,6 +4754,84 @@ window.addEventListener(
                         'workoutCancelBtn'
                     );
 
+                let treinoEmEdicaoSupabase = null;
+
+                lista.addEventListener(
+                    'click',
+                    async (evento) => {
+                        const botaoEditar = evento.target.closest(
+                            'button[data-editar-treino-supabase]'
+                        );
+
+                        if (
+                            !botaoEditar ||
+                            !lista.contains(botaoEditar) ||
+                            !campoNome
+                        ) {
+                            return;
+                        }
+
+                        botaoEditar.disabled = true;
+
+                        try {
+                            const sessaoValida =
+                                await conferirSessaoHibridaTreinos(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            if (!sessaoValida) {
+                                window.location.replace(
+                                    'login.html'
+                                );
+                                return;
+                            }
+
+                            const treinos =
+                                await carregarTreinosPorOrigem(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            const treino = treinos.find(
+                                item =>
+                                    item.id ===
+                                    botaoEditar.dataset
+                                        .editarTreinoSupabase
+                            );
+
+                            if (!treino) {
+                                throw new Error(
+                                    'Treino não encontrado.'
+                                );
+                            }
+
+                            treinoEmEdicaoSupabase = treino;
+                            campoNome.value = treino.nome;
+
+                            document.getElementById(
+                                'workoutModalTitle'
+                            ).textContent = 'Editar treino';
+
+                            modalTreinoOriginal.classList.add(
+                                'show'
+                            );
+
+                            campoNome.focus();
+
+                        } catch (erro) {
+                            console.error(
+                                'Erro ao abrir edição:',
+                                erro
+                            );
+
+                            alert(
+                                'Não foi possível abrir a edição.'
+                            );
+
+                        } finally {
+                            botaoEditar.disabled = false;
+                        }
+                    }
+                );
 
                 if (botaoSalvar && campoNome) {
                     botaoSalvar.disabled = false;
@@ -4766,11 +4862,17 @@ window.addEventListener(
                                     return;
                                 }
 
-                                const novoTreino = {
-                                    id: crypto.randomUUID(),
-                                    nome: nome,
-                                    exercicios: []
-                                };
+                                const novoTreino =
+                                    treinoEmEdicaoSupabase
+                                        ? {
+                                            ...treinoEmEdicaoSupabase,
+                                            nome: nome
+                                        }
+                                        : {
+                                            id: crypto.randomUUID(),
+                                            nome: nome,
+                                            exercicios: []
+                                        };
 
                                 await salvarTreinoPorOrigem(
                                     acessoInicialTreinosFitZone,
@@ -4796,6 +4898,8 @@ window.addEventListener(
 
                                 campoNome.value = '';
 
+                                treinoEmEdicaoSupabase = null;                               
+
                             } catch (erro) {
                                 console.error(
                                     'Erro ao salvar treino Supabase:',
@@ -4816,6 +4920,7 @@ window.addEventListener(
                 botaoNovoOriginal.addEventListener(
                     'click',
                     () => {
+                        treinoEmEdicaoSupabase = null;
                         if (campoNome) {
                             campoNome.value = '';
                         }
@@ -4844,6 +4949,7 @@ window.addEventListener(
                     botaoCancelar.addEventListener(
                         'click',
                         () => {
+                            treinoEmEdicaoSupabase = null;
                             modalTreinoOriginal.classList.remove(
                                 'show'
                             );
