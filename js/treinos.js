@@ -762,6 +762,54 @@ function uid() {
 let editingWorkoutId = null;
 let editingExerciseCtx = null; // { workoutId, exerciseId or null }
 
+/* =========================================
+   FITZONE - CARTOES DE TREINOS SUPABASE
+   Visual original em modo de leitura
+========================================= */
+
+function renderizarCartoesSupabase(treinos, lista) {
+    if (
+        !Array.isArray(treinos) ||
+        !(lista instanceof HTMLElement)
+    ) {
+        throw new Error(
+            'Dados inválidos para exibir os treinos.'
+        );
+    }
+
+    lista.replaceChildren();
+
+    treinos.forEach(treino => {
+        const card = document.createElement('div');
+        card.className = 'workout-card';
+
+        const cabecalho = document.createElement('div');
+        cabecalho.className = 'workout-header';
+
+        const titulo = document.createElement('div');
+        titulo.className = 'workout-title';
+        titulo.textContent =
+            treino.nome || 'Treino sem nome';
+
+        cabecalho.appendChild(titulo);
+        card.appendChild(cabecalho);
+
+        const quantidade = Array.isArray(treino.exercicios)
+            ? treino.exercicios.length
+            : 0;
+
+        const detalhes = document.createElement('div');
+        detalhes.className = 'no-exercises';
+        detalhes.textContent =
+            quantidade === 0
+                ? 'Nenhum exercício adicionado ainda.'
+                : `${quantidade} exercício(s) cadastrados`;
+
+        card.appendChild(detalhes);
+        lista.appendChild(card);
+    });
+}
+
 // ==================== RENDER ====================
 function renderWorkouts() {
     const workouts = loadWorkouts();
