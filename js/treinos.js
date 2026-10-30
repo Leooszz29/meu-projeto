@@ -4406,12 +4406,35 @@ window.addEventListener('pageshow', async () => {
    FITZONE - VERIFICAR SESSAO AO VOLTAR PARA ABA
 ========================================= */
 
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState !== 'visible') {
+document.addEventListener('visibilitychange', async () => {
+    if (
+        document.visibilityState !== 'visible' ||
+        !acessoInicialTreinosFitZone
+    ) {
         return;
     }
 
-    verificarContinuidadeSessaoFitZone();
+    try {
+        const sessaoValida =
+            await conferirSessaoHibridaTreinos(
+                acessoInicialTreinosFitZone
+            );
+
+        if (!sessaoValida) {
+            console.warn(
+                'Sessão FitZone encerrada ou alterada.'
+            );
+
+            window.location.replace('login.html');
+        }
+    } catch (erro) {
+        console.error(
+            'Erro ao verificar a sessão:',
+            erro
+        );
+
+        window.location.replace('login.html');
+    }
 });
 
 // ==================== INICIALIZAÇÃO ====================
