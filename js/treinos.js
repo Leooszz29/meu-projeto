@@ -22,6 +22,25 @@ async function identificarAcessoSupabaseTreinos() {
     };
 }
 
+/* =========================================
+   FITZONE - CHAVE DOS TREINOS SUPABASE
+========================================= */
+
+async function obterChaveTreinosSupabase() {
+    const acesso =
+        await identificarAcessoSupabaseTreinos();
+
+    if (!acesso.autenticado) {
+        throw new Error(
+            'Usuário Supabase não autenticado.'
+        );
+    }
+
+    return obterChaveArmazenamentoSupabaseFitZone(
+        'treinos'
+    );
+}
+
 // ==================== SESSÃO ====================
 function carregarSessao() {
 
