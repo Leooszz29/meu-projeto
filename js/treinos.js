@@ -4741,7 +4741,7 @@ window.addEventListener(
                     'display:block;margin:20px 0;' +
                     'padding:12px 18px;cursor:pointer;';
 
-                painel.insertBefore(botaoTeste, voltar);
+                painel.appendChild(botaoTeste);
 
                 botaoTeste.addEventListener(
                     'click',
@@ -4828,7 +4828,7 @@ window.addEventListener(
                     'display:block;margin:12px 0;' +
                     'padding:12px 18px;cursor:pointer;';
 
-                painel.insertBefore(botaoExcluir, voltar);
+                painel.appendChild(botaoExcluir);
 
                 botaoExcluir.addEventListener(
                     'click',
@@ -4916,7 +4916,7 @@ window.addEventListener(
                     'display:block;margin:12px 0;' +
                     'padding:12px 18px;cursor:pointer;';
 
-                painel.insertBefore(botaoEditar, voltar);
+                painel.appendChild(botaoEditar);
 
                 botaoEditar.addEventListener(
                     'click',
