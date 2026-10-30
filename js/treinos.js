@@ -67,6 +67,29 @@ async function carregarTreinosSupabase() {
     return treinos;
 }
 
+/* =========================================
+   FITZONE - SALVAR TREINOS SUPABASE
+   Armazenamento local temporário por UUID
+========================================= */
+
+async function salvarTreinosSupabase(treinos) {
+    if (!Array.isArray(treinos)) {
+        throw new Error(
+            'A lista de treinos deve ser um array.'
+        );
+    }
+
+    const chave =
+        await obterChaveTreinosSupabase();
+
+    localStorage.setItem(
+        chave,
+        JSON.stringify(treinos)
+    );
+
+    return true;
+}
+
 // ==================== SESSÃO ====================
 function carregarSessao() {
 
