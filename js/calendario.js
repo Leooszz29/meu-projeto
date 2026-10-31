@@ -284,15 +284,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const calendarioSupabase =
                         document.createElement('section');
 
-                    calendarioSupabase.style.cssText =
-                        'width:100%;max-width:380px;';
+                    calendarioSupabase.className =
+                        'calendar-card';
 
                     const cabecalhoMes =
                         document.createElement('div');
 
-                    cabecalhoMes.style.cssText =
-                        'display:flex;align-items:center;' +
-                        'justify-content:space-between;gap:12px;';
+                    cabecalhoMes.className =
+                        'month-nav';
 
                     const botaoAnterior =
                         document.createElement('button');
@@ -303,8 +302,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const tituloMes =
                         document.createElement('h2');
 
-                    tituloMes.style.cssText =
-                        'margin:0;font-size:18px;text-transform:capitalize;';
+                    tituloMes.className =
+                        'month-label';
 
                     const botaoProximo =
                         document.createElement('button');
