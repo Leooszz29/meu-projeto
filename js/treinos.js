@@ -6472,15 +6472,33 @@ window.addEventListener(
                     return;
                 }
 
-                exercicios.forEach(exercicio => {
+                exercicios.forEach((exercicio, indice) => {
                     const grupo =
                         document.createElement('div');
 
                     grupo.className =
                         'active-exercise-item';
 
+                    const numeroExercicio =
+                        document.createElement('span');
+
+                    numeroExercicio.className =
+                        'active-exercise-number';
+
+                    numeroExercicio.textContent =
+                        String(indice + 1).padStart(2, '0');
+
+                    const informacoes =
+                        document.createElement('div');
+
+                    informacoes.className =
+                        'active-exercise-info';
+
                     const nome =
                         document.createElement('strong');
+
+                    nome.className =
+                        'active-exercise-name';
 
                     nome.textContent =
                         exercicio.nome || 'Exercício';
@@ -6488,11 +6506,29 @@ window.addEventListener(
                     const descricao =
                         document.createElement('p');
 
+                    descricao.className =
+                        'active-exercise-meta';
+
                     descricao.textContent =
                         `${exercicio.series} séries × ` +
                         `${exercicio.repeticoes} repetições`;
 
-                    grupo.append(nome, descricao);
+                    const controlesSeries =
+                        document.createElement('div');
+
+                    controlesSeries.className =
+                        'active-series-controls';
+
+                    informacoes.append(
+                        nome,
+                        descricao,
+                        controlesSeries
+                    );
+
+                    grupo.append(
+                        numeroExercicio,
+                        informacoes
+                    );
 
                     const quantidade =
                         Math.max(
@@ -6538,7 +6574,7 @@ window.addEventListener(
                             `Série ${numero}`;
 
                         rotulo.append(checkbox, texto);
-                        grupo.appendChild(rotulo);
+                        controlesSeries.appendChild(rotulo);
                     }
 
                     painelProgressoSupabase.appendChild(
