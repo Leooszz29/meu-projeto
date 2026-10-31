@@ -165,6 +165,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     voltar
                 );
 
+                let historicoTreinosSupabase = [];
+
                 try {
                     const cliente =
                         inicializarSupabaseFitZone();
@@ -187,8 +189,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                         throw error;
                     }
 
-                    const historico =
+                    historicoTreinosSupabase =
                         Array.isArray(data) ? data : [];
+
+                    const historico =
+                        historicoTreinosSupabase;
 
                     resumoHistoricoSupabase.textContent =
                         'Treinos finalizados no Supabase: ' +
@@ -370,6 +375,47 @@ document.addEventListener("DOMContentLoaded", async () => {
                         renderizarMesSupabase();
                     }
 
+                    /* =========================================
+                       INDICADORES DE TREINOS NO CALENDARIO
+                    ========================================= */
+
+                    const treinosPorDataSupabase = {};
+
+                    historicoTreinosSupabase.forEach(registro => {
+                        const data = registro.data_local;
+
+                        if (
+                            typeof data !== 'string' ||
+                            !/^\d{4}-\d{2}-\d{2}$/.test(data)
+                        ) {
+                            return;
+                        }
+
+                        const dados = registro.dados || {};
+
+                        const total =
+                            Number(dados.seriesTotal) || 0;
+
+                        const concluidas =
+                            Number(dados.seriesConcluidas) || 0;
+
+                        const completo =
+                            total > 0 && concluidas >= total;
+
+                        if (!treinosPorDataSupabase[data]) {
+                            treinosPorDataSupabase[data] = {
+                                completos: 0,
+                                parciais: 0
+                            };
+                        }
+
+                        if (completo) {
+                            treinosPorDataSupabase[data].completos++;
+                        } else {
+                            treinosPorDataSupabase[data].parciais++;
+                        }
+                    });
+
                     function renderizarMesSupabase() {
                         const dataMes =
                             new Date(anoAtual, mesAtual, 1);
@@ -426,20 +472,51 @@ document.addEventListener("DOMContentLoaded", async () => {
                             const marcado =
                                 datasCheckins.includes(data);
 
+                            const treinosDia =
+                                treinosPorDataSupabase[data];
+
+                            const possuiCompleto =
+                                (treinosDia?.completos || 0) > 0;
+
+                            const possuiParcial =
+                                (treinosDia?.parciais || 0) > 0;
+
                             celula.textContent = String(dia);
+
+                            let corBorda = 'transparent';
+
+                            if (possuiCompleto && possuiParcial) {
+                                corBorda = '#a855f7';
+                            } else if (possuiCompleto) {
+                                corBorda = '#22c55e';
+                            } else if (possuiParcial) {
+                                corBorda = '#f59e0b';
+                            }
 
                             celula.style.cssText =
                                 'padding:10px 0;' +
                                 'border-radius:8px;' +
                                 'text-align:center;' +
+                                'border:2px solid ' + corBorda + ';' +
                                 (marcado
                                     ? 'background:#16a34a;color:white;font-weight:bold;'
                                     : 'background:rgba(128,128,128,.12);');
 
+                            const descricaoTreinos = treinosDia
+                                ? `; ${treinosDia.completos} completo(s), ` +
+                                  `${treinosDia.parciais} parcial(is)`
+                                : '';
+
                             celula.setAttribute(
                                 'aria-label',
-                                `${dia}/${String(mesAtual + 1).padStart(2, '0')}/${anoAtual}`
+                                `${dia}/${String(mesAtual + 1).padStart(2, '0')}/${anoAtual}` +
+                                descricaoTreinos
                             );
+
+                            celula.title =
+                                descricaoTreinos
+                                    ? 'Treinos' + descricaoTreinos
+                                    : '';
 
                             celula.addEventListener('click', async () => {
                                 const possuiCheckin =
