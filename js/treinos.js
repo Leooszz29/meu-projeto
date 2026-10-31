@@ -5043,7 +5043,7 @@ window.addEventListener(
 
             const planejamentoOriginal =
                 document.querySelector(
-                    '.page .workouts-heading'
+                    '.page .workouts-header'
                 );
 
             if (planejamentoOriginal) {
@@ -5086,10 +5086,28 @@ window.addEventListener(
                 document.getElementById('btnNewWorkout');
 
             if (botaoNovoOriginal && modalTreinoOriginal) {
-                painel.insertBefore(
-                    botaoNovoOriginal,
-                    mensagem
-                );
+                const cabecalhoPlanejamento =
+                    painel.querySelector('.workouts-header');
+
+                if (cabecalhoPlanejamento) {
+                    const botaoClonado =
+                        cabecalhoPlanejamento.querySelector(
+                            '#btnNewWorkout'
+                        );
+
+                    if (botaoClonado) {
+                        botaoClonado.remove();
+                    }
+
+                    cabecalhoPlanejamento.appendChild(
+                        botaoNovoOriginal
+                    );
+                } else {
+                    painel.insertBefore(
+                        botaoNovoOriginal,
+                        mensagem
+                    );
+                }
 
                 const campoNome =
                     document.getElementById(
