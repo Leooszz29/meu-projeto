@@ -856,6 +856,7 @@ function uid() {
 
 let editingWorkoutId = null;
 let editingExerciseCtx = null; // { workoutId, exerciseId or null }
+let treinoAtivoSupabaseVisualId = null;
 
 /* =========================================
    FITZONE - CARTOES DE TREINOS SUPABASE
@@ -1045,6 +1046,27 @@ function renderizarCartoesSupabase(treinos, lista) {
             });
         }
 
+        const iniciarTreino =
+            document.createElement('button');
+
+        iniciarTreino.type = 'button';
+        iniciarTreino.className = 'btn-start-workout';
+
+        iniciarTreino.dataset.iniciarTreinoSupabase =
+            treino.id;
+
+        const selecionado =
+            treinoAtivoSupabaseVisualId === treino.id;
+
+        iniciarTreino.textContent = selecionado
+            ? '✓ Treino selecionado'
+            : '▶ Iniciar treino';
+
+        if (selecionado) {
+            card.classList.add('active-workout');
+        }
+
+        card.appendChild(iniciarTreino);
         lista.appendChild(card);
     });
 }
@@ -5950,6 +5972,110 @@ window.addEventListener(
                 );
             }
 
+            /* =========================================
+               SELECIONAR TREINO ATIVO SUPABASE
+            ========================================= */
+
+            lista.addEventListener(
+                'click',
+                async evento => {
+                    const botao = evento.target.closest(
+                        'button[data-iniciar-treino-supabase]'
+                    );
+
+                    if (
+                        !botao ||
+                        !lista.contains(botao) ||
+                        botao.disabled
+                    ) {
+                        return;
+                    }
+
+                    botao.disabled = true;
+
+                    try {
+                        const sessaoValida =
+                            await conferirSessaoHibridaTreinos(
+                                acessoInicialTreinosFitZone
+                            );
+
+                        if (!sessaoValida) {
+                            window.location.replace('login.html');
+                            return;
+                        }
+
+                        const treinoId =
+                            botao.dataset.iniciarTreinoSupabase;
+
+                        const treinos =
+                            await carregarTreinosPorOrigem(
+                                acessoInicialTreinosFitZone
+                            );
+
+                        const treino = treinos.find(
+                            item => item.id === treinoId
+                        );
+
+                        if (!treino) {
+                            throw new Error(
+                                'Treino não encontrado.'
+                            );
+                        }
+
+                        const ativoAtual =
+                            await consultarTreinoAtivoSupabase();
+
+                        if (ativoAtual?.id === treino.id) {
+                            mensagem.textContent =
+                                'Este treino já está selecionado.';
+                            return;
+                        }
+
+                        if (
+                            ativoAtual &&
+                            !window.confirm(
+                                'Já existe um treino em andamento. ' +
+                                'Deseja selecionar outro?'
+                            )
+                        ) {
+                            return;
+                        }
+
+                        await salvarTreinoAtivoSupabase({
+                            id: treino.id,
+                            nome: treino.nome,
+                            progresso: {},
+                            iniciadoEm:
+                                new Date().toISOString()
+                        });
+
+                        treinoAtivoSupabaseVisualId =
+                            treino.id;
+
+                        renderizarCartoesSupabase(
+                            treinos,
+                            lista
+                        );
+
+                        mensagem.textContent =
+                            'Treino selecionado com sucesso!';
+
+                    } catch (erro) {
+                        console.error(
+                            'Erro ao selecionar treino:',
+                            erro
+                        );
+
+                        alert(
+                            'Não foi possível selecionar o treino.'
+                        );
+
+                    } finally {
+                        botao.disabled = false;
+                    }
+                }
+            );
+
             try {
                 const resultado =
                     await prepararTreinosSupabaseFitZone();
@@ -5968,6 +6094,12 @@ window.addEventListener(
                     resultado.treinos.length === 0
                         ? 'Nenhum treino cadastrado no banco.'
                         : 'Treinos encontrados (somente leitura):';
+
+                const treinoAtivoSalvo =
+                    await consultarTreinoAtivoSupabase();
+
+                treinoAtivoSupabaseVisualId =
+                    treinoAtivoSalvo?.id || null;
 
                 renderizarCartoesSupabase(
                     resultado.treinos,
