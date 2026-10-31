@@ -5973,6 +5973,316 @@ window.addEventListener(
             }
 
             /* =========================================
+               PROGRESSO DAS SERIES SUPABASE
+            ========================================= */
+
+            const painelProgressoSupabase =
+                document.createElement('section');
+
+            painelProgressoSupabase.className =
+                'active-training-section';
+
+            painelProgressoSupabase.hidden = true;
+
+            painel.insertBefore(
+                painelProgressoSupabase,
+                lista
+            );
+
+            async function renderizarProgressoSupabase() {
+                const ativo =
+                    await consultarTreinoAtivoSupabase();
+
+                painelProgressoSupabase.replaceChildren();
+
+                if (!ativo) {
+                    painelProgressoSupabase.hidden = true;
+                    return;
+                }
+
+                const treinos =
+                    await carregarTreinosPorOrigem(
+                        acessoInicialTreinosFitZone
+                    );
+
+                const treino = treinos.find(
+                    item => item.id === ativo.id
+                );
+
+                if (!treino) {
+                    painelProgressoSupabase.hidden = true;
+                    return;
+                }
+
+                painelProgressoSupabase.hidden = false;
+
+                const titulo =
+                    document.createElement('h2');
+
+                titulo.textContent =
+                    `Treino em andamento: ${treino.nome}`;
+
+                const resumo =
+                    document.createElement('p');
+
+                resumo.setAttribute('role', 'status');
+
+                const exercicios =
+                    treino.exercicios || [];
+
+                const progresso = ativo.progresso || {};
+
+                let totalSeries = 0;
+                let seriesConcluidas = 0;
+
+                exercicios.forEach(exercicio => {
+                    const quantidade =
+                        Number(exercicio.series) || 0;
+
+                    const marcadas =
+                        progresso[exercicio.id] || [];
+
+                    totalSeries += quantidade;
+
+                    seriesConcluidas += Array.from(
+                        { length: quantidade },
+                        (_, indice) => indice + 1
+                    ).filter(numero =>
+                        Array.isArray(marcadas) &&
+                        marcadas.includes(numero)
+                    ).length;
+                });
+
+                resumo.textContent =
+                    `${seriesConcluidas} de ${totalSeries} séries concluídas`;
+
+                painelProgressoSupabase.append(
+                    titulo,
+                    resumo
+                );
+
+                if (exercicios.length === 0) {
+                    const aviso =
+                        document.createElement('p');
+
+                    aviso.textContent =
+                        'Este treino não possui exercícios.';
+
+                    painelProgressoSupabase.appendChild(aviso);
+                    return;
+                }
+
+                exercicios.forEach(exercicio => {
+                    const grupo =
+                        document.createElement('div');
+
+                    grupo.className =
+                        'active-exercise-item';
+
+                    const nome =
+                        document.createElement('strong');
+
+                    nome.textContent =
+                        exercicio.nome || 'Exercício';
+
+                    const descricao =
+                        document.createElement('p');
+
+                    descricao.textContent =
+                        `${exercicio.series} séries × ` +
+                        `${exercicio.repeticoes} repetições`;
+
+                    grupo.append(nome, descricao);
+
+                    const quantidade =
+                        Math.max(
+                            0,
+                            Math.floor(Number(exercicio.series) || 0)
+                        );
+
+                    for (
+                        let numero = 1;
+                        numero <= quantidade;
+                        numero++
+                    ) {
+                        const rotulo =
+                            document.createElement('label');
+
+                        rotulo.style.cssText =
+                            'display:inline-flex;align-items:center;' +
+                            'gap:6px;margin:8px 12px 8px 0;';
+
+                        const checkbox =
+                            document.createElement('input');
+
+                        checkbox.type = 'checkbox';
+
+                        checkbox.dataset.serieExercicio =
+                            exercicio.id;
+
+                        checkbox.dataset.numeroSerie =
+                            String(numero);
+
+                        checkbox.checked =
+                            Array.isArray(
+                                progresso[exercicio.id]
+                            ) &&
+                            progresso[exercicio.id].includes(
+                                numero
+                            );
+
+                        const texto =
+                            document.createElement('span');
+
+                        texto.textContent =
+                            `Série ${numero}`;
+
+                        rotulo.append(checkbox, texto);
+                        grupo.appendChild(rotulo);
+                    }
+
+                    painelProgressoSupabase.appendChild(
+                        grupo
+                    );
+                });
+            }
+
+            painelProgressoSupabase.addEventListener(
+                'change',
+                async evento => {
+                    const checkbox =
+                        evento.target.closest(
+                            'input[data-serie-exercicio]'
+                        );
+
+                    if (!checkbox) {
+                        return;
+                    }
+
+                    const controles =
+                        painelProgressoSupabase.querySelectorAll(
+                            'input[data-serie-exercicio]'
+                        );
+
+                    controles.forEach(item => {
+                        item.disabled = true;
+                    });
+
+                    try {
+                        const sessaoValida =
+                            await conferirSessaoHibridaTreinos(
+                                acessoInicialTreinosFitZone
+                            );
+
+                        if (!sessaoValida) {
+                            window.location.replace(
+                                'login.html'
+                            );
+                            return;
+                        }
+
+                        const ativo =
+                            await consultarTreinoAtivoSupabase();
+
+                        if (!ativo) {
+                            throw new Error(
+                                'Nenhum treino ativo encontrado.'
+                            );
+                        }
+
+                        const treinos =
+                            await carregarTreinosPorOrigem(
+                                acessoInicialTreinosFitZone
+                            );
+
+                        const treino = treinos.find(
+                            item => item.id === ativo.id
+                        );
+
+                        const exercicio =
+                            treino?.exercicios?.find(
+                                item =>
+                                    item.id ===
+                                    checkbox.dataset.serieExercicio
+                            );
+
+                        const numero =
+                            Number(
+                                checkbox.dataset.numeroSerie
+                            );
+
+                        if (
+                            !exercicio ||
+                            !Number.isInteger(numero) ||
+                            numero < 1 ||
+                            numero > Number(exercicio.series)
+                        ) {
+                            throw new Error(
+                                'Série ou exercício inválido.'
+                            );
+                        }
+
+                        const progresso = {
+                            ...ativo.progresso
+                        };
+
+                        const seriesAtuais =
+                            progresso[exercicio.id];
+
+                        const marcadas = new Set(
+                            Array.isArray(seriesAtuais)
+                                ? seriesAtuais
+                                : []
+                        );
+
+                        if (checkbox.checked) {
+                            marcadas.add(numero);
+                        } else {
+                            marcadas.delete(numero);
+                        }
+
+                        progresso[exercicio.id] =
+                            Array.from(marcadas).sort(
+                                (a, b) => a - b
+                            );
+
+                        await salvarTreinoAtivoSupabase({
+                            id: ativo.id,
+                            nome: ativo.nome,
+                            progresso,
+                            iniciadoEm: ativo.iniciadoEm
+                        });
+
+                        await renderizarProgressoSupabase();
+
+                    } catch (erro) {
+                        console.error(
+                            'Erro ao atualizar séries:',
+                            erro
+                        );
+
+                        alert(
+                            'Não foi possível salvar o progresso.'
+                        );
+
+                        try {
+                            await renderizarProgressoSupabase();
+                        } catch (erroAtualizacao) {
+                            console.error(
+                                'Erro ao recuperar progresso:',
+                                erroAtualizacao
+                            );
+                        }
+
+                    } finally {
+                        controles.forEach(item => {
+                            item.disabled = false;
+                        });
+                    }
+                }
+            );
+
+            /* =========================================
                SELECIONAR TREINO ATIVO SUPABASE
             ========================================= */
 
@@ -6060,6 +6370,8 @@ window.addEventListener(
                         mensagem.textContent =
                             'Treino selecionado com sucesso!';
 
+                        await renderizarProgressoSupabase();
+
                     } catch (erro) {
                         console.error(
                             'Erro ao selecionar treino:',
@@ -6105,6 +6417,8 @@ window.addEventListener(
                     resultado.treinos,
                     lista
                 );
+
+                await renderizarProgressoSupabase();
 
                 /* =========================================
                    BOTAO TEMPORARIO DE TESTE SUPABASE
