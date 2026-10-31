@@ -6259,6 +6259,7 @@ window.addEventListener(
                 const titulo =
                     document.createElement('h2');
 
+                titulo.className = 'section-title';
                 titulo.textContent = 'Histórico de treinos';
 
                 painelHistoricoSupabase.appendChild(titulo);
@@ -6283,11 +6284,15 @@ window.addEventListener(
                     const nome =
                         document.createElement('h3');
 
+                    nome.className = 'workout-title';
+
                     nome.textContent =
                         registro.nome || 'Treino';
 
                     const data =
                         document.createElement('p');
+
+                    data.className = 'active-exercise-meta';
 
                     const partes =
                         (registro.dataLocal || '').split('-');
@@ -6300,6 +6305,8 @@ window.addEventListener(
                     const resumo =
                         document.createElement('p');
 
+                    resumo.className = 'active-exercise-meta';
+
                     resumo.textContent =
                         `${registro.seriesConcluidas ?? 0} ` +
                         `de ${registro.seriesTotal ?? 0} ` +
@@ -6310,6 +6317,8 @@ window.addEventListener(
 
                     const abrirDetalhes =
                         document.createElement('summary');
+
+                    abrirDetalhes.className = 'active-training-status';
 
                     abrirDetalhes.textContent =
                         'Ver exercícios';
