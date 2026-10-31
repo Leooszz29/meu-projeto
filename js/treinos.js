@@ -6245,7 +6245,27 @@ window.addEventListener(
                     painelProgressoSupabase.appendChild(
                         grupo
                     );
+
                 });
+
+                if (seriesConcluidas > 0) {
+                    const botaoFinalizar =
+                        document.createElement('button');
+
+                    botaoFinalizar.type = 'button';
+                    botaoFinalizar.className =
+                        'btn btn-save';
+
+                    botaoFinalizar.textContent =
+                        '✓ Finalizar treino';
+
+                    botaoFinalizar.dataset.finalizarTreinoSupabase =
+                        ativo.id;
+
+                    painelProgressoSupabase.appendChild(
+                        botaoFinalizar
+                    );
+                }
             }
 
             painelProgressoSupabase.addEventListener(
@@ -6379,6 +6399,215 @@ window.addEventListener(
                         controles.forEach(item => {
                             item.disabled = false;
                         });
+                    }
+                }
+            );
+
+            /* =========================================
+               FINALIZAR TREINO SUPABASE
+            ========================================= */
+
+            painelProgressoSupabase.addEventListener(
+                'click',
+                async evento => {
+                    const botao = evento.target.closest(
+                        'button[data-finalizar-treino-supabase]'
+                    );
+
+                    if (!botao || botao.disabled) {
+                        return;
+                    }
+
+                    botao.disabled = true;
+
+                    try {
+                        const sessaoValida =
+                            await conferirSessaoHibridaTreinos(
+                                acessoInicialTreinosFitZone
+                            );
+
+                        if (!sessaoValida) {
+                            window.location.replace('login.html');
+                            return;
+                        }
+
+                        const ativo =
+                            await consultarTreinoAtivoSupabase();
+
+                        if (
+                            !ativo ||
+                            ativo.id !==
+                                botao.dataset.finalizarTreinoSupabase
+                        ) {
+                            throw new Error(
+                                'O treino ativo foi alterado.'
+                            );
+                        }
+
+                        const treinos =
+                            await carregarTreinosPorOrigem(
+                                acessoInicialTreinosFitZone
+                            );
+
+                        const treino = treinos.find(
+                            item => item.id === ativo.id
+                        );
+
+                        if (!treino) {
+                            throw new Error(
+                                'Treino não encontrado.'
+                            );
+                        }
+
+                        const exercicios =
+                            treino.exercicios || [];
+
+                        let totalSeries = 0;
+                        let seriesConcluidas = 0;
+
+                        const resumoExercicios =
+                            exercicios.map(exercicio => {
+                                const total =
+                                    Math.max(
+                                        0,
+                                        Math.floor(
+                                            Number(exercicio.series) || 0
+                                        )
+                                    );
+
+                                const marcadas =
+                                    ativo.progresso?.[exercicio.id];
+
+                                const concluidas =
+                                    Array.from(
+                                        { length: total },
+                                        (_, indice) => indice + 1
+                                    ).filter(numero =>
+                                        Array.isArray(marcadas) &&
+                                        marcadas.includes(numero)
+                                    ).length;
+
+                                totalSeries += total;
+                                seriesConcluidas += concluidas;
+
+                                return {
+                                    id: exercicio.id,
+                                    nome: exercicio.nome,
+                                    seriesConcluidas: concluidas,
+                                    seriesTotal: total,
+                                    completo:
+                                        total > 0 &&
+                                        concluidas === total,
+                                    tipoExecucao:
+                                        exercicio.tipoExecucao ||
+                                        'individual',
+                                    grupoExecucao:
+                                        exercicio.grupoExecucao ||
+                                        null
+                                };
+                            });
+
+                        if (seriesConcluidas === 0) {
+                            alert(
+                                'Conclua pelo menos uma série.'
+                            );
+                            return;
+                        }
+
+                        const hoje = new Date();
+
+                        const dataLocal = calDateKey(
+                            hoje.getFullYear(),
+                            hoje.getMonth(),
+                            hoje.getDate()
+                        );
+
+                        const historico =
+                            await consultarHistoricoTreinosSupabase();
+
+                        const jaConcluido =
+                            historico.some(registro =>
+                                registro.workoutId === ativo.id &&
+                                registro.dataLocal === dataLocal
+                            );
+
+                        if (jaConcluido) {
+                            alert(
+                                'Este treino já foi concluído hoje.'
+                            );
+                            return;
+                        }
+
+                        const confirmar = window.confirm(
+                            `Finalizar "${treino.nome}"?\n\n` +
+                            `${seriesConcluidas} de ` +
+                            `${totalSeries} séries concluídas.\n\n` +
+                            'O resultado será registrado no histórico.'
+                        );
+
+                        if (!confirmar) {
+                            return;
+                        }
+
+                        const registro = {
+                            workoutId: treino.id,
+                            nome: treino.nome,
+                            data: new Date().toISOString(),
+                            exercicios: resumoExercicios,
+                            totalExercicios: exercicios.length,
+                            seriesConcluidas,
+                            seriesTotal: totalSeries
+                        };
+
+                        await registrarHistoricoTreinoSupabase(
+                            registro,
+                            dataLocal
+                        );
+
+                        try {
+                            await limparTreinoAtivoSupabase();
+                        } catch (erroLimpeza) {
+                            console.error(
+                                'Histórico registrado, mas falhou ' +
+                                'a limpeza do treino ativo:',
+                                erroLimpeza
+                            );
+
+                            alert(
+                                'O treino foi registrado no histórico, ' +
+                                'mas não foi possível limpar o treino ativo. ' +
+                                'Não finalize novamente.'
+                            );
+
+                            return;
+                        }
+
+                        treinoAtivoSupabaseVisualId = null;
+
+                        renderizarCartoesSupabase(
+                            treinos,
+                            lista
+                        );
+
+                        await renderizarProgressoSupabase();
+
+                        mensagem.textContent =
+                            'Treino finalizado e registrado ' +
+                            'no histórico com sucesso!';
+
+                    } catch (erro) {
+                        console.error(
+                            'Erro ao finalizar treino Supabase:',
+                            erro
+                        );
+
+                        alert(
+                            erro.message ||
+                            'Não foi possível finalizar o treino.'
+                        );
+
+                    } finally {
+                        botao.disabled = false;
                     }
                 }
             );
