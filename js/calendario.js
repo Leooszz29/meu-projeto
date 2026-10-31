@@ -144,6 +144,67 @@ document.addEventListener("DOMContentLoaded", async () => {
                     voltar
                 );
 
+                /* =========================================
+                   HISTORICO DE TREINOS NO CALENDARIO
+                   SUPABASE - PRIMEIRA INTEGRACAO
+                ========================================= */
+
+                const resumoHistoricoSupabase =
+                    document.createElement('p');
+
+                resumoHistoricoSupabase.setAttribute(
+                    'role',
+                    'status'
+                );
+
+                resumoHistoricoSupabase.textContent =
+                    'Consultando treinos finalizados...';
+
+                aviso.insertBefore(
+                    resumoHistoricoSupabase,
+                    voltar
+                );
+
+                try {
+                    const cliente =
+                        inicializarSupabaseFitZone();
+
+                    if (!cliente) {
+                        throw new Error(
+                            'Supabase indisponível.'
+                        );
+                    }
+
+                    const { data, error } =
+                        await cliente
+                            .from('fitzone_historico_treinos')
+                            .select('id, data_local, dados')
+                            .order('concluido_em', {
+                                ascending: false
+                            });
+
+                    if (error) {
+                        throw error;
+                    }
+
+                    const historico =
+                        Array.isArray(data) ? data : [];
+
+                    resumoHistoricoSupabase.textContent =
+                        'Treinos finalizados no Supabase: ' +
+                        historico.length;
+
+                } catch (erro) {
+                    console.error(
+                        'Erro ao consultar histórico no calendário:',
+                        erro
+                    );
+
+                    resumoHistoricoSupabase.textContent =
+                        'Não foi possível consultar ' +
+                        'o histórico de treinos.';
+                }
+
                 try {
                     const chave =
                         await obterChaveArmazenamentoSupabaseFitZone(
