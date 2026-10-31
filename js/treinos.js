@@ -6090,6 +6090,117 @@ window.addEventListener(
                 lista
             );
 
+            /* =========================================
+               HISTORICO VISUAL SUPABASE
+            ========================================= */
+
+            const painelHistoricoSupabase =
+                document.createElement('section');
+
+            painelHistoricoSupabase.className =
+                'active-training-section';
+
+            painel.insertBefore(
+                painelHistoricoSupabase,
+                lista
+            );
+
+            async function renderizarHistoricoSupabase() {
+                const registros =
+                    await consultarHistoricoTreinosSupabase();
+
+                painelHistoricoSupabase.replaceChildren();
+
+                const titulo =
+                    document.createElement('h2');
+
+                titulo.textContent = 'Histórico de treinos';
+
+                painelHistoricoSupabase.appendChild(titulo);
+
+                if (registros.length === 0) {
+                    const vazio =
+                        document.createElement('p');
+
+                    vazio.textContent =
+                        'Nenhum treino concluído ainda.';
+
+                    painelHistoricoSupabase.appendChild(vazio);
+                    return;
+                }
+
+                registros.forEach(registro => {
+                    const cartao =
+                        document.createElement('article');
+
+                    cartao.className = 'workout-card';
+
+                    const nome =
+                        document.createElement('h3');
+
+                    nome.textContent =
+                        registro.nome || 'Treino';
+
+                    const data =
+                        document.createElement('p');
+
+                    const partes =
+                        (registro.dataLocal || '').split('-');
+
+                    data.textContent =
+                        partes.length === 3
+                            ? `${partes[2]}/${partes[1]}/${partes[0]}`
+                            : 'Data não informada';
+
+                    const resumo =
+                        document.createElement('p');
+
+                    resumo.textContent =
+                        `${registro.seriesConcluidas ?? 0} ` +
+                        `de ${registro.seriesTotal ?? 0} ` +
+                        'séries concluídas';
+
+                    const detalhes =
+                        document.createElement('details');
+
+                    const abrirDetalhes =
+                        document.createElement('summary');
+
+                    abrirDetalhes.textContent =
+                        'Ver exercícios';
+
+                    detalhes.appendChild(abrirDetalhes);
+
+                    const exercicios =
+                        Array.isArray(registro.exercicios)
+                            ? registro.exercicios
+                            : [];
+
+                    exercicios.forEach(exercicio => {
+                        const linha =
+                            document.createElement('p');
+
+                        linha.textContent =
+                            `${exercicio.nome || 'Exercício'}: ` +
+                            `${exercicio.seriesConcluidas ?? 0} ` +
+                            `de ${exercicio.seriesTotal ?? 0} séries`;
+
+                        detalhes.appendChild(linha);
+                    });
+
+                    cartao.append(
+                        nome,
+                        data,
+                        resumo,
+                        detalhes
+                    );
+
+                    painelHistoricoSupabase.appendChild(
+                        cartao
+                    );
+                });
+            }
+
             async function renderizarProgressoSupabase() {
                 const ativo =
                     await consultarTreinoAtivoSupabase();
@@ -6590,6 +6701,7 @@ window.addEventListener(
                         );
 
                         await renderizarProgressoSupabase();
+                        await renderizarHistoricoSupabase();
 
                         mensagem.textContent =
                             'Treino finalizado e registrado ' +
@@ -6749,6 +6861,7 @@ window.addEventListener(
                 );
 
                 await renderizarProgressoSupabase();
+                await renderizarHistoricoSupabase();
 
                 /* =========================================
                    BOTAO TEMPORARIO DE TESTE SUPABASE
