@@ -6879,7 +6879,7 @@ window.addEventListener(
                     'padding:12px 18px;cursor:pointer;';
 
                 painel.appendChild(botaoTeste);
-                botaoTeste.hidden = true;
+                botaoTeste.style.display = 'none';
                
                 botaoTeste.addEventListener(
                     'click',
@@ -6967,7 +6967,7 @@ window.addEventListener(
                     'padding:12px 18px;cursor:pointer;';
 
                 painel.appendChild(botaoExcluir);
-                botaoExcluir.hidden = true;
+                botaoExcluir.style.display = 'none';
 
                 botaoExcluir.addEventListener(
                     'click',
@@ -7056,7 +7056,7 @@ window.addEventListener(
                     'padding:12px 18px;cursor:pointer;';
 
                 painel.appendChild(botaoEditar);
-                botaoEditar.hidden = true;
+                botaoEditar.style.display = 'none';
 
                 botaoEditar.addEventListener(
                     'click',
