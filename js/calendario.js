@@ -297,7 +297,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                         document.createElement('button');
 
                     botaoAnterior.type = 'button';
-                    botaoAnterior.textContent = '‹ Anterior';
+                    botaoAnterior.textContent = '‹';
+                    botaoAnterior.setAttribute(
+                        'aria-label',
+                        'Mês anterior'
+                    );
 
                     const tituloMes =
                         document.createElement('h2');
@@ -309,7 +313,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                         document.createElement('button');
 
                     botaoProximo.type = 'button';
-                    botaoProximo.textContent = 'Próximo ›';
+                    botaoProximo.textContent = '›';
+                    botaoProximo.setAttribute(
+                        'aria-label',
+                        'Próximo mês'
+                    );
 
                     cabecalhoMes.append(
                         botaoAnterior,
