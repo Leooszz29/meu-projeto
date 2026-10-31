@@ -5227,6 +5227,117 @@ window.addEventListener(
                 const campo = id =>
                     document.getElementById(id);
 
+                let treinoGruposSupabase = null;
+                let exercicioGruposSupabase = null;
+
+                function atualizarGruposExercicioSupabase(
+                    treino,
+                    exercicio = null
+                ) {
+                    treinoGruposSupabase = treino;
+                    exercicioGruposSupabase = exercicio;
+
+                    const tipo =
+                        campo('exerciseTypeInput').value;
+
+                    const seletor =
+                        campo('exerciseGroupInput');
+
+                    const campoGrupo =
+                        campo('exerciseGroupField');
+
+                    seletor.replaceChildren();
+
+                    const opcaoNova =
+                        document.createElement('option');
+
+                    opcaoNova.value = '';
+                    opcaoNova.textContent = 'Novo grupo';
+                    seletor.appendChild(opcaoNova);
+
+                    campoGrupo.hidden =
+                        tipo === 'individual';
+
+                    if (tipo === 'individual') {
+                        return;
+                    }
+
+                    const grupos = new Map();
+
+                    (treino.exercicios || []).forEach(item => {
+                        if (
+                            item.tipoExecucao !== tipo ||
+                            !item.grupoExecucao
+                        ) {
+                            return;
+                        }
+
+                        const grupo =
+                            item.grupoExecucao;
+
+                        grupos.set(
+                            grupo,
+                            (grupos.get(grupo) || 0) + 1
+                        );
+                    });
+
+                    const limite =
+                        tipo === 'bisset' ? 2 : 3;
+
+                    let numero = 0;
+
+                    grupos.forEach((quantidade, grupoId) => {
+                        numero++;
+
+                        const opcao =
+                            document.createElement('option');
+
+                        opcao.value = grupoId;
+
+                        const grupoAtual =
+                            exercicio?.grupoExecucao ===
+                                grupoId &&
+                            exercicio?.tipoExecucao === tipo;
+
+                        opcao.disabled =
+                            quantidade >= limite &&
+                            !grupoAtual;
+
+                        const nomeGrupo =
+                            tipo === 'bisset'
+                                ? 'Bi-set'
+                                : 'Tri-set';
+
+                        opcao.textContent =
+                            `${nomeGrupo} ${numero}` +
+                            (opcao.disabled
+                                ? ' — completo'
+                                : '');
+
+                        seletor.appendChild(opcao);
+                    });
+
+                    if (
+                        exercicio?.tipoExecucao === tipo &&
+                        exercicio?.grupoExecucao
+                    ) {
+                        seletor.value =
+                            exercicio.grupoExecucao;
+                    }
+                }
+
+                campo('exerciseTypeInput').addEventListener(
+                    'change',
+                    () => {
+                        if (treinoGruposSupabase) {
+                            atualizarGruposExercicioSupabase(
+                                treinoGruposSupabase,
+                                exercicioGruposSupabase
+                            );
+                        }
+                    }
+                );
+
                 const fecharExercicioSupabase = () => {
                     modalExercicioSupabase.classList.remove(
                         'show'
@@ -5321,14 +5432,16 @@ window.addEventListener(
                             campo('exerciseRestInput').value =
                                 exercicio?.descanso ?? '';
 
-                            campo('exerciseTypeInput').value =
-                                'individual';
-
                             campo('exerciseTypeInput').disabled =
-                                true;
+                                false;
 
-                            campo('exerciseGroupField').hidden =
-                                true;
+                            campo('exerciseTypeInput').value =
+                                exercicio?.tipoExecucao || 'individual';
+
+                            atualizarGruposExercicioSupabase(
+                                treino,
+                                exercicio
+                            );
 
                             const aviso =
                                 campo('exerciseValidationMessage');
@@ -5472,8 +5585,76 @@ window.addEventListener(
                                 );
                             }
 
+
+                            const tipoExecucao =
+                                campo('exerciseTypeInput').value;
+
+                            const grupoSelecionado =
+                                campo('exerciseGroupInput').value;
+
+                            if (
+                                ![
+                                    'individual',
+                                    'bisset',
+                                    'triset'
+                                ].includes(tipoExecucao)
+                            ) {
+                                throw new Error(
+                                    'Tipo de execução inválido.'
+                                );
+                            }
+
+                            let grupoExecucao = null;
+
+                            if (tipoExecucao !== 'individual') {
+                                const limite =
+                                    tipoExecucao === 'bisset'
+                                        ? 2
+                                        : 3;
+
+                                if (grupoSelecionado) {
+                                    const quantidade =
+                                        treino.exercicios.filter(
+                                            item =>
+                                                item.id !== exercicioId &&
+                                                item.grupoExecucao ===
+                                                    grupoSelecionado &&
+                                                item.tipoExecucao ===
+                                                    tipoExecucao
+                                        ).length;
+
+                                    const grupoExiste =
+                                        treino.exercicios.some(
+                                            item =>
+                                                item.grupoExecucao ===
+                                                    grupoSelecionado &&
+                                                item.tipoExecucao ===
+                                                    tipoExecucao
+                                        );
+
+                                    if (
+                                        !grupoExiste ||
+                                        quantidade >= limite
+                                    ) {
+                                        alert(
+                                            'Este grupo está completo ' +
+                                            'ou não está mais disponível.'
+                                        );
+                                        return;
+                                    }
+
+                                    grupoExecucao =
+                                        grupoSelecionado;
+                                } else {
+                                    grupoExecucao =
+                                        crypto.randomUUID();
+                                }
+                            }
+
                             const dados = {
                                 nome,
+                                tipoExecucao,
+                                grupoExecucao,
                                 series,
                                 repeticoes,
                                 descanso
@@ -5484,8 +5665,6 @@ window.addEventListener(
                             } else {
                                 treino.exercicios.push({
                                     id: crypto.randomUUID(),
-                                    tipoExecucao: 'individual',
-                                    grupoExecucao: null,
                                     ...dados
                                 });
                             }
