@@ -6544,9 +6544,8 @@ window.addEventListener(
                         const rotulo =
                             document.createElement('label');
 
-                        rotulo.style.cssText =
-                            'display:inline-flex;align-items:center;' +
-                            'gap:6px;margin:8px 12px 8px 0;';
+                        rotulo.className =
+                            'active-series-checkbox-label';
 
                         const checkbox =
                             document.createElement('input');
