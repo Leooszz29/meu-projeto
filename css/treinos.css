@@ -844,6 +844,77 @@ body:not(.theme-feminino):not(.theme-masculino)
     transform: scale(0.94);
 }
 
+/* =========================================
+   SERIES SUPABASE - VISUAL FITZONE
+========================================= */
+
+.active-series-checkbox-label {
+    min-height: 34px;
+    padding: 0 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
+    border-radius: 9px;
+
+    background: rgba(var(--accent-rgb), 0.06);
+    color: var(--chalk-dim);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.active-series-checkbox-label:hover {
+    border-color: rgba(var(--accent-rgb), 0.45);
+    background: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent);
+}
+
+.active-series-checkbox-label input {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.active-series-checkbox-label:has(input:checked) {
+    border-color: var(--accent);
+
+    background: linear-gradient(
+        135deg,
+        var(--accent),
+        var(--accent-alt)
+    );
+
+    color: var(--concrete-2);
+
+    box-shadow:
+        0 5px 14px rgba(var(--accent-rgb), 0.22);
+}
+
+.active-series-checkbox-label:focus-within {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.active-series-checkbox-label:has(input:disabled) {
+    cursor: wait;
+    opacity: 0.65;
+}
+
 /* MOBILE */
 
 @media (max-width: 520px) {
