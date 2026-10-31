@@ -6373,16 +6373,59 @@ window.addEventListener(
 
                 painelProgressoSupabase.hidden = false;
 
+                /* =========================================
+                   CABECALHO ORIGINAL DO TREINO ATIVO
+                ========================================= */
+
+                const cabecalho =
+                    document.createElement('div');
+
+                cabecalho.className =
+                    'active-training-header';
+
+                const identificacao =
+                    document.createElement('div');
+
+                const etiqueta =
+                    document.createElement('span');
+
+                etiqueta.className =
+                    'active-training-eyebrow';
+
+                etiqueta.textContent =
+                    'TREINO EM ANDAMENTO';
+
                 const titulo =
                     document.createElement('h2');
 
-                titulo.textContent =
-                    `Treino em andamento: ${treino.nome}`;
+                titulo.textContent = treino.nome;
+
+                identificacao.append(
+                    etiqueta,
+                    titulo
+                );
+
+                const status =
+                    document.createElement('span');
+
+                status.className =
+                    'active-training-status';
+
+                status.textContent =
+                    'EM ANDAMENTO';
+
+                cabecalho.append(
+                    identificacao,
+                    status
+                );
 
                 const resumo =
                     document.createElement('p');
 
-                resumo.setAttribute('role', 'status');
+                resumo.setAttribute(
+                    'role',
+                    'status'
+                );
 
                 const exercicios =
                     treino.exercicios || [];
@@ -6414,7 +6457,7 @@ window.addEventListener(
                     `${seriesConcluidas} de ${totalSeries} séries concluídas`;
 
                 painelProgressoSupabase.append(
-                    titulo,
+                    cabecalho,
                     resumo
                 );
 
