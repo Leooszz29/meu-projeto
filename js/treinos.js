@@ -6588,10 +6588,10 @@ window.addEventListener(
 
                     botaoFinalizar.type = 'button';
                     botaoFinalizar.className =
-                        'btn btn-save';
+                        'btn-finish-workout';
 
                     botaoFinalizar.textContent =
-                        '✓ Finalizar treino';
+                        'Finalizar Treino';
 
                     botaoFinalizar.dataset.finalizarTreinoSupabase =
                         ativo.id;
