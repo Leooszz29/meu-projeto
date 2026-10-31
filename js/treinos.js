@@ -974,9 +974,86 @@ function renderizarCartoesSupabase(treinos, lista) {
         );
     }
 
+    lista.treinosSupabaseCompletos = treinos;
+
+    const campoBusca = lista.parentElement?.querySelector(
+        '#workoutSearchSupabase'
+    );
+
+    const normalizarBusca = texto =>
+        String(texto || '')
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLocaleLowerCase('pt-BR')
+            .trim();
+
+    const termo = normalizarBusca(
+        campoBusca?.value
+    );
+
+    const treinosFiltrados = treinos.filter(treino =>
+        normalizarBusca(treino.nome).includes(termo)
+    );
+
     lista.replaceChildren();
 
-    treinos.forEach(treino => {
+    if (treinosFiltrados.length === 0) {
+        const mensagemVazia =
+            document.createElement('div');
+
+        mensagemVazia.className = termo
+            ? 'workout-search-empty'
+            : 'empty-state';
+
+        const tituloVazio =
+            document.createElement('strong');
+
+        tituloVazio.textContent = termo
+            ? 'Nenhum treino encontrado'
+            : 'Nenhum treino criado ainda';
+
+        const descricao =
+            document.createElement('p');
+
+        descricao.textContent = termo
+            ? 'Tente pesquisar outro nome ou limpe a busca.'
+            : 'Crie seu primeiro treino para começar.';
+
+        mensagemVazia.append(
+            tituloVazio,
+            descricao
+        );
+
+        if (!termo) {
+            const botaoCriar =
+                document.createElement('button');
+
+            botaoCriar.type = 'button';
+            botaoCriar.className = 'empty-state-action';
+            botaoCriar.textContent = '+ Criar primeiro treino';
+
+            botaoCriar.addEventListener(
+                'click',
+                () => {
+                    const botaoNovo = document.querySelector(
+                        '#btnNewWorkout'
+                    );
+
+                    if (botaoNovo) {
+                        botaoNovo.click();
+                    }
+                }
+            );
+
+            mensagemVazia.appendChild(botaoCriar);
+        }
+
+        lista.appendChild(mensagemVazia);
+        return;
+    }
+
+    treinosFiltrados.forEach(treino => {
+
         const card = document.createElement('div');
         card.className = 'workout-card';
 
@@ -5054,6 +5131,56 @@ window.addEventListener(
                     planejamentoSupabase,
                     mensagem
                 );
+            }
+
+            /* =========================================
+               BUSCA ORIGINAL DE TREINOS SUPABASE
+            ========================================= */
+
+            const buscaOriginal =
+                document.querySelector('.page .workout-search');
+
+            if (buscaOriginal) {
+                const buscaSupabase =
+                    buscaOriginal.cloneNode(true);
+
+                const campoBuscaSupabase =
+                    buscaSupabase.querySelector('input');
+
+                if (campoBuscaSupabase) {
+                    campoBuscaSupabase.id =
+                        'workoutSearchSupabase';
+
+                    campoBuscaSupabase.setAttribute(
+                        'aria-controls',
+                        'workoutsListSupabase'
+                    );
+
+                    const rotulo =
+                        buscaSupabase.querySelector('label');
+
+                    if (rotulo) {
+                        rotulo.htmlFor =
+                            'workoutSearchSupabase';
+                    }
+
+                    lista.id = 'workoutsListSupabase';
+
+                    painel.insertBefore(
+                        buscaSupabase,
+                        lista
+                    );
+
+                    campoBuscaSupabase.addEventListener(
+                        'input',
+                        () => {
+                            renderizarCartoesSupabase(
+                                lista.treinosSupabaseCompletos || [],
+                                lista
+                            );
+                        }
+                    );
+                }
             }
 
             /* =========================================
