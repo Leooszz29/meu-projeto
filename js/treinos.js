@@ -6847,7 +6847,7 @@ window.addEventListener(
                 mensagem.textContent =
                     resultado.treinos.length === 0
                         ? 'Nenhum treino cadastrado no banco.'
-                        : 'Treinos encontrados (somente leitura):';
+                        : 'Seus treinos estão atualizados.';
 
                 const treinoAtivoSalvo =
                     await consultarTreinoAtivoSupabase();
@@ -6879,7 +6879,8 @@ window.addEventListener(
                     'padding:12px 18px;cursor:pointer;';
 
                 painel.appendChild(botaoTeste);
-
+                botaoTeste.hidden = true;
+               
                 botaoTeste.addEventListener(
                     'click',
                     async () => {
@@ -6966,6 +6967,7 @@ window.addEventListener(
                     'padding:12px 18px;cursor:pointer;';
 
                 painel.appendChild(botaoExcluir);
+                botaoExcluir.hidden = true;
 
                 botaoExcluir.addEventListener(
                     'click',
@@ -7054,6 +7056,7 @@ window.addEventListener(
                     'padding:12px 18px;cursor:pointer;';
 
                 painel.appendChild(botaoEditar);
+                botaoEditar.hidden = true;
 
                 botaoEditar.addEventListener(
                     'click',
