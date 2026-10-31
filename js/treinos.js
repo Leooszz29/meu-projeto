@@ -150,6 +150,107 @@ async function limparTreinoAtivoSupabase() {
 }
 
 /* =========================================
+   FITZONE - HISTORICO NO SUPABASE
+========================================= */
+
+async function consultarHistoricoTreinosSupabase() {
+    const acesso =
+        await identificarAcessoSupabaseTreinos();
+
+    if (!acesso.autenticado || !acesso.id) {
+        throw new Error('Sessão Supabase inválida.');
+    }
+
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error('Supabase indisponível.');
+    }
+
+    const { data, error } = await cliente
+        .from('fitzone_historico_treinos')
+        .select(
+            'treino_id, data_local, dados, concluido_em'
+        )
+        .eq('usuario_id', acesso.id)
+        .order('concluido_em', {
+            ascending: false
+        });
+
+    if (error) {
+        throw error;
+    }
+
+    return (data || []).map(registro => ({
+        ...registro.dados,
+        workoutId: registro.treino_id,
+        dataLocal: registro.data_local,
+        data: registro.concluido_em
+    }));
+}
+
+/* =========================================
+   FITZONE - REGISTRAR TREINO CONCLUIDO
+========================================= */
+
+async function registrarHistoricoTreinoSupabase(
+    registro,
+    dataLocal
+) {
+    if (
+        !registro ||
+        typeof registro !== 'object' ||
+        Array.isArray(registro) ||
+        typeof registro.workoutId !== 'string' ||
+        !registro.workoutId.trim() ||
+        typeof dataLocal !== 'string' ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(dataLocal)
+    ) {
+        throw new Error(
+            'Dados inválidos para registrar o histórico.'
+        );
+    }
+
+    const acesso =
+        await identificarAcessoSupabaseTreinos();
+
+    if (!acesso.autenticado || !acesso.id) {
+        throw new Error('Sessão Supabase inválida.');
+    }
+
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error('Supabase indisponível.');
+    }
+
+    const { data, error } = await cliente
+        .from('fitzone_historico_treinos')
+        .insert({
+            usuario_id: acesso.id,
+            treino_id: registro.workoutId,
+            data_local: dataLocal,
+            dados: registro,
+            concluido_em: registro.data ||
+                new Date().toISOString()
+        })
+        .select('id')
+        .single();
+
+    if (error) {
+        if (error.code === '23505') {
+            throw new Error(
+                'Este treino já foi concluído hoje.'
+            );
+        }
+
+        throw error;
+    }
+
+    return data.id;
+}
+
+/* =========================================
    FITZONE - CONSULTAR TREINOS NO SUPABASE
 ========================================= */
 
