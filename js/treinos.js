@@ -23,6 +23,133 @@ async function identificarAcessoSupabaseTreinos() {
 }
 
 /* =========================================
+   FITZONE - TREINO ATIVO NO SUPABASE
+========================================= */
+
+async function consultarTreinoAtivoSupabase() {
+    const acesso =
+        await identificarAcessoSupabaseTreinos();
+
+    if (!acesso.autenticado || !acesso.id) {
+        throw new Error('Sessão Supabase inválida.');
+    }
+
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error('Supabase indisponível.');
+    }
+
+    const { data, error } = await cliente
+        .from('fitzone_treino_ativo')
+        .select(
+            'treino_id, treino_nome, progresso, iniciado_em'
+        )
+        .eq('usuario_id', acesso.id)
+        .maybeSingle();
+
+    if (error) {
+        throw error;
+    }
+
+    if (!data || !data.treino_id) {
+        return null;
+    }
+
+    return {
+        id: data.treino_id,
+        nome: data.treino_nome,
+        progresso: data.progresso || {},
+        iniciadoEm: data.iniciado_em
+    };
+}
+
+/* =========================================
+   FITZONE - SALVAR TREINO ATIVO SUPABASE
+========================================= */
+
+async function salvarTreinoAtivoSupabase(treino) {
+    if (
+        !treino ||
+        typeof treino.id !== 'string' ||
+        !treino.id.trim() ||
+        typeof treino.nome !== 'string' ||
+        !treino.nome.trim() ||
+        !treino.progresso ||
+        typeof treino.progresso !== 'object' ||
+        Array.isArray(treino.progresso)
+    ) {
+        throw new Error('Treino ativo inválido.');
+    }
+
+    const acesso =
+        await identificarAcessoSupabaseTreinos();
+
+    if (!acesso.autenticado || !acesso.id) {
+        throw new Error('Sessão Supabase inválida.');
+    }
+
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error('Supabase indisponível.');
+    }
+
+    const { error } = await cliente
+        .from('fitzone_treino_ativo')
+        .upsert(
+            {
+                usuario_id: acesso.id,
+                treino_id: treino.id,
+                treino_nome: treino.nome,
+                progresso: treino.progresso,
+                iniciado_em:
+                    treino.iniciadoEm || new Date().toISOString(),
+                atualizado_em: new Date().toISOString()
+            },
+            {
+                onConflict: 'usuario_id'
+            }
+        );
+
+    if (error) {
+        throw error;
+    }
+
+    return true;
+}
+
+/* =========================================
+   FITZONE - LIMPAR TREINO ATIVO SUPABASE
+========================================= */
+
+async function limparTreinoAtivoSupabase() {
+    const acesso =
+        await identificarAcessoSupabaseTreinos();
+
+    if (!acesso.autenticado || !acesso.id) {
+        throw new Error('Sessão Supabase inválida.');
+    }
+
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error('Supabase indisponível.');
+    }
+
+    const { error } = await cliente
+        .from('fitzone_treino_ativo')
+        .delete()
+        .eq('usuario_id', acesso.id);
+
+    if (error) {
+        throw error;
+    }
+
+    return true;
+}
+
+/* =========================================
    FITZONE - CONSULTAR TREINOS NO SUPABASE
 ========================================= */
 
