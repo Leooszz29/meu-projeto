@@ -6226,7 +6226,7 @@ window.addEventListener(
                 document.createElement('section');
 
             painelProgressoSupabase.className =
-                'active-training-section';
+                'active-training';
 
             painelProgressoSupabase.hidden = true;
 
