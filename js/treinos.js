@@ -6230,9 +6230,9 @@ window.addEventListener(
 
             painelProgressoSupabase.hidden = true;
 
-            painel.insertBefore(
-                painelProgressoSupabase,
-                lista
+            lista.insertAdjacentElement(
+                'afterend',
+                painelProgressoSupabase
             );
 
             /* =========================================
@@ -6245,9 +6245,9 @@ window.addEventListener(
             painelHistoricoSupabase.className =
                 'active-training-section';
 
-            painel.insertBefore(
-                painelHistoricoSupabase,
-                lista
+            painelProgressoSupabase.insertAdjacentElement(
+                'afterend',
+                painelHistoricoSupabase
             );
 
             async function renderizarHistoricoSupabase() {
