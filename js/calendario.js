@@ -602,6 +602,62 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                             grade.appendChild(celula);
                         }
+
+                        /* =========================================
+                           ESTATISTICAS ORIGINAIS SUPABASE
+                        ========================================= */
+
+                        const prefixoMes =
+                            `${anoAtual}-` +
+                            `${String(mesAtual + 1).padStart(2, '0')}-`;
+
+                        const totalCheckinsMes =
+                            Object.keys(checkins).filter(data =>
+                                data.startsWith(prefixoMes) &&
+                                checkins[data]?.checked === true
+                            ).length;
+
+                        const campoMes =
+                            aviso.querySelector('#statMes');
+
+                        if (campoMes) {
+                            campoMes.textContent =
+                                String(totalCheckinsMes);
+                        }
+
+                        let sequencia = 0;
+
+                        const diaSequencia = new Date();
+                        diaSequencia.setHours(12, 0, 0, 0);
+
+                        while (true) {
+                            const chave =
+                                diaSequencia.getFullYear() + '-' +
+                                String(
+                                    diaSequencia.getMonth() + 1
+                                ).padStart(2, '0') + '-' +
+                                String(
+                                    diaSequencia.getDate()
+                                ).padStart(2, '0');
+
+                            if (checkins[chave]?.checked !== true) {
+                                break;
+                            }
+
+                            sequencia++;
+
+                            diaSequencia.setDate(
+                                diaSequencia.getDate() - 1
+                            );
+                        }
+
+                        const campoSequencia =
+                            aviso.querySelector('#statSequencia');
+
+                        if (campoSequencia) {
+                            campoSequencia.textContent =
+                                String(sequencia);
+                        }
                     }
 
                     botaoAnterior.addEventListener('click', () => {
@@ -636,10 +692,68 @@ document.addEventListener("DOMContentLoaded", async () => {
                         grade
                     );
 
+                    /* =========================================
+                       COMPONENTES ORIGINAIS DO CALENDARIO
+                       SUPABASE
+                    ========================================= */
+
+                    const paginaFonte =
+                        document.querySelector('.page');
+
+                    const introducaoOriginal =
+                        paginaFonte?.querySelector(
+                            '.calendar-intro'
+                        );
+
+                    if (introducaoOriginal) {
+                        aviso.insertBefore(
+                            introducaoOriginal.cloneNode(true),
+                            calendarioSupabase
+                        );
+                    }
+
+                    const estatisticasOriginais =
+                        paginaFonte?.querySelector('.stats-row');
+
+                    if (estatisticasOriginais) {
+                        aviso.insertBefore(
+                            estatisticasOriginais.cloneNode(true),
+                            calendarioSupabase
+                        );
+                    }
+
+                    const legendaOriginal =
+                        paginaFonte?.querySelector('.legend');
+
+                    if (legendaOriginal) {
+                        calendarioSupabase.appendChild(
+                            legendaOriginal.cloneNode(true)
+                        );
+                    }
+
                     aviso.insertBefore(
                         calendarioSupabase,
                         voltar
                     );
+
+                    const linkTreinosOriginal =
+                        paginaFonte?.querySelector(
+                            'a.btn-new-workout[href="treinos.html"]'
+                        );
+
+                    if (linkTreinosOriginal) {
+                        calendarioSupabase.insertAdjacentElement(
+                            'afterend',
+                            linkTreinosOriginal.cloneNode(true)
+                        );
+                    }
+
+                    /* Remover elementos visuais provisórios.
+                       Os dados e eventos continuam existentes. */
+
+                    informacaoCheckins.remove();
+                    resumoHistoricoSupabase.remove();
+                    listaDatas.remove();
 
                     renderizarMesSupabase();
 
