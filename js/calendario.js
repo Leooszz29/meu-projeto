@@ -643,7 +643,67 @@ document.addEventListener("DOMContentLoaded", async () => {
                         'Não foi possível consultar seus check-ins.';
                 }
 
-                document.body.replaceChildren(aviso);
+                /* =========================================
+                   RECUPERAR ESTRUTURA ORIGINAL CALENDARIO
+                   SUPABASE
+                ========================================= */
+
+                const paginaOriginal =
+                    document.querySelector('.page');
+
+                const navegacaoOriginal =
+                    paginaOriginal?.querySelector('.app-nav');
+
+                const cabecalhoOriginal =
+                    paginaOriginal?.querySelector('.page-heading');
+
+                const paginaSupabase =
+                    document.createElement('div');
+
+                paginaSupabase.className = 'page';
+
+                if (navegacaoOriginal) {
+                    const navegacaoSupabase =
+                        navegacaoOriginal.cloneNode(true);
+
+                    const botaoSairOriginal =
+                        navegacaoSupabase.querySelector(
+                            '#btnEndSession'
+                        );
+
+                    if (botaoSairOriginal) {
+                        botaoSairOriginal.replaceWith(voltar);
+
+                        voltar.id = 'btnEndSessionSupabase';
+                        voltar.className = 'btn-end-session';
+                        voltar.textContent = 'Sair';
+                    }
+
+                    paginaSupabase.appendChild(
+                        navegacaoSupabase
+                    );
+                }
+
+                aviso.removeAttribute('style');
+
+                titulo.remove();
+                mensagem.remove();
+
+                if (cabecalhoOriginal) {
+                    const cabecalhoSupabase =
+                        cabecalhoOriginal.cloneNode(true);
+
+                    aviso.insertBefore(
+                        cabecalhoSupabase,
+                        aviso.firstChild
+                    );
+                }
+
+                paginaSupabase.appendChild(aviso);
+
+                document.body.replaceChildren(
+                    paginaSupabase
+                );
 
                 const identificadorInicial =
                     acessoSupabase.identificador;
