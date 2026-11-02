@@ -328,10 +328,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const grade =
                         document.createElement('div');
 
-                    grade.style.cssText =
-                        'display:grid;' +
-                        'grid-template-columns:repeat(7,1fr);' +
-                        'gap:6px;margin-top:16px;';
+                    grade.className = 'days-grid';
 
                     const agora = new Date();
 
@@ -438,15 +435,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                         grade.replaceChildren();
 
-                        ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
-                            .forEach(dia => {
-                                const cabecalho =
-                                    document.createElement('strong');
-
-                                cabecalho.textContent = dia;
-                                grade.appendChild(cabecalho);
-                            });
-
                         const primeiroDia =
                             dataMes.getDay();
 
@@ -470,6 +458,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 document.createElement('button');
 
                             celula.type = 'button';
+                            celula.className = 'day-cell';
 
                             const data =
                                 anoAtual + '-' +
@@ -500,14 +489,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 corBorda = '#f59e0b';
                             }
 
-                            celula.style.cssText =
-                                'padding:10px 0;' +
-                                'border-radius:8px;' +
-                                'text-align:center;' +
-                                'border:2px solid ' + corBorda + ';' +
-                                (marcado
-                                    ? 'background:#16a34a;color:white;font-weight:bold;'
-                                    : 'background:rgba(128,128,128,.12);');
+                            if (marcado) {
+                                celula.classList.add('checked');
+
+                                celula.style.background = '#16a34a';
+                                celula.style.color = '#ffffff';
+                                celula.style.fontWeight = 'bold';
+                            }
+
+                            if (possuiCompleto || possuiParcial) {
+                                celula.style.boxShadow =
+                                    'inset 0 -4px 0 ' + corBorda;
+                            }
 
                             const descricaoTreinos = treinosDia
                                 ? `; ${treinosDia.completos} completo(s), ` +
@@ -621,8 +614,25 @@ document.addEventListener("DOMContentLoaded", async () => {
                         renderizarMesSupabase();
                     });
 
+                    const diasSemana =
+                        document.createElement('div');
+
+                    diasSemana.className = 'weekdays';
+
+                    [
+                        'Dom', 'Seg', 'Ter', 'Qua',
+                        'Qui', 'Sex', 'Sáb'
+                    ].forEach(dia => {
+                        const elemento =
+                            document.createElement('span');
+
+                        elemento.textContent = dia;
+                        diasSemana.appendChild(elemento);
+                    });
+
                     calendarioSupabase.append(
                         cabecalhoMes,
+                        diasSemana,
                         grade
                     );
 
