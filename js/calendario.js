@@ -480,7 +480,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                             const possuiParcial =
                                 (treinosDia?.parciais || 0) > 0;
 
-                            celula.textContent = String(dia);
+                            const numeroDia =
+                                document.createElement('span');
+
+                            numeroDia.className = 'num';
+                            numeroDia.textContent = String(dia);
+
+                            celula.appendChild(numeroDia);
 
                             let corBorda = 'transparent';
 
@@ -495,9 +501,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                             if (marcado) {
                                 celula.classList.add('checked');
 
-                                celula.style.background = '#16a34a';
-                                celula.style.color = '#ffffff';
-                                celula.style.fontWeight = 'bold';
+                                numeroDia.style.background = '#16a34a';
+                                numeroDia.style.color = '#ffffff';
+                                numeroDia.style.fontWeight = 'bold';
                             }
 
                             if (possuiCompleto || possuiParcial) {
