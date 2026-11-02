@@ -420,6 +420,252 @@ document.addEventListener("DOMContentLoaded", async () => {
                         }
                     });
 
+                    /* =========================================
+                       MODAL ORIGINAL - CHECK-IN SUPABASE
+                    ========================================= */
+
+                    const modalSupabase = document.getElementById(
+                        'checkinModalOverlay'
+                    );
+
+                    const modalDataSupabase = document.getElementById(
+                        'checkinModalDate'
+                    );
+
+                    const modalToggleSupabase = document.getElementById(
+                        'checkinToggle'
+                    );
+
+                    const modalTreinoSupabase = document.getElementById(
+                        'checkinTreinoInput'
+                    );
+
+                    const modalCancelarSupabase = document.getElementById(
+                        'checkinCancelBtn'
+                    );
+
+                    const modalSalvarSupabase = document.getElementById(
+                        'checkinSaveBtn'
+                    );
+
+                    const historicoSecaoSupabase = document.getElementById(
+                        'historicoDiaCalendario'
+                    );
+
+                    const historicoListaSupabase = document.getElementById(
+                        'historicoDiaLista'
+                    );
+
+                    let dataSelecionadaSupabase = null;
+                    let botaoOrigemSupabase = null;
+
+                    function fecharModalSupabase() {
+                        modalSupabase.classList.remove('show');
+
+                        dataSelecionadaSupabase = null;
+
+                        if (botaoOrigemSupabase?.isConnected) {
+                            botaoOrigemSupabase.focus();
+                        }
+
+                        botaoOrigemSupabase = null;
+                    }
+
+                    function abrirModalSupabase(data, botao) {
+                        dataSelecionadaSupabase = data;
+                        botaoOrigemSupabase = botao;
+
+                        const [ano, mes, dia] = data.split('-');
+
+                        const dataFormatada = new Date(
+                            Number(ano),
+                            Number(mes) - 1,
+                            Number(dia)
+                        ).toLocaleDateString('pt-BR', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                        });
+
+                        modalDataSupabase.textContent = dataFormatada;
+
+                        const registro = checkins[data] || {};
+                        const marcado = registro.checked === true;
+
+                        modalToggleSupabase.classList.toggle(
+                            'active',
+                            marcado
+                        );
+
+                        modalToggleSupabase.setAttribute(
+                            'aria-checked',
+                            String(marcado)
+                        );
+
+                        modalTreinoSupabase.value =
+                            registro.treino || '';
+
+                        historicoListaSupabase.replaceChildren();
+
+                        const treinosDia = historicoTreinosSupabase.filter(
+                            item => item.data_local === data
+                        );
+
+                        historicoSecaoSupabase.hidden =
+                            treinosDia.length === 0;
+
+                        treinosDia.forEach(item => {
+                            const dados = item.dados || {};
+
+                            const elemento = document.createElement('div');
+                            elemento.className = 'historico-dia-item';
+
+                            const nome = document.createElement('strong');
+                            nome.className = 'historico-dia-nome';
+                            nome.textContent =
+                                dados.nome || dados.nomeTreino || 'Treino';
+
+                            const status = document.createElement('span');
+                            status.className = 'historico-dia-status';
+
+                            const total = Number(dados.seriesTotal);
+                            const feitas = Number(dados.seriesConcluidas);
+
+                            if (
+                                Number.isFinite(total) &&
+                                total > 0 &&
+                                Number.isFinite(feitas)
+                            ) {
+                                const completo = feitas >= total;
+
+                                elemento.classList.add(
+                                    completo
+                                        ? 'treino-completo'
+                                        : 'treino-parcial'
+                                );
+
+                                status.textContent =
+                                    `${completo ? 'Completo' : 'Parcial'} · ` +
+                                    `${feitas} de ${total} séries`;
+                            } else {
+                                elemento.classList.add('registro-anterior');
+                                status.textContent = 'Registro anterior';
+                            }
+
+                            elemento.append(nome, status);
+                            historicoListaSupabase.appendChild(elemento);
+                        });
+
+                        modalSupabase.classList.add('show');
+                        modalCancelarSupabase.focus();
+                    }
+
+                    modalToggleSupabase.addEventListener('click', () => {
+                        const ativo =
+                            modalToggleSupabase.getAttribute(
+                                'aria-checked'
+                            ) !== 'true';
+
+                        modalToggleSupabase.classList.toggle(
+                            'active',
+                            ativo
+                        );
+
+                        modalToggleSupabase.setAttribute(
+                            'aria-checked',
+                            String(ativo)
+                        );
+                    });
+
+                    modalCancelarSupabase.addEventListener(
+                        'click',
+                        fecharModalSupabase
+                    );
+
+                    modalSupabase.addEventListener('click', evento => {
+                        if (evento.target === modalSupabase) {
+                            fecharModalSupabase();
+                        }
+                    });
+
+                    document.addEventListener('keydown', evento => {
+                        if (
+                            evento.key === 'Escape' &&
+                            modalSupabase.classList.contains('show')
+                        ) {
+                            fecharModalSupabase();
+                        }
+                    });
+
+                    modalSalvarSupabase.addEventListener(
+                        'click',
+                        async () => {
+                            if (!dataSelecionadaSupabase) {
+                                return;
+                            }
+
+                            modalSalvarSupabase.disabled = true;
+
+                            try {
+                                const acessoAtual =
+                                    await identificarAcessoSupabaseCalendario();
+
+                                if (
+                                    !acessoAtual.autenticado ||
+                                    acessoAtual.identificador !==
+                                        acessoSupabase.identificador
+                                ) {
+                                    window.location.replace('login.html');
+                                    return;
+                                }
+
+                                const dadosAtuais =
+                                    await carregarCheckinsSupabase();
+
+                                const marcado =
+                                    modalToggleSupabase.getAttribute(
+                                        'aria-checked'
+                                    ) === 'true';
+
+                                const treino =
+                                    modalTreinoSupabase.value.trim();
+
+                                if (!marcado && !treino) {
+                                    delete dadosAtuais[dataSelecionadaSupabase];
+                                } else {
+                                    dadosAtuais[dataSelecionadaSupabase] = {
+                                        ...dadosAtuais[dataSelecionadaSupabase],
+                                        checked: marcado,
+                                        treino
+                                    };
+                                }
+
+                                await salvarCheckinsSupabase(dadosAtuais);
+
+                                Object.keys(checkins).forEach(chave => {
+                                    delete checkins[chave];
+                                });
+
+                                Object.assign(checkins, dadosAtuais);
+
+                                fecharModalSupabase();
+                                atualizarVisualizacaoCheckinsSupabase();
+
+                            } catch (erro) {
+                                console.error(
+                                    'Erro ao salvar check-in Supabase:',
+                                    erro
+                                );
+
+                                alert(
+                                    'Não foi possível salvar o check-in.'
+                                );
+                            } finally {
+                                modalSalvarSupabase.disabled = false;
+                            }
+                        }
+                    );
+
                     function renderizarMesSupabase() {
                         const dataMes =
                             new Date(anoAtual, mesAtual, 1);
@@ -527,86 +773,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                                     ? 'Treinos' + descricaoTreinos
                                     : '';
 
-                            celula.addEventListener('click', async () => {
-                                const possuiCheckin =
-                                    checkins[data]?.checked === true;
-
-                                const confirmar = confirm(
-                                    possuiCheckin
-                                        ? `Remover o check-in de ${data}?`
-                                        : `Registrar check-in em ${data}?`
-                                );
-
-                                if (!confirmar) {
-                                    return;
-                                }
-
-                                celula.disabled = true;
-
-                                try {
-                                    const acessoAtual =
-                                        await identificarAcessoSupabaseCalendario();
-
-                                    if (
-                                        !acessoAtual.autenticado ||
-                                        acessoAtual.identificador !==
-                                            acessoSupabase.identificador
-                                    ) {
-                                        window.location.replace('login.html');
-                                        return;
-                                    }
-
-                                    const dadosAtuais =
-                                        await carregarCheckinsSupabase();
-
-                                    if (
-                                        !possuiCheckin &&
-                                        dadosAtuais[data]?.checked === true
-                                    ) {
-                                        Object.assign(checkins, dadosAtuais);
-                                        atualizarVisualizacaoCheckinsSupabase();
-                                        return;
-                                    }
-
-                                    if (possuiCheckin) {
-                                        const registroAtual =
-                                            dadosAtuais[data];
-
-                                        if (registroAtual?.checked !== true) {
-                                            Object.assign(checkins, dadosAtuais);
-                                            atualizarVisualizacaoCheckinsSupabase();
-                                            return;
-                                        }
-
-                                        dadosAtuais[data] = {
-                                            ...registroAtual,
-                                            checked: false
-                                        };
-                                    } else {
-                                        dadosAtuais[data] = {
-                                            ...dadosAtuais[data],
-                                            checked: true
-                                        };
-                                    }
-
-                                    await salvarCheckinsSupabase(dadosAtuais);
-
-                                    Object.assign(checkins, dadosAtuais);
-
-                                    atualizarVisualizacaoCheckinsSupabase();
-
-                                } catch (erro) {
-                                    console.error(
-                                        'Erro ao registrar check-in:',
-                                        erro
-                                    );
-
-                                    alert(
-                                        'Não foi possível salvar o check-in.'
-                                    );
-                                } finally {
-                                    celula.disabled = false;
-                                }
+                            celula.addEventListener('click', () => {
+                                abrirModalSupabase(data, celula);
                             });
 
                             grade.appendChild(celula);
