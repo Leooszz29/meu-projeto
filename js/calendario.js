@@ -848,9 +848,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 paginaSupabase.appendChild(aviso);
 
+                /* =========================================
+                   PRESERVAR MODAL ORIGINAL DO CALENDARIO
+                   SUPABASE
+                ========================================= */
+
+                const modalCheckinSupabase =
+                    document.getElementById(
+                        'checkinModalOverlay'
+                    );
+
                 document.body.replaceChildren(
                     paginaSupabase
                 );
+
+                if (modalCheckinSupabase) {
+                    document.body.appendChild(
+                        modalCheckinSupabase
+                    );
+                }
 
                 const identificadorInicial =
                     acessoSupabase.identificador;
