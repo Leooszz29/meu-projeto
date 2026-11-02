@@ -696,6 +696,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                        COMPONENTES ORIGINAIS DO CALENDARIO
                        SUPABASE
                     ========================================= */
+                    aviso.insertBefore(
+                        calendarioSupabase,
+                        voltar
+                    );
 
                     const paginaFonte =
                         document.querySelector('.page');
@@ -730,11 +734,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                             legendaOriginal.cloneNode(true)
                         );
                     }
-
-                    aviso.insertBefore(
-                        calendarioSupabase,
-                        voltar
-                    );
 
                     const linkTreinosOriginal =
                         paginaFonte?.querySelector(
