@@ -447,7 +447,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                         for (let i = 0; i < primeiroDia; i++) {
                             const vazio =
-                                document.createElement('span');
+                                document.createElement('div');
+
+                            vazio.className = 'day-cell empty';
+                            vazio.setAttribute('aria-hidden', 'true');
 
                             grade.appendChild(vazio);
                         }
@@ -601,6 +604,21 @@ document.addEventListener("DOMContentLoaded", async () => {
                             });
 
                             grade.appendChild(celula);
+                        }
+                                               const totalCelulas =
+                            primeiroDia + totalDias;
+
+                        const diasRestantes =
+                            (7 - (totalCelulas % 7)) % 7;
+
+                        for (let i = 0; i < diasRestantes; i++) {
+                            const vazio =
+                                document.createElement('div');
+
+                            vazio.className = 'day-cell empty';
+                            vazio.setAttribute('aria-hidden', 'true');
+
+                            grade.appendChild(vazio);
                         }
 
                         /* =========================================
