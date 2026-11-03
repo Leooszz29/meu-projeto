@@ -47,6 +47,29 @@
                 >
             </div>
 
+            <!-- GENERO E TEMA VISUAL -->
+            <div class="form-group">
+                <label for="generoCadastro">
+                    Gênero / Tema visual
+                </label>
+
+                <select
+                    id="generoCadastro"
+                    name="genero"
+                    required
+                >
+                    <option value="">
+                        Selecione uma opção
+                    </option>
+                    <option value="masculino">
+                        Masculino — tema azul
+                    </option>
+                    <option value="feminino">
+                        Feminino — tema dourado
+                    </option>
+                </select>
+            </div>
+
             <div class="form-group">
                 <label for="password">Senha</label>
                 <div class="password-field">
@@ -101,7 +124,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="js/supabase-config.js"></script>
-    <script src="js/cadastro.js"></script>
+    <script src="js/cadastro.js?v=20261103-genero-cadastro-v1"></script>
     
     <!-- TESTE TEMPORARIO DE CADASTRO SUPABASE -->
     <div
@@ -155,10 +178,26 @@
                     'Enviando cadastro ao Supabase...';
 
                 try {
+
+                    const genero =
+                        document.getElementById(
+                            'generoCadastro'
+                        ).value;
+
+                    if (
+                        genero !== 'masculino' &&
+                        genero !== 'feminino'
+                    ) {
+                        resultado.textContent =
+                            'Selecione o gênero no formulário.';
+                        return;
+                    }
+
                     const dados = await cadastrarUsuarioSupabase(
                         nome.trim(),
                         email.trim().toLowerCase(),
-                        senha
+                        senha,
+                        genero
                     );
 
                     resultado.textContent = dados.user
