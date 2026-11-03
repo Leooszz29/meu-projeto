@@ -4975,7 +4975,46 @@ window.addEventListener(
         ) {
             acessoInicialTreinosFitZone = acessoPagina;
 
+            /* =========================================
+               TEMA VISUAL TREINOS SUPABASE V1
+            ========================================= */
+
+            try {
+                const email =
+                    acessoPagina.email
+                        ?.trim()
+                        .toLowerCase();
+
+                const genero = email
+                    ? localStorage.getItem(
+                        `generoFitZone:${email}`
+                    )
+                    : null;
+
+                document.body.classList.remove(
+                    'theme-masculino',
+                    'theme-feminino'
+                );
+
+                if (genero === 'masculino') {
+                    document.body.classList.add(
+                        'theme-masculino'
+                    );
+                } else if (genero === 'feminino') {
+                    document.body.classList.add(
+                        'theme-feminino'
+                    );
+                }
+
+            } catch (erro) {
+                console.warn(
+                    'Erro ao aplicar tema Supabase nos treinos:',
+                    erro
+                );
+            }
+
             const painel = document.createElement('main');
+
             painel.style.cssText =
                 'width:100%;max-width:560px;' +
                 'margin:0 auto;padding:0 12px 24px;' +
