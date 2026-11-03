@@ -296,6 +296,93 @@ async function atualizarGeneroSupabaseFitZone(genero) {
 }
 
 /* =========================================
+   FITZONE - SINCRONIZAR TEMA SUPABASE
+========================================= */
+
+async function sincronizarTemaSupabaseFitZone(identidadeRecebida = null) {
+    const identidade = identidadeRecebida ||
+        await obterIdentidadeSupabaseFitZone();
+
+    if (!identidade?.id || !identidade?.email) {
+        return null;
+    }
+
+    const chave =
+        `generoFitZone:${identidade.email.trim().toLowerCase()}`;
+
+    const generoValido = valor =>
+        valor === 'masculino' || valor === 'feminino';
+
+    let genero = null;
+    let consultaConcluida = false;
+
+    try {
+        const cliente = inicializarSupabaseFitZone();
+
+        if (!cliente) {
+            throw new Error('Supabase indisponível.');
+        }
+
+        const { data, error } = await cliente
+            .from('fitzone_perfis')
+            .select('genero')
+            .eq('id', identidade.id)
+            .maybeSingle();
+
+        if (error) {
+            throw error;
+        }
+
+        consultaConcluida = true;
+
+        if (generoValido(data?.genero)) {
+            genero = data.genero;
+
+            try {
+                localStorage.setItem(chave, genero);
+            } catch (erroCache) {
+                console.warn(
+                    'Não foi possível atualizar o cache do tema:',
+                    erroCache
+                );
+            }
+        }
+
+    } catch (erro) {
+        console.warn(
+            'Não foi possível consultar o tema no Supabase:',
+            erro
+        );
+    }
+
+    if (!consultaConcluida) {
+        try {
+            const generoLocal = localStorage.getItem(chave);
+
+            if (generoValido(generoLocal)) {
+                genero = generoLocal;
+            }
+        } catch (erroCache) {
+            console.warn(
+                'Não foi possível consultar o tema local:',
+                erroCache
+            );
+        }
+    }
+
+    document.body.classList.remove(
+        'theme-masculino',
+        'theme-feminino'
+    );
+
+    if (generoValido(genero)) {
+        document.body.classList.add(`theme-${genero}`);
+    }
+
+    return genero;
+}
+
+/* =========================================
    FITZONE - CHAVE DO USUARIO SUPABASE
 ========================================= */
 
