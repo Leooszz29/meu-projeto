@@ -349,35 +349,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         datasCheckins.length = 0;
                         datasCheckins.push(...datasAtualizadas);
 
-                        informacaoCheckins.textContent =
-                            'Seus dias com check-in: ' +
-                            datasAtualizadas.length;
-
-                        listaDatas.replaceChildren();
-
-                        if (datasAtualizadas.length === 0) {
-                            const item =
-                                document.createElement('li');
-
-                            item.textContent =
-                                'Nenhum check-in registrado.';
-
-                            listaDatas.appendChild(item);
-                        } else {
-                            datasAtualizadas.forEach(data => {
-                                const item =
-                                    document.createElement('li');
-
-                                const [ano, mes, dia] =
-                                    data.split('-');
-
-                                item.textContent =
-                                    `${dia}/${mes}/${ano}`;
-
-                                listaDatas.appendChild(item);
-                            });
-                        }
-
                         renderizarMesSupabase();
                     }
 
@@ -809,7 +780,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                             grade.appendChild(celula);
                         }
-                                               const totalCelulas =
+                        const totalCelulas =
                             primeiroDia + totalDias;
 
                         const diasRestantes =
