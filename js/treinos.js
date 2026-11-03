@@ -5038,7 +5038,8 @@ window.addEventListener(
                 elemento => {
                     if (
                         elemento.tagName !== 'SCRIPT' &&
-                        elemento !== painel
+                        elemento !== painel &&
+                        elemento.id !== 'fitzoneTreinosLoader'
                     ) {
                         elemento.hidden = true;
                     }
@@ -5052,33 +5053,9 @@ window.addEventListener(
             ========================================= */
 
             const telaCarregamentoTreinos =
-                document.createElement('div');
-
-            telaCarregamentoTreinos.className =
-                'fitzone-treinos-loading';
-
-            telaCarregamentoTreinos.setAttribute(
-                'role',
-                'status'
-            );
-
-            telaCarregamentoTreinos.setAttribute(
-                'aria-live',
-                'polite'
-            );
-
-            telaCarregamentoTreinos.innerHTML = `
-                <h2>FITZONE</h2>
-                <div
-                    class="fitzone-treinos-spinner"
-                    aria-hidden="true"
-                ></div>
-                <p>Carregando seus treinos...</p>
-            `;
-
-            document.body.appendChild(
-                telaCarregamentoTreinos
-            );
+                document.getElementById(
+                    'fitzoneTreinosLoader'
+                );
 
             function finalizarCarregamentoTreinos() {
                 telaCarregamentoTreinos.remove();
@@ -7533,6 +7510,14 @@ window.addEventListener(
 
             return;
         }
+
+        /* =========================================
+           REMOVER LOADER DA CONTA TRADICIONAL
+        ========================================= */
+
+        document.getElementById(
+            'fitzoneTreinosLoader'
+        )?.remove();
 
         const sessao =
             carregarSessao();
