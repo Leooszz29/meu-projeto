@@ -8,6 +8,7 @@ const passwordInput = document.getElementById('password');
 const confirmPasswordInput = document.getElementById('confirmPassword');
 const termsInput = document.getElementById('terms');
 const submitBtn = document.getElementById('submitBtn');
+const generoInput = document.getElementById('generoCadastro');
 
 // ==================== SUPABASE ====================
 function obterSupabaseCadastro() {
@@ -21,7 +22,7 @@ function obterSupabaseCadastro() {
     return inicializarSupabaseFitZone();
 }
 
-async function cadastrarUsuarioSupabase(nome, email, senha) {
+async function cadastrarUsuarioSupabase(nome, email, senha, genero) {
     const cliente = obterSupabaseCadastro();
 
     if (!cliente) {
@@ -35,8 +36,10 @@ async function cadastrarUsuarioSupabase(nome, email, senha) {
         password: senha,
         options: {
             data: {
-                nome: nome
+                nome: nome,
+                genero: genero
             },
+
             emailRedirectTo:
                 window.location.origin + '/meu-projeto/login.html'
         }
@@ -117,8 +120,19 @@ function handleSignup(e) {
 
     const password = passwordInput.value;
     const confirmPassword = confirmPasswordInput.value;
+    const genero = generoInput.value;
 
     // Validação
+
+    if (
+        genero !== 'masculino' &&
+        genero !== 'feminino'
+    ) {
+        showError('Selecione seu gênero / tema visual.');
+        generoInput.focus();
+        return;
+    }
+
     if (!name || !email || !password || !confirmPassword) {
         showError('Por favor, preencha todos os campos');
         return;
@@ -151,8 +165,9 @@ function handleSignup(e) {
             nome: name,
             email: email,
             senha: password,
-            genero: localStorage.getItem('generoFitZone')
+            genero: genero
         };
+
     } catch (error) {
         console.error(
             'Erro ao carregar o gênero do cadastro:',
