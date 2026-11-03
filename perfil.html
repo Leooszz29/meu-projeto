@@ -170,6 +170,30 @@
                 <input type="text" id="nome" placeholder="Seu nome">
             </div>
 
+            <!-- GENERO E TEMA VISUAL -->
+            <div class="form-group">
+                <label for="generoPerfil">
+                    Gênero / Tema visual
+                </label>
+
+                <select id="generoPerfil" name="genero">
+                    <option value="">
+                        Selecione uma opção
+                    </option>
+                    <option value="masculino">
+                        Masculino — tema azul
+                    </option>
+                    <option value="feminino">
+                        Feminino — tema dourado
+                    </option>
+                </select>
+
+                <small>
+                    A alteração modifica apenas
+                    o tema visual da sua conta.
+                </small>
+            </div>
+
             <div class="field-row">
                 <div class="form-group">
                     <label for="idade">Idade</label>
@@ -384,6 +408,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="js/supabase-config.js"></script>
-<script src="js/perfil.js?v=20261029-logout-perfil"></script>
+<script src="js/perfil.js?v=20261103-genero-perfil-v1"></script>
 </body>
 </html>
