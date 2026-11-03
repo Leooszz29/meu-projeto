@@ -96,7 +96,11 @@
         pagina.querySelectorAll(
             ':scope > section:not(.training-summary)'
         ).forEach(secao => {
-            secao.style.display = 'none';
+            const habilitada =
+                secao.classList.contains('training-streak') ||
+                secao.classList.contains('monthly-comparison');
+
+            secao.style.display = habilitada ? '' : 'none';
         });
 
         /* =========================================
@@ -154,6 +158,237 @@
         } else {
             campoUltimo.textContent = '—';
             campoNome.textContent = 'Nenhum treino ainda';
+        }
+
+        /* =========================================
+           SEQUENCIA SEMANAL - SUPABASE
+        ========================================= */
+
+        function obterDataLocalTreino(registro) {
+            const data = registro?.data_local;
+
+            if (
+                typeof data !== 'string' ||
+                !/^\d{4}-\d{2}-\d{2}$/.test(data)
+            ) {
+                return null;
+            }
+
+            const [ano, mes, dia] = data.split('-').map(Number);
+            const resultado = new Date(ano, mes - 1, dia);
+
+            if (
+                resultado.getFullYear() !== ano ||
+                resultado.getMonth() !== mes - 1 ||
+                resultado.getDate() !== dia
+            ) {
+                return null;
+            }
+
+            return resultado;
+        }
+
+        function inicioSemanaTreino(data) {
+            const resultado = new Date(
+                data.getFullYear(),
+                data.getMonth(),
+                data.getDate()
+            );
+
+            const diasDesdeSegunda =
+                (resultado.getDay() + 6) % 7;
+
+            resultado.setDate(
+                resultado.getDate() - diasDesdeSegunda
+            );
+
+            return resultado;
+        }
+
+        function chaveSemanaTreino(data) {
+            return [
+                data.getFullYear(),
+                data.getMonth(),
+                data.getDate()
+            ].join('-');
+        }
+
+        const semanasComTreinos = new Set();
+
+        const hojeSequencia = new Date();
+        hojeSequencia.setHours(23, 59, 59, 999);
+
+        historico.forEach(registro => {
+            const data = obterDataLocalTreino(registro);
+
+            if (!data || data > hojeSequencia) {
+                return;
+            }
+
+            semanasComTreinos.add(
+                chaveSemanaTreino(inicioSemanaTreino(data))
+            );
+        });
+
+        const referenciaSemana =
+            inicioSemanaTreino(hojeSequencia);
+
+        if (
+            !semanasComTreinos.has(
+                chaveSemanaTreino(referenciaSemana)
+            )
+        ) {
+            referenciaSemana.setDate(
+                referenciaSemana.getDate() - 7
+            );
+        }
+
+        let sequenciaSemanal = 0;
+
+        while (
+            semanasComTreinos.has(
+                chaveSemanaTreino(referenciaSemana)
+            )
+        ) {
+            sequenciaSemanal++;
+
+            referenciaSemana.setDate(
+                referenciaSemana.getDate() - 7
+            );
+        }
+
+        const contadorSequencia =
+            document.getElementById('trainingStreakCount');
+
+        const mensagemSequencia =
+            document.getElementById('trainingStreakMessage');
+
+        if (contadorSequencia) {
+            contadorSequencia.textContent =
+                String(sequenciaSemanal);
+        }
+
+        if (mensagemSequencia) {
+            if (sequenciaSemanal === 0) {
+                mensagemSequencia.textContent =
+                    'Registre seus treinos para iniciar sua sequência!';
+            } else if (sequenciaSemanal === 1) {
+                mensagemSequencia.textContent =
+                    'Você completou 1 semana de treinos. Continue assim!';
+            } else {
+                mensagemSequencia.textContent =
+                    `🔥 Excelente! Você está há ${sequenciaSemanal} ` +
+                    'semanas consecutivas treinando!';
+            }
+        }
+
+        /* =========================================
+           COMPARACAO MENSAL - SUPABASE
+        ========================================= */
+
+        const inicioMesAnterior = new Date(
+            hoje.getFullYear(),
+            hoje.getMonth() - 1,
+            1
+        );
+
+        const anoAnterior =
+            inicioMesAnterior.getFullYear();
+
+        const mesAnterior =
+            String(
+                inicioMesAnterior.getMonth() + 1
+            ).padStart(2, '0');
+
+        const prefixoAnterior =
+            `${anoAnterior}-${mesAnterior}`;
+
+        const totalAtual = treinosMes.length;
+
+        const totalAnterior = historico.filter(registro =>
+            typeof registro.data_local === 'string' &&
+            registro.data_local.startsWith(prefixoAnterior)
+        ).length;
+
+        const campoAnterior =
+            document.getElementById('previousMonthTotal');
+
+        const campoAtual =
+            document.getElementById('currentMonthTotal');
+
+        const campoPercentual =
+            document.getElementById('monthlyComparisonPercent');
+
+        const campoMensagem =
+            document.getElementById('monthlyComparisonMessage');
+
+        const resultadoComparacao =
+            document.getElementById('monthlyComparisonResult');
+
+        if (campoAnterior) {
+            campoAnterior.textContent = String(totalAnterior);
+        }
+
+        if (campoAtual) {
+            campoAtual.textContent = String(totalAtual);
+        }
+
+        if (
+            campoPercentual &&
+            campoMensagem &&
+            resultadoComparacao
+        ) {
+            resultadoComparacao.classList.remove(
+                'positive',
+                'negative',
+                'neutral'
+            );
+
+            if (totalAnterior === 0) {
+                campoPercentual.textContent = '—';
+
+                campoMensagem.textContent =
+                    totalAtual > 0
+                        ? 'Primeiros treinos registrados neste mês.'
+                        : 'Nenhum treino registrado nos dois meses.';
+
+                resultadoComparacao.classList.add('neutral');
+            } else {
+                const variacao =
+                    ((totalAtual - totalAnterior) /
+                        totalAnterior) * 100;
+
+                const percentual =
+                    Math.abs(variacao).toLocaleString(
+                        'pt-BR',
+                        { maximumFractionDigits: 1 }
+                    );
+
+                if (variacao > 0) {
+                    campoPercentual.textContent =
+                        `+${percentual}%`;
+
+                    campoMensagem.textContent =
+                        'Mais treinos que no mês anterior.';
+
+                    resultadoComparacao.classList.add('positive');
+                } else if (variacao < 0) {
+                    campoPercentual.textContent =
+                        `-${percentual}%`;
+
+                    campoMensagem.textContent =
+                        'Menos treinos que no mês anterior.';
+
+                    resultadoComparacao.classList.add('negative');
+                } else {
+                    campoPercentual.textContent = '0%';
+
+                    campoMensagem.textContent =
+                        'Mesma quantidade de treinos do mês anterior.';
+
+                    resultadoComparacao.classList.add('neutral');
+                }
+            }
         }
 
         /* =========================================
