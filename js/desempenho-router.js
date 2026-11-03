@@ -98,6 +98,7 @@
         ).forEach(secao => {
             const habilitada =
                 secao.classList.contains('training-streak') ||
+                secao.classList.contains('monthly-goal') ||
                 secao.classList.contains('monthly-comparison');
 
             secao.style.display = habilitada ? '' : 'none';
@@ -389,6 +390,245 @@
                     resultadoComparacao.classList.add('neutral');
                 }
             }
+        }
+
+        /* =========================================
+           META MENSAL - SUPABASE
+        ========================================= */
+
+        const chaveMetaSupabase =
+            `metaMensalFitZone:supabase:${identidade.id}`;
+
+        const campoMeta =
+            document.getElementById('monthlyGoalInput');
+
+        const botaoDiminuirMeta =
+            document.getElementById('decreaseMonthlyGoal');
+
+        const botaoAumentarMeta =
+            document.getElementById('increaseMonthlyGoal');
+
+        const botaoSalvarMeta =
+            document.getElementById('saveMonthlyGoal');
+
+        const contadorMeta =
+            document.getElementById('monthlyGoalCount');
+
+        const percentualMeta =
+            document.getElementById('monthlyGoalPercent');
+
+        const barraMeta =
+            document.getElementById('monthlyGoalBar');
+
+        const progressoMeta =
+            document.getElementById('monthlyGoalProgress');
+
+        const mensagemMeta =
+            document.getElementById('monthlyGoalMessage');
+
+        function validarValorMeta(valor) {
+            const meta = Number(valor);
+
+            return Number.isInteger(meta) &&
+                meta >= 1 &&
+                meta <= 100;
+        }
+
+        function atualizarMetaSupabase() {
+            if (!campoMeta) {
+                return;
+            }
+
+            const meta = Number(campoMeta.value);
+
+            if (!validarValorMeta(meta)) {
+                return;
+            }
+
+            const realizados = treinosMes.length;
+
+            const porcentagem = Math.min(
+                100,
+                Math.round((realizados / meta) * 100)
+            );
+
+            const faltam = Math.max(
+                0,
+                meta - realizados
+            );
+
+            const concluida = realizados >= meta;
+
+            if (contadorMeta) {
+                contadorMeta.textContent =
+                    `${realizados} / ${meta} treinos`;
+            }
+
+            if (percentualMeta) {
+                percentualMeta.textContent =
+                    `${porcentagem}%`;
+            }
+
+            if (barraMeta) {
+                barraMeta.style.width =
+                    `${porcentagem}%`;
+            }
+
+            if (progressoMeta) {
+                progressoMeta.setAttribute(
+                    'aria-valuenow',
+                    String(porcentagem)
+                );
+
+                progressoMeta.classList.toggle(
+                    'monthly-goal-completed',
+                    concluida
+                );
+            }
+
+            if (mensagemMeta) {
+                mensagemMeta.classList.toggle(
+                    'monthly-goal-success',
+                    concluida
+                );
+
+                mensagemMeta.textContent =
+                    concluida
+                        ? '🏆 Parabéns! Você atingiu sua meta mensal!'
+                        : `Faltam ${faltam} treinos para atingir sua meta!`;
+            }
+        }
+
+        /* =========================================
+           CARREGAR META SALVA
+        ========================================= */
+
+        if (campoMeta) {
+            let valorSalvo = null;
+
+            try {
+                valorSalvo = localStorage.getItem(
+                    chaveMetaSupabase
+                );
+            } catch (erro) {
+                console.warn(
+                    'Não foi possível consultar a meta:',
+                    erro
+                );
+            }
+
+            campoMeta.value =
+                valorSalvo !== null &&
+                validarValorMeta(valorSalvo)
+                    ? String(Number(valorSalvo))
+                    : '12';
+
+            atualizarMetaSupabase();
+        }
+
+        /* =========================================
+           CONTROLES DA META
+        ========================================= */
+
+        if (botaoDiminuirMeta && campoMeta) {
+            botaoDiminuirMeta.addEventListener(
+                'click',
+                () => {
+                    const atual = Number(campoMeta.value);
+
+                    campoMeta.value =
+                        validarValorMeta(atual)
+                            ? String(Math.max(1, atual - 1))
+                            : '12';
+
+                    atualizarMetaSupabase();
+                }
+            );
+        }
+
+        if (botaoAumentarMeta && campoMeta) {
+            botaoAumentarMeta.addEventListener(
+                'click',
+                () => {
+                    const atual = Number(campoMeta.value);
+
+                    campoMeta.value =
+                        validarValorMeta(atual)
+                            ? String(Math.min(100, atual + 1))
+                            : '12';
+
+                    atualizarMetaSupabase();
+                }
+            );
+        }
+
+        /* =========================================
+           SALVAR META POR CONTA SUPABASE
+        ========================================= */
+
+        if (botaoSalvarMeta && campoMeta) {
+            botaoSalvarMeta.addEventListener(
+                'click',
+                async () => {
+                    const meta = Number(campoMeta.value);
+
+                    if (!validarValorMeta(meta)) {
+                        alert(
+                            'Informe uma meta entre 1 e 100 treinos.'
+                        );
+                        return;
+                    }
+
+                    botaoSalvarMeta.disabled = true;
+
+                    try {
+                        const identidadeAtual =
+                            await obterIdentidadeSupabaseFitZone();
+
+                        if (
+                            !identidadeAtual ||
+                            identidadeAtual.id !== identidade.id
+                        ) {
+                            window.location.replace('login.html');
+                            return;
+                        }
+
+                        localStorage.setItem(
+                            chaveMetaSupabase,
+                            String(meta)
+                        );
+
+                        atualizarMetaSupabase();
+
+                        alert(
+                            'Meta mensal salva com sucesso!'
+                        );
+
+                    } catch (erro) {
+                        console.error(
+                            'Erro ao salvar meta Supabase:',
+                            erro
+                        );
+
+                        alert(
+                            'Não foi possível salvar sua meta.'
+                        );
+                    } finally {
+                        botaoSalvarMeta.disabled = false;
+                    }
+                }
+            );
+        }
+
+        if (campoMeta) {
+            campoMeta.addEventListener(
+                'change',
+                () => {
+                    if (validarValorMeta(campoMeta.value)) {
+                        atualizarMetaSupabase();
+                    }
+                }
+            );
         }
 
         /* =========================================
