@@ -25,7 +25,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         return {
             autenticado: true,
-            identificador: 'supabase:' + identidade.id
+            identificador: 'supabase:' + identidade.id,
+            id: identidade.id
         };
     }
 
@@ -181,6 +182,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         await cliente
                             .from('fitzone_historico_treinos')
                             .select('id, data_local, dados')
+                            .eq('usuario_id', acessoSupabase.id)
                             .order('concluido_em', {
                                 ascending: false
                             });
@@ -733,6 +735,21 @@ document.addEventListener("DOMContentLoaded", async () => {
                             numeroDia.textContent = String(dia);
 
                             celula.appendChild(numeroDia);
+                            const hoje = new Date();
+
+                            const ehHoje =
+                                dia === hoje.getDate() &&
+                                mesAtual === hoje.getMonth() &&
+                                anoAtual === hoje.getFullYear();
+
+                            if (ehHoje) {
+                                celula.classList.add('today');
+
+                                celula.setAttribute(
+                                    'aria-current',
+                                    'date'
+                                );
+                            }
 
                             let corBorda = 'transparent';
 
@@ -747,9 +764,22 @@ document.addEventListener("DOMContentLoaded", async () => {
                             if (marcado) {
                                 celula.classList.add('checked');
 
-                                numeroDia.style.background = '#16a34a';
-                                numeroDia.style.color = '#ffffff';
-                                numeroDia.style.fontWeight = 'bold';
+                                const indicadorCheckin =
+                                    document.createElement('span');
+
+                                indicadorCheckin.className =
+                                    'check-badge';
+
+                                indicadorCheckin.textContent = '✓';
+
+                                indicadorCheckin.setAttribute(
+                                    'aria-hidden',
+                                    'true'
+                                );
+
+                                celula.appendChild(
+                                    indicadorCheckin
+                                );
                             }
 
                             if (possuiCompleto || possuiParcial) {
