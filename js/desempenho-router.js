@@ -101,7 +101,8 @@
                 secao.classList.contains('monthly-goal') ||
                 secao.classList.contains('monthly-comparison') ||
                 secao.classList.contains('training-chart') ||
-                secao.classList.contains('fitzone-achievements');
+                secao.classList.contains('fitzone-achievements') ||
+                secao.classList.contains('workout-history');
 
             secao.style.display = habilitada ? '' : 'none';
         });
@@ -1009,6 +1010,625 @@
         }
 
         exibirConquistasSupabase();
+
+        /* =========================================
+           HISTORICO DE TREINOS - SUPABASE V6
+           VISUALIZACAO SEM EXCLUSAO
+        ========================================= */
+
+        const listaHistoricoSupabase =
+            document.getElementById('workoutHistoryList');
+
+        const modalDetalhesSupabase =
+            document.getElementById('historyDetailsModalOverlay');
+
+        let botaoDetalhesAnterior = null;
+
+        function obterStatusHistoricoSupabase(registro) {
+            const dados = registro?.dados || {};
+
+            const total = Number(dados.seriesTotal);
+            const concluidas = Number(dados.seriesConcluidas);
+
+            const detalhado =
+                Array.isArray(dados.exercicios) &&
+                dados.seriesTotal != null &&
+                dados.seriesConcluidas != null &&
+                Number.isFinite(total) &&
+                Number.isFinite(concluidas) &&
+                total > 0 &&
+                concluidas >= 0;
+
+            return {
+                detalhado,
+                total: detalhado ? total : 0,
+                concluidas: detalhado
+                    ? Math.min(concluidas, total)
+                    : 0,
+                completo: detalhado && concluidas >= total
+            };
+        }
+
+        const registrosHistoricoSupabase = historico
+            .filter(registro =>
+                obterDataLocalTreino(registro) !== null
+            );
+
+        const completosHistoricoSupabase =
+            registrosHistoricoSupabase.filter(registro =>
+                obterStatusHistoricoSupabase(registro).completo
+            ).length;
+
+        const parciaisHistoricoSupabase =
+            registrosHistoricoSupabase.filter(registro => {
+                const status =
+                    obterStatusHistoricoSupabase(registro);
+
+                return status.detalhado && !status.completo;
+            }).length;
+
+        const detalhadosHistoricoSupabase =
+            completosHistoricoSupabase +
+            parciaisHistoricoSupabase;
+
+        const taxaHistoricoSupabase =
+            detalhadosHistoricoSupabase > 0
+                ? Math.round(
+                    completosHistoricoSupabase /
+                    detalhadosHistoricoSupabase * 100
+                )
+                : 0;
+
+        const indicadoresHistoricoSupabase = {
+            historyTotal: registrosHistoricoSupabase.length,
+            historyComplete: completosHistoricoSupabase,
+            historyPartial: parciaisHistoricoSupabase,
+            historyCompletionRate:
+                `${taxaHistoricoSupabase}%`
+        };
+
+        Object.entries(
+            indicadoresHistoricoSupabase
+        ).forEach(([id, valor]) => {
+            const elemento = document.getElementById(id);
+
+            if (elemento) {
+                elemento.textContent = String(valor);
+            }
+        });
+
+        const barraConclusaoSupabase =
+            document.getElementById('historyCompletionBar');
+
+        if (barraConclusaoSupabase) {
+            barraConclusaoSupabase.style.width =
+                `${taxaHistoricoSupabase}%`;
+
+            barraConclusaoSupabase.setAttribute(
+                'role',
+                'progressbar'
+            );
+
+            barraConclusaoSupabase.setAttribute(
+                'aria-label',
+                'Taxa de conclusão dos treinos'
+            );
+
+            barraConclusaoSupabase.setAttribute(
+                'aria-valuemin',
+                '0'
+            );
+
+            barraConclusaoSupabase.setAttribute(
+                'aria-valuemax',
+                '100'
+            );
+
+            barraConclusaoSupabase.setAttribute(
+                'aria-valuenow',
+                String(taxaHistoricoSupabase)
+            );
+        }
+
+        /* =========================================
+           MODAL DE DETALHES DO TREINO
+        ========================================= */
+
+        function abrirDetalhesHistoricoSupabase(
+            registro,
+            botao
+        ) {
+            if (!modalDetalhesSupabase) {
+                return;
+            }
+
+            const dados = registro.dados || {};
+            const status =
+                obterStatusHistoricoSupabase(registro);
+
+            if (!status.detalhado) {
+                return;
+            }
+
+            botaoDetalhesAnterior = botao;
+
+            const preencher = (id, valor) => {
+                const elemento = document.getElementById(id);
+
+                if (elemento) {
+                    elemento.textContent = String(valor);
+                }
+            };
+
+            const nome =
+                dados.nome || dados.nomeTreino || 'Treino';
+
+            const [ano, mes, dia] =
+                registro.data_local.split('-');
+
+            const percentual = Math.round(
+                status.concluidas / status.total * 100
+            );
+
+            preencher('historyDetailsName', nome);
+            preencher(
+                'historyDetailsDate',
+                `${dia}/${mes}/${ano}`
+            );
+
+            preencher(
+                'historyDetailsStatusIcon',
+                status.completo ? '✓' : '!'
+            );
+
+            preencher(
+                'historyDetailsStatusTitle',
+                status.completo
+                    ? 'Treino completo!'
+                    : 'Treino parcial'
+            );
+
+            preencher(
+                'historyDetailsStatusMessage',
+                status.completo
+                    ? 'Todos os exercícios foram realizados.'
+                    : `${status.concluidas} de ${status.total} séries concluídas.`
+            );
+
+            preencher(
+                'historyDetailsSeries',
+                `${status.concluidas} de ${status.total}`
+            );
+
+            preencher(
+                'historyDetailsCompletion',
+                `${percentual}%`
+            );
+
+            const exercicios = dados.exercicios;
+
+            const totalInformado =
+                Number(dados.totalExercicios);
+
+            preencher(
+                'historyDetailsExerciseCount',
+                dados.totalExercicios != null &&
+                Number.isFinite(totalInformado) &&
+                totalInformado >= 0
+                    ? totalInformado
+                    : exercicios.length
+            );
+
+            const resumo =
+                document.getElementById(
+                    'historyDetailsStatus'
+                );
+
+            const cartaoConclusao =
+                document.getElementById(
+                    'historyDetailsCompletionCard'
+                );
+
+            [resumo, cartaoConclusao].forEach(elemento => {
+                if (!elemento) {
+                    return;
+                }
+
+                elemento.classList.toggle(
+                    'complete',
+                    status.completo
+                );
+
+                elemento.classList.toggle(
+                    'incomplete',
+                    !status.completo
+                );
+            });
+
+            const iconeProgresso =
+                document.getElementById(
+                    'historyDetailsProgressIcon'
+                );
+
+            if (iconeProgresso) {
+                iconeProgresso.style.setProperty(
+                    '--progress',
+                    `${percentual * 3.6}deg`
+                );
+            }
+
+            const listaExercicios =
+                document.getElementById(
+                    'historyDetailsExercises'
+                );
+
+            if (listaExercicios) {
+                listaExercicios.replaceChildren();
+
+                if (exercicios.length === 0) {
+                    const mensagem =
+                        document.createElement('p');
+
+                    mensagem.textContent =
+                        'Nenhum detalhe de exercício disponível.';
+
+                    listaExercicios.appendChild(mensagem);
+                }
+
+                exercicios.forEach((exercicio, indice) => {
+                    const total = Math.max(
+                        0,
+                        Number(exercicio.seriesTotal) || 0
+                    );
+
+                    const concluidas = Math.max(
+                        0,
+                        Math.min(
+                            Number(exercicio.seriesConcluidas) || 0,
+                            total
+                        )
+                    );
+
+                    const completo =
+                        total > 0 && concluidas >= total;
+
+                    const percentualExercicio = total > 0
+                        ? Math.round(concluidas / total * 100)
+                        : 0;
+
+                    const item = document.createElement('div');
+
+                    item.className =
+                        'history-details-exercise ' +
+                        (completo ? 'complete' : 'incomplete');
+
+                    const icone = document.createElement('span');
+                    icone.className =
+                        'history-details-exercise-status';
+
+                    icone.textContent =
+                        completo ? '✓' : '✕';
+
+                    const nome = document.createElement('strong');
+                    nome.className =
+                        'history-details-exercise-name';
+
+                    nome.textContent =
+                        `${indice + 1}. ` +
+                        (exercicio.nome || 'Exercício');
+
+                    const series = document.createElement('span');
+                    series.className =
+                        'history-details-exercise-series';
+
+                    series.textContent =
+                        `${concluidas} de ${total} séries ` +
+                        `(${percentualExercicio}%)`;
+
+                    item.append(icone, nome, series);
+                    listaExercicios.appendChild(item);
+                });
+            }
+
+            modalDetalhesSupabase.hidden = false;
+            modalDetalhesSupabase.classList.add('show');
+
+            document.getElementById(
+                'historyDetailsCloseBtn'
+            )?.focus();
+        }
+
+        function fecharDetalhesHistoricoSupabase() {
+            if (!modalDetalhesSupabase) {
+                return;
+            }
+
+            modalDetalhesSupabase.classList.remove('show');
+            modalDetalhesSupabase.hidden = true;
+
+            if (
+                botaoDetalhesAnterior &&
+                botaoDetalhesAnterior.isConnected
+            ) {
+                botaoDetalhesAnterior.focus();
+            }
+
+            botaoDetalhesAnterior = null;
+        }
+
+        document.getElementById(
+            'historyDetailsCloseBtn'
+        )?.addEventListener(
+            'click',
+            fecharDetalhesHistoricoSupabase
+        );
+
+        document.getElementById(
+            'historyDetailsFooterBtn'
+        )?.addEventListener(
+            'click',
+            fecharDetalhesHistoricoSupabase
+        );
+
+        document.addEventListener('keydown', evento => {
+            if (
+                evento.key === 'Escape' &&
+                modalDetalhesSupabase &&
+                !modalDetalhesSupabase.hidden
+            ) {
+                evento.preventDefault();
+                fecharDetalhesHistoricoSupabase();
+            }
+        });
+
+        /* =========================================
+           AGRUPAR HISTORICO POR MES
+        ========================================= */
+
+        const gruposHistoricoSupabase = {};
+
+        registrosHistoricoSupabase.forEach(registro => {
+            const chaveMes =
+                registro.data_local.slice(0, 7);
+
+            if (!gruposHistoricoSupabase[chaveMes]) {
+                gruposHistoricoSupabase[chaveMes] = [];
+            }
+
+            gruposHistoricoSupabase[chaveMes].push(registro);
+        });
+
+        /* =========================================
+           RENDERIZAR HISTORICO ORIGINAL
+        ========================================= */
+
+        if (listaHistoricoSupabase) {
+            listaHistoricoSupabase.replaceChildren();
+
+            const mesesOrdenados =
+                Object.keys(gruposHistoricoSupabase)
+                    .sort()
+                    .reverse();
+
+            if (mesesOrdenados.length === 0) {
+                const vazio = document.createElement('div');
+                vazio.className = 'history-empty';
+                vazio.textContent =
+                    'Nenhum treino concluído ainda.';
+
+                listaHistoricoSupabase.appendChild(vazio);
+            }
+
+            mesesOrdenados.forEach((chaveMes, indiceMes) => {
+                const [ano, mes] =
+                    chaveMes.split('-').map(Number);
+
+                const nomeMes = new Date(
+                    ano,
+                    mes - 1,
+                    1
+                ).toLocaleDateString('pt-BR', {
+                    month: 'long',
+                    year: 'numeric'
+                }).toUpperCase();
+
+                const container =
+                    document.createElement('div');
+
+                container.className = 'history-month';
+
+                const cabecalho =
+                    document.createElement('button');
+
+                cabecalho.type = 'button';
+                cabecalho.className =
+                    'history-month-header';
+
+                const titulo = document.createElement('span');
+                titulo.className = 'history-month-title';
+
+                const seta = document.createElement('span');
+                seta.className = 'history-month-arrow';
+                seta.textContent =
+                    indiceMes === 0 ? '▼' : '▶';
+
+                titulo.append(seta, ` ${nomeMes}`);
+
+                const quantidade =
+                    document.createElement('span');
+
+                quantidade.className =
+                    'history-month-summary';
+
+                const registros =
+                    gruposHistoricoSupabase[chaveMes];
+
+                quantidade.textContent =
+                    `${registros.length} ` +
+                    (registros.length === 1
+                        ? 'treino'
+                        : 'treinos');
+
+                cabecalho.append(titulo, quantidade);
+
+                const conteudo =
+                    document.createElement('div');
+
+                conteudo.className =
+                    'history-month-content';
+
+                conteudo.hidden = indiceMes !== 0;
+
+                cabecalho.setAttribute(
+                    'aria-expanded',
+                    String(!conteudo.hidden)
+                );
+
+                cabecalho.addEventListener('click', () => {
+                    conteudo.hidden = !conteudo.hidden;
+
+                    seta.textContent =
+                        conteudo.hidden ? '▶' : '▼';
+
+                    cabecalho.setAttribute(
+                        'aria-expanded',
+                        String(!conteudo.hidden)
+                    );
+                });
+
+                registros.forEach(registro => {
+                    const dados = registro.dados || {};
+                    const status =
+                        obterStatusHistoricoSupabase(registro);
+
+                    const nomeTreino =
+                        dados.nome ||
+                        dados.nomeTreino ||
+                        'Treino';
+
+                    const item =
+                        document.createElement('div');
+
+                    item.className = 'history-item';
+
+                    const nome =
+                        document.createElement('span');
+
+                    nome.className =
+                        'history-workout-name';
+
+                    nome.textContent = nomeTreino;
+
+                    const situacao =
+                        document.createElement('div');
+
+                    situacao.className =
+                        'history-workout-status';
+
+                    if (!status.detalhado) {
+                        situacao.classList.add('legacy');
+                        situacao.textContent =
+                            'Registro anterior';
+                    } else {
+                        situacao.classList.add(
+                            status.completo
+                                ? 'complete'
+                                : 'incomplete'
+                        );
+
+                        const icone =
+                            document.createElement('span');
+
+                        icone.className =
+                            'history-status-icon';
+
+                        icone.textContent =
+                            status.completo ? '✓' : '●';
+
+                        const texto =
+                            document.createElement('span');
+
+                        texto.className =
+                            'history-status-content';
+
+                        const tituloStatus =
+                            document.createElement('span');
+
+                        tituloStatus.className =
+                            'history-status-title';
+
+                        tituloStatus.textContent =
+                            status.completo
+                                ? 'Completo · '
+                                : 'Parcial · ';
+
+                        const series =
+                            document.createElement('span');
+
+                        series.className =
+                            'history-status-series';
+
+                        const percentual = Math.round(
+                            status.concluidas /
+                            status.total * 100
+                        );
+
+                        series.textContent =
+                            `${status.concluidas} de ` +
+                            `${status.total} séries ` +
+                            `(${percentual}%)`;
+
+                        texto.append(tituloStatus, series);
+                        situacao.append(icone, texto);
+                    }
+
+                    const [anoTreino, mesTreino, diaTreino] =
+                        registro.data_local.split('-');
+
+                    const data = document.createElement('span');
+                    data.className = 'history-date';
+                    data.textContent =
+                        `${diaTreino}/${mesTreino}/${anoTreino}`;
+
+                    const detalhes =
+                        document.createElement('button');
+
+                    detalhes.type = 'button';
+                    detalhes.className =
+                        'history-details-btn';
+
+                    detalhes.textContent = 'Ver detalhes';
+
+                    detalhes.disabled = !status.detalhado;
+
+                    if (!status.detalhado) {
+                        detalhes.title =
+                            'Detalhes não disponíveis para este registro';
+                    }
+
+                    detalhes.addEventListener('click', () => {
+                        abrirDetalhesHistoricoSupabase(
+                            registro,
+                            detalhes
+                        );
+                    });
+
+                    const acoes =
+                        document.createElement('div');
+
+                    acoes.className =
+                        'history-item-actions';
+
+                    acoes.append(data, detalhes);
+
+                    item.append(nome, situacao, acoes);
+                    conteudo.appendChild(item);
+                });
+
+                container.append(cabecalho, conteudo);
+                listaHistoricoSupabase.appendChild(container);
+            });
+        }
 
         /* =========================================
            ENCERRAR SESSAO SUPABASE
