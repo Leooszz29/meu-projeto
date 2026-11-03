@@ -258,6 +258,36 @@ function fillForm() {
         infoPessoais.value =
             perfil.infoPessoais || '';
     }
+
+    /* CARREGAR GENERO DA CONTA TRADICIONAL */
+
+    const campoGenero =
+        document.getElementById('generoPerfil');
+
+    if (campoGenero) {
+        const sessao = carregarSessao();
+
+        const email =
+            sessao?.email?.trim().toLowerCase();
+
+        const generoLocal = email
+            ? localStorage.getItem(
+                `generoFitZone:${email}`
+            )
+            : null;
+
+        const genero =
+            generoLocal ||
+            usuario.genero ||
+            '';
+
+        campoGenero.value =
+            ['masculino', 'feminino'].includes(genero)
+                ? genero
+                : '';
+
+        aplicarGeneroVisualPerfil(campoGenero.value);
+    }
 }
 
 /* =========================================
@@ -568,6 +598,144 @@ function handleEndSession() {
 }
 
 /* =========================================
+   FITZONE - ALTERAR GENERO DO PERFIL
+========================================= */
+
+async function alterarGeneroPerfil(origem) {
+    const campo = document.getElementById('generoPerfil');
+
+    if (!campo) {
+        return;
+    }
+
+    const genero = campo.value;
+
+    if (!['masculino', 'feminino'].includes(genero)) {
+        return;
+    }
+
+    campo.disabled = true;
+
+    try {
+        let email = null;
+
+        if (origem === 'supabase') {
+            const identidade =
+                await obterIdentidadeSupabaseFitZone();
+
+            if (!identidade) {
+                throw new Error('Sessão Supabase inválida.');
+            }
+
+            await atualizarGeneroSupabaseFitZone(genero);
+
+            email = identidade.email;
+        } else {
+            const sessao = carregarSessao();
+
+            if (!sessao?.email) {
+                throw new Error('Sessão tradicional inválida.');
+            }
+
+            email = sessao.email.trim().toLowerCase();
+
+            const usuarios = JSON.parse(
+                localStorage.getItem('usuarios') || '[]'
+            );
+
+            if (!Array.isArray(usuarios)) {
+                throw new Error('Lista de usuários inválida.');
+            }
+
+            const usuario = usuarios.find(item =>
+                typeof item?.email === 'string' &&
+                item.email.trim().toLowerCase() === email
+            );
+
+            if (!usuario) {
+                throw new Error('Usuário não encontrado.');
+            }
+
+            usuario.genero = genero;
+
+            localStorage.setItem(
+                'usuarios',
+                JSON.stringify(usuarios)
+            );
+        }
+
+        if (email) {
+            try {
+                localStorage.setItem(
+                    `generoFitZone:${email.trim().toLowerCase()}`,
+                    genero
+                );
+            } catch (erroLocal) {
+                console.warn(
+                    'Tema salvo na conta, mas sem cache local:',
+                    erroLocal
+                );
+            }
+        }
+
+        aplicarGeneroVisualPerfil(genero);
+
+        alert(
+            'Gênero atualizado com sucesso! ' +
+            'O novo tema já está ativo.'
+        );
+
+    } catch (erro) {
+        console.error(
+            'Erro ao alterar gênero do perfil:',
+            erro
+        );
+
+        alert(
+            'Não foi possível alterar o gênero. ' +
+            'Nenhum outro dado do perfil foi modificado.'
+        );
+
+        if (origem === 'supabase') {
+            try {
+                const perfil =
+                    await consultarPerfilSupabaseFitZone();
+
+                campo.value = perfil?.genero || '';
+                aplicarGeneroVisualPerfil(perfil?.genero);
+            } catch (erroConsulta) {
+                console.warn(
+                    'Não foi possível restaurar o gênero:',
+                    erroConsulta
+                );
+            }
+        } else {
+            try {
+                const sessao = carregarSessao();
+                const email = sessao.email.trim().toLowerCase();
+                const usuarios = JSON.parse(
+                    localStorage.getItem('usuarios') || '[]'
+                );
+
+                const usuario = usuarios.find(item =>
+                    item?.email?.trim().toLowerCase() === email
+                );
+
+                campo.value = usuario?.genero || '';
+                aplicarGeneroVisualPerfil(campo.value);
+            } catch (erroConsulta) {
+                console.warn(
+                    'Não foi possível restaurar a seleção:',
+                    erroConsulta
+                );
+            }
+        }
+    } finally {
+        campo.disabled = false;
+    }
+}
+
+/* =========================================
    APLICAR GENERO E TEMA DO PERFIL
 ========================================= */
 
@@ -776,6 +944,20 @@ function initializeProfileActionsSupabase() {
         return;
     }
 
+    /* ALTERAR GENERO SUPABASE */
+
+    const campoGeneroSupabase =
+        document.getElementById('generoPerfil');
+
+    if (campoGeneroSupabase) {
+        campoGeneroSupabase.addEventListener(
+            'change',
+            async () => {
+                await alterarGeneroPerfil('supabase');
+            }
+        );
+    }
+
     const botaoSair =
         document.getElementById('btnEndSession');
 
@@ -849,6 +1031,20 @@ function initializeProfileActions() {
 
     const endSessionButton =
         document.getElementById('btnEndSession');
+
+    /* ALTERAR GENERO TRADICIONAL */
+
+    const campoGeneroTradicional =
+        document.getElementById('generoPerfil');
+
+    if (campoGeneroTradicional) {
+        campoGeneroTradicional.addEventListener(
+            'change',
+            async () => {
+                await alterarGeneroPerfil('local');
+            }
+        );
+    }
 
     if (profileForm) {
         profileForm.addEventListener(
