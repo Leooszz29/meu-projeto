@@ -336,23 +336,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                         const dados = registro.dados || {};
 
-                        const total =
-                            Number(dados.seriesTotal) || 0;
-
-                        const concluidas =
-                            Number(dados.seriesConcluidas) || 0;
-
-                        const completo =
-                            total > 0 && concluidas >= total;
-
                         if (!treinosPorDataSupabase[data]) {
                             treinosPorDataSupabase[data] = {
                                 completos: 0,
-                                parciais: 0
+                                parciais: 0,
+                                anteriores: 0
                             };
                         }
 
-                        if (completo) {
+                        const total = Number(dados.seriesTotal);
+                        const concluidas = Number(dados.seriesConcluidas);
+
+                        const possuiDetalhes =
+                            dados.seriesTotal != null &&
+                            dados.seriesConcluidas != null &&
+                            Number.isFinite(total) &&
+                            Number.isFinite(concluidas) &&
+                            total > 0 &&
+                            concluidas >= 0;
+
+                        if (!possuiDetalhes) {
+                            treinosPorDataSupabase[data].anteriores++;
+                        } else if (concluidas >= total) {
                             treinosPorDataSupabase[data].completos++;
                         } else {
                             treinosPorDataSupabase[data].parciais++;
@@ -688,14 +693,27 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 );
                             }
 
-                            let corBorda = 'transparent';
+                            const possuiAnterior =
+                                (treinosDia?.anteriores || 0) > 0;
 
-                            if (possuiCompleto && possuiParcial) {
-                                corBorda = '#a855f7';
-                            } else if (possuiCompleto) {
-                                corBorda = '#22c55e';
-                            } else if (possuiParcial) {
-                                corBorda = '#f59e0b';
+                            if (
+                                possuiCompleto ||
+                                possuiParcial ||
+                                possuiAnterior
+                            ) {
+                                celula.classList.add(
+                                    'has-workout-history'
+                                );
+
+                                if (possuiParcial) {
+                                    celula.classList.add(
+                                        'workout-partial'
+                                    );
+                                } else if (possuiCompleto) {
+                                    celula.classList.add(
+                                        'workout-complete'
+                                    );
+                                }
                             }
 
                             if (marcado) {
@@ -719,14 +737,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 );
                             }
 
-                            if (possuiCompleto || possuiParcial) {
-                                celula.style.boxShadow =
-                                    'inset 0 -4px 0 ' + corBorda;
-                            }
-
                             const descricaoTreinos = treinosDia
                                 ? `; ${treinosDia.completos} completo(s), ` +
-                                  `${treinosDia.parciais} parcial(is)`
+                                  `${treinosDia.parciais} parcial(is), ` +
+                                  `${treinosDia.anteriores} anterior(es)`
                                 : '';
 
                             celula.setAttribute(
