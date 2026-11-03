@@ -26,7 +26,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         return {
             autenticado: true,
             identificador: 'supabase:' + identidade.id,
-            id: identidade.id
+            id: identidade.id,
+            email: identidade.email
         };
     }
 
@@ -64,6 +65,45 @@ document.addEventListener("DOMContentLoaded", async () => {
                 await identificarAcessoSupabaseCalendario();
 
             if (acessoSupabase.autenticado) {
+
+                /* =========================================
+                   TEMA VISUAL CALENDARIO SUPABASE V1
+                ========================================= */
+
+                try {
+                    const email =
+                        acessoSupabase.email
+                            ?.trim()
+                            .toLowerCase();
+
+                    const genero = email
+                        ? localStorage.getItem(
+                            `generoFitZone:${email}`
+                        )
+                        : null;
+
+                    document.body.classList.remove(
+                        'theme-masculino',
+                        'theme-feminino'
+                    );
+
+                    if (genero === 'masculino') {
+                        document.body.classList.add(
+                            'theme-masculino'
+                        );
+                    } else if (genero === 'feminino') {
+                        document.body.classList.add(
+                            'theme-feminino'
+                        );
+                    }
+
+                } catch (erro) {
+                    console.warn(
+                        'Erro ao aplicar tema Supabase no calendário:',
+                        erro
+                    );
+                }
+
                 const aviso = document.createElement('main');
 
                 aviso.style.cssText =
