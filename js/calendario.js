@@ -2081,4 +2081,9 @@ function agruparHistoricoCalendarioPorDia() {
 
     renderCalendar();
 
+    /* Calendario tradicional pronto */
+    document.getElementById(
+        'fitzoneCalendarLoader'
+    )?.remove();
+
 });
