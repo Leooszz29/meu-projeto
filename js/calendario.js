@@ -247,40 +247,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         .sort()
                         .reverse();
 
-                    const listaDatas =
-                        document.createElement('ul');
-
-                    listaDatas.id =
-                        'listaCheckinsSupabase';
-
-                    if (datasCheckins.length === 0) {
-                        const item =
-                            document.createElement('li');
-
-                        item.textContent =
-                            'Nenhum check-in registrado.';
-
-                        listaDatas.appendChild(item);
-                    } else {
-                        datasCheckins.forEach(data => {
-                            const item =
-                                document.createElement('li');
-
-                            const [ano, mes, dia] =
-                                data.split('-');
-
-                            item.textContent =
-                                `${dia}/${mes}/${ano}`;
-
-                            listaDatas.appendChild(item);
-                        });
-                    }
-
-                    aviso.insertBefore(
-                        listaDatas,
-                        voltar
-                    );
-
                     /* Calendário mensal com navegação */
 
                     const calendarioSupabase =
@@ -945,7 +911,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     informacaoCheckins.remove();
                     resumoHistoricoSupabase.remove();
-                    listaDatas.remove();
 
                     renderizarMesSupabase();
 
