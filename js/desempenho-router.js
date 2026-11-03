@@ -8,6 +8,34 @@
 
 (async function iniciarDesempenhoFitZone() {
 
+    function finalizarCarregamentoDesempenho() {
+        document.body.classList.add(
+            'fitzone-desempenho-ready'
+        );
+
+        document.getElementById(
+            'fitzoneDesempenhoLoader'
+        )?.remove();
+    }
+
+    function mostrarErroCarregamentoDesempenho() {
+        const loader = document.getElementById(
+            'fitzoneDesempenhoLoader'
+        );
+
+        const mensagem = loader?.querySelector('p');
+
+        if (mensagem) {
+            mensagem.textContent =
+                'Não foi possível carregar o desempenho. ' +
+                'Verifique sua conexão e atualize a página.';
+        }
+
+        loader?.querySelector(
+            '.fitzone-desempenho-spinner'
+        )?.remove();
+    }
+
     function obterSessaoTradicional() {
         try {
             const dados = localStorage.getItem(
@@ -39,6 +67,16 @@
 
         script.src = 'js/desempenho.js';
         script.async = false;
+
+        script.addEventListener(
+            'load',
+            finalizarCarregamentoDesempenho
+        );
+
+        script.addEventListener(
+            'error',
+            mostrarErroCarregamentoDesempenho
+        );
 
         document.body.appendChild(script);
     }
@@ -1954,6 +1992,156 @@
         }
 
         /* =========================================
+           SECOES RECOLHIVEIS - SUPABASE V9
+        ========================================= */
+
+        const chaveSecoesSupabase =
+            `fitzoneSecoesDesempenho:supabase:${identidade.id}`;
+
+        let preferenciasSecoesSupabase = {};
+
+        try {
+            const salvas = localStorage.getItem(
+                chaveSecoesSupabase
+            );
+
+            const preferencias = salvas
+                ? JSON.parse(salvas)
+                : {};
+
+            if (
+                preferencias &&
+                typeof preferencias === 'object' &&
+                !Array.isArray(preferencias)
+            ) {
+                preferenciasSecoesSupabase = preferencias;
+            }
+        } catch (erro) {
+            console.warn(
+                'Erro ao carregar preferências das seções:',
+                erro
+            );
+        }
+
+        const configuracoesSecoesSupabase = [
+            ['.training-summary', '.summary-header'],
+            ['.training-streak', '.summary-header'],
+            ['.monthly-goal', '.summary-header'],
+            ['.monthly-comparison', '.summary-header'],
+            ['.training-chart', '.summary-header'],
+            [
+                '.fitzone-achievements',
+                '.fitzone-achievements-header'
+            ],
+            ['.workout-history', '.history-header']
+        ];
+
+        configuracoesSecoesSupabase.forEach(
+            ([seletorSecao, seletorCabecalho]) => {
+                const secao =
+                    document.querySelector(seletorSecao);
+
+                const cabecalho =
+                    secao?.querySelector(seletorCabecalho);
+
+                if (
+                    !secao ||
+                    !cabecalho ||
+                    cabecalho.querySelector(
+                        '.fitzone-section-toggle'
+                    )
+                ) {
+                    return;
+                }
+
+                const conteudos = Array.from(
+                    secao.children
+                ).filter(
+                    elemento => elemento !== cabecalho
+                );
+
+                if (!conteudos.length) {
+                    return;
+                }
+
+                const botao =
+                    document.createElement('button');
+
+                const expandidoInicial =
+                    preferenciasSecoesSupabase[seletorSecao]
+                    !== false;
+
+                botao.type = 'button';
+                botao.className =
+                    'fitzone-section-toggle';
+
+                botao.textContent = expandidoInicial
+                    ? 'Recolher ▲'
+                    : 'Expandir ▼';
+
+                botao.setAttribute(
+                    'aria-expanded',
+                    String(expandidoInicial)
+                );
+
+                const titulo =
+                    cabecalho.querySelector('h2');
+
+                (titulo || cabecalho).appendChild(botao);
+
+                conteudos.forEach(elemento => {
+                    elemento.classList.add(
+                        'fitzone-section-content'
+                    );
+
+                    elemento.hidden = !expandidoInicial;
+                });
+
+                botao.addEventListener('click', () => {
+                    const expandido =
+                        botao.getAttribute(
+                            'aria-expanded'
+                        ) === 'true';
+
+                    conteudos.forEach(elemento => {
+                        elemento.hidden = expandido;
+                    });
+
+                    botao.setAttribute(
+                        'aria-expanded',
+                        String(!expandido)
+                    );
+
+                    botao.textContent = expandido
+                        ? 'Expandir ▼'
+                        : 'Recolher ▲';
+
+                    preferenciasSecoesSupabase[
+                        seletorSecao
+                    ] = !expandido;
+
+                    try {
+                        localStorage.setItem(
+                            chaveSecoesSupabase,
+                            JSON.stringify(
+                                preferenciasSecoesSupabase
+                            )
+                        );
+                    } catch (erro) {
+                        console.warn(
+                            'Erro ao salvar preferência da seção:',
+                            erro
+                        );
+                    }
+                });
+            }
+        );
+
+        /* INTERFACE SUPABASE PRONTA */
+
+        finalizarCarregamentoDesempenho();
+
+        /* =========================================
            VERIFICAR CONTINUIDADE DA SESSAO
         ========================================= */
 
@@ -2003,6 +2191,8 @@
             'Erro ao carregar Desempenho Supabase:',
             erro
         );
+
+        mostrarErroCarregamentoDesempenho();
 
         if (pagina) {
             pagina.replaceChildren();
