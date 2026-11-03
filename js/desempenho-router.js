@@ -99,7 +99,8 @@
             const habilitada =
                 secao.classList.contains('training-streak') ||
                 secao.classList.contains('monthly-goal') ||
-                secao.classList.contains('monthly-comparison');
+                secao.classList.contains('monthly-comparison') ||
+                secao.classList.contains('training-chart');
 
             secao.style.display = habilitada ? '' : 'none';
         });
@@ -630,6 +631,183 @@
                 }
             );
         }
+
+        /* =========================================
+           GRAFICO DE EVOLUCAO MENSAL - SUPABASE
+        ========================================= */
+
+        const graficoSupabase =
+            document.getElementById('trainingChart');
+
+        const descricaoGraficoSupabase =
+            document.getElementById('chartDescription');
+
+        const botoesPeriodoSupabase =
+            document.querySelectorAll('.training-chart-filter');
+
+        function renderizarGraficoSupabase() {
+            if (!graficoSupabase) {
+                return;
+            }
+
+            const botaoAtivo = document.querySelector(
+                '.training-chart-filter.active'
+            );
+
+            const periodo = Number(
+                botaoAtivo?.dataset.months || 6
+            );
+
+            const quantidadeMeses =
+                [3, 6, 12].includes(periodo)
+                    ? periodo
+                    : 6;
+
+            if (descricaoGraficoSupabase) {
+                descricaoGraficoSupabase.textContent =
+                    `Acompanhe seus treinos nos últimos ${quantidadeMeses} meses.`;
+            }
+
+            const agora = new Date();
+
+            const meses = Array.from(
+                { length: quantidadeMeses },
+                (_, indice) => {
+                    const data = new Date(
+                        agora.getFullYear(),
+                        agora.getMonth() -
+                            (quantidadeMeses - 1 - indice),
+                        1
+                    );
+
+                    return {
+                        ano: data.getFullYear(),
+                        mes: data.getMonth(),
+                        nome: data.toLocaleDateString(
+                            'pt-BR',
+                            { month: 'short' }
+                        ).replace('.', ''),
+                        total: 0
+                    };
+                }
+            );
+
+            /* Distribuir os treinos nos meses */
+
+            historico.forEach(registro => {
+                const data = registro?.data_local;
+
+                if (
+                    typeof data !== 'string' ||
+                    !/^\d{4}-\d{2}-\d{2}$/.test(data)
+                ) {
+                    return;
+                }
+
+                const [ano, mes, dia] =
+                    data.split('-').map(Number);
+
+                const dataValida =
+                    new Date(ano, mes - 1, dia);
+
+                if (
+                    dataValida.getFullYear() !== ano ||
+                    dataValida.getMonth() !== mes - 1 ||
+                    dataValida.getDate() !== dia
+                ) {
+                    return;
+                }
+
+                const mesCorrespondente = meses.find(item =>
+                    item.ano === ano &&
+                    item.mes === mes - 1
+                );
+
+                if (mesCorrespondente) {
+                    mesCorrespondente.total++;
+                }
+            });
+
+            const maiorTotal = Math.max(
+                1,
+                ...meses.map(mes => mes.total)
+            );
+
+            graficoSupabase.replaceChildren();
+
+            meses.forEach(mes => {
+                const coluna = document.createElement('div');
+
+                coluna.className = 'training-chart-column';
+
+                if (
+                    mes.ano === agora.getFullYear() &&
+                    mes.mes === agora.getMonth()
+                ) {
+                    coluna.classList.add('current-month');
+                }
+
+                const valor = document.createElement('span');
+
+                valor.className = 'training-chart-value';
+                valor.textContent = String(mes.total);
+
+                const barra = document.createElement('div');
+
+                barra.className = 'training-chart-bar';
+
+                barra.style.height =
+                    `${Math.max(
+                        5,
+                        (mes.total / maiorTotal) * 150
+                    )}px`;
+
+                const nome = document.createElement('span');
+
+                nome.className = 'training-chart-month';
+                nome.textContent = mes.nome;
+
+                coluna.append(valor, barra, nome);
+
+                graficoSupabase.appendChild(coluna);
+            });
+
+            graficoSupabase.setAttribute(
+                'aria-label',
+                'Treinos por mês: ' +
+                meses.map(
+                    mes => `${mes.nome}: ${mes.total}`
+                ).join(', ')
+            );
+        }
+
+        /* =========================================
+           FILTROS DO GRAFICO SUPABASE
+        ========================================= */
+
+        botoesPeriodoSupabase.forEach(botao => {
+            botao.addEventListener('click', () => {
+                botoesPeriodoSupabase.forEach(item => {
+                    item.classList.remove('active');
+
+                    item.setAttribute(
+                        'aria-pressed',
+                        'false'
+                    );
+                });
+
+                botao.classList.add('active');
+
+                botao.setAttribute(
+                    'aria-pressed',
+                    'true'
+                );
+
+                renderizarGraficoSupabase();
+            });
+        });
+
+        renderizarGraficoSupabase();
 
         /* =========================================
            ENCERRAR SESSAO SUPABASE
