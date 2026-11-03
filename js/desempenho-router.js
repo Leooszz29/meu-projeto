@@ -100,7 +100,8 @@
                 secao.classList.contains('training-streak') ||
                 secao.classList.contains('monthly-goal') ||
                 secao.classList.contains('monthly-comparison') ||
-                secao.classList.contains('training-chart');
+                secao.classList.contains('training-chart') ||
+                secao.classList.contains('fitzone-achievements');
 
             secao.style.display = habilitada ? '' : 'none';
         });
@@ -808,6 +809,206 @@
         });
 
         renderizarGraficoSupabase();
+
+        /* =========================================
+           MINHAS CONQUISTAS - SUPABASE
+        ========================================= */
+
+        const conquistasSupabase = [
+            {
+                id: 'primeiro-passo',
+                nome: 'Primeiro Passo',
+                icone: '🥉',
+                descricao: 'Conclua seu primeiro registro de treino.',
+                meta: 1
+            },
+            {
+                id: 'em-evolucao',
+                nome: 'Em Evolução',
+                icone: '🥈',
+                descricao: 'Registre 5 treinos.',
+                meta: 5
+            },
+            {
+                id: 'determinacao',
+                nome: 'Determinação',
+                icone: '🥇',
+                descricao: 'Registre 10 treinos.',
+                meta: 10
+            },
+            {
+                id: 'consistencia',
+                nome: 'Consistência',
+                icone: '🏆',
+                descricao: 'Registre 25 treinos.',
+                meta: 25
+            },
+            {
+                id: 'semana-ativa',
+                nome: 'Semana Ativa',
+                icone: '🔥',
+                descricao:
+                    'Treine em 3 dias diferentes nos últimos 7 dias.',
+                meta: 3,
+                tipo: 'dias-semana'
+            },
+            {
+                id: 'elite-fitzone',
+                nome: 'Elite FitZone',
+                icone: '💎',
+                descricao: 'Registre 50 treinos.',
+                meta: 50
+            }
+        ];
+
+        function calcularConquistasSupabase() {
+            const registrosValidos = historico.filter(
+                registro => obterDataLocalTreino(registro) !== null
+            );
+
+            const totalTreinos = registrosValidos.length;
+
+            const hojeConquistas = new Date();
+            hojeConquistas.setHours(0, 0, 0, 0);
+
+            const inicioPeriodo = new Date(hojeConquistas);
+            inicioPeriodo.setDate(
+                inicioPeriodo.getDate() - 6
+            );
+
+            const diasComTreino = new Set();
+
+            registrosValidos.forEach(registro => {
+                const data =
+                    obterDataLocalTreino(registro);
+
+                if (
+                    !data ||
+                    data < inicioPeriodo ||
+                    data > hojeConquistas
+                ) {
+                    return;
+                }
+
+                diasComTreino.add(registro.data_local);
+            });
+
+            return conquistasSupabase.map(conquista => {
+                const progresso =
+                    conquista.tipo === 'dias-semana'
+                        ? diasComTreino.size
+                        : totalTreinos;
+
+                return {
+                    ...conquista,
+                    progresso,
+                    desbloqueada:
+                        progresso >= conquista.meta
+                };
+            });
+        }
+
+        function exibirConquistasSupabase() {
+            const grade = document.getElementById(
+                'fitzoneAchievementsGrid'
+            );
+
+            if (!grade) {
+                return;
+            }
+
+            const conquistas =
+                calcularConquistasSupabase();
+
+            grade.replaceChildren();
+
+            conquistas.forEach(conquista => {
+                const card = document.createElement(
+                    'article'
+                );
+
+                card.className =
+                    'fitzone-achievement-card';
+
+                card.classList.add(
+                    conquista.desbloqueada
+                        ? 'unlocked'
+                        : 'locked'
+                );
+
+                const icone =
+                    document.createElement('span');
+
+                icone.className =
+                    'fitzone-achievement-icon';
+
+                icone.textContent = conquista.icone;
+
+                icone.setAttribute(
+                    'aria-hidden',
+                    'true'
+                );
+
+                const nome =
+                    document.createElement('h3');
+
+                nome.className =
+                    'fitzone-achievement-name';
+
+                nome.textContent = conquista.nome;
+
+                const descricao =
+                    document.createElement('p');
+
+                descricao.className =
+                    'fitzone-achievement-description';
+
+                descricao.textContent =
+                    conquista.descricao;
+
+                const progresso =
+                    document.createElement('span');
+
+                progresso.className =
+                    'fitzone-achievement-progress';
+
+                const valorAtual = Math.min(
+                    conquista.progresso,
+                    conquista.meta
+                );
+
+                progresso.textContent =
+                    `${valorAtual} de ${conquista.meta}` +
+                    (
+                        conquista.tipo === 'dias-semana'
+                            ? ' dias'
+                            : ' treinos'
+                    );
+
+                const status =
+                    document.createElement('span');
+
+                status.className =
+                    'fitzone-achievement-status';
+
+                status.textContent =
+                    conquista.desbloqueada
+                        ? 'DESBLOQUEADA ✓'
+                        : 'BLOQUEADA';
+
+                card.append(
+                    icone,
+                    nome,
+                    descricao,
+                    progresso,
+                    status
+                );
+
+                grade.appendChild(card);
+            });
+        }
+
+        exibirConquistasSupabase();
 
         /* =========================================
            ENCERRAR SESSAO SUPABASE
