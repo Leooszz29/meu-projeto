@@ -4976,42 +4976,10 @@ window.addEventListener(
             acessoInicialTreinosFitZone = acessoPagina;
 
             /* =========================================
-               TEMA VISUAL TREINOS SUPABASE V1
+               TEMA TREINOS SUPABASE - NUVEM
             ========================================= */
 
-            try {
-                const email =
-                    acessoPagina.email
-                        ?.trim()
-                        .toLowerCase();
-
-                const genero = email
-                    ? localStorage.getItem(
-                        `generoFitZone:${email}`
-                    )
-                    : null;
-
-                document.body.classList.remove(
-                    'theme-masculino',
-                    'theme-feminino'
-                );
-
-                if (genero === 'masculino') {
-                    document.body.classList.add(
-                        'theme-masculino'
-                    );
-                } else if (genero === 'feminino') {
-                    document.body.classList.add(
-                        'theme-feminino'
-                    );
-                }
-
-            } catch (erro) {
-                console.warn(
-                    'Erro ao aplicar tema Supabase nos treinos:',
-                    erro
-                );
-            }
+            await sincronizarTemaSupabaseFitZone();
 
             const painel = document.createElement('main');
 
