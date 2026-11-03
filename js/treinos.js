@@ -5134,15 +5134,18 @@ window.addEventListener(
                 const cabecalhoSupabase =
                     cabecalhoOriginal.cloneNode(true);
 
-                const imagemPersonagem =
+                /* =========================================
+                   CORRIGIR ESPACO VAZIO DO CABECALHO
+                   SUPABASE
+                ========================================= */
+
+                const areaPersonagem =
                     cabecalhoSupabase.querySelector(
-                        '#characterImg'
+                        '.character-preview'
                     );
 
-                if (imagemPersonagem) {
-                    imagemPersonagem.removeAttribute('id');
-                    imagemPersonagem.removeAttribute('src');
-                    imagemPersonagem.style.display = 'none';
+                if (areaPersonagem) {
+                    areaPersonagem.remove();
                 }
 
                 painel.insertBefore(
@@ -7102,6 +7105,14 @@ window.addEventListener(
             );
 
             try {
+                mensagem.textContent =
+                    'Carregando seus treinos...';
+
+                lista.setAttribute(
+                    'aria-busy',
+                    'true'
+                );
+
                 const resultado =
                     await prepararTreinosSupabaseFitZone();
 
@@ -7133,7 +7144,8 @@ window.addEventListener(
 
                 await renderizarProgressoSupabase();
                 await renderizarHistoricoSupabase();
-
+                lista.removeAttribute('aria-busy');
+               
                 /* =========================================
                    BOTAO TEMPORARIO DE TESTE SUPABASE
                 ========================================= */
@@ -7426,6 +7438,8 @@ window.addEventListener(
                 mensagem.textContent =
                     'Não foi possível carregar os treinos. ' +
                     'Verifique a conexão e tente novamente.';
+
+                lista.removeAttribute('aria-busy');
             }
 
             return;
