@@ -1364,6 +1364,180 @@
         });
 
         /* =========================================
+           EXCLUIR HISTORICO SUPABASE - V8
+        ========================================= */
+
+        const modalExcluirSupabase =
+            document.getElementById('historyDeleteModal');
+
+        const mensagemExcluirSupabase =
+            document.getElementById('historyDeleteMessage');
+
+        const cancelarExclusaoSupabase =
+            document.getElementById('historyDeleteCancel');
+
+        const confirmarExclusaoSupabase =
+            document.getElementById('historyDeleteConfirm');
+
+        let registroPendenteExclusao = null;
+        let botaoQueAbriuExclusaoSupabase = null;
+        let excluindoHistoricoSupabase = false;
+
+        function fecharExclusaoSupabase() {
+            if (excluindoHistoricoSupabase) {
+                return;
+            }
+
+            modalExcluirSupabase?.classList.remove('show');
+
+            if (
+                botaoQueAbriuExclusaoSupabase?.isConnected
+            ) {
+                botaoQueAbriuExclusaoSupabase.focus();
+            }
+
+            registroPendenteExclusao = null;
+            botaoQueAbriuExclusaoSupabase = null;
+        }
+
+        function abrirExclusaoSupabase(registro, botao) {
+            if (
+                !modalExcluirSupabase ||
+                !mensagemExcluirSupabase ||
+                registro?.id == null ||
+                excluindoHistoricoSupabase
+            ) {
+                return;
+            }
+
+            registroPendenteExclusao = registro;
+            botaoQueAbriuExclusaoSupabase = botao;
+
+            const nome =
+                registro.dados?.nome ||
+                registro.dados?.nomeTreino ||
+                'Treino';
+
+            const [ano, mes, dia] =
+                registro.data_local.split('-');
+
+            mensagemExcluirSupabase.textContent =
+                `Deseja excluir "${nome}" realizado em ` +
+                `${dia}/${mes}/${ano}? ` +
+                'Esta ação não poderá ser desfeita.';
+
+            modalExcluirSupabase.classList.add('show');
+
+            cancelarExclusaoSupabase?.focus();
+        }
+
+        cancelarExclusaoSupabase?.addEventListener(
+            'click',
+            fecharExclusaoSupabase
+        );
+
+        modalExcluirSupabase?.addEventListener(
+            'click',
+            evento => {
+                if (
+                    evento.target === modalExcluirSupabase
+                ) {
+                    fecharExclusaoSupabase();
+                }
+            }
+        );
+
+        document.addEventListener('keydown', evento => {
+            if (
+                evento.key === 'Escape' &&
+                modalExcluirSupabase?.classList.contains('show')
+            ) {
+                evento.preventDefault();
+                fecharExclusaoSupabase();
+            }
+        });
+
+        confirmarExclusaoSupabase?.addEventListener(
+            'click',
+            async () => {
+                if (
+                    !registroPendenteExclusao ||
+                    excluindoHistoricoSupabase
+                ) {
+                    return;
+                }
+
+                excluindoHistoricoSupabase = true;
+                confirmarExclusaoSupabase.disabled = true;
+
+                if (cancelarExclusaoSupabase) {
+                    cancelarExclusaoSupabase.disabled = true;
+                }
+
+                const registro = registroPendenteExclusao;
+
+                try {
+                    const identidadeAtual =
+                        await obterIdentidadeSupabaseFitZone();
+
+                    if (
+                        !identidadeAtual ||
+                        identidadeAtual.id !== identidade.id
+                    ) {
+                        window.location.replace('login.html');
+                        return;
+                    }
+
+                    const { data, error } = await cliente
+                        .from('fitzone_historico_treinos')
+                        .delete()
+                        .eq('id', registro.id)
+                        .eq('usuario_id', identidade.id)
+                        .select('id');
+
+                    if (error) {
+                        throw error;
+                    }
+
+                    if (
+                        !Array.isArray(data) ||
+                        data.length !== 1
+                    ) {
+                        throw new Error(
+                            'O registro não foi excluído. ' +
+                            'Verifique as permissões do banco.'
+                        );
+                    }
+
+                    modalExcluirSupabase?.classList.remove(
+                        'show'
+                    );
+
+                    window.location.reload();
+
+                } catch (erro) {
+                    console.error(
+                        'Erro ao excluir histórico Supabase:',
+                        erro
+                    );
+
+                    alert(
+                        'Não foi possível excluir o treino. ' +
+                        'O histórico será mantido.'
+                    );
+
+                } finally {
+                    excluindoHistoricoSupabase = false;
+                    confirmarExclusaoSupabase.disabled = false;
+
+                    if (cancelarExclusaoSupabase) {
+                        cancelarExclusaoSupabase.disabled = false;
+                    }
+                }
+            }
+        );
+
+        /* =========================================
            AGRUPAR HISTORICO POR MES
         ========================================= */
 
@@ -1673,13 +1847,58 @@
                         );
                     });
 
+
+                    const botaoExcluir =
+                        document.createElement('button');
+
+                    botaoExcluir.type = 'button';
+                    botaoExcluir.className =
+                        'history-delete-btn';
+
+                    botaoExcluir.innerHTML = `
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path d="M3 6h18" />
+                            <path d="M8 6V4h8v2" />
+                            <path d="M19 6l-1 14H6L5 6" />
+                            <path d="M10 10v6" />
+                            <path d="M14 10v6" />
+                        </svg>
+                    `;
+
+                    botaoExcluir.setAttribute(
+                        'aria-label',
+                        `Excluir treino ${nomeTreino}`
+                    );
+
+                    botaoExcluir.title = 'Excluir treino';
+
+                    botaoExcluir.disabled =
+                        registro.id == null;
+
+                    botaoExcluir.addEventListener(
+                        'click',
+                        () => {
+                            abrirExclusaoSupabase(
+                                registro,
+                                botaoExcluir
+                            );
+                        }
+                    );
+
                     const acoes =
                         document.createElement('div');
 
                     acoes.className =
                         'history-item-actions';
 
-                    acoes.append(data, detalhes);
+                    acoes.append(
+                        data,
+                        detalhes,
+                        botaoExcluir
+                    );
 
                     item.append(nome, situacao, acoes);
                     conteudo.appendChild(item);
