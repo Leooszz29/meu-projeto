@@ -258,6 +258,44 @@ async function salvarPerfilSupabaseFitZone(perfil) {
 }
 
 /* =========================================
+   FITZONE - ALTERAR APENAS GENERO SUPABASE
+========================================= */
+
+async function atualizarGeneroSupabaseFitZone(genero) {
+    if (!['masculino', 'feminino'].includes(genero)) {
+        throw new Error('Gênero inválido.');
+    }
+
+    const cliente = inicializarSupabaseFitZone();
+    const identidade = await obterIdentidadeSupabaseFitZone();
+
+    if (!cliente || !identidade) {
+        throw new Error('Sessão Supabase inválida.');
+    }
+
+    const { data, error } = await cliente
+        .from('fitzone_perfis')
+        .update({
+            genero: genero
+        })
+        .eq('id', identidade.id)
+        .select('genero')
+        .maybeSingle();
+
+    if (error) {
+        throw error;
+    }
+
+    if (!data) {
+        throw new Error(
+            'Perfil não encontrado. Salve seus dados pessoais primeiro.'
+        );
+    }
+
+    return data.genero;
+}
+
+/* =========================================
    FITZONE - CHAVE DO USUARIO SUPABASE
 ========================================= */
 
