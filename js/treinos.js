@@ -5048,6 +5048,80 @@ window.addEventListener(
             conteudoOriginal.appendChild(painel);
 
             /* =========================================
+               CARREGAMENTO TREINOS SUPABASE V4
+            ========================================= */
+
+            const telaCarregamentoTreinos =
+                document.createElement('div');
+
+            telaCarregamentoTreinos.className =
+                'fitzone-treinos-loading';
+
+            telaCarregamentoTreinos.setAttribute(
+                'role',
+                'status'
+            );
+
+            telaCarregamentoTreinos.setAttribute(
+                'aria-live',
+                'polite'
+            );
+
+            telaCarregamentoTreinos.innerHTML = `
+                <h2>FITZONE</h2>
+                <div
+                    class="fitzone-treinos-spinner"
+                    aria-hidden="true"
+                ></div>
+                <p>Carregando seus treinos...</p>
+            `;
+
+            document.body.appendChild(
+                telaCarregamentoTreinos
+            );
+
+            function finalizarCarregamentoTreinos() {
+                telaCarregamentoTreinos.remove();
+            }
+
+            function falhaCarregamentoTreinos(erro) {
+                console.error(
+                    'Falha na inicialização dos treinos:',
+                    erro
+                );
+
+                telaCarregamentoTreinos.querySelector(
+                    '.fitzone-treinos-spinner'
+                )?.remove();
+
+                const texto =
+                    telaCarregamentoTreinos.querySelector('p');
+
+                if (texto) {
+                    texto.textContent =
+                        'Não foi possível carregar seus treinos. ' +
+                        'Atualize a página ou verifique sua conexão.';
+                }
+            }
+
+            function capturarFalhaInicialTreinos(evento) {
+                if (
+                    !telaCarregamentoTreinos.isConnected
+                ) {
+                    return;
+                }
+
+                falhaCarregamentoTreinos(
+                    evento.reason
+                );
+            }
+
+            window.addEventListener(
+                'unhandledrejection',
+                capturarFalhaInicialTreinos
+            );
+
+            /* =========================================
                PREPARAR NAVEGACAO SUPABASE
             ========================================= */
 
@@ -7144,8 +7218,16 @@ window.addEventListener(
 
                 await renderizarProgressoSupabase();
                 await renderizarHistoricoSupabase();
+
                 lista.removeAttribute('aria-busy');
-               
+
+                window.removeEventListener(
+                    'unhandledrejection',
+                    capturarFalhaInicialTreinos
+                );
+
+                finalizarCarregamentoTreinos();
+
                 /* =========================================
                    BOTAO TEMPORARIO DE TESTE SUPABASE
                 ========================================= */
@@ -7440,6 +7522,13 @@ window.addEventListener(
                     'Verifique a conexão e tente novamente.';
 
                 lista.removeAttribute('aria-busy');
+
+                window.removeEventListener(
+                    'unhandledrejection',
+                    capturarFalhaInicialTreinos
+                );
+
+                falhaCarregamentoTreinos(erro);
             }
 
             return;
