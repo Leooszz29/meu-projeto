@@ -172,9 +172,10 @@
        letter-spacing: 0.5px;
    }
 
-   input[type="text"],
-   input[type="email"],
-   input[type="password"] {
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select#generoCadastro {
        width: 100%;
        padding: 13px 16px;
        border: 1.5px solid var(--steel);
@@ -186,15 +187,17 @@
        color: var(--chalk);
    }
 
-   input[type="text"]:hover,
-   input[type="email"]:hover,
-   input[type="password"]:hover {
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+select#generoCadastro:hover {
        border-color: rgba(var(--accent-rgb), 0.5);
    }
 
-   input[type="text"]:focus,
-   input[type="email"]:focus,
-   input[type="password"]:focus {
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+select#generoCadastro:focus {
        outline: none;
        border-color: var(--accent);
        background: rgba(0, 0, 0, 0.35);
