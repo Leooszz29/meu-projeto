@@ -106,46 +106,10 @@
         }
 
         /* =========================================
-           TEMA VISUAL - SUPABASE V10
+           TEMA DESEMPENHO SUPABASE - NUVEM
         ========================================= */
 
-        function aplicarTemaDesempenhoSupabase() {
-            try {
-                const email =
-                    identidade.email?.trim().toLowerCase();
-
-                if (!email) {
-                    return;
-                }
-
-                const genero = localStorage.getItem(
-                    `generoFitZone:${email}`
-                );
-
-                document.body.classList.remove(
-                    'theme-masculino',
-                    'theme-feminino'
-                );
-
-                if (genero === 'masculino') {
-                    document.body.classList.add(
-                        'theme-masculino'
-                    );
-                } else if (genero === 'feminino') {
-                    document.body.classList.add(
-                        'theme-feminino'
-                    );
-                }
-
-            } catch (erro) {
-                console.warn(
-                    'Não foi possível aplicar o tema Supabase:',
-                    erro
-                );
-            }
-        }
-
-        aplicarTemaDesempenhoSupabase();
+        await sincronizarTemaSupabaseFitZone(identidade);
 
         /* =========================================
            HISTORICO DO USUARIO AUTENTICADO
