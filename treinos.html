@@ -9,6 +9,55 @@
 <title>Meus Treinos | FitZone</title>
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="css/treinos.css?v=20261031-series-v22">
+
+<style>
+    .fitzone-treinos-loading {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 18px;
+        padding: 24px;
+        background: #1a1b1d;
+        color: #eae6da;
+        text-align: center;
+    }
+
+    .fitzone-treinos-loading h2 {
+        margin: 0;
+        color: var(--accent, #e0a53c);
+        font-size: 38px;
+        letter-spacing: 3px;
+    }
+
+    .fitzone-treinos-loading p {
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .fitzone-treinos-spinner {
+        width: 38px;
+        height: 38px;
+        border: 3px solid rgba(255,255,255,0.12);
+        border-top-color: var(--accent, #e0a53c);
+        border-radius: 50%;
+        animation: treinosSpin 0.8s linear infinite;
+    }
+
+    @keyframes treinosSpin {
+        to { transform: rotate(360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .fitzone-treinos-spinner {
+            animation: none;
+        }
+    }
+</style>
+
 </head>
 <body>
 
@@ -794,6 +843,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="js/supabase-config.js"></script>
-<script src="js/treinos.js?v=20261103-layout-supabase-v2"></script>
+<script src="js/treinos.js?v=20261103-loading-supabase-v4"></script>
 </body>
 </html>
