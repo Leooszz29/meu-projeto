@@ -269,6 +269,21 @@ function preencherFormularioSupabase(perfil) {
         return;
     }
 
+    const campoGenero =
+        document.getElementById('generoPerfil');
+
+    if (campoGenero) {
+        const genero =
+            perfil.genero === 'masculino' ||
+            perfil.genero === 'feminino'
+                ? perfil.genero
+                : '';
+
+        campoGenero.value = genero;
+
+        aplicarGeneroVisualPerfil(genero);
+    }
+
     const campos = {
         nome: perfil.nome,
         idade: perfil.idade,
@@ -550,6 +565,28 @@ function handleEndSession() {
     }
 
     window.location.href = 'login.html';
+}
+
+/* =========================================
+   APLICAR GENERO E TEMA DO PERFIL
+========================================= */
+
+function aplicarGeneroVisualPerfil(genero) {
+    if (
+        genero !== 'masculino' &&
+        genero !== 'feminino'
+    ) {
+        return;
+    }
+
+    document.body.classList.remove(
+        'theme-masculino',
+        'theme-feminino'
+    );
+
+    document.body.classList.add(
+        `theme-${genero}`
+    );
 }
 
 // ========================================
