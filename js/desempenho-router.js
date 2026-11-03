@@ -90,24 +90,6 @@
             : [];
 
         /* =========================================
-           EXIBIR APENAS RESUMO INTEGRADO
-        ========================================= */
-
-        pagina.querySelectorAll(
-            ':scope > section:not(.training-summary)'
-        ).forEach(secao => {
-            const habilitada =
-                secao.classList.contains('training-streak') ||
-                secao.classList.contains('monthly-goal') ||
-                secao.classList.contains('monthly-comparison') ||
-                secao.classList.contains('training-chart') ||
-                secao.classList.contains('fitzone-achievements') ||
-                secao.classList.contains('workout-history');
-
-            secao.style.display = habilitada ? '' : 'none';
-        });
-
-        /* =========================================
            CONTADORES PRINCIPAIS
         ========================================= */
 
@@ -1587,8 +1569,45 @@
 
                     const data = document.createElement('span');
                     data.className = 'history-date';
-                    data.textContent =
+
+                    const iconeCalendario =
+                        document.createElementNS(
+                            'http://www.w3.org/2000/svg',
+                            'svg'
+                        );
+
+                    iconeCalendario.setAttribute(
+                        'viewBox',
+                        '0 0 24 24'
+                    );
+                    iconeCalendario.setAttribute(
+                        'aria-hidden',
+                        'true'
+                    );
+
+                    iconeCalendario.innerHTML = `
+                        <rect
+                            x="3"
+                            y="5"
+                            width="18"
+                            height="16"
+                            rx="2"
+                        />
+                        <path d="M16 3v4" />
+                        <path d="M8 3v4" />
+                        <path d="M3 10h18" />
+                    `;
+
+                    const textoData =
+                        document.createElement('span');
+
+                    textoData.textContent =
                         `${diaTreino}/${mesTreino}/${anoTreino}`;
+
+                    data.append(
+                        iconeCalendario,
+                        textoData
+                    );
 
                     const detalhes =
                         document.createElement('button');
@@ -1597,7 +1616,48 @@
                     detalhes.className =
                         'history-details-btn';
 
-                    detalhes.textContent = 'Ver detalhes';
+                    const iconeDetalhes =
+                        document.createElementNS(
+                            'http://www.w3.org/2000/svg',
+                            'svg'
+                        );
+
+                    iconeDetalhes.setAttribute(
+                        'viewBox',
+                        '0 0 24 24'
+                    );
+
+                    iconeDetalhes.setAttribute(
+                        'aria-hidden',
+                        'true'
+                    );
+
+                    iconeDetalhes.innerHTML = `
+                        <path
+                            d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
+                        />
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="2.5"
+                        />
+                    `;
+
+                    const textoDetalhes =
+                        document.createElement('span');
+
+                    textoDetalhes.textContent =
+                        'Ver detalhes';
+
+                    detalhes.append(
+                        iconeDetalhes,
+                        textoDetalhes
+                    );
+
+                    detalhes.setAttribute(
+                        'aria-label',
+                        `Ver detalhes do treino ${nomeTreino}`
+                    );
 
                     detalhes.disabled = !status.detalhado;
 
