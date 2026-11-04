@@ -10,6 +10,29 @@ const termsInput = document.getElementById('terms');
 const submitBtn = document.getElementById('submitBtn');
 const generoInput = document.getElementById('generoCadastro');
 
+const tipoContaInput =
+    document.getElementById('tipoContaCadastro');
+
+const dicaSenhaCadastro =
+    document.getElementById('dicaSenhaCadastro');
+
+function atualizarDicaSenhaCadastro() {
+    dicaSenhaCadastro.textContent =
+        tipoContaInput.value === 'supabase'
+            ? 'Mínimo de 8 caracteres, incluindo letras e números'
+            : 'Mínimo de 6 caracteres — conta tradicional';
+}
+
+tipoContaInput.addEventListener(
+    'change',
+    () => {
+        atualizarDicaSenhaCadastro();
+        clearError();
+    }
+);
+
+atualizarDicaSenhaCadastro();
+
 // ==================== SUPABASE ====================
 function obterSupabaseCadastro() {
     if (typeof inicializarSupabaseFitZone !== 'function') {
@@ -109,7 +132,7 @@ function validateEmail(email) {
     return emailRegex.test(email);
 }
 
-function handleSignup(e) {
+async function handleSignup(e) {
     e.preventDefault();
     clearError();
 
@@ -120,7 +143,8 @@ function handleSignup(e) {
 
     const password = passwordInput.value;
     const confirmPassword = confirmPasswordInput.value;
-    const genero = generoInput.value;
+    const genero = generoInput.value;    
+    const tipoConta = tipoContaInput.value;
 
     // Validação
 
@@ -143,8 +167,31 @@ function handleSignup(e) {
         return;
     }
 
-    if (password.length < 6) {
-        showError('A senha deve ter no mínimo 6 caracteres');
+    if (tipoConta === 'supabase') {
+        const senhaValida =
+            password.length >= 8 &&
+            /[A-Za-z]/.test(password) &&
+            /[0-9]/.test(password);
+
+        if (!senhaValida) {
+            showError(
+                'A senha Supabase deve ter no mínimo ' +
+                '8 caracteres, incluindo letras e números.'
+            );
+            return;
+        }
+
+    } else if (tipoConta === 'tradicional') {
+        if (password.length < 6) {
+            showError(
+                'A senha tradicional deve ter ' +
+                'no mínimo 6 caracteres.'
+            );
+            return;
+        }
+
+    } else {
+        showError('Selecione um tipo de conta válido.');
         return;
     }
 
@@ -157,6 +204,58 @@ function handleSignup(e) {
         showError('Você precisa aceitar os Termos de Uso');
         return;
     }
+
+    /* =========================================
+       CADASTRO SUPABASE PELO FORMULARIO
+    ========================================= */
+
+    if (tipoConta === 'supabase') {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Criando conta na nuvem...';
+
+        try {
+            const dados =
+                await cadastrarUsuarioSupabase(
+                    name,
+                    email,
+                    password,
+                    genero
+                );
+
+            if (!dados?.user) {
+                throw new Error(
+                    'Não foi possível confirmar o cadastro.'
+                );
+            }
+
+            showSuccess(
+                'Cadastro enviado com sucesso! ' +
+                'Verifique seu e-mail para confirmar ' +
+                'a conta Supabase antes de entrar.'
+            );
+
+            form.reset();
+            atualizarDicaSenhaCadastro();
+
+        } catch (erro) {
+            console.error(
+                'Erro no cadastro Supabase:',
+                erro
+            );
+
+            showError(
+                'Não foi possível criar a conta Supabase. ' +
+                'Verifique os dados, a conexão e tente novamente.'
+            );
+
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Criar conta';
+        }
+
+        return;
+    }
+
     // Salvar dados do usuário no navegador
     let usuario;
 
