@@ -160,17 +160,26 @@
                 if (email === null) return;
 
                 const senha = prompt(
-                    'Senha de teste (mínimo de 8 caracteres):'
+                    'Senha Supabase: mínimo de 8 caracteres, ' +
+                    'incluindo letras e números:'
                 );
+
                 if (senha === null) return;
+
+                const senhaValida =
+                    senha.length >= 8 &&
+                    /[A-Za-z]/.test(senha) &&
+                    /[0-9]/.test(senha);
 
                 if (
                     !nome.trim() ||
                     !email.trim() ||
-                    senha.length < 8
+                    !senhaValida
                 ) {
                     resultado.textContent =
-                        'Preencha os dados corretamente.';
+                        'Preencha os dados corretamente. ' +
+                        'A senha Supabase deve ter no mínimo ' +
+                        '8 caracteres, incluindo letras e números.';
                     return;
                 }
 
