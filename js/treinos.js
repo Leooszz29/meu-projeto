@@ -11110,13 +11110,6 @@ if (
 
             // Libera a confirmação somente com autorização válida.
             restoreBackupConfirmButton.disabled = !autorizado;
-
-            if (autorizado) {
-                console.info(
-                    'FitZone: restauração autorizada. ' +
-                    'Aguardando confirmação do usuário.'
-                );
-            }
         }
     );
 }
