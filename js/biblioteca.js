@@ -209,6 +209,159 @@ document.addEventListener('DOMContentLoaded', async () => {
     const favoritos = new Set(favoritosSalvos);
 
     /* =========================================
+       FAVORITOS SUPABASE - SINCRONIZACAO
+    ========================================= */
+
+    let favoritosNuvemProntos =
+        origemSessao !== 'supabase';
+
+    const chaveMigracaoFavoritos =
+        `fitzoneFavoritosMigrados:${idSupabaseInicial}`;
+
+    function salvarCacheFavoritos() {
+        try {
+            localStorage.setItem(
+                chaveFavoritos,
+                JSON.stringify([...favoritos])
+            );
+        } catch (erro) {
+            console.warn(
+                'Não foi possível atualizar o cache:',
+                erro
+            );
+        }
+    }
+
+    async function sincronizarFavoritosSupabase() {
+        if (origemSessao !== 'supabase') {
+            return;
+        }
+
+        favoritosNuvemProntos = false;
+
+        const cliente = inicializarSupabaseFitZone();
+
+        if (!cliente || !idSupabaseInicial) {
+            throw new Error(
+                'Sessão Supabase indisponível.'
+            );
+        }
+
+        const migracaoConcluida =
+            localStorage.getItem(
+                chaveMigracaoFavoritos
+            ) === 'true';
+
+        if (
+            !migracaoConcluida &&
+            favoritosSalvos.length > 0
+        ) {
+            const registros = [
+                ...new Set(
+                    favoritosSalvos.filter(
+                        id => typeof id === 'string' &&
+                            id.trim()
+                    )
+                )
+            ].map(id => ({
+                usuario_id: idSupabaseInicial,
+                exercicio_id: id
+            }));
+
+            if (registros.length > 0) {
+                const { error } = await cliente
+                    .from('fitzone_favoritos')
+                    .upsert(registros, {
+                        onConflict:
+                            'usuario_id,exercicio_id',
+                        ignoreDuplicates: true
+                    });
+
+                if (error) {
+                    throw error;
+                }
+            }
+        }
+
+        const { data, error } = await cliente
+            .from('fitzone_favoritos')
+            .select('exercicio_id')
+            .eq('usuario_id', idSupabaseInicial);
+
+        if (error) {
+            throw error;
+        }
+
+        favoritos.clear();
+
+        (data || []).forEach(registro => {
+            favoritos.add(registro.exercicio_id);
+        });
+
+        salvarCacheFavoritos();
+
+        try {
+            localStorage.setItem(
+                chaveMigracaoFavoritos,
+                'true'
+            );
+        } catch (erro) {
+            console.warn(
+                'Não foi possível registrar a migração:',
+                erro
+            );
+        }
+
+        favoritosNuvemProntos = true;
+    }
+
+    async function alterarFavoritoSupabase(
+        exercicioId,
+        adicionar
+    ) {
+        const cliente = inicializarSupabaseFitZone();
+
+        if (!cliente || !idSupabaseInicial) {
+            throw new Error(
+                'Sessão Supabase indisponível.'
+            );
+        }
+
+        let resultado;
+
+        if (adicionar) {
+            resultado = await cliente
+                .from('fitzone_favoritos')
+                .upsert({
+                    usuario_id: idSupabaseInicial,
+                    exercicio_id: exercicioId
+                }, {
+                    onConflict:
+                        'usuario_id,exercicio_id'
+                });
+
+        } else {
+            resultado = await cliente
+                .from('fitzone_favoritos')
+                .delete()
+                .eq('usuario_id', idSupabaseInicial)
+                .eq('exercicio_id', exercicioId);
+        }
+
+        if (resultado.error) {
+            throw resultado.error;
+        }
+
+        if (adicionar) {
+            favoritos.add(exercicioId);
+        } else {
+            favoritos.delete(exercicioId);
+        }
+
+        salvarCacheFavoritos();
+    }
+
+    /* =========================================
        CATALOGO DE EXERCICIOS
     ========================================= */
 
@@ -644,31 +797,73 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             atualizarBotaoFavorito();
 
-            botaoFavorito.addEventListener('click', () => {
-                if (favoritos.has(exercicio.id)) {
-                    favoritos.delete(exercicio.id);
-                } else {
-                    favoritos.add(exercicio.id);
-                }
+            botaoFavorito.addEventListener(
+                'click',
+                async () => {
+                    if (
+                        origemSessao === 'supabase' &&
+                        !favoritosNuvemProntos
+                    ) {
+                        alert(
+                            'Os favoritos ainda não estão ' +
+                            'sincronizados com o Supabase.'
+                        );
+                        return;
+                    }
 
-                try {
-                    localStorage.setItem(
-                        chaveFavoritos,
-                        JSON.stringify([...favoritos])
-                    );
-                } catch (error) {
-                    console.warn(
-                        'Erro ao salvar favoritos:',
-                        error
-                    );
-                }
+                    botaoFavorito.disabled = true;
 
-                atualizarBotaoFavorito();
+                    try {
+                        if (origemSessao === 'supabase') {
+                            const sessaoContinuaValida =
+                                await verificarContinuidadeSessaoBiblioteca();
 
-                if (grupoAtual === 'Favoritos') {
-                    atualizarBiblioteca();
+                            if (!sessaoContinuaValida) {
+                                throw new Error(
+                                    'Sessão não validada.'
+                                );
+                            }
+
+                            const adicionar =
+                                !favoritos.has(exercicio.id);
+
+                            await alterarFavoritoSupabase(
+                                exercicio.id,
+                                adicionar
+                            );
+
+                        } else {
+                            if (favoritos.has(exercicio.id)) {
+                                favoritos.delete(exercicio.id);
+                            } else {
+                                favoritos.add(exercicio.id);
+                            }
+
+                            salvarCacheFavoritos();
+                        }
+
+                        atualizarBotaoFavorito();
+
+                        if (grupoAtual === 'Favoritos') {
+                            atualizarBiblioteca();
+                        }
+
+                    } catch (erro) {
+                        console.error(
+                            'Erro ao alterar favorito:',
+                            erro
+                        );
+
+                        alert(
+                            'Não foi possível salvar o favorito. ' +
+                            'Verifique a conexão e tente novamente.'
+                        );
+
+                    } finally {
+                        botaoFavorito.disabled = false;
+                    }
                 }
-            });
+            );
 
             card.appendChild(botaoFavorito);
 
@@ -797,6 +992,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     /* EXIBICAO INICIAL */
+
+    if (origemSessao === 'supabase') {
+        try {
+            await sincronizarFavoritosSupabase();
+
+        } catch (erro) {
+            console.error(
+                'Erro ao sincronizar favoritos Supabase:',
+                erro
+            );
+
+            alert(
+                'Não foi possível sincronizar os favoritos. ' +
+                'Eles ficarão disponíveis para consulta local, ' +
+                'mas alterações serão bloqueadas até a ' +
+                'sincronização funcionar.'
+            );
+        }
+    }
 
     atualizarBiblioteca();
 
