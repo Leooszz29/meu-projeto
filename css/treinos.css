@@ -3279,12 +3279,6 @@ body:not(.theme-feminino):not(.theme-masculino)
     color: var(--accent);
 }
 
-/* NOME DO TREINO */
-
-.day-cell .treino-label {
-    display: none;
-}
-
 /* CHECK */
 
 .day-cell .check-badge {
@@ -3319,13 +3313,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 .day-cell.checked .check-badge {
     opacity: 1;
     transform: scale(1);
-}
-
-/* ESPAÇOS VAZIOS */
-
-.day-cell.empty {
-    visibility: hidden;
-    pointer-events: none;
 }
 
 /* MOBILE */
