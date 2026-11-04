@@ -5288,6 +5288,35 @@ window.addEventListener(
             );
 
             /* =========================================
+               RESTAURAR TREINOS AUSENTES SUPABASE V1
+            ========================================= */
+
+            let backupValidadoParaRestauracao = null;
+
+            const botaoRestaurarTreinosSupabase =
+                document.createElement('button');
+
+            botaoRestaurarTreinosSupabase.type = 'button';
+            botaoRestaurarTreinosSupabase.className =
+                'btn-export-backup';
+
+            botaoRestaurarTreinosSupabase.textContent =
+                'Restaurar treinos ausentes';
+
+            botaoRestaurarTreinosSupabase.disabled = true;
+
+            botaoRestaurarTreinosSupabase.style.cssText =
+                'display:block;' +
+                'margin:8px 0 16px;' +
+                'padding:12px 18px;' +
+                'cursor:pointer;';
+
+            painel.insertBefore(
+                botaoRestaurarTreinosSupabase,
+                lista
+            );
+
+            /* =========================================
                VERIFICAR ESTRUTURA DO ARQUIVO
             ========================================= */
 
@@ -5469,7 +5498,10 @@ window.addEventListener(
                         return;
                     }
 
+                    backupValidadoParaRestauracao = null;
+                    botaoRestaurarTreinosSupabase.disabled = true;
                     botaoValidarBackupSupabase.disabled = true;
+
 
                     resultadoBackupSupabase.hidden = false;
                     resultadoBackupSupabase.textContent =
@@ -5717,6 +5749,27 @@ window.addEventListener(
                             '\n\nRegistros divergentes exigem ' +
                             'tratamento antes da restauração.';
 
+                        /* =========================================
+                           CONFERIR IDENTIDADE DOS REGISTROS
+                        ========================================= */
+
+                        for (const treino of backup.dados.treinos) {
+                            if (
+                                treino.usuario_id !== identidade.id ||
+                                treino.dados.id !== treino.treino_id
+                            ) {
+                                throw new Error(
+                                    'O backup possui um treino com ' +
+                                    'identificação inconsistente.'
+                                );
+                            }
+                        }
+
+                        backupValidadoParaRestauracao = backup;
+
+                        botaoRestaurarTreinosSupabase.disabled =
+                            treinosNovos === 0;
+
                         resultadoBackupSupabase.textContent =
                             '✓ Estrutura inicial validada\n\n' +
                             `Arquivo: ${arquivo.name}\n` +
@@ -5731,6 +5784,8 @@ window.addEventListener(
                             ) +
 
                             resumoComparacao +
+                            '\n\nTreinos recuperáveis: ' +
+                            treinosNovos +
                             '\n\nComparação concluída. ' +
                             'Nenhum dado foi alterado. ' +
                             'A restauração ainda não está habilitada.';
@@ -5749,6 +5804,201 @@ window.addEventListener(
                     } finally {
                         botaoValidarBackupSupabase.disabled = false;
                         campoArquivoBackupSupabase.value = '';
+                    }
+                }
+            );
+
+            /* =========================================
+               RESTAURACAO PROTEGIDA DE TREINOS
+               SOMENTE REGISTROS AUSENTES
+            ========================================= */
+
+            botaoRestaurarTreinosSupabase.addEventListener(
+                'click',
+                async () => {
+                    const backup =
+                        backupValidadoParaRestauracao;
+
+                    if (!backup) {
+                        alert(
+                            'Valide um backup antes de restaurar.'
+                        );
+                        return;
+                    }
+
+                    botaoRestaurarTreinosSupabase.disabled = true;
+                    botaoValidarBackupSupabase.disabled = true;
+
+                    try {
+                        validarEstruturaBackupSupabase(backup);
+
+                        const identidade =
+                            await obterIdentidadeSupabaseFitZone();
+
+                        if (
+                            !identidade ||
+                            identidade.id !== acessoPagina.id ||
+                            backup.usuarioId !== identidade.id
+                        ) {
+                            throw new Error(
+                                'O backup não pertence à conta atual.'
+                            );
+                        }
+
+                        const cliente =
+                            inicializarSupabaseFitZone();
+
+                        if (!cliente) {
+                            throw new Error(
+                                'Supabase indisponível.'
+                            );
+                        }
+
+                        async function obterTreinosAusentes() {
+                            const atuais =
+                                await consultarRegistrosBackupSupabase(
+                                    cliente,
+                                    'fitzone_treinos',
+                                    identidade.id,
+                                    'treino_id'
+                                );
+
+                            const idsAtuais = new Set(
+                                atuais.map(
+                                    treino => treino.treino_id
+                                )
+                            );
+
+                            return backup.dados.treinos.filter(
+                                treino =>
+                                    !idsAtuais.has(treino.treino_id)
+                            );
+                        }
+
+                        const ausentes =
+                            await obterTreinosAusentes();
+
+                        if (ausentes.length === 0) {
+                            alert(
+                                'Todos os treinos do backup ' +
+                                'já existem no Supabase.'
+                            );
+                            return;
+                        }
+
+                        if (ausentes.length > 200) {
+                            throw new Error(
+                                'Este backup possui mais de 200 ' +
+                                'treinos ausentes. A restauração ' +
+                                'em lote exige tratamento adicional.'
+                            );
+                        }
+
+                        for (const treino of ausentes) {
+                            if (
+                                treino.usuario_id !== identidade.id ||
+                                treino.dados?.id !== treino.treino_id
+                            ) {
+                                throw new Error(
+                                    'Foi encontrado um treino ' +
+                                    'com identificação inválida.'
+                                );
+                            }
+                        }
+
+                        const confirmar = window.confirm(
+                            `Foram encontrados ${ausentes.length} ` +
+                            'treino(s) ausente(s).\n\n' +
+                            'Deseja recuperar esses treinos?\n\n' +
+                            'Os treinos existentes, o histórico ' +
+                            'e o treino ativo serão preservados.'
+                        );
+
+                        if (!confirmar) {
+                            return;
+                        }
+
+                        const identidadeFinal =
+                            await obterIdentidadeSupabaseFitZone();
+
+                        if (
+                            !identidadeFinal ||
+                            identidadeFinal.id !== identidade.id
+                        ) {
+                            throw new Error(
+                                'A sessão mudou durante a restauração.'
+                            );
+                        }
+
+                        const novosConfirmados =
+                            await obterTreinosAusentes();
+
+                        const idsConfirmados = new Set(
+                            novosConfirmados.map(
+                                treino => treino.treino_id
+                            )
+                        );
+
+                        const registrosParaInserir =
+                            ausentes.filter(
+                                treino =>
+                                    idsConfirmados.has(
+                                        treino.treino_id
+                                    )
+                            );
+
+                        if (registrosParaInserir.length === 0) {
+                            alert(
+                                'Os treinos já foram recuperados ' +
+                                'ou cadastrados em outra sessão.'
+                            );
+                            return;
+                        }
+
+                        const registros = registrosParaInserir.map(
+                            treino => ({
+                                usuario_id: identidade.id,
+                                treino_id: treino.treino_id,
+                                dados: treino.dados,
+                                atualizado_em:
+                                    treino.atualizado_em ||
+                                    new Date().toISOString()
+                            })
+                        );
+
+                        const { error } = await cliente
+                            .from('fitzone_treinos')
+                            .insert(registros);
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        alert(
+                            `${registros.length} treino(s) ` +
+                            'recuperado(s) com sucesso!\n\n' +
+                            'A página será atualizada.'
+                        );
+
+                        window.location.reload();
+
+                    } catch (erro) {
+                        console.error(
+                            'Erro na restauração Supabase:',
+                            erro
+                        );
+
+                        alert(
+                            'Não foi possível concluir a restauração.\n' +
+                            erro.message +
+                            '\n\nConfira os dados atuais antes ' +
+                            'de tentar novamente.'
+                        );
+
+                    } finally {
+                        backupValidadoParaRestauracao = null;
+                        botaoRestaurarTreinosSupabase.disabled = true;
+                        botaoValidarBackupSupabase.disabled = false;
                     }
                 }
             );
