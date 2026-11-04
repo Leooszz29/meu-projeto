@@ -5000,6 +5000,226 @@ window.addEventListener(
 
             painel.append(titulo, mensagem, lista);
 
+            /* =========================================
+               BACKUP DE TREINOS SUPABASE V1
+            ========================================= */
+
+            const botaoBackupSupabase =
+                document.createElement('button');
+
+            botaoBackupSupabase.type = 'button';
+            botaoBackupSupabase.className =
+                'btn-export-backup';
+
+            botaoBackupSupabase.textContent =
+                'Exportar treinos Supabase';
+
+            botaoBackupSupabase.style.cssText =
+                'display:block;' +
+                'margin:16px 0;' +
+                'padding:12px 18px;' +
+                'cursor:pointer;';
+
+            painel.insertBefore(
+                botaoBackupSupabase,
+                lista
+            );
+
+            /* =========================================
+               CONSULTAR REGISTROS PARA BACKUP
+            ========================================= */
+
+            async function consultarRegistrosBackupSupabase(
+                cliente,
+                tabela,
+                usuarioId,
+                colunaOrdenacao
+            ) {
+                const registros = [];
+                const tamanhoPagina = 500;
+
+                let inicio = 0;
+
+                while (true) {
+                    const { data, error } = await cliente
+                        .from(tabela)
+                        .select('*')
+                        .eq('usuario_id', usuarioId)
+                        .order(colunaOrdenacao, {
+                            ascending: true
+                        })
+                        .range(
+                            inicio,
+                            inicio + tamanhoPagina - 1
+                        );
+
+                    if (error) {
+                        throw error;
+                    }
+
+                    registros.push(...(data || []));
+
+                    if (!data || data.length < tamanhoPagina) {
+                        break;
+                    }
+
+                    inicio += tamanhoPagina;
+                }
+
+                return registros;
+            }
+
+            /* =========================================
+               GERAR BACKUP SUPABASE
+            ========================================= */
+
+            botaoBackupSupabase.addEventListener(
+                'click',
+                async () => {
+                    botaoBackupSupabase.disabled = true;
+
+                    const textoOriginal =
+                        botaoBackupSupabase.textContent;
+
+                    botaoBackupSupabase.textContent =
+                        'Preparando backup...';
+
+                    try {
+                        const identidade =
+                            await obterIdentidadeSupabaseFitZone();
+
+                        if (
+                            !identidade ||
+                            identidade.id !== acessoPagina.id
+                        ) {
+                            throw new Error(
+                                'Sessão Supabase inválida.'
+                            );
+                        }
+
+                        const cliente =
+                            inicializarSupabaseFitZone();
+
+                        if (!cliente) {
+                            throw new Error(
+                                'Supabase indisponível.'
+                            );
+                        }
+
+                        const treinos =
+                            await consultarRegistrosBackupSupabase(
+                                cliente,
+                                'fitzone_treinos',
+                                identidade.id,
+                                'treino_id'
+                            );
+
+                        const historico =
+                            await consultarRegistrosBackupSupabase(
+                                cliente,
+                                'fitzone_historico_treinos',
+                                identidade.id,
+                                'id'
+                            );
+
+                        const { data: treinoAtivo, error } =
+                            await cliente
+                                .from('fitzone_treino_ativo')
+                                .select('*')
+                                .eq('usuario_id', identidade.id)
+                                .maybeSingle();
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        const identidadeFinal =
+                            await obterIdentidadeSupabaseFitZone();
+
+                        if (
+                            !identidadeFinal ||
+                            identidadeFinal.id !== identidade.id
+                        ) {
+                            throw new Error(
+                                'A conta foi alterada durante o backup.'
+                            );
+                        }
+
+                        const backup = {
+                            aplicativo: 'FitZone',
+                            origem: 'supabase',
+                            versaoBackup: 1,
+                            tipo: 'treinos-historico',
+                            exportadoEm:
+                                new Date().toISOString(),
+                            usuarioId: identidade.id,
+                            dados: {
+                                treinos,
+                                historico,
+                                treinoAtivo
+                            }
+                        };
+
+                        const conteudo = JSON.stringify(
+                            backup,
+                            null,
+                            2
+                        );
+
+                        const arquivo = new Blob(
+                            [conteudo],
+                            {
+                                type:
+                                    'application/json;charset=utf-8'
+                            }
+                        );
+
+                        const url =
+                            URL.createObjectURL(arquivo);
+
+                        const link =
+                            document.createElement('a');
+
+                        const data =
+                            new Date().toISOString().slice(0, 10);
+
+                        link.href = url;
+
+                        link.download =
+                            `fitzone-supabase-treinos-${data}.json`;
+
+                        document.body.appendChild(link);
+                        link.click();
+                        link.remove();
+
+                        setTimeout(() => {
+                            URL.revokeObjectURL(url);
+                        }, 1000);
+
+                        alert(
+                            'Backup de treinos Supabase ' +
+                            'exportado com sucesso!'
+                        );
+
+                    } catch (erro) {
+                        console.error(
+                            'Erro ao exportar backup Supabase:',
+                            erro
+                        );
+
+                        alert(
+                            'Não foi possível exportar o backup. ' +
+                            'Confira sua conexão e tente novamente.'
+                        );
+
+                    } finally {
+                        botaoBackupSupabase.disabled = false;
+                        botaoBackupSupabase.textContent =
+                            textoOriginal;
+                    }
+                }
+            );
+
             const conteudoOriginal = document.body;
 
             Array.from(conteudoOriginal.children).forEach(
