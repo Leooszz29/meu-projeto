@@ -3144,13 +3144,6 @@ body:not(.theme-feminino):not(.theme-masculino)
         padding: 16px 12px;
     }
 
-   .days-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    width: 100%;
-}
-
     .month-label {
         font-size: 15px;
     }
@@ -3338,13 +3331,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 /* MOBILE */
 
 @media (max-width: 520px) {
-
-    .days-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    width: 100%;
-}
 
     .day-cell {
         border-radius: 9px;
