@@ -5220,6 +5220,305 @@ window.addEventListener(
                 }
             );
 
+            /* =========================================
+               VALIDAR BACKUP SUPABASE V1
+               SOMENTE LEITURA
+            ========================================= */
+
+            const botaoValidarBackupSupabase =
+                document.createElement('button');
+
+            botaoValidarBackupSupabase.type = 'button';
+            botaoValidarBackupSupabase.className =
+                'btn-export-backup';
+
+            botaoValidarBackupSupabase.textContent =
+                'Validar backup Supabase';
+
+            botaoValidarBackupSupabase.style.cssText =
+                'display:block;' +
+                'margin:8px 0 16px;' +
+                'padding:12px 18px;' +
+                'cursor:pointer;';
+
+            const campoArquivoBackupSupabase =
+                document.createElement('input');
+
+            campoArquivoBackupSupabase.type = 'file';
+            campoArquivoBackupSupabase.accept =
+                '.json,application/json';
+
+            campoArquivoBackupSupabase.hidden = true;
+
+            const resultadoBackupSupabase =
+                document.createElement('div');
+
+            resultadoBackupSupabase.setAttribute(
+                'role',
+                'status'
+            );
+
+            resultadoBackupSupabase.setAttribute(
+                'aria-live',
+                'polite'
+            );
+
+            resultadoBackupSupabase.style.cssText =
+                'margin:8px 0 16px;' +
+                'padding:12px;' +
+                'border:1px solid currentColor;' +
+                'border-radius:8px;' +
+                'white-space:pre-line;';
+
+            resultadoBackupSupabase.hidden = true;
+
+            painel.insertBefore(
+                botaoValidarBackupSupabase,
+                lista
+            );
+
+            painel.insertBefore(
+                campoArquivoBackupSupabase,
+                lista
+            );
+
+            painel.insertBefore(
+                resultadoBackupSupabase,
+                lista
+            );
+
+            /* =========================================
+               VERIFICAR ESTRUTURA DO ARQUIVO
+            ========================================= */
+
+            function validarEstruturaBackupSupabase(backup) {
+                const objetoValido = valor =>
+                    valor !== null &&
+                    typeof valor === 'object' &&
+                    !Array.isArray(valor);
+
+                if (!objetoValido(backup)) {
+                    throw new Error(
+                        'O arquivo não contém um backup válido.'
+                    );
+                }
+
+                if (
+                    backup.aplicativo !== 'FitZone' ||
+                    backup.origem !== 'supabase' ||
+                    backup.versaoBackup !== 1 ||
+                    backup.tipo !== 'treinos-historico'
+                ) {
+                    throw new Error(
+                        'Formato ou versão do backup incompatível.'
+                    );
+                }
+
+                if (
+                    typeof backup.usuarioId !== 'string' ||
+                    !backup.usuarioId.trim()
+                ) {
+                    throw new Error(
+                        'O backup não possui identificação válida.'
+                    );
+                }
+
+                if (
+                    typeof backup.exportadoEm !== 'string' ||
+                    !Number.isFinite(
+                        Date.parse(backup.exportadoEm)
+                    )
+                ) {
+                    throw new Error(
+                        'Data de exportação inválida.'
+                    );
+                }
+
+                if (
+                    !objetoValido(backup.dados) ||
+                    !Array.isArray(backup.dados.treinos) ||
+                    !Array.isArray(backup.dados.historico) ||
+                    (
+                        backup.dados.treinoAtivo !== null &&
+                        !objetoValido(
+                            backup.dados.treinoAtivo
+                        )
+                    )
+                ) {
+                    throw new Error(
+                        'As seções do backup estão incompletas.'
+                    );
+                }
+
+                const idsTreinos = new Set();
+
+                for (const treino of backup.dados.treinos) {
+                    if (
+                        !objetoValido(treino) ||
+                        typeof treino.treino_id !== 'string' ||
+                        !treino.treino_id.trim() ||
+                        !objetoValido(treino.dados) ||
+                        typeof treino.dados.nome !== 'string' ||
+                        !treino.dados.nome.trim() ||
+                        !Array.isArray(treino.dados.exercicios)
+                    ) {
+                        throw new Error(
+                            'Foi encontrado um treino inválido.'
+                        );
+                    }
+
+                    if (idsTreinos.has(treino.treino_id)) {
+                        throw new Error(
+                            'O backup contém treinos duplicados.'
+                        );
+                    }
+
+                    idsTreinos.add(treino.treino_id);
+                }
+
+                for (const registro of backup.dados.historico) {
+                    if (
+                        !objetoValido(registro) ||
+                        typeof registro.id !== 'string' ||
+                        !registro.id.trim() ||
+                        typeof registro.treino_id !== 'string' ||
+                        !objetoValido(registro.dados)
+                    ) {
+                        throw new Error(
+                            'Foi encontrado um registro de histórico inválido.'
+                        );
+                    }
+                }
+
+                const ativo = backup.dados.treinoAtivo;
+
+                if (
+                    ativo !== null &&
+                    (
+                        typeof ativo.treino_id !== 'string' ||
+                        !ativo.treino_id.trim() ||
+                        !objetoValido(ativo.progresso)
+                    )
+                ) {
+                    throw new Error(
+                        'Os dados do treino ativo são inválidos.'
+                    );
+                }
+
+                return {
+                    treinos: backup.dados.treinos.length,
+                    historico: backup.dados.historico.length,
+                    treinoAtivo: ativo !== null
+                };
+            }
+
+            /* =========================================
+               SELECIONAR ARQUIVO JSON
+            ========================================= */
+
+            botaoValidarBackupSupabase.addEventListener(
+                'click',
+                () => {
+                    campoArquivoBackupSupabase.value = '';
+                    campoArquivoBackupSupabase.click();
+                }
+            );
+
+            /* =========================================
+               ANALISAR BACKUP SEM ALTERAR O BANCO
+            ========================================= */
+
+            campoArquivoBackupSupabase.addEventListener(
+                'change',
+                async () => {
+                    const arquivo =
+                        campoArquivoBackupSupabase.files?.[0];
+
+                    if (!arquivo) {
+                        return;
+                    }
+
+                    botaoValidarBackupSupabase.disabled = true;
+
+                    resultadoBackupSupabase.hidden = false;
+                    resultadoBackupSupabase.textContent =
+                        'Analisando arquivo de backup...';
+
+                    try {
+                        if (arquivo.size > 15 * 1024 * 1024) {
+                            throw new Error(
+                                'O arquivo ultrapassa o limite ' +
+                                'de 15 MB para validação.'
+                            );
+                        }
+
+                        const conteudo = await arquivo.text();
+                        const backup = JSON.parse(conteudo);
+
+                        const resumo =
+                            validarEstruturaBackupSupabase(
+                                backup
+                            );
+
+                        const identidade =
+                            await obterIdentidadeSupabaseFitZone();
+
+                        if (
+                            !identidade ||
+                            identidade.id !== acessoPagina.id
+                        ) {
+                            throw new Error(
+                                'A sessão Supabase foi alterada.'
+                            );
+                        }
+
+                        if (
+                            backup.usuarioId !== identidade.id
+                        ) {
+                            throw new Error(
+                                'Este backup pertence a outra ' +
+                                'conta Supabase.'
+                            );
+                        }
+
+                        const dataExportacao =
+                            new Date(
+                                backup.exportadoEm
+                            ).toLocaleString('pt-BR');
+
+                        resultadoBackupSupabase.textContent =
+                            '✓ Estrutura inicial validada\n\n' +
+                            `Arquivo: ${arquivo.name}\n` +
+                            `Exportado em: ${dataExportacao}\n` +
+                            `Treinos: ${resumo.treinos}\n` +
+                            `Histórico: ${resumo.historico}\n` +
+                            'Treino ativo: ' +
+                            (
+                                resumo.treinoAtivo
+                                    ? 'Sim'
+                                    : 'Não'
+                            ) +
+                            '\n\nNenhum dado foi alterado. ' +
+                            'A restauração ainda não está habilitada.';
+
+                    } catch (erro) {
+                        console.error(
+                            'Erro ao validar backup Supabase:',
+                            erro
+                        );
+
+                        resultadoBackupSupabase.textContent =
+                            '✕ Não foi possível validar o backup.\n' +
+                            erro.message +
+                            '\n\nNenhum dado foi alterado.';
+
+                    } finally {
+                        botaoValidarBackupSupabase.disabled = false;
+                        campoArquivoBackupSupabase.value = '';
+                    }
+                }
+            );
+
             const conteudoOriginal = document.body;
 
             Array.from(conteudoOriginal.children).forEach(
