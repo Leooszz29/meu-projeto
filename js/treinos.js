@@ -5348,6 +5348,33 @@ window.addEventListener(
             );
 
             /* =========================================
+               RESTAURAR TREINO ATIVO SUPABASE V1
+            ========================================= */
+
+            const botaoRestaurarAtivoSupabase =
+                document.createElement('button');
+
+            botaoRestaurarAtivoSupabase.type = 'button';
+            botaoRestaurarAtivoSupabase.className =
+                'btn-export-backup';
+
+            botaoRestaurarAtivoSupabase.textContent =
+                'Restaurar treino em andamento';
+
+            botaoRestaurarAtivoSupabase.disabled = true;
+
+            botaoRestaurarAtivoSupabase.style.cssText =
+                'display:block;' +
+                'margin:8px 0 16px;' +
+                'padding:12px 18px;' +
+                'cursor:pointer;';
+
+            painel.insertBefore(
+                botaoRestaurarAtivoSupabase,
+                lista
+            );
+
+            /* =========================================
                VERIFICAR ESTRUTURA DO ARQUIVO
             ========================================= */
 
@@ -5532,6 +5559,7 @@ window.addEventListener(
                     backupValidadoParaRestauracao = null;
                     botaoRestaurarTreinosSupabase.disabled = true;
                     botaoRestaurarHistoricoSupabase.disabled = true;
+                    botaoRestaurarAtivoSupabase.disabled = true;
                     botaoValidarBackupSupabase.disabled = true;
 
                     resultadoBackupSupabase.hidden = false;
@@ -5867,6 +5895,29 @@ window.addEventListener(
                             }
                         }
 
+                        /* =========================================
+                           VERIFICAR TREINO ATIVO RECUPERAVEL
+                        ========================================= */
+
+                        const ativoBackup =
+                            backup.dados.treinoAtivo;
+
+                        const treinoAtivoDisponivel =
+                            ativoBackup !== null &&
+                            treinosExistentes.some(
+                                treino =>
+                                    treino.treino_id ===
+                                    ativoBackup.treino_id
+                            );
+
+                        const ativoRecuperavel =
+                            ativoBackup !== null &&
+                            !ativoExistente &&
+                            treinoAtivoDisponivel;
+
+                        botaoRestaurarAtivoSupabase.disabled =
+                            !ativoRecuperavel;
+
                         backupValidadoParaRestauracao = backup;
 
                         botaoRestaurarTreinosSupabase.disabled =
@@ -5900,7 +5951,11 @@ window.addEventListener(
                             'Históricos recuperáveis: ' +
                             historicosRecuperaveis +
                             '\nHistóricos protegidos: ' +
-                            historicosProtegidos +
+                            historicosProtegidos +                           
+                            '\n\nRESTAURAÇÃO DO TREINO ATIVO\n' +
+                            'Treino ativo recuperável: ' +
+                            (ativoRecuperavel ? 'Sim' : 'Não') +
+                            '\n' +
                             '\n\nComparação concluída. ' +
                             'Nenhum dado foi alterado nesta análise. ' +
                             'A restauração pode ser iniciada ' +
@@ -6390,6 +6445,195 @@ window.addEventListener(
 
                         botaoValidarBackupSupabase.disabled =
                             false;
+                    }
+                }
+            );
+
+            /* =========================================
+               EXECUTAR RESTAURACAO DO TREINO ATIVO
+            ========================================= */
+
+            botaoRestaurarAtivoSupabase.addEventListener(
+                'click',
+                async () => {
+                    const backup =
+                        backupValidadoParaRestauracao;
+
+                    if (!backup) {
+                        alert('Valide o backup novamente.');
+                        return;
+                    }
+
+                    botaoRestaurarAtivoSupabase.disabled = true;
+                    botaoRestaurarTreinosSupabase.disabled = true;
+                    botaoRestaurarHistoricoSupabase.disabled = true;
+                    botaoValidarBackupSupabase.disabled = true;
+
+                    try {
+                        validarEstruturaBackupSupabase(backup);
+
+                        const identidade =
+                            await obterIdentidadeSupabaseFitZone();
+
+                        if (
+                            !identidade ||
+                            identidade.id !== acessoPagina.id ||
+                            backup.usuarioId !== identidade.id
+                        ) {
+                            throw new Error(
+                                'A conta não corresponde ao backup.'
+                            );
+                        }
+
+                        const ativo = backup.dados.treinoAtivo;
+
+                        if (!ativo) {
+                            throw new Error(
+                                'O backup não contém treino ativo.'
+                            );
+                        }
+
+                        if (
+                            ativo.usuario_id !== identidade.id ||
+                            typeof ativo.treino_id !== 'string' ||
+                            !ativo.treino_id.trim() ||
+                            typeof ativo.treino_nome !== 'string' ||
+                            !ativo.treino_nome.trim() ||
+                            !ativo.progresso ||
+                            typeof ativo.progresso !== 'object' ||
+                            Array.isArray(ativo.progresso) ||
+                            typeof ativo.iniciado_em !== 'string' ||
+                            !Number.isFinite(
+                                Date.parse(ativo.iniciado_em)
+                            )
+                        ) {
+                            throw new Error(
+                                'Os dados do treino ativo são inválidos.'
+                            );
+                        }
+
+                        const cliente =
+                            inicializarSupabaseFitZone();
+
+                        if (!cliente) {
+                            throw new Error(
+                                'Supabase indisponível.'
+                            );
+                        }
+
+                        async function verificarCondicoesAtivo() {
+                            const {
+                                data: ativoAtual,
+                                error: erroAtivo
+                            } = await cliente
+                                .from('fitzone_treino_ativo')
+                                .select('treino_id')
+                                .eq('usuario_id', identidade.id)
+                                .maybeSingle();
+
+                            if (erroAtivo) {
+                                throw erroAtivo;
+                            }
+
+                            if (ativoAtual) {
+                                throw new Error(
+                                    'Já existe um treino em andamento. ' +
+                                    'Ele não será substituído.'
+                                );
+                            }
+
+                            const {
+                                data: treino,
+                                error: erroTreino
+                            } = await cliente
+                                .from('fitzone_treinos')
+                                .select('treino_id')
+                                .eq('usuario_id', identidade.id)
+                                .eq('treino_id', ativo.treino_id)
+                                .maybeSingle();
+
+                            if (erroTreino) {
+                                throw erroTreino;
+                            }
+
+                            if (!treino) {
+                                throw new Error(
+                                    'O treino correspondente não existe. ' +
+                                    'Recupere primeiro o treino cadastrado.'
+                                );
+                            }
+                        }
+
+                        await verificarCondicoesAtivo();
+
+                        const confirmar = window.confirm(
+                            'Deseja recuperar o treino em andamento ' +
+                            'do backup?\n\n' +
+                            `Treino: ${ativo.treino_nome}\n` +
+                            'O progresso das séries será recuperado.\n\n' +
+                            'Nenhum treino ativo existente será substituído.'
+                        );
+
+                        if (!confirmar) {
+                            return;
+                        }
+
+                        const identidadeFinal =
+                            await obterIdentidadeSupabaseFitZone();
+
+                        if (
+                            !identidadeFinal ||
+                            identidadeFinal.id !== identidade.id
+                        ) {
+                            throw new Error(
+                                'A sessão mudou durante a restauração.'
+                            );
+                        }
+
+                        await verificarCondicoesAtivo();
+
+                        const { error } = await cliente
+                            .from('fitzone_treino_ativo')
+                            .insert({
+                                usuario_id: identidade.id,
+                                treino_id: ativo.treino_id,
+                                treino_nome: ativo.treino_nome,
+                                progresso: ativo.progresso,
+                                iniciado_em: ativo.iniciado_em,
+                                atualizado_em:
+                                    new Date().toISOString()
+                            });
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        alert(
+                            'Treino em andamento recuperado!\n\n' +
+                            'A página será atualizada.'
+                        );
+
+                        window.location.reload();
+
+                    } catch (erro) {
+                        console.error(
+                            'Erro ao restaurar treino ativo:',
+                            erro
+                        );
+
+                        alert(
+                            'Não foi possível recuperar o treino ativo.\n' +
+                            erro.message +
+                            '\n\nConfira os dados existentes ' +
+                            'antes de tentar novamente.'
+                        );
+
+                    } finally {
+                        backupValidadoParaRestauracao = null;
+                        botaoRestaurarAtivoSupabase.disabled = true;
+                        botaoRestaurarTreinosSupabase.disabled = true;
+                        botaoRestaurarHistoricoSupabase.disabled = true;
+                        botaoValidarBackupSupabase.disabled = false;
                     }
                 }
             );
