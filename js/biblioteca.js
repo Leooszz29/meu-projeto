@@ -2,48 +2,109 @@
    FITZONE - BIBLIOTECA DE EXERCICIOS
 ========================================= */
 
-document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', async () => {
 
     /* =========================================
-       VERIFICAR SESSAO
+       VERIFICAR SESSAO HIBRIDA
     ========================================= */
 
     let sessao = null;
+    let origemSessao = null;
+    let identidadeSupabase = null;
 
     try {
         const dadosSessao =
             localStorage.getItem('fitzoneSessao');
 
-        sessao = dadosSessao
+        const sessaoLocal = dadosSessao
             ? JSON.parse(dadosSessao)
             : null;
 
-    } catch (error) {
+        if (
+            sessaoLocal &&
+            sessaoLocal.autenticado === true &&
+            typeof sessaoLocal.email === 'string' &&
+            sessaoLocal.email.trim()
+        ) {
+            sessao = sessaoLocal;
+            origemSessao = 'local';
+        }
+
+    } catch (erro) {
         console.warn(
-            'Erro ao carregar sessão:',
-            error
+            'Erro ao consultar sessão tradicional:',
+            erro
         );
     }
 
-    if (
-        !sessao ||
-        sessao.autenticado !== true ||
-        typeof sessao.email !== 'string' ||
-        !sessao.email.trim()
-    ) {
+    if (!sessao) {
+        try {
+            identidadeSupabase =
+                await obterIdentidadeSupabaseFitZone();
+
+            if (identidadeSupabase) {
+                origemSessao = 'supabase';
+
+                sessao = {
+                    autenticado: true,
+                    email: identidadeSupabase.email
+                };
+            }
+
+        } catch (erro) {
+            console.error(
+                'Não foi possível validar a sessão Supabase:',
+                erro
+            );
+
+            const aviso = document.createElement('p');
+            aviso.textContent =
+                'Não foi possível verificar sua sessão. ' +
+                'Confira a conexão e atualize a página.';
+            aviso.style.padding = '24px';
+
+            document.querySelector('.page')?.replaceWith(aviso);
+            return;
+        }
+    }
+
+    if (!sessao) {
         window.location.replace('login.html');
         return;
     }
 
     /* =========================================
-       PROTEGER BIBLIOTECA CONTRA TROCA DE CONTA
+       IDENTIDADE DA CONTA ATUAL
     ========================================= */
 
-    const emailSessaoInicialBiblioteca =
+    const email =
         sessao.email.trim().toLowerCase();
 
-    function verificarContinuidadeSessaoBiblioteca() {
+    const idSupabaseInicial =
+        identidadeSupabase?.id || null;
+
+    /* =========================================
+       PROTEGER CONTRA TROCA DE CONTA
+    ========================================= */
+
+    async function verificarContinuidadeSessaoBiblioteca() {
         try {
+            if (origemSessao === 'supabase') {
+                const identidadeAtual =
+                    await obterIdentidadeSupabaseFitZone();
+
+                if (
+                    !identidadeAtual ||
+                    identidadeAtual.id !== idSupabaseInicial
+                ) {
+                    window.location.replace('login.html');
+                    return false;
+                }
+
+                return true;
+            }
+
             const dadosSessao =
                 localStorage.getItem('fitzoneSessao');
 
@@ -55,8 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 !sessaoAtual ||
                 sessaoAtual.autenticado !== true ||
                 typeof sessaoAtual.email !== 'string' ||
-                sessaoAtual.email.trim().toLowerCase() !==
-                    emailSessaoInicialBiblioteca
+                sessaoAtual.email.trim().toLowerCase() !== email
             ) {
                 window.location.replace('login.html');
                 return false;
@@ -66,11 +126,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (erro) {
             console.warn(
-                'Não foi possível verificar a sessão da biblioteca:',
+                'Não foi possível verificar a continuidade da sessão:',
                 erro
             );
 
-            window.location.replace('login.html');
             return false;
         }
     }
@@ -80,51 +139,58 @@ document.addEventListener('DOMContentLoaded', () => {
             event.storageArea === localStorage &&
             (event.key === 'fitzoneSessao' || event.key === null)
         ) {
-            verificarContinuidadeSessaoBiblioteca();
+            void verificarContinuidadeSessaoBiblioteca();
         }
     });
 
-    window.addEventListener(
-        'pageshow',
-        verificarContinuidadeSessaoBiblioteca
-    );
+    window.addEventListener('pageshow', () => {
+        void verificarContinuidadeSessaoBiblioteca();
+    });
 
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
-            verificarContinuidadeSessaoBiblioteca();
+            void verificarContinuidadeSessaoBiblioteca();
         }
     });
 
     /* =========================================
-       TEMA POR GENERO
+       TEMA POR GENERO - HIBRIDO
     ========================================= */
 
-    const email = sessao.email.trim().toLowerCase();
-
-    const genero = localStorage.getItem(
-        `generoFitZone:${email}`
-    );
-
-    document.body.classList.remove(
-        'theme-masculino',
-        'theme-feminino'
-    );
-
-    if (genero === 'masculino') {
-        document.body.classList.add(
-            'theme-masculino'
+    if (origemSessao === 'supabase') {
+        await sincronizarTemaSupabaseFitZone(
+            identidadeSupabase
         );
-    } else if (genero === 'feminino') {
-        document.body.classList.add(
+
+    } else {
+        const genero = localStorage.getItem(
+            `generoFitZone:${email}`
+        );
+
+        document.body.classList.remove(
+            'theme-masculino',
             'theme-feminino'
         );
+
+        if (genero === 'masculino') {
+            document.body.classList.add(
+                'theme-masculino'
+            );
+
+        } else if (genero === 'feminino') {
+            document.body.classList.add(
+                'theme-feminino'
+            );
+        }
     }
 
     /* =========================================
        FAVORITOS POR USUARIO
     ========================================= */
 
-    const chaveFavoritos = `fitzoneFavoritos:${email}`;
+    const chaveFavoritos = origemSessao === 'supabase'
+        ? `fitzoneFavoritos:supabase:${idSupabaseInicial}`
+        : `fitzoneFavoritos:${email}`;
 
     let favoritosSalvos = [];
 
@@ -754,7 +820,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* =========================================
-       ENCERRAR SESSAO
+       ENCERRAR SESSAO HIBRIDA
     ========================================= */
 
     const btnEndSession =
@@ -763,13 +829,58 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnEndSession) {
         btnEndSession.addEventListener(
             'click',
-            () => {
-                localStorage.removeItem(
-                    'fitzoneSessao'
+            async () => {
+                const confirmar = confirm(
+                    'Deseja realmente sair da sua conta?'
                 );
 
-                window.location.href =
-                    'login.html';
+                if (!confirmar) {
+                    return;
+                }
+
+                btnEndSession.disabled = true;
+
+                try {
+                    if (origemSessao === 'supabase') {
+                        const cliente =
+                            inicializarSupabaseFitZone();
+
+                        if (!cliente) {
+                            throw new Error(
+                                'Supabase indisponível.'
+                            );
+                        }
+
+                        const { error } =
+                            await cliente.auth.signOut({
+                                scope: 'local'
+                            });
+
+                        if (error) {
+                            throw error;
+                        }
+
+                    } else {
+                        localStorage.removeItem(
+                            'fitzoneSessao'
+                        );
+                    }
+
+                    window.location.replace('login.html');
+
+                } catch (erro) {
+                    console.error(
+                        'Erro ao encerrar sessão:',
+                        erro
+                    );
+
+                    alert(
+                        'Não foi possível sair da conta. ' +
+                        'Tente novamente.'
+                    );
+
+                    btnEndSession.disabled = false;
+                }
             }
         );
     }
