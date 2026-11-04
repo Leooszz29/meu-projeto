@@ -5317,6 +5317,37 @@ window.addEventListener(
             );
 
             /* =========================================
+               RESTAURACAO DO HISTORICO SUPABASE V1
+               PREPARACAO - SOMENTE LEITURA
+            ========================================= */
+
+            const botaoRestaurarHistoricoSupabase =
+                document.createElement('button');
+
+            botaoRestaurarHistoricoSupabase.type = 'button';
+            botaoRestaurarHistoricoSupabase.className =
+                'btn-export-backup';
+
+            botaoRestaurarHistoricoSupabase.textContent =
+                'Restaurar histórico ausente';
+
+            botaoRestaurarHistoricoSupabase.disabled = true;
+
+            botaoRestaurarHistoricoSupabase.title =
+                'A recuperação do histórico ainda está em preparação.';
+
+            botaoRestaurarHistoricoSupabase.style.cssText =
+                'display:block;' +
+                'margin:8px 0 16px;' +
+                'padding:12px 18px;' +
+                'cursor:pointer;';
+
+            painel.insertBefore(
+                botaoRestaurarHistoricoSupabase,
+                lista
+            );
+
+            /* =========================================
                VERIFICAR ESTRUTURA DO ARQUIVO
             ========================================= */
 
@@ -5726,6 +5757,77 @@ window.addEventListener(
                             }
                         }
 
+                        /* =========================================
+                           HISTORICOS RECUPERAVEIS - V1
+                           VERIFICAR ID, TREINO E DATA
+                        ========================================= */
+
+                        function chaveConclusaoHistorico(registro) {
+                            return JSON.stringify([
+                                registro.treino_id,
+                                registro.data_local
+                            ]);
+                        }
+
+                        const idsHistoricosAtuais = new Set(
+                            historicoExistente.map(
+                                registro => String(registro.id)
+                            )
+                        );
+
+                        const conclusoesAtuais = new Set(
+                            historicoExistente.map(
+                                chaveConclusaoHistorico
+                            )
+                        );
+
+                        const conclusoesBackup = new Set();
+
+                        let historicosRecuperaveis = 0;
+                        let historicosProtegidos = 0;
+
+                        for (const registro of backup.dados.historico) {
+                            if (
+                                registro.usuario_id !== identidade.id ||
+                                typeof registro.data_local !== 'string' ||
+                                !/^\d{4}-\d{2}-\d{2}$/.test(
+                                    registro.data_local
+                                ) ||
+                                typeof registro.concluido_em !== 'string' ||
+                                !Number.isFinite(
+                                    Date.parse(registro.concluido_em)
+                                )
+                            ) {
+                                throw new Error(
+                                    'O backup contém um histórico ' +
+                                    'com conta ou data inválida.'
+                                );
+                            }
+
+                            const chave =
+                                chaveConclusaoHistorico(registro);
+
+                            if (conclusoesBackup.has(chave)) {
+                                throw new Error(
+                                    'O backup possui mais de uma ' +
+                                    'conclusão para o mesmo treino e dia.'
+                                );
+                            }
+
+                            conclusoesBackup.add(chave);
+
+                            if (
+                                idsHistoricosAtuais.has(
+                                    String(registro.id)
+                                ) ||
+                                conclusoesAtuais.has(chave)
+                            ) {
+                                historicosProtegidos++;
+                            } else {
+                                historicosRecuperaveis++;
+                            }
+                        }
+
                         const resumoComparacao =
                             '\n\nCOMPARAÇÃO COM O SUPABASE\n' +
                             '\nTREINOS\n' +
@@ -5786,9 +5888,15 @@ window.addEventListener(
                             resumoComparacao +
                             '\n\nTreinos recuperáveis: ' +
                             treinosNovos +
+                            '\n\nRESTAURAÇÃO DO HISTÓRICO\n' +
+                            'Históricos recuperáveis: ' +
+                            historicosRecuperaveis +
+                            '\nHistóricos protegidos: ' +
+                            historicosProtegidos +
                             '\n\nComparação concluída. ' +
                             'Nenhum dado foi alterado. ' +
-                            'A restauração ainda não está habilitada.';
+                            'A restauração do histórico ' +
+                            'ainda não está habilitada.';
 
                     } catch (erro) {
                         console.error(
