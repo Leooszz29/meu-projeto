@@ -5677,6 +5677,87 @@ window.addEventListener(
                EXERCICIOS INDIVIDUAIS SUPABASE
             ========================================= */
 
+            /* =========================================
+               EXERCICIO RECEBIDO DA BIBLIOTECA
+               SUPABASE V1
+            ========================================= */
+
+            const exerciciosBibliotecaSupabase = {
+                'supino-reto': 'Supino reto',
+                'crucifixo': 'Crucifixo com halteres',
+                'puxada-frontal': 'Puxada frontal',
+                'remada-baixa': 'Remada baixa',
+                'agachamento-livre': 'Agachamento livre',
+                'leg-press': 'Leg press',
+                'rosca-direta': 'Rosca direta',
+                'triceps-polia': 'Tríceps na polia',
+                'desenvolvimento': 'Desenvolvimento com halteres',
+                'elevacao-lateral': 'Elevação lateral',
+                'prancha': 'Prancha abdominal',
+                'abdominal-crunch': 'Abdominal crunch',
+                'supino-inclinado': 'Supino inclinado com halteres',
+                'remada-unilateral': 'Remada unilateral com halter',
+                'mesa-flexora': 'Mesa flexora',
+                'rosca-martelo': 'Rosca martelo',
+                'elevacao-frontal': 'Elevação frontal',
+                'abdominal-infra': 'Elevação de joelhos',
+                'cadeira-extensora': 'Cadeira extensora',
+                'elevacao-pelvica': 'Elevação pélvica',
+                'gemeos-em-pe': 'Gêmeos em pé (panturrilha)',
+                'peck-deck': 'Crucifixo na máquina (Peck Deck)',
+                'rosca-barra-w': 'Rosca com barra W',
+                'triceps-corda': 'Tríceps corda',
+                'flexao-bracos': 'Flexão de braços',
+                'remada-curvada': 'Remada curvada com barra',
+                'barra-fixa': 'Barra fixa',
+                'rosca-scott': 'Rosca Scott',
+                'triceps-frances': 'Tríceps francês com halter',
+                'crucifixo-inverso': 'Crucifixo inverso na máquina',
+                'face-pull': 'Face pull na polia',
+                'abdominal-bicicleta': 'Abdominal bicicleta',
+                'prancha-lateral': 'Prancha lateral'
+            };
+
+            const parametrosBibliotecaSupabase =
+                new URLSearchParams(window.location.search);
+
+            const exercicioIdBibliotecaSupabase =
+                parametrosBibliotecaSupabase.get('biblioteca');
+
+            let nomePendenteBibliotecaSupabase =
+                Object.hasOwn(
+                    exerciciosBibliotecaSupabase,
+                    exercicioIdBibliotecaSupabase
+                )
+                    ? exerciciosBibliotecaSupabase[
+                        exercicioIdBibliotecaSupabase
+                    ]
+                    : null;
+
+            let avisoBibliotecaSupabase = null;
+
+            if (nomePendenteBibliotecaSupabase) {
+                avisoBibliotecaSupabase =
+                    document.createElement('p');
+
+                avisoBibliotecaSupabase.style.cssText =
+                    'padding:12px 16px;' +
+                    'border:1px solid currentColor;' +
+                    'border-radius:8px;' +
+                    'margin:12px 0;';
+
+                avisoBibliotecaSupabase.textContent =
+                    'Exercício selecionado: ' +
+                    nomePendenteBibliotecaSupabase +
+                    '. Clique em + Adicionar exercício ' +
+                    'no treino desejado.';
+
+                painel.insertBefore(
+                    avisoBibliotecaSupabase,
+                    lista
+                );
+            }
+
             if (modalExercicioSupabase) {
                 let contextoExercicioSupabase = null;
 
@@ -5877,7 +5958,13 @@ window.addEventListener(
                                     : 'Novo exercício';
 
                             campo('exerciseNameInput').value =
-                                exercicio?.nome || '';
+                                exercicio?.nome ||
+                                (
+                                    nomePendenteBibliotecaSupabase &&
+                                    !exercicioId
+                                        ? nomePendenteBibliotecaSupabase
+                                        : ''
+                                );
 
                             campo('exerciseSeriesInput').value =
                                 exercicio?.series ?? '';
@@ -5910,6 +5997,39 @@ window.addEventListener(
                             );
 
                             campo('exerciseNameInput').focus();
+
+                            if (
+                                nomePendenteBibliotecaSupabase &&
+                                !exercicioId
+                            ) {
+                                nomePendenteBibliotecaSupabase = null;
+
+                                if (avisoBibliotecaSupabase) {
+                                    avisoBibliotecaSupabase.remove();
+                                }
+
+                                parametrosBibliotecaSupabase.delete(
+                                    'biblioteca'
+                                );
+
+                                const novaConsulta =
+                                    parametrosBibliotecaSupabase.toString();
+
+                                const novoEndereco =
+                                    window.location.pathname +
+                                    (
+                                        novaConsulta
+                                            ? `?${novaConsulta}`
+                                            : ''
+                                    ) +
+                                    window.location.hash;
+
+                                window.history.replaceState(
+                                    null,
+                                    '',
+                                    novoEndereco
+                                );
+                            }
 
                         } catch (erro) {
                             console.error(
