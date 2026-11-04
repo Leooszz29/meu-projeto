@@ -5379,15 +5379,23 @@ window.addEventListener(
                 const idsHistoricoBackup = new Set();
 
                 for (const registro of backup.dados.historico) {
+
+                    const identificador = registro?.id;
+
                     const idValido =
                         (
-                            typeof registro?.id === 'string' &&
-                            /^[0-9]+$/.test(registro.id)
+                            typeof identificador === 'string' &&
+                            (
+                                /^[0-9]+$/.test(identificador) ||
+                                /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+                                    identificador
+                                )
+                            )
                         ) ||
                         (
-                            typeof registro?.id === 'number' &&
-                            Number.isSafeInteger(registro.id) &&
-                            registro.id > 0
+                            typeof identificador === 'number' &&
+                            Number.isSafeInteger(identificador) &&
+                            identificador > 0
                         );
 
                     if (
