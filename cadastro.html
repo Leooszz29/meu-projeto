@@ -70,6 +70,26 @@
                 </select>
             </div>
 
+            <!-- TIPO DE CONTA FITZONE -->
+            <div class="form-group">
+                <label for="tipoContaCadastro">
+                    Tipo de conta
+                </label>
+
+                <select
+                    id="tipoContaCadastro"
+                    name="tipoConta"
+                    required
+                >
+                    <option value="tradicional">
+                        Tradicional — neste dispositivo
+                    </option>
+                    <option value="supabase">
+                        Supabase — conta na nuvem
+                    </option>
+                </select>
+            </div>
+
             <div class="form-group">
                 <label for="password">Senha</label>
                 <div class="password-field">
@@ -86,7 +106,14 @@
                         <svg class="icon-eye-off" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.6 18.6 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
                     </button>
                 </div>
-                <div class="password-hint">Mínimo de 6 caracteres</div>
+
+                <div
+                    class="password-hint"
+                    id="dicaSenhaCadastro"
+                >
+                    Mínimo de 6 caracteres — conta tradicional
+                </div>
+
             </div>
 
             <div class="form-group">
@@ -123,9 +150,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-    <script src="js/supabase-config.js"></script>
-    <script src="js/cadastro.js?v=20261103-genero-cadastro-v1"></script>
-    
+    <script src="js/supabase-config.js"></script>    
+    <script src="js/cadastro.js?v=20261104-cadastro-hibrido-v1"></script>
+
     <!-- TESTE TEMPORARIO DE CADASTRO SUPABASE -->
     <div
         id="testeCadastroSupabase"
