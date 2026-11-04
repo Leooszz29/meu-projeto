@@ -5531,8 +5531,8 @@ window.addEventListener(
 
                     backupValidadoParaRestauracao = null;
                     botaoRestaurarTreinosSupabase.disabled = true;
+                    botaoRestaurarHistoricoSupabase.disabled = true;
                     botaoValidarBackupSupabase.disabled = true;
-
 
                     resultadoBackupSupabase.hidden = false;
                     resultadoBackupSupabase.textContent =
@@ -5872,6 +5872,14 @@ window.addEventListener(
                         botaoRestaurarTreinosSupabase.disabled =
                             treinosNovos === 0;
 
+                        botaoRestaurarHistoricoSupabase.disabled =
+                            historicosRecuperaveis === 0;
+
+                        botaoRestaurarHistoricoSupabase.title =
+                            historicosRecuperaveis > 0
+                                ? 'Recuperar históricos ausentes'
+                                : 'Nenhum histórico ausente.';
+
                         resultadoBackupSupabase.textContent =
                             '✓ Estrutura inicial validada\n\n' +
                             `Arquivo: ${arquivo.name}\n` +
@@ -5894,9 +5902,9 @@ window.addEventListener(
                             '\nHistóricos protegidos: ' +
                             historicosProtegidos +
                             '\n\nComparação concluída. ' +
-                            'Nenhum dado foi alterado. ' +
-                            'A restauração do histórico ' +
-                            'ainda não está habilitada.';
+                            'Nenhum dado foi alterado nesta análise. ' +
+                            'A restauração pode ser iniciada ' +
+                            'somente para históricos ausentes.';
 
                     } catch (erro) {
                         console.error(
@@ -6107,6 +6115,281 @@ window.addEventListener(
                         backupValidadoParaRestauracao = null;
                         botaoRestaurarTreinosSupabase.disabled = true;
                         botaoValidarBackupSupabase.disabled = false;
+                    }
+                }
+            );
+
+            /* =========================================
+               FITZONE - RESTAURAR HISTORICO SUPABASE V2
+               SOMENTE CONCLUSOES AUSENTES
+            ========================================= */
+
+            botaoRestaurarHistoricoSupabase.addEventListener(
+                'click',
+                async () => {
+                    const backup =
+                        backupValidadoParaRestauracao;
+
+                    if (!backup) {
+                        alert('Valide o backup novamente.');
+                        return;
+                    }
+
+                    botaoRestaurarHistoricoSupabase.disabled = true;
+                    botaoRestaurarTreinosSupabase.disabled = true;
+                    botaoValidarBackupSupabase.disabled = true;
+
+                    let recuperados = 0;
+
+                    try {
+                        validarEstruturaBackupSupabase(backup);
+
+                        const identidade =
+                            await obterIdentidadeSupabaseFitZone();
+
+                        if (
+                            !identidade ||
+                            identidade.id !== acessoPagina.id ||
+                            backup.usuarioId !== identidade.id
+                        ) {
+                            throw new Error(
+                                'A sessão não corresponde ao backup.'
+                            );
+                        }
+
+                        const cliente =
+                            inicializarSupabaseFitZone();
+
+                        if (!cliente) {
+                            throw new Error(
+                                'Supabase indisponível.'
+                            );
+                        }
+
+                        function chaveHistorico(registro) {
+                            return JSON.stringify([
+                                registro.treino_id,
+                                registro.data_local
+                            ]);
+                        }
+
+                        /* VALIDAR TODOS OS REGISTROS ANTES */
+
+                        const chavesBackup = new Set();
+
+                        for (const registro of backup.dados.historico) {
+                            const chave = chaveHistorico(registro);
+
+                            if (
+                                registro.usuario_id !== identidade.id ||
+                                typeof registro.treino_id !== 'string' ||
+                                !registro.treino_id.trim() ||
+                                typeof registro.data_local !== 'string' ||
+                                !/^\d{4}-\d{2}-\d{2}$/.test(
+                                    registro.data_local
+                                ) ||
+                                typeof registro.concluido_em !== 'string' ||
+                                !Number.isFinite(
+                                    Date.parse(registro.concluido_em)
+                                ) ||
+                                !registro.dados ||
+                                typeof registro.dados !== 'object' ||
+                                Array.isArray(registro.dados) ||
+                                chavesBackup.has(chave)
+                            ) {
+                                throw new Error(
+                                    'O backup contém históricos inválidos ' +
+                                    'ou conclusões duplicadas.'
+                                );
+                            }
+
+                            chavesBackup.add(chave);
+                        }
+
+                        /* CONSULTAR DADOS ATUAIS */
+
+                        async function consultarAusentes() {
+                            const atuais =
+                                await consultarRegistrosBackupSupabase(
+                                    cliente,
+                                    'fitzone_historico_treinos',
+                                    identidade.id,
+                                    'id'
+                                );
+
+                            const ids = new Set(
+                                atuais.map(
+                                    registro => String(registro.id)
+                                )
+                            );
+
+                            const conclusoes = new Set(
+                                atuais.map(chaveHistorico)
+                            );
+
+                            return backup.dados.historico.filter(
+                                registro =>
+                                    !ids.has(String(registro.id)) &&
+                                    !conclusoes.has(
+                                        chaveHistorico(registro)
+                                    )
+                            );
+                        }
+
+                        const ausentes =
+                            await consultarAusentes();
+
+                        if (ausentes.length === 0) {
+                            alert(
+                                'Todos os históricos desse backup ' +
+                                'já estão protegidos no Supabase.'
+                            );
+                            return;
+                        }
+
+                        if (ausentes.length > 100) {
+                            throw new Error(
+                                'Há mais de 100 históricos ausentes. ' +
+                                'Esta versão permite recuperar até ' +
+                                '100 registros por operação.'
+                            );
+                        }
+
+                        /* CONFIRMAÇÃO OBRIGATÓRIA */
+
+                        const confirmar = window.confirm(
+                            `Foram encontrados ${ausentes.length} ` +
+                            'histórico(s) recuperável(is).\n\n' +
+                            'Deseja restaurar esses registros?\n\n' +
+                            'Os históricos existentes não serão ' +
+                            'substituídos. Os treinos e o treino ' +
+                            'ativo não serão alterados.'
+                        );
+
+                        if (!confirmar) {
+                            return;
+                        }
+
+                        /* REVALIDAR CONTA E REGISTROS */
+
+                        const identidadeFinal =
+                            await obterIdentidadeSupabaseFitZone();
+
+                        if (
+                            !identidadeFinal ||
+                            identidadeFinal.id !== identidade.id
+                        ) {
+                            throw new Error(
+                                'A sessão mudou durante a restauração.'
+                            );
+                        }
+
+                        const ausentesConfirmados =
+                            await consultarAusentes();
+
+                        const chavesConfirmadas = new Set(
+                            ausentesConfirmados.map(
+                                chaveHistorico
+                            )
+                        );
+
+                        const registrosParaRestaurar =
+                            ausentes.filter(
+                                registro =>
+                                    chavesConfirmadas.has(
+                                        chaveHistorico(registro)
+                                    )
+                            );
+
+                        if (registrosParaRestaurar.length === 0) {
+                            alert(
+                                'Nenhum histórico permanece ausente.'
+                            );
+                            return;
+                        }
+
+                        /* INSERIR SEM SUBSTITUIR EXISTENTES */
+
+                        for (const registro of registrosParaRestaurar) {
+                            const identidadeAtual =
+                                await obterIdentidadeSupabaseFitZone();
+
+                            if (
+                                !identidadeAtual ||
+                                identidadeAtual.id !== identidade.id
+                            ) {
+                                throw new Error(
+                                    'Sessão alterada durante a restauração.'
+                                );
+                            }
+
+                            const { error } = await cliente
+                                .from('fitzone_historico_treinos')
+                                .insert({
+                                    usuario_id: identidade.id,
+                                    treino_id: registro.treino_id,
+                                    data_local: registro.data_local,
+                                    dados: registro.dados,
+                                    concluido_em:
+                                        registro.concluido_em
+                                });
+
+                            if (error) {
+                                if (error.code === '23505') {
+                                    console.warn(
+                                        'Histórico já existente, ignorado:',
+                                        registro.treino_id,
+                                        registro.data_local
+                                    );
+                                    continue;
+                                }
+
+                                throw error;
+                            }
+
+                            recuperados++;
+                        }
+
+                        resultadoBackupSupabase.hidden = false;
+
+                        resultadoBackupSupabase.textContent =
+                            'Restauração de histórico concluída.\n' +
+                            `Históricos recuperados: ${recuperados}\n` +
+                            'Os registros existentes foram preservados.\n' +
+                            'Valide o backup novamente para ' +
+                            'atualizar a comparação.';
+
+                        alert(
+                            `${recuperados} histórico(s) ` +
+                            'recuperado(s).\n\n' +
+                            'Atualize a página para conferir ' +
+                            'o histórico no FitZone.'
+                        );
+
+                    } catch (erro) {
+                        console.error(
+                            'Falha na restauração do histórico:',
+                            erro
+                        );
+
+                        alert(
+                            'A restauração foi interrompida.\n' +
+                            `Registros inseridos nesta tentativa: ${recuperados}.\n` +
+                            erro.message +
+                            '\nConfira o histórico antes de tentar novamente.'
+                        );
+
+                    } finally {
+                        backupValidadoParaRestauracao = null;
+
+                        botaoRestaurarHistoricoSupabase.disabled =
+                            true;
+
+                        botaoRestaurarTreinosSupabase.disabled =
+                            true;
+
+                        botaoValidarBackupSupabase.disabled =
+                            false;
                     }
                 }
             );
