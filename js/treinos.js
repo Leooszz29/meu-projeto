@@ -5486,6 +5486,131 @@ window.addEventListener(
                                 backup.exportadoEm
                             ).toLocaleString('pt-BR');
 
+                        /* =========================================
+                           COMPARAR BACKUP COM O BANCO
+                           SOMENTE LEITURA - V2
+                        ========================================= */
+
+                        const clienteComparacao =
+                            inicializarSupabaseFitZone();
+
+                        if (!clienteComparacao) {
+                            throw new Error(
+                                'Supabase indisponível para comparação.'
+                            );
+                        }
+
+                        const treinosExistentes =
+                            await consultarRegistrosBackupSupabase(
+                                clienteComparacao,
+                                'fitzone_treinos',
+                                identidade.id,
+                                'treino_id'
+                            );
+
+                        const historicoExistente =
+                            await consultarRegistrosBackupSupabase(
+                                clienteComparacao,
+                                'fitzone_historico_treinos',
+                                identidade.id,
+                                'id'
+                            );
+
+                        const {
+                            data: ativoExistente,
+                            error: erroAtivoExistente
+                        } = await clienteComparacao
+                            .from('fitzone_treino_ativo')
+                            .select('treino_id')
+                            .eq('usuario_id', identidade.id)
+                            .maybeSingle();
+
+                        if (erroAtivoExistente) {
+                            throw erroAtivoExistente;
+                        }
+
+                        const identidadeFinalComparacao =
+                            await obterIdentidadeSupabaseFitZone();
+
+                        if (
+                            !identidadeFinalComparacao ||
+                            identidadeFinalComparacao.id !==
+                                identidade.id
+                        ) {
+                            throw new Error(
+                                'A sessão mudou durante a comparação.'
+                            );
+                        }
+
+                        const idsTreinosExistentes =
+                            new Set(
+                                treinosExistentes.map(
+                                    treino => treino.treino_id
+                                )
+                            );
+
+                        const idsHistoricoExistente =
+                            new Set(
+                                historicoExistente.map(
+                                    registro => String(registro.id)
+                                )
+                            );
+
+                        const treinosNovos =
+                            backup.dados.treinos.filter(
+                                treino =>
+                                    !idsTreinosExistentes.has(
+                                        treino.treino_id
+                                    )
+                            );
+
+                        const treinosEmConflito =
+                            backup.dados.treinos.filter(
+                                treino =>
+                                    idsTreinosExistentes.has(
+                                        treino.treino_id
+                                    )
+                            );
+
+                        const historicoNovo =
+                            backup.dados.historico.filter(
+                                registro =>
+                                    !idsHistoricoExistente.has(
+                                        String(registro.id)
+                                    )
+                            );
+
+                        const historicoEmConflito =
+                            backup.dados.historico.filter(
+                                registro =>
+                                    idsHistoricoExistente.has(
+                                        String(registro.id)
+                                    )
+                            );
+
+                        const resumoComparacao =
+                            '\n\nCOMPARAÇÃO COM O SUPABASE\n' +
+                            'Treinos novos no backup: ' +
+                            treinosNovos.length +
+                            '\nTreinos já existentes: ' +
+                            treinosEmConflito.length +
+                            '\nHistóricos novos no backup: ' +
+                            historicoNovo.length +
+                            '\nHistóricos já existentes: ' +
+                            historicoEmConflito.length +
+                            '\nTreino ativo atual: ' +
+                            (
+                                ativoExistente
+                                    ? 'Sim'
+                                    : 'Não'
+                            ) +
+                            '\nTreino ativo no backup: ' +
+                            (
+                                backup.dados.treinoAtivo
+                                    ? 'Sim'
+                                    : 'Não'
+                            );
+
                         resultadoBackupSupabase.textContent =
                             '✓ Estrutura inicial validada\n\n' +
                             `Arquivo: ${arquivo.name}\n` +
@@ -5498,7 +5623,10 @@ window.addEventListener(
                                     ? 'Sim'
                                     : 'Não'
                             ) +
-                            '\n\nNenhum dado foi alterado. ' +
+
+                            resumoComparacao +
+                            '\n\nComparação concluída. ' +
+                            'Nenhum dado foi alterado. ' +
                             'A restauração ainda não está habilitada.';
 
                     } catch (erro) {
