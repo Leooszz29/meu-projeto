@@ -5376,18 +5376,41 @@ window.addEventListener(
                     idsTreinos.add(treino.treino_id);
                 }
 
+                const idsHistoricoBackup = new Set();
+
                 for (const registro of backup.dados.historico) {
+                    const idValido =
+                        (
+                            typeof registro?.id === 'string' &&
+                            /^[0-9]+$/.test(registro.id)
+                        ) ||
+                        (
+                            typeof registro?.id === 'number' &&
+                            Number.isSafeInteger(registro.id) &&
+                            registro.id > 0
+                        );
+
                     if (
                         !objetoValido(registro) ||
-                        typeof registro.id !== 'string' ||
-                        !registro.id.trim() ||
+                        !idValido ||
                         typeof registro.treino_id !== 'string' ||
+                        !registro.treino_id.trim() ||
                         !objetoValido(registro.dados)
                     ) {
                         throw new Error(
                             'Foi encontrado um registro de histórico inválido.'
                         );
                     }
+
+                    const idHistorico = String(registro.id);
+
+                    if (idsHistoricoBackup.has(idHistorico)) {
+                        throw new Error(
+                            'O backup contém históricos duplicados.'
+                        );
+                    }
+
+                    idsHistoricoBackup.add(idHistorico);
                 }
 
                 const ativo = backup.dados.treinoAtivo;
@@ -5542,74 +5565,149 @@ window.addEventListener(
                             );
                         }
 
-                        const idsTreinosExistentes =
-                            new Set(
-                                treinosExistentes.map(
-                                    treino => treino.treino_id
+                        /* =========================================
+                           ANALISE DE CONFLITOS DE CONTEUDO
+                        ========================================= */
+
+                        function normalizarDadosComparacao(valor) {
+                            if (Array.isArray(valor)) {
+                                return valor.map(
+                                    normalizarDadosComparacao
+                                );
+                            }
+
+                            if (
+                                valor !== null &&
+                                typeof valor === 'object'
+                            ) {
+                                const normalizado = {};
+
+                                Object.keys(valor)
+                                    .sort()
+                                    .forEach(chave => {
+                                        normalizado[chave] =
+                                            normalizarDadosComparacao(
+                                                valor[chave]
+                                            );
+                                    });
+
+                                return normalizado;
+                            }
+
+                            return valor;
+                        }
+
+                        function dadosIguaisBackup(a, b) {
+                            return JSON.stringify(
+                                normalizarDadosComparacao(a)
+                            ) === JSON.stringify(
+                                normalizarDadosComparacao(b)
+                            );
+                        }
+
+                        const mapaTreinosAtuais = new Map(
+                            treinosExistentes.map(
+                                treino => [
+                                    treino.treino_id,
+                                    treino
+                                ]
+                            )
+                        );
+
+                        const mapaHistoricoAtual = new Map(
+                            historicoExistente.map(
+                                registro => [
+                                    String(registro.id),
+                                    registro
+                                ]
+                            )
+                        );
+
+                        let treinosNovos = 0;
+                        let treinosIdenticos = 0;
+                        let treinosDivergentes = 0;
+
+                        for (const treino of backup.dados.treinos) {
+                            const atual = mapaTreinosAtuais.get(
+                                treino.treino_id
+                            );
+
+                            if (!atual) {
+                                treinosNovos++;
+                            } else if (
+                                dadosIguaisBackup(
+                                    treino.dados,
+                                    atual.dados
                                 )
+                            ) {
+                                treinosIdenticos++;
+                            } else {
+                                treinosDivergentes++;
+                            }
+                        }
+
+                        let historicosNovos = 0;
+                        let historicosIdenticos = 0;
+                        let historicosDivergentes = 0;
+
+                        for (const registro of backup.dados.historico) {
+                            const atual = mapaHistoricoAtual.get(
+                                String(registro.id)
                             );
 
-                        const idsHistoricoExistente =
-                            new Set(
-                                historicoExistente.map(
-                                    registro => String(registro.id)
+                            if (!atual) {
+                                historicosNovos++;
+                                continue;
+                            }
+
+                            const camposBackup = {
+                                treino_id: registro.treino_id,
+                                data_local: registro.data_local,
+                                dados: registro.dados,
+                                concluido_em: registro.concluido_em
+                            };
+
+                            const camposAtuais = {
+                                treino_id: atual.treino_id,
+                                data_local: atual.data_local,
+                                dados: atual.dados,
+                                concluido_em: atual.concluido_em
+                            };
+
+                            if (
+                                dadosIguaisBackup(
+                                    camposBackup,
+                                    camposAtuais
                                 )
-                            );
-
-                        const treinosNovos =
-                            backup.dados.treinos.filter(
-                                treino =>
-                                    !idsTreinosExistentes.has(
-                                        treino.treino_id
-                                    )
-                            );
-
-                        const treinosEmConflito =
-                            backup.dados.treinos.filter(
-                                treino =>
-                                    idsTreinosExistentes.has(
-                                        treino.treino_id
-                                    )
-                            );
-
-                        const historicoNovo =
-                            backup.dados.historico.filter(
-                                registro =>
-                                    !idsHistoricoExistente.has(
-                                        String(registro.id)
-                                    )
-                            );
-
-                        const historicoEmConflito =
-                            backup.dados.historico.filter(
-                                registro =>
-                                    idsHistoricoExistente.has(
-                                        String(registro.id)
-                                    )
-                            );
+                            ) {
+                                historicosIdenticos++;
+                            } else {
+                                historicosDivergentes++;
+                            }
+                        }
 
                         const resumoComparacao =
                             '\n\nCOMPARAÇÃO COM O SUPABASE\n' +
-                            'Treinos novos no backup: ' +
-                            treinosNovos.length +
-                            '\nTreinos já existentes: ' +
-                            treinosEmConflito.length +
-                            '\nHistóricos novos no backup: ' +
-                            historicoNovo.length +
-                            '\nHistóricos já existentes: ' +
-                            historicoEmConflito.length +
-                            '\nTreino ativo atual: ' +
-                            (
-                                ativoExistente
-                                    ? 'Sim'
-                                    : 'Não'
-                            ) +
-                            '\nTreino ativo no backup: ' +
+                            '\nTREINOS\n' +
+                            'Novos: ' + treinosNovos +
+                            '\nIdênticos: ' + treinosIdenticos +
+                            '\nDivergentes: ' + treinosDivergentes +
+                            '\n\nHISTÓRICO\n' +
+                            'Novos: ' + historicosNovos +
+                            '\nIdênticos: ' + historicosIdenticos +
+                            '\nDivergentes: ' +
+                            historicosDivergentes +
+                            '\n\nTREINO ATIVO\n' +
+                            'Existe no banco: ' +
+                            (ativoExistente ? 'Sim' : 'Não') +
+                            '\nExiste no backup: ' +
                             (
                                 backup.dados.treinoAtivo
                                     ? 'Sim'
                                     : 'Não'
-                            );
+                            ) +
+                            '\n\nRegistros divergentes exigem ' +
+                            'tratamento antes da restauração.';
 
                         resultadoBackupSupabase.textContent =
                             '✓ Estrutura inicial validada\n\n' +
