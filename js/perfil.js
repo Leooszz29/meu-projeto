@@ -1064,6 +1064,377 @@ function initializeProfileActions() {
     }
 }
 
+/* =========================================
+   FITZONE - FOTO DO PERFIL SUPABASE V1
+========================================= */
+
+async function initializeProfilePhotoSupabase(acessoInicial) {
+    const botao = document.getElementById('editProfilePhoto');
+    const campo = document.getElementById('profilePhotoInput');
+    const imagem = document.getElementById('characterImg');
+    const menu = document.getElementById('profilePhotoMenu');
+    const alterar = document.getElementById('changeProfilePhoto');
+    const remover = document.getElementById('removeProfilePhoto');
+
+    if (
+        !botao || !campo || !imagem ||
+        !menu || !alterar || !remover
+    ) {
+        return;
+    }
+
+    const cliente = inicializarSupabaseFitZone();
+    const usuarioId = acessoInicial.id;
+    const caminho = `${usuarioId}/avatar.webp`;
+    const armazenamento = cliente?.storage.from('fitzone-fotos');
+
+    if (!armazenamento || !usuarioId) {
+        console.warn('Storage da foto indisponível.');
+        return;
+    }
+
+    let fotoAtualUrl = null;
+    let operacaoEmAndamento = false;
+
+    function mostrarFoto(blob) {
+        const novaUrl = URL.createObjectURL(blob);
+
+        imagem.src = novaUrl;
+        imagem.style.display = 'block';
+        imagem.style.objectFit = 'cover';
+        imagem.style.borderRadius = '50%';
+
+        if (fotoAtualUrl) {
+            URL.revokeObjectURL(fotoAtualUrl);
+        }
+
+        fotoAtualUrl = novaUrl;
+    }
+
+    function mostrarPersonagemPadrao() {
+        if (fotoAtualUrl) {
+            URL.revokeObjectURL(fotoAtualUrl);
+            fotoAtualUrl = null;
+        }
+
+        const genero = document.getElementById(
+            'generoPerfil'
+        )?.value;
+
+        const personagens = {
+            masculino:
+                'https://cdn-icons-png.flaticon.com/512/4140/4140048.png',
+            feminino:
+                'https://cdn-icons-png.flaticon.com/512/4140/4140047.png'
+        };
+
+        imagem.style.objectFit = 'contain';
+        imagem.style.borderRadius = '0';
+
+        if (personagens[genero]) {
+            imagem.src = personagens[genero];
+            imagem.style.display = 'block';
+        } else {
+            imagem.removeAttribute('src');
+            imagem.style.display = 'none';
+        }
+    }
+
+    async function validarConta() {
+        const identidade =
+            await obterIdentidadeSupabaseFitZone();
+
+        if (!identidade || identidade.id !== usuarioId) {
+            throw new Error(
+                'A conta Supabase foi alterada ou desconectada.'
+            );
+        }
+    }
+
+    async function carregarFotoSupabase() {
+        await validarConta();
+
+        const { data: arquivos, error: erroLista } =
+            await armazenamento.list(usuarioId, {
+                limit: 100
+            });
+
+        if (erroLista) {
+            throw erroLista;
+        }
+
+        const existeFoto = (arquivos || []).some(
+            arquivo => arquivo.name === 'avatar.webp'
+        );
+
+        if (!existeFoto) {
+            mostrarPersonagemPadrao();
+            return;
+        }
+
+        const { data: foto, error } =
+            await armazenamento.download(caminho);
+
+        if (error) {
+            throw error;
+        }
+
+        mostrarFoto(foto);
+    }
+
+    function processarImagem(arquivo) {
+        return new Promise((resolve, reject) => {
+            const url = URL.createObjectURL(arquivo);
+            const fotoOriginal = new Image();
+
+            fotoOriginal.onload = () => {
+                try {
+                    const canvas =
+                        document.createElement('canvas');
+
+                    const tamanho = 300;
+                    canvas.width = tamanho;
+                    canvas.height = tamanho;
+
+                    const contexto = canvas.getContext('2d');
+
+                    if (!contexto) {
+                        throw new Error(
+                            'Não foi possível processar a imagem.'
+                        );
+                    }
+
+                    const lado = Math.min(
+                        fotoOriginal.width,
+                        fotoOriginal.height
+                    );
+
+                    const origemX =
+                        (fotoOriginal.width - lado) / 2;
+
+                    const origemY =
+                        (fotoOriginal.height - lado) / 2;
+
+                    contexto.drawImage(
+                        fotoOriginal,
+                        origemX,
+                        origemY,
+                        lado,
+                        lado,
+                        0,
+                        0,
+                        tamanho,
+                        tamanho
+                    );
+
+                    canvas.toBlob(
+                        blob => {
+                            URL.revokeObjectURL(url);
+
+                            if (!blob) {
+                                reject(new Error(
+                                    'Falha ao converter a imagem.'
+                                ));
+                                return;
+                            }
+
+                            resolve(blob);
+                        },
+                        'image/webp',
+                        0.82
+                    );
+
+                } catch (erro) {
+                    URL.revokeObjectURL(url);
+                    reject(erro);
+                }
+            };
+
+            fotoOriginal.onerror = () => {
+                URL.revokeObjectURL(url);
+                reject(new Error(
+                    'Não foi possível abrir a imagem.'
+                ));
+            };
+
+            fotoOriginal.src = url;
+        });
+    }
+
+    function bloquearControles(bloquear) {
+        operacaoEmAndamento = bloquear;
+        botao.disabled = bloquear;
+        alterar.disabled = bloquear;
+        remover.disabled = bloquear;
+        campo.disabled = bloquear;
+    }
+
+    botao.addEventListener('click', () => {
+        if (operacaoEmAndamento) {
+            return;
+        }
+
+        menu.hidden = !menu.hidden;
+    });
+
+    alterar.addEventListener('click', () => {
+        menu.hidden = true;
+        campo.click();
+    });
+
+    document.addEventListener('click', evento => {
+        if (
+            !menu.contains(evento.target) &&
+            !botao.contains(evento.target)
+        ) {
+            menu.hidden = true;
+        }
+    });
+
+    campo.addEventListener('change', async () => {
+        const arquivo = campo.files?.[0];
+
+        if (!arquivo) {
+            return;
+        }
+
+        const tiposPermitidos = [
+            'image/jpeg',
+            'image/png',
+            'image/webp'
+        ];
+
+        if (!tiposPermitidos.includes(arquivo.type)) {
+            alert('Selecione uma imagem JPG, PNG ou WebP.');
+            campo.value = '';
+            return;
+        }
+
+        if (arquivo.size > 5 * 1024 * 1024) {
+            alert('A imagem original deve ter no máximo 5 MB.');
+            campo.value = '';
+            return;
+        }
+
+        bloquearControles(true);
+
+        try {
+            await validarConta();
+
+            const fotoOtimizada =
+                await processarImagem(arquivo);
+
+            if (fotoOtimizada.size > 1024 * 1024) {
+                throw new Error(
+                    'A imagem processada ultrapassou 1 MB.'
+                );
+            }
+
+            const { error } = await armazenamento.upload(
+                caminho,
+                fotoOtimizada,
+                {
+                    contentType: 'image/webp',
+                    upsert: true,
+                    cacheControl: '0'
+                }
+            );
+
+            if (error) {
+                throw error;
+            }
+
+            await carregarFotoSupabase();
+
+            alert('Foto salva no Supabase com sucesso!');
+
+        } catch (erro) {
+            console.error(
+                'Erro ao salvar foto Supabase:',
+                erro
+            );
+
+            alert(
+                'Não foi possível salvar a foto. ' +
+                'Confira a conexão e tente novamente.'
+            );
+
+        } finally {
+            campo.value = '';
+            bloquearControles(false);
+        }
+    });
+
+    remover.addEventListener('click', async () => {
+        menu.hidden = true;
+
+        const confirmar = confirm(
+            'Deseja remover sua foto de perfil?'
+        );
+
+        if (!confirmar) {
+            return;
+        }
+
+        bloquearControles(true);
+
+        try {
+            await validarConta();
+
+            const { error } = await armazenamento.remove([
+                caminho
+            ]);
+
+            if (error) {
+                throw error;
+            }
+
+            mostrarPersonagemPadrao();
+
+            alert('Foto removida com sucesso!');
+
+        } catch (erro) {
+            console.error(
+                'Erro ao remover foto Supabase:',
+                erro
+            );
+
+            alert(
+                'Não foi possível remover a foto.'
+            );
+
+        } finally {
+            bloquearControles(false);
+        }
+    });
+
+    const campoGenero =
+        document.getElementById('generoPerfil');
+
+    campoGenero?.addEventListener('change', () => {
+        if (!fotoAtualUrl) {
+            mostrarPersonagemPadrao();
+        }
+    });
+
+    bloquearControles(true);
+
+    try {
+        await carregarFotoSupabase();
+
+    } catch (erro) {
+        console.error(
+            'Erro ao carregar foto Supabase:',
+            erro
+        );
+
+        mostrarPersonagemPadrao();
+
+    } finally {
+        bloquearControles(false);
+    }
+}
+
 // ========================================
 // FOTO PERSONALIZADA DO PERFIL
 // ========================================
@@ -1327,9 +1698,20 @@ async function initializeProfile() {
                 voltar.href = 'calendario.html';
                 voltar.textContent = 'Voltar ao calendário';
 
-                /* Preparar o formulário exclusivo Supabase */
+                /* =========================================
+                   PREPARAR PERFIL SUPABASE
+                ========================================= */
+
                 initializeIMC();
                 initializeProfileActionsSupabase();
+
+                /* =========================================
+                   FOTO DE PERFIL SUPABASE - STORAGE
+                ========================================= */
+
+                await initializeProfilePhotoSupabase(
+                    acessoSupabase
+                );
 
                 /* Habilitar salvamento do perfil Supabase */
                 const botaoSalvar =
