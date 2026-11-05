@@ -1742,10 +1742,6 @@ async function initializeProfile() {
                     return;
                 }
 
-                const voltar = document.createElement('a');
-                voltar.href = 'calendario.html';
-                voltar.textContent = 'Voltar ao calendário';
-
                 /* =========================================
                    PREPARAR PERFIL SUPABASE
                 ========================================= */
