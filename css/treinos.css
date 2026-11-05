@@ -5782,6 +5782,69 @@ right: 0;
 }
 
 /* =========================================
+   FITZONE - GERENCIAMENTO DE BACKUPS
+========================================= */
+
+.fitzone-backup-manager {
+    margin: 0 0 24px;
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
+    border-radius: 12px;
+    background: rgba(var(--accent-rgb), 0.04);
+    overflow: hidden;
+}
+
+.fitzone-backup-manager summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px;
+    color: var(--chalk);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+}
+
+.fitzone-backup-manager summary::-webkit-details-marker {
+    display: none;
+}
+
+.fitzone-backup-manager summary::after {
+    content: '+';
+    color: var(--accent);
+    font-size: 22px;
+    line-height: 1;
+}
+
+.fitzone-backup-manager[open] summary::after {
+    content: '−';
+}
+
+.fitzone-backup-manager summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -3px;
+}
+
+.fitzone-backup-content {
+    padding: 0 16px 16px;
+}
+
+.fitzone-backup-content .workout-backup-actions {
+    margin-bottom: 0;
+}
+
+@media (max-width: 480px) {
+    .fitzone-backup-manager summary {
+        padding: 14px;
+    }
+
+    .fitzone-backup-content {
+        padding: 0 14px 14px;
+    }
+}
+
+/* =========================================
    FITZONE - BOTAO EXPORTAR BACKUP
 ========================================= */
 
