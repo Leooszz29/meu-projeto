@@ -37,16 +37,28 @@
         justify-content: center;
         gap: 18px;
         background: #1a1b1d;
-        color: #ffffff;
-        font-family: Arial, sans-serif;
+        color: #eae6da;
         text-align: center;
+        padding: 24px;
+    }
+
+    #fitzoneBibliotecaLoader h2 {
+        margin: 0;
+        color: var(--accent, #e0a53c);
+        font-size: 38px;
+        letter-spacing: 3px;
+    }
+
+    #fitzoneBibliotecaLoader p {
+        margin: 0;
+        font-size: 14px;
     }
 
     .fitzone-biblioteca-spinner {
-        width: 42px;
-        height: 42px;
-        border: 4px solid rgba(255,255,255,0.15);
-        border-top-color: #ffffff;
+        width: 38px;
+        height: 38px;
+        border: 3px solid rgba(255,255,255,0.12);
+        border-top-color: var(--accent, #e0a53c);
         border-radius: 50%;
         animation: fitzoneBibliotecaGirar 0.8s linear infinite;
     }
@@ -69,9 +81,16 @@
     role="status"
     aria-live="polite"
 >
-    <div class="fitzone-biblioteca-spinner" aria-hidden="true"></div>
-    <strong>FITZONE</strong>
+
+    <h2>FITZONE</h2>
+
+    <div
+        class="fitzone-biblioteca-spinner"
+        aria-hidden="true"
+    ></div>
+
     <p>Carregando sua biblioteca...</p>
+
 </div>
 
 <div class="page">
