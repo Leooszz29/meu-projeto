@@ -1640,7 +1640,7 @@ async function initializeProfile() {
 
         if (navigator.onLine === false) {
             await new Promise(resolve => {
-                setTimeout(resolve, 400);
+                setTimeout(resolve, 1000);
             });
 
             const aviso = document.createElement('main');
