@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <meta name="color-scheme" content="dark">
+    <title>Redefinir Senha | FitZone</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: #1a1b1d;
+            color: #eae6da;
+            font-family: Arial, sans-serif;
+        }
+
+        .recovery-card {
+            width: 100%;
+            max-width: 420px;
+            padding: 30px 24px;
+            border: 1px solid #444;
+            border-radius: 16px;
+            background: #232528;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            color: #e0a53c;
+            letter-spacing: 3px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 21px;
+            text-align: center;
+        }
+
+        p {
+            color: #c7c7c7;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 18px 0 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #555;
+            border-radius: 8px;
+            background: #161719;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 24px;
+            padding: 14px;
+            border: 0;
+            border-radius: 8px;
+            background: #e0a53c;
+            color: #161719;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        #mensagemRedefinicao {
+            margin-top: 16px;
+        }
+
+        .login-link {
+            display: block;
+            margin-top: 20px;
+            color: #e0a53c;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="recovery-card">
+        <h1>FITZONE</h1>
+        <h2>Redefinir senha</h2>
+
+        <p>
+            Crie uma nova senha para sua conta Supabase.
+        </p>
+
+        <form id="formRedefinirSenha" hidden>
+            <label for="novaSenhaSupabase">
+                Nova senha
+            </label>
+
+            <input
+                type="password"
+                id="novaSenhaSupabase"
+                autocomplete="new-password"
+                minlength="8"
+                required
+            >
+
+            <label for="confirmarSenhaSupabase">
+                Confirmar nova senha
+            </label>
+
+            <input
+                type="password"
+                id="confirmarSenhaSupabase"
+                autocomplete="new-password"
+                minlength="8"
+                required
+            >
+
+            <button
+                type="submit"
+                id="btnRedefinirSenha"
+            >
+                Salvar nova senha
+            </button>
+        </form>
+
+        <p
+            id="mensagemRedefinicao"
+            role="status"
+            aria-live="polite"
+        >
+            Verificando link de recuperação...
+        </p>
+
+        <a
+            href="login.html"
+            class="login-link"
+        >
+            Voltar para o login
+        </a>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/redefinir-senha.js"></script>
+
+</body>
+</html>
