@@ -5472,6 +5472,17 @@ window.addEventListener(
                 campoArquivoBackupSupabase
             );
 
+            [
+                botaoBackupSupabase,
+                botaoValidarBackupSupabase,
+                botaoRestaurarTreinosSupabase,
+                botaoRestaurarHistoricoSupabase,
+                botaoRestaurarAtivoSupabase
+            ].forEach(botao => {
+                botao.style.margin = '0';
+                botao.style.width = '100%';
+            });
+
             conteudoBackupSupabase.append(
                 acoesBackupSupabase,
                 resultadoBackupSupabase
