@@ -19,6 +19,7 @@ const mensagemRedefinicao =
     document.getElementById('mensagemRedefinicao');
 
 let recuperacaoAutorizada = false;
+let linkRecuperacaoValidado = false;
 
 const parametrosLink = new URLSearchParams(
     window.location.hash.substring(1)
@@ -47,6 +48,7 @@ if (!clienteRedefinicao) {
         (evento) => {
             if (evento === 'PASSWORD_RECOVERY') {
                 recuperacaoAutorizada = true;
+                linkRecuperacaoValidado = true;
 
                 formularioRedefinicao.hidden = false;
 
@@ -57,7 +59,7 @@ if (!clienteRedefinicao) {
     );
 
     setTimeout(() => {
-        if (!recuperacaoAutorizada) {
+        if (!linkRecuperacaoValidado) {
             mensagemRedefinicao.textContent =
                 'Não foi possível validar o link de recuperação. ' +
                 'Solicite um novo link no login.';
