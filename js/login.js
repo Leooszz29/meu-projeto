@@ -917,6 +917,8 @@ async function handleLogin(e) {
         emailInput.value.trim().toLowerCase();
 
     const password = passwordInput.value;
+    const tipoContaLogin =
+    document.getElementById('tipoContaLogin')?.value || 'auto';
 
     // Validação
     if (!email || !password) {
@@ -942,22 +944,24 @@ async function handleLogin(e) {
        LOGIN PRINCIPAL - CONTA SUPABASE
     ========================================= */
 
-    if (!usuarioSalvo) {
+if (
+    tipoContaLogin === 'supabase' ||
+    (tipoContaLogin === 'auto' && !usuarioSalvo)
+) {
         submitBtn.disabled = true;
         submitBtn.classList.add('loading');
 
         try {
-            const resultado =
-                await validarLoginHibridoFitZone(
-                    email,
-                    password
-                );
+const dados =
+    await autenticarUsuarioSupabase(
+        email,
+        password
+    );
 
-            if (!resultado.autenticado ||
-                resultado.origem !== 'supabase') {
-                showError('E-mail ou senha incorretos.');
-                return;
-            }
+if (!dados?.user) {
+    showError('E-mail ou senha incorretos.');
+    return;
+}
 
             /* Evitar conflito com uma sessão local anterior */
             try {
