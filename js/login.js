@@ -538,7 +538,66 @@ function alternarVisibilidadeSenha() {
     );
 }
 
-     // ==================== EVENT LISTENERS ====================
+// ==================== EVENT LISTENERS ====================
+
+/* =========================================
+   FITZONE - BOTAO RECUPERACAO SUPABASE
+========================================= */
+
+const forgotPasswordSupabaseBtn =
+    document.getElementById('forgotPasswordSupabaseBtn');
+
+if (forgotPasswordSupabaseBtn) {
+    forgotPasswordSupabaseBtn.addEventListener(
+        'click',
+        async () => {
+            const email =
+                emailInput.value.trim().toLowerCase();
+
+            clearError();
+
+            if (!email || !validateEmail(email)) {
+                showError(
+                    'Informe um e-mail válido no campo de login ' +
+                    'para recuperar sua senha Supabase.'
+                );
+
+                emailInput.focus();
+                return;
+            }
+
+            forgotPasswordSupabaseBtn.disabled = true;
+            forgotPasswordSupabaseBtn.textContent =
+                'Enviando solicitação...';
+
+            try {
+                await solicitarRecuperacaoSenhaSupabase(email);
+
+                showSuccess(
+                    'Se existir uma conta Supabase para este e-mail, ' +
+                    'você receberá um link de recuperação. ' +
+                    'Verifique também a pasta de spam.'
+                );
+
+            } catch (erro) {
+                console.error(
+                    'Erro ao solicitar recuperação Supabase:',
+                    erro
+                );
+
+                showError(
+                    'Não foi possível solicitar a recuperação. ' +
+                    'Verifique sua conexão e tente novamente.'
+                );
+
+            } finally {
+                forgotPasswordSupabaseBtn.disabled = false;
+                forgotPasswordSupabaseBtn.textContent =
+                    'Recuperar senha da conta Supabase';
+            }
+        }
+    );
+}
 
 forgotPasswordBtn.addEventListener('click', () => {
 
