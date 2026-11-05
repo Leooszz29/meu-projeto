@@ -1191,4 +1191,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         atualizarVisibilidadeBotaoTopo();
     }
+
+    document.getElementById(
+        'fitzoneBibliotecaLoader'
+    )?.remove();
 });
