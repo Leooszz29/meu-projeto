@@ -8508,11 +8508,13 @@ window.addEventListener(
                             'input[data-serie-exercicio]'
                         );
 
-                    controles.forEach(item => {
-                        item.disabled = true;
-                    });
-
-                    try {
+                     controles.forEach(item => {
+                         item.disabled = true;
+                     });
+                     
+                     let progressoSalvoNoBanco = false;
+                     
+                     try {
                         const sessaoValida =
                             await conferirSessaoHibridaTreinos(
                                 acessoInicialTreinosFitZone
@@ -8597,6 +8599,8 @@ window.addEventListener(
                             iniciadoEm: ativo.iniciadoEm
                         });
 
+                        progressoSalvoNoBanco = true;
+                        
                         await renderizarProgressoSupabase();
 
                     } catch (erro) {
@@ -8606,7 +8610,13 @@ window.addEventListener(
                         );
 
                         alert(
-                            'Não foi possível salvar o progresso.'
+                            progressoSalvoNoBanco
+                                ? 'O progresso foi salvo no Supabase, ' +
+                                  'mas não foi possível atualizar a tela. ' +
+                                  'Reabra a página para conferir as séries.'
+                                : 'Não foi possível confirmar o salvamento ' +
+                                  'do progresso. Verifique a conexão e ' +
+                                  'reabra a página antes de tentar novamente.'
                         );
 
                         try {
