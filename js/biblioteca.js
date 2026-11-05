@@ -58,13 +58,44 @@ document.addEventListener('DOMContentLoaded', async () => {
                 erro
             );
 
-            const aviso = document.createElement('p');
-            aviso.textContent =
-                'Não foi possível verificar sua sessão. ' +
-                'Confira a conexão e atualize a página.';
-            aviso.style.padding = '24px';
+            const aviso = document.createElement('main');
 
-            document.querySelector('.page')?.replaceWith(aviso);
+            aviso.style.cssText =
+                'min-height:100vh;' +
+                'display:flex;' +
+                'flex-direction:column;' +
+                'align-items:center;' +
+                'justify-content:center;' +
+                'gap:16px;' +
+                'padding:24px;' +
+                'text-align:center;';
+
+            const titulo = document.createElement('h1');
+            titulo.textContent = 'FITZONE';
+
+            const mensagem = document.createElement('p');
+            mensagem.textContent =
+                navigator.onLine === false
+                    ? 'Você está sem internet. ' +
+                      'Não foi possível verificar sua conta Supabase.'
+                    : 'Não foi possível verificar sua sessão. ' +
+                      'Confira a conexão e tente novamente.';
+
+            const botao = document.createElement('button');
+            botao.type = 'button';
+            botao.textContent = 'Tentar novamente';
+
+            botao.addEventListener('click', () => {
+                window.location.reload();
+            });
+
+            aviso.append(
+                titulo,
+                mensagem,
+                botao
+            );
+
+            document.body.replaceChildren(aviso);
             return;
         }
     }
