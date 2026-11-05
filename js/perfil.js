@@ -1770,20 +1770,6 @@ async function initializeProfile() {
                     botaoSalvar.removeAttribute('title');
                 }
 
-                aviso.style.cssText =
-                    'padding:16px;' +
-                    'text-align:center;' +
-                    'margin-bottom:16px;';
-
-                aviso.append(mensagem, voltar);
-
-                const pagina =
-                    document.querySelector('.page');
-
-                if (pagina) {
-                    pagina.prepend(aviso);
-                }
-
                 document.getElementById(
                     'fitzonePerfilLoader'
                 )?.remove();
