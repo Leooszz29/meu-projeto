@@ -105,6 +105,38 @@ async function autenticarUsuarioSupabase(email, senha) {
 }
 
 /* =========================================
+   FITZONE - RECUPERAR SENHA SUPABASE
+========================================= */
+
+async function solicitarRecuperacaoSenhaSupabase(email) {
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error(
+            'Não foi possível conectar ao Supabase.'
+        );
+    }
+
+    const urlRedefinicao = new URL(
+        'redefinir-senha.html',
+        window.location.href
+    ).href;
+
+    const { error } = await cliente.auth.resetPasswordForEmail(
+        email.trim().toLowerCase(),
+        {
+            redirectTo: urlRedefinicao
+        }
+    );
+
+    if (error) {
+        throw error;
+    }
+
+    return true;
+}
+
+/* =========================================
    FITZONE - VERIFICAR SESSAO SUPABASE
 ========================================= */
 
