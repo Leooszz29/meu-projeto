@@ -5,6 +5,13 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
 
+    const paginaBiblioteca =
+        document.querySelector('.page');
+
+    if (paginaBiblioteca) {
+        paginaBiblioteca.style.visibility = 'hidden';
+    }
+
     /* =========================================
        VERIFICAR SESSAO HIBRIDA
     ========================================= */
@@ -86,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             botao.textContent = 'Tentar novamente';
 
             botao.addEventListener('click', () => {
-                window.location.reload();
+                window.location.replace('biblioteca.html');
             });
 
             aviso.append(
@@ -103,6 +110,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!sessao) {
         window.location.replace('login.html');
         return;
+    }
+
+    if (paginaBiblioteca) {
+        paginaBiblioteca.style.visibility = '';
     }
 
     /* =========================================
