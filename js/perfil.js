@@ -1639,6 +1639,10 @@ async function initializeProfile() {
     ) {
 
         if (navigator.onLine === false) {
+            await new Promise(resolve => {
+                setTimeout(resolve, 400);
+            });
+
             const aviso = document.createElement('main');
 
             aviso.style.cssText =
