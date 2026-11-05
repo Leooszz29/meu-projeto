@@ -5834,6 +5834,26 @@ right: 0;
     margin-bottom: 0;
 }
 
+.fitzone-backup-content .workout-backup-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
+}
+
+.fitzone-backup-content .btn-export-backup {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    text-align: center;
+}
+
+@media (max-width: 520px) {
+    .fitzone-backup-content .workout-backup-actions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
 @media (max-width: 480px) {
     .fitzone-backup-manager summary {
         padding: 14px;
