@@ -186,38 +186,49 @@
 
 </div>
 
-<!-- BACKUP DOS DADOS -->
-<div class="workout-backup-actions">
-    <button
-        type="button"
-        id="btnExportWorkoutBackup"
-        class="btn-export-backup"
-        disabled
-    >
-        <span aria-hidden="true">↓</span>
-        Exportar backup
-    </button>
+<!-- GERENCIAMENTO DE BACKUPS -->
+<details class="fitzone-backup-manager">
+    <summary>
+        Gerenciar backups
+    </summary>
 
-    <!-- RESTAURAR BACKUP -->
-    <button
-        type="button"
-        id="btnRestoreWorkoutBackup"
-        class="btn-export-backup"
-        disabled
-    >
-        <span aria-hidden="true">↑</span>
-        Restaurar backup
-    </button>
+    <div class="fitzone-backup-content">
+        <div class="workout-backup-actions">
 
-    <input
-        type="file"
-        id="workoutBackupFileInput"
-        accept=".json,application/json"
-        hidden
-        disabled
-        aria-label="Selecionar arquivo de backup do FitZone"
-    >
-</div>
+            <!-- EXPORTAR BACKUP -->
+            <button
+                type="button"
+                id="btnExportWorkoutBackup"
+                class="btn-export-backup"
+                disabled
+            >
+                <span aria-hidden="true">↓</span>
+                Exportar backup
+            </button>
+
+            <!-- RESTAURAR BACKUP -->
+            <button
+                type="button"
+                id="btnRestoreWorkoutBackup"
+                class="btn-export-backup"
+                disabled
+            >
+                <span aria-hidden="true">↑</span>
+                Restaurar backup
+            </button>
+
+            <input
+                type="file"
+                id="workoutBackupFileInput"
+                accept=".json,application/json"
+                hidden
+                disabled
+                aria-label="Selecionar arquivo de backup do FitZone"
+            >
+
+        </div>
+    </div>
+</details>
 
 <!-- PESQUISA DE TREINOS -->
 <div class="workout-search">
