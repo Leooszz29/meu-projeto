@@ -1637,6 +1637,50 @@ async function initializeProfile() {
         !sessao ||
         sessao.autenticado !== true
     ) {
+
+        if (navigator.onLine === false) {
+            const aviso = document.createElement('main');
+
+            aviso.style.cssText =
+                'min-height:100vh;' +
+                'display:flex;' +
+                'flex-direction:column;' +
+                'align-items:center;' +
+                'justify-content:center;' +
+                'gap:16px;' +
+                'padding:24px;' +
+                'text-align:center;';
+
+            const titulo = document.createElement('h1');
+            titulo.textContent = 'FITZONE';
+
+            const mensagem = document.createElement('p');
+            mensagem.textContent =
+                'Você está sem internet. ' +
+                'Não foi possível verificar sua conta Supabase.';
+
+            const orientacao = document.createElement('p');
+            orientacao.textContent =
+                'Conecte-se à internet para continuar.';
+
+            const botao = document.createElement('button');
+            botao.type = 'button';
+            botao.textContent = 'Tentar novamente';
+
+            botao.addEventListener('click', () => {
+                window.location.replace('perfil.html');
+            });
+
+            aviso.append(
+                titulo,
+                mensagem,
+                orientacao,
+                botao
+            );
+
+            document.body.replaceChildren(aviso);
+            return;
+        }
         try {
             const acessoSupabase =
                 await identificarAcessoSupabasePerfil();
