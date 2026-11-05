@@ -8654,7 +8654,10 @@ window.addEventListener(
 
                     botao.disabled = true;
 
+                    let historicoRegistrado = false;
+
                     try {
+
                         const sessaoValida =
                             await conferirSessaoHibridaTreinos(
                                 acessoInicialTreinosFitZone
@@ -8798,7 +8801,10 @@ window.addEventListener(
                             dataLocal
                         );
 
+                        historicoRegistrado = true;
+
                         try {
+
                             await limparTreinoAtivoSupabase();
                         } catch (erroLimpeza) {
                             console.error(
@@ -8837,8 +8843,13 @@ window.addEventListener(
                         );
 
                         alert(
-                            erro.message ||
-                            'Não foi possível finalizar o treino.'
+                            historicoRegistrado
+                                ? 'O histórico foi registrado no Supabase, ' +
+                                  'mas ocorreu um erro ao concluir a operação. ' +
+                                  'Confira o histórico e o treino ativo ' +
+                                  'antes de tentar novamente.'
+                                : erro.message ||
+                                  'Não foi possível finalizar o treino.'
                         );
 
                     } finally {
