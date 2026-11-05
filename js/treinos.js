@@ -8508,13 +8508,14 @@ window.addEventListener(
                             'input[data-serie-exercicio]'
                         );
 
-                     controles.forEach(item => {
-                         item.disabled = true;
-                     });
-                     
-                     let progressoSalvoNoBanco = false;
-                     
-                     try {
+                    controles.forEach(item => {
+                        item.disabled = true;
+                    });
+
+                    let progressoSalvoNoBanco = false;
+
+                    try {
+
                         const sessaoValida =
                             await conferirSessaoHibridaTreinos(
                                 acessoInicialTreinosFitZone
