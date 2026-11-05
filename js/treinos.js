@@ -4955,6 +4955,15 @@ window.addEventListener(
                     await verificarOrigemAcessoTreinos();
             }
 
+            if (
+                navigator.onLine === false &&
+                acessoPagina?.autenticado !== true
+            ) {
+                throw new Error(
+                    'Sem conexão para validar a conta Supabase.'
+                );
+            }
+
         } catch (erro) {
             console.error(
                 'Erro ao identificar a sessão:',
