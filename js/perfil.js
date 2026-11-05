@@ -1716,16 +1716,6 @@ async function initializeProfile() {
 
                     preencherFormularioSupabase(perfilSupabase);
 
-                    if (perfilSupabase?.nome) {
-                        mensagem.textContent =
-                            'Bem-vindo(a), ' +
-                            perfilSupabase.nome + '!';
-                    } else {
-                        mensagem.textContent =
-                            'Conta Supabase reconhecida. ' +
-                            'Perfil ainda não cadastrado.';
-                    }
-
                 } catch (erro) {
                     console.error(
                         'Erro ao consultar perfil Supabase:',
