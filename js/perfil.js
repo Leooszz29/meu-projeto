@@ -1780,6 +1780,10 @@ async function initializeProfile() {
                     pagina.prepend(aviso);
                 }
 
+                document.getElementById(
+                    'fitzonePerfilLoader'
+                )?.remove();
+
                 return;
             }
 
@@ -1814,6 +1818,10 @@ async function initializeProfile() {
             });
         }
     }
+
+    document.getElementById(
+        'fitzonePerfilLoader'
+    )?.remove();
 }
 
 // ========================================
