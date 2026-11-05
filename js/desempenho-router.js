@@ -90,11 +90,59 @@
 
     const pagina = document.querySelector('.page');
 
+    function mostrarAvisoOfflineDesempenho() {
+        const aviso = document.createElement('main');
+
+        aviso.style.cssText =
+            'min-height:100vh;' +
+            'display:flex;' +
+            'flex-direction:column;' +
+            'align-items:center;' +
+            'justify-content:center;' +
+            'gap:16px;' +
+            'padding:24px;' +
+            'text-align:center;';
+
+        const titulo = document.createElement('h1');
+        titulo.textContent = 'FITZONE';
+
+        const mensagem = document.createElement('p');
+        mensagem.textContent =
+            'Você está sem internet. ' +
+            'Não foi possível verificar sua conta Supabase.';
+
+        const orientacao = document.createElement('p');
+        orientacao.textContent =
+            'Conecte-se à internet para continuar.';
+
+        const botao = document.createElement('button');
+        botao.type = 'button';
+        botao.textContent = 'Tentar novamente';
+
+        botao.addEventListener('click', () => {
+            window.location.reload();
+        });
+
+        aviso.append(
+            titulo,
+            mensagem,
+            orientacao,
+            botao
+        );
+
+        document.body.replaceChildren(aviso);
+    }
+
     try {
         const identidade =
             await obterIdentidadeSupabaseFitZone();
 
         if (!identidade?.id) {
+            if (navigator.onLine === false) {
+                mostrarAvisoOfflineDesempenho();
+                return;
+            }
+
             window.location.replace('login.html');
             return;
         }
@@ -2199,6 +2247,11 @@
         );
 
         mostrarErroCarregamentoDesempenho();
+
+        if (navigator.onLine === false) {
+            mostrarAvisoOfflineDesempenho();
+            return;
+        }
 
         if (pagina) {
             pagina.replaceChildren();
