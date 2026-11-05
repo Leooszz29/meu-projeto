@@ -5436,6 +5436,58 @@ window.addEventListener(
             );
 
             /* =========================================
+               FITZONE - GERENCIADOR DE BACKUPS SUPABASE
+            ========================================= */
+
+            const gerenciadorBackupSupabase =
+                document.createElement('details');
+
+            gerenciadorBackupSupabase.className =
+                'fitzone-backup-manager';
+
+            const tituloBackupSupabase =
+                document.createElement('summary');
+
+            tituloBackupSupabase.textContent =
+                'Gerenciar backups';
+
+            const conteudoBackupSupabase =
+                document.createElement('div');
+
+            conteudoBackupSupabase.className =
+                'fitzone-backup-content';
+
+            const acoesBackupSupabase =
+                document.createElement('div');
+
+            acoesBackupSupabase.className =
+                'workout-backup-actions';
+
+            acoesBackupSupabase.append(
+                botaoBackupSupabase,
+                botaoValidarBackupSupabase,
+                botaoRestaurarTreinosSupabase,
+                botaoRestaurarHistoricoSupabase,
+                botaoRestaurarAtivoSupabase,
+                campoArquivoBackupSupabase
+            );
+
+            conteudoBackupSupabase.append(
+                acoesBackupSupabase,
+                resultadoBackupSupabase
+            );
+
+            gerenciadorBackupSupabase.append(
+                tituloBackupSupabase,
+                conteudoBackupSupabase
+            );
+
+            painel.insertBefore(
+                gerenciadorBackupSupabase,
+                lista
+            );
+
+            /* =========================================
                VERIFICAR ESTRUTURA DO ARQUIVO
             ========================================= */
 
