@@ -261,15 +261,16 @@ async function salvarPerfilSupabaseFitZone(perfil) {
    FITZONE - ALTERAR APENAS GENERO SUPABASE
 ========================================= */
 
+
 async function atualizarGeneroSupabaseFitZone(genero) {
     if (!['masculino', 'feminino'].includes(genero)) {
         throw new Error('Gênero inválido.');
     }
 
     const cliente = inicializarSupabaseFitZone();
-    const identidade = await obterIdentidadeSupabaseFitZone();
+    const usuario = await consultarUsuarioSupabaseFitZone();
 
-    if (!cliente || !identidade) {
+    if (!cliente || !usuario?.id) {
         throw new Error('Sessão Supabase inválida.');
     }
 
@@ -278,7 +279,7 @@ async function atualizarGeneroSupabaseFitZone(genero) {
         .update({
             genero: genero
         })
-        .eq('id', identidade.id)
+        .eq('id', usuario.id)
         .select('genero')
         .maybeSingle();
 
@@ -286,13 +287,68 @@ async function atualizarGeneroSupabaseFitZone(genero) {
         throw error;
     }
 
-    if (!data) {
+    if (data) {
+        return data.genero;
+    }
+
+    /* =========================================
+       PRIMEIRO ACESSO - CRIAR PERFIL MINIMO
+    ========================================= */
+
+    const nome = String(
+        usuario.user_metadata?.nome || ''
+    ).trim();
+
+    if (!nome) {
         throw new Error(
-            'Perfil não encontrado. Salve seus dados pessoais primeiro.'
+            'Nome do cadastro indisponível. ' +
+            'Salve o perfil antes de alterar o gênero.'
         );
     }
 
-    return data.genero;
+    const { data: novoPerfil, error: erroCriacao } =
+        await cliente
+            .from('fitzone_perfis')
+            .upsert(
+                {
+                    id: usuario.id,
+                    nome: nome,
+                    genero: genero
+                },
+                {
+                    onConflict: 'id',
+                    ignoreDuplicates: true
+                }
+            )
+            .select('genero')
+            .maybeSingle();
+
+    if (erroCriacao) {
+        throw erroCriacao;
+    }
+
+    if (novoPerfil) {
+        return novoPerfil.genero;
+    }
+
+    /* Se outra operação criou o perfil,
+       atualizar somente o gênero. */
+
+    const { data: perfilAtualizado, error: erroAtualizacao } =
+        await cliente
+            .from('fitzone_perfis')
+            .update({
+                genero: genero
+            })
+            .eq('id', usuario.id)
+            .select('genero')
+            .single();
+
+    if (erroAtualizacao) {
+        throw erroAtualizacao;
+    }
+
+    return perfilAtualizado.genero;
 }
 
 /* =========================================
