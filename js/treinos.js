@@ -5073,7 +5073,7 @@ window.addEventListener(
                 'btn-export-backup';
 
             botaoBackupSupabase.textContent =
-                'Exportar treinos Supabase';
+                'Exportar backup';
 
             botaoBackupSupabase.style.cssText =
                 'display:block;' +
@@ -5294,7 +5294,7 @@ window.addEventListener(
                 'btn-export-backup';
 
             botaoValidarBackupSupabase.textContent =
-                'Validar backup Supabase';
+                'Restaurar backup';
 
             botaoValidarBackupSupabase.style.cssText =
                 'display:block;' +
