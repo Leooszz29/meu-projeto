@@ -477,17 +477,25 @@ async function excluirTreinoBancoSupabase(treinoId) {
         );
     }
 
-    const { error } = await cliente
+    const { data, error } = await cliente
         .from('fitzone_treinos')
         .delete()
         .eq('usuario_id', acesso.id)
-        .eq('treino_id', treinoId);
+        .eq('treino_id', treinoId)
+        .select('treino_id');
 
     if (error) {
         throw error;
     }
 
+    if (!Array.isArray(data) || data.length !== 1) {
+        throw new Error(
+            'Não foi possível confirmar a exclusão do treino.'
+        );
+    }
+
     return true;
+
 }
 
 // ==================== SESSÃO ====================
