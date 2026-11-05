@@ -2736,7 +2736,7 @@ body:not(.theme-feminino):not(.theme-masculino)
 
 .workouts-header {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
     gap: 24px;
     margin: 34px 0 26px;
