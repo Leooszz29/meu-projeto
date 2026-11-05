@@ -80,16 +80,7 @@ header{
 }
 
 .character-preview {
-    position: relative;
-
-    width: 100%;
-    min-height: 165px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin-bottom: 14px;
+    display: none;
 }
 
 /* GLOW ATRÁS DO ATLETA */
