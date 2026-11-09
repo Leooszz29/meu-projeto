@@ -8536,14 +8536,18 @@ window.addEventListener(
                             );
                         }
 
-                        const treinos =
-                            await carregarTreinosPorOrigem(
-                                acessoInicialTreinosFitZone
-                            );
+                        let treino = treinoExibidoSupabase;
 
-                        const treino = treinos.find(
-                            item => item.id === ativo.id
-                        );
+                        if (!treino || treino.id !== ativo.id) {
+                            const treinos =
+                                await carregarTreinosPorOrigem(
+                                    acessoInicialTreinosFitZone
+                                );
+
+                            treino = treinos.find(
+                                item => item.id === ativo.id
+                            );
+                        }
 
                         const exercicio =
                             treino?.exercicios?.find(
