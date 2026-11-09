@@ -1199,15 +1199,18 @@ body:not(.theme-feminino):not(.theme-masculino)
         transform 0.2s ease;
 }
 
-.exercise-row:hover {
-    background:
-        rgba(var(--accent-rgb),0.045);
+@media (hover: hover) {
+    .exercise-row:hover {
+        background:
+            rgba(var(--accent-rgb), 0.045);
 
-    border-color:
-        rgba(var(--accent-rgb),0.20);
+        border-color:
+            rgba(var(--accent-rgb), 0.20);
 
-    transform: translateX(2px);
+        transform: translateX(2px);
+    }
 }
+
 .exercise-info {
     flex: 1;
     min-width: 0;
