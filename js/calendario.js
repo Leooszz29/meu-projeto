@@ -1008,13 +1008,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 paginaSupabase.appendChild(aviso);
 
                 /* =========================================
-                   PRESERVAR MODAL ORIGINAL DO CALENDARIO
+                   PRESERVAR MODAIS ORIGINAIS DO CALENDARIO
                    SUPABASE
                 ========================================= */
 
                 const modalCheckinSupabase =
                     document.getElementById(
                         'checkinModalOverlay'
+                    );
+
+                const modalMotivacaoSupabase =
+                    document.getElementById(
+                        'motivacaoModalOverlay'
                     );
 
                 document.body.replaceChildren(
@@ -1024,6 +1029,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (modalCheckinSupabase) {
                     document.body.appendChild(
                         modalCheckinSupabase
+                    );
+                }
+
+                if (modalMotivacaoSupabase) {
+                    document.body.appendChild(
+                        modalMotivacaoSupabase
                     );
                 }
 
