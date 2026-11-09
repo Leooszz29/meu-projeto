@@ -1232,10 +1232,19 @@ function renderizarCartoesSupabase(treinos, lista) {
                 excluirExercicio.dataset.treinoExercicioSupabase =
                     treino.id;
 
-                linha.append(
-                    informacoes,
+                const acoesExercicio =
+                    document.createElement('div');
+
+                acoesExercicio.className = 'exercise-actions';
+
+                acoesExercicio.append(
                     editarExercicio,
                     excluirExercicio
+                );
+
+                linha.append(
+                    informacoes,
+                    acoesExercicio
                 );
 
                 card.appendChild(linha);
