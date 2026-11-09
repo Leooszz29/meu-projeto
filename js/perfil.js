@@ -1820,7 +1820,13 @@ if (document.readyState === 'loading') {
    FITZONE - CHAVE DAS PREFERENCIAS DO USUARIO
 ========================================= */
 
+let idPreferenciasSupabasePerfil = null;
+
 function obterChavePreferenciasFitZone() {
+    if (idPreferenciasSupabasePerfil) {
+        return `fitzonePreferencias:supabase:${idPreferenciasSupabasePerfil}`;
+    }
+
     try {
         const sessaoJSON =
             localStorage.getItem('fitzoneSessao');
@@ -1992,10 +1998,28 @@ function salvarPreferenciasFitZone(preferencias) {
    FITZONE - CONTROLE DAS MENSAGENS MOTIVACIONAIS
 ========================================= */
 
-function iniciarConfiguracoesFitZone() {
+async function iniciarConfiguracoesFitZone() {
     const checkbox = document.getElementById(
         'fitzoneMotivacaoAtiva'
     );
+
+    try {
+        const identidade =
+            await obterIdentidadeSupabaseFitZone();
+
+        idPreferenciasSupabasePerfil =
+            identidade?.id || null;
+
+    } catch (erro) {
+        console.warn(
+            'Não foi possível identificar a conta Supabase:',
+            erro
+        );
+
+        if (!carregarSessao()?.autenticado) {
+            return;
+        }
+    }
 
     if (!checkbox) {
         return;
