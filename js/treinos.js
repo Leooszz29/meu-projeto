@@ -1148,9 +1148,7 @@ function renderizarCartoesSupabase(treinos, lista) {
         adicionarExercicio.className = 'btn-add-exercise';
         adicionarExercicio.textContent = '+ Adicionar exercício';
         adicionarExercicio.dataset.adicionarExercicioSupabase =
-            treino.id;
-
-        card.appendChild(adicionarExercicio);
+            treino.id;   
 
         /* =========================================
            EXIBIR EXERCICIOS DO TREINO SUPABASE
@@ -1272,7 +1270,10 @@ function renderizarCartoesSupabase(treinos, lista) {
             });
         }
 
+        card.appendChild(adicionarExercicio);
+
         const iniciarTreino =
+
             document.createElement('button');
 
         iniciarTreino.type = 'button';
