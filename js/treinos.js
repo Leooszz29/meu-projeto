@@ -8221,8 +8221,12 @@ window.addEventListener(
                 painelProgressoSupabase
             );
 
-            async function renderizarProgressoSupabase() {
+            async function renderizarProgressoSupabase(
+                ativoInformado = null,
+                treinoInformado = null
+            ) {
                 const ativo =
+                    ativoInformado ||
                     await consultarTreinoAtivoSupabase();
 
                 painelProgressoSupabase.replaceChildren();
@@ -8232,14 +8236,18 @@ window.addEventListener(
                     return;
                 }
 
-                const treinos =
-                    await carregarTreinosPorOrigem(
-                        acessoInicialTreinosFitZone
-                    );
+                let treino = treinoInformado;
 
-                const treino = treinos.find(
-                    item => item.id === ativo.id
-                );
+                if (!treino || treino.id !== ativo.id) {
+                    const treinos =
+                        await carregarTreinosPorOrigem(
+                            acessoInicialTreinosFitZone
+                        );
+
+                    treino = treinos.find(
+                        item => item.id === ativo.id
+                    );
+                }
 
                 if (!treino) {
                     painelProgressoSupabase.hidden = true;
@@ -8587,8 +8595,14 @@ window.addEventListener(
                         });
 
                         progressoSalvoNoBanco = true;
-                        
-                        await renderizarProgressoSupabase();
+
+                        await renderizarProgressoSupabase(
+                            {
+                                ...ativo,
+                                progresso
+                            },
+                            treino
+                        );
 
                     } catch (erro) {
                         console.error(
