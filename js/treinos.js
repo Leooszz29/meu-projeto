@@ -1177,9 +1177,20 @@ function renderizarCartoesSupabase(treinos, lista) {
                 const repeticoes = exercicio.repeticoes ?? '-';
                 const descanso = exercicio.descanso ?? '-';
 
-                detalhesExercicio.textContent =
-                    `${series}x${repeticoes} repetições · ` +
-                    `${descanso}s descanso`;
+                const seriesInfo = document.createElement('span');
+                seriesInfo.textContent = `${series}x${repeticoes}`;
+
+                const descansoInfo = document.createElement('span');
+                descansoInfo.textContent = `${descanso}s`;
+
+                detalhesExercicio.appendChild(seriesInfo);
+                detalhesExercicio.appendChild(
+                    document.createTextNode(' repetições · ')
+                );
+                detalhesExercicio.appendChild(descansoInfo);
+                detalhesExercicio.appendChild(
+                    document.createTextNode(' descanso')
+                );
 
                 informacoes.appendChild(nome);
                 informacoes.appendChild(detalhesExercicio);
