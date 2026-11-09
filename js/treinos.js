@@ -8221,6 +8221,8 @@ window.addEventListener(
                 painelProgressoSupabase
             );
 
+            let treinoExibidoSupabase = null;
+
             async function renderizarProgressoSupabase(
                 ativoInformado = null,
                 treinoInformado = null
@@ -8232,6 +8234,7 @@ window.addEventListener(
                 painelProgressoSupabase.replaceChildren();
 
                 if (!ativo) {
+                    treinoExibidoSupabase = null;
                     painelProgressoSupabase.hidden = true;
                     return;
                 }
@@ -8250,10 +8253,12 @@ window.addEventListener(
                 }
 
                 if (!treino) {
+                    treinoExibidoSupabase = null;
                     painelProgressoSupabase.hidden = true;
                     return;
                 }
 
+                treinoExibidoSupabase = treino;
                 painelProgressoSupabase.hidden = false;
 
                 /* =========================================
