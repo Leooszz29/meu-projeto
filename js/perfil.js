@@ -1690,6 +1690,10 @@ async function initializeProfile() {
                 await identificarAcessoSupabasePerfil();
 
             if (acessoSupabase.autenticado) {
+
+                idPreferenciasSupabasePerfil =
+                    acessoSupabase.id;
+
                 const aviso = document.createElement('main');
 
                 aviso.style.cssText =
@@ -1737,7 +1741,8 @@ async function initializeProfile() {
                 ========================================= */
 
                 initializeIMC();
-                initializeProfileActionsSupabase();
+                initializeProfileActionsSupabase();               
+                iniciarConfiguracoesFitZone();
 
                 /* =========================================
                    FOTO DE PERFIL SUPABASE - STORAGE
@@ -1778,7 +1783,8 @@ async function initializeProfile() {
     loadCharacter();
     initializeProfilePhoto();
     initializeIMC();
-    initializeProfileActions();
+    initializeProfileActions();   
+    iniciarConfiguracoesFitZone();
 
     /* MOSTRAR PAGINA ATIVA NO MENU MOBILE */
     if (window.matchMedia('(max-width: 520px)').matches) {
@@ -1998,28 +2004,10 @@ function salvarPreferenciasFitZone(preferencias) {
    FITZONE - CONTROLE DAS MENSAGENS MOTIVACIONAIS
 ========================================= */
 
-async function iniciarConfiguracoesFitZone() {
+function iniciarConfiguracoesFitZone() {
     const checkbox = document.getElementById(
         'fitzoneMotivacaoAtiva'
     );
-
-    try {
-        const identidade =
-            await obterIdentidadeSupabaseFitZone();
-
-        idPreferenciasSupabasePerfil =
-            identidade?.id || null;
-
-    } catch (erro) {
-        console.warn(
-            'Não foi possível identificar a conta Supabase:',
-            erro
-        );
-
-        if (!carregarSessao()?.autenticado) {
-            return;
-        }
-    }
 
     if (!checkbox) {
         return;
@@ -2077,13 +2065,4 @@ async function iniciarConfiguracoesFitZone() {
             }
         });
     }
-}
-
-if (document.readyState === 'loading') {
-    document.addEventListener(
-        'DOMContentLoaded',
-        iniciarConfiguracoesFitZone
-    );
-} else {
-    iniciarConfiguracoesFitZone();
 }
