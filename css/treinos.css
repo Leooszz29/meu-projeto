@@ -5180,9 +5180,11 @@ right: 0;
         margin-top: 10px;
     }
 
-    .active-series-btn {
+    .active-series-btn,
+    .active-series-checkbox-label {
         min-width: 44px;
         min-height: 44px;
+        height: auto;
         padding: 8px 10px;
     }
 }
