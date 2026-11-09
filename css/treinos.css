@@ -1219,7 +1219,7 @@ body:not(.theme-feminino):not(.theme-masculino)
 }
 
 .exercise-name {
-    overflow: hidden;
+    min-width: 0;
 
     color: var(--chalk);
 
@@ -1227,8 +1227,8 @@ body:not(.theme-feminino):not(.theme-masculino)
     font-weight: 750;
     line-height: 1.3;
 
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 /* INFORMAÇÕES: SÉRIES • REPETIÇÕES • DESCANSO */
