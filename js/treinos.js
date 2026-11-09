@@ -1131,14 +1131,15 @@ function renderizarCartoesSupabase(treinos, lista) {
             ? treino.exercicios.length
             : 0;
 
-        const detalhes = document.createElement('div');
-        detalhes.className = 'no-exercises';
-        detalhes.textContent =
-            quantidade === 0
-                ? 'Nenhum exercício adicionado ainda.'
-                : `${quantidade} exercício(s) cadastrados`;
+        if (quantidade === 0) {
+            const detalhes = document.createElement('div');
 
-        card.appendChild(detalhes);
+            detalhes.className = 'no-exercises';
+            detalhes.textContent =
+                'Nenhum exercício adicionado ainda.';
+
+            card.appendChild(detalhes);
+        }
 
         const adicionarExercicio =
             document.createElement('button');
