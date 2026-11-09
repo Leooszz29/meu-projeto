@@ -1038,6 +1038,105 @@ document.addEventListener("DOMContentLoaded", async () => {
                     );
                 }
 
+                /* =========================================
+                   MOTIVACAO DIARIA - SUPABASE
+                ========================================= */
+
+                if (modalMotivacaoSupabase) {
+                    try {
+                        const chavePreferencias =
+                            `fitzonePreferencias:supabase:${acessoSupabase.id}`;
+
+                        const preferenciasJSON =
+                            localStorage.getItem(chavePreferencias);
+
+                        const preferencias = preferenciasJSON
+                            ? JSON.parse(preferenciasJSON)
+                            : {};
+
+                        if (preferencias.mensagensMotivacionais !== false) {
+                            const agora = new Date();
+
+                            const hoje = [
+                                agora.getFullYear(),
+                                String(agora.getMonth() + 1).padStart(2, '0'),
+                                String(agora.getDate()).padStart(2, '0')
+                            ].join('-');
+
+                            const chaveMotivacao =
+                                `fitzoneMotivacao:supabase:${acessoSupabase.id}`;
+
+                            if (localStorage.getItem(chaveMotivacao) !== hoje) {
+                                const frases = [
+                                    "Cada passo conta na construção de uma versão melhor de você.",
+                                    "A disciplina transforma pequenos esforços em grandes conquistas.",
+                                    "O progresso começa quando você decide não desistir.",
+                                    "Seu maior desafio é superar quem você foi ontem.",
+                                    "A constância faz a diferença, mesmo nos dias difíceis.",
+                                    "Você não precisa ser perfeito. Precisa continuar.",
+                                    "Cada treino é uma oportunidade de evoluir."
+                                ];
+
+                                const indice = Math.floor(
+                                    new Date(hoje + 'T12:00:00').getTime() /
+                                    86400000
+                                ) % frases.length;
+
+                                const texto = document.getElementById(
+                                    'motivacaoModalTexto'
+                                );
+
+                                const autor = document.getElementById(
+                                    'motivacaoModalAutor'
+                                );
+
+                                const botao = document.getElementById(
+                                    'motivacaoModalBtn'
+                                );
+
+                                if (texto && autor && botao) {
+                                    texto.textContent = frases[indice];
+                                    autor.textContent = 'FitZone';
+
+                                    modalMotivacaoSupabase.classList.add('show');
+                                    modalMotivacaoSupabase.setAttribute(
+                                        'aria-hidden',
+                                        'false'
+                                    );
+
+                                    botao.addEventListener('click', () => {
+                                        try {
+                                            localStorage.setItem(
+                                                chaveMotivacao,
+                                                hoje
+                                            );
+                                        } catch (erro) {
+                                            console.warn(
+                                                'Erro ao registrar motivação:',
+                                                erro
+                                            );
+                                        }
+
+                                        modalMotivacaoSupabase.classList.remove(
+                                            'show'
+                                        );
+
+                                        modalMotivacaoSupabase.setAttribute(
+                                            'aria-hidden',
+                                            'true'
+                                        );
+                                    }, { once: true });
+                                }
+                            }
+                        }
+                    } catch (erro) {
+                        console.warn(
+                            'Erro ao iniciar motivação Supabase:',
+                            erro
+                        );
+                    }
+                }
+
                 const identificadorInicial =
                     acessoSupabase.identificador;
 
