@@ -1104,19 +1104,19 @@ function renderizarCartoesSupabase(treinos, lista) {
         botaoDuplicar.dataset.duplicarTreinoSupabase =
             treino.id;
 
-         const botaoExcluirTreino =
-             document.createElement('button');
-         
-         botaoExcluirTreino.type = 'button';
-         botaoExcluirTreino.className = 'icon-btn danger';
-         botaoExcluirTreino.textContent = '🗑';
-         botaoExcluirTreino.title = 'Excluir treino';
-         botaoExcluirTreino.setAttribute(
-             'aria-label',
-             'Excluir treino'
-         );
-         botaoExcluirTreino.dataset.excluirTreinoSupabase =
-             treino.id;
+        const botaoExcluirTreino =
+            document.createElement('button');
+
+        botaoExcluirTreino.type = 'button';
+        botaoExcluirTreino.className = 'icon-btn danger';
+        botaoExcluirTreino.textContent = '🗑';
+        botaoExcluirTreino.title = 'Excluir treino';
+        botaoExcluirTreino.setAttribute(
+            'aria-label',
+            'Excluir treino'
+        );
+        botaoExcluirTreino.dataset.excluirTreinoSupabase =
+            treino.id;
 
         acoes.append(
             botaoEditarNome,
