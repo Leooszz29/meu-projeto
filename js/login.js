@@ -296,15 +296,18 @@ async function validarLoginHibridoFitZone(email, senha) {
    FITZONE - OBTER PAGINA INICIAL DO USUARIO
 ========================================= */
 
-function obterPaginaInicialFitZone(email) {
+function obterPaginaInicialFitZone(email, idSupabase = null) {
+
     const paginaPadrao = 'calendario.html';
 
     if (typeof email !== 'string' || !email.trim()) {
         return paginaPadrao;
     }
 
-    try {
-        const chave = `fitzonePreferencias:${email.trim().toLowerCase()}`;
+    try {        
+        const chave = idSupabase
+            ? `fitzonePreferencias:supabase:${idSupabase}`
+            : `fitzonePreferencias:${email.trim().toLowerCase()}`;
 
         const dados = localStorage.getItem(chave);
 
@@ -1076,7 +1079,10 @@ if (!dados?.user) {
                 'Login realizado com sucesso! Seja bem-vindo! 💪'
             );
 
-            window.location.href = 'calendario.html';
+            window.location.href = obterPaginaInicialFitZone(
+                dados.user.email,
+                dados.user.id
+            );
             return;
 
         } catch (erro) {
