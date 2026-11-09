@@ -617,8 +617,6 @@
                         validarValorMeta(atual)
                             ? String(Math.max(1, atual - 1))
                             : '12';
-
-                    atualizarMetaSupabase();
                 }
             );
         }
@@ -633,8 +631,6 @@
                         validarValorMeta(atual)
                             ? String(Math.min(100, atual + 1))
                             : '12';
-
-                    atualizarMetaSupabase();
                 }
             );
         }
@@ -692,17 +688,6 @@
                         );
                     } finally {
                         botaoSalvarMeta.disabled = false;
-                    }
-                }
-            );
-        }
-
-        if (campoMeta) {
-            campoMeta.addEventListener(
-                'change',
-                () => {
-                    if (validarValorMeta(campoMeta.value)) {
-                        atualizarMetaSupabase();
                     }
                 }
             );
