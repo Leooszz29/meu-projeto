@@ -1206,8 +1206,8 @@ function renderizarCartoesSupabase(treinos, lista) {
                     document.createElement('button');
 
                 excluirExercicio.type = 'button';
-                excluirExercicio.className = 'icon-btn';
-                excluirExercicio.textContent = '✕';
+                excluirExercicio.className = 'icon-btn danger';
+                excluirExercicio.textContent = '🗑';
                 excluirExercicio.title = 'Excluir exercício';
 
                 excluirExercicio.setAttribute(
