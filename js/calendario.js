@@ -919,18 +919,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         );
                     }
 
-                    const linkTreinosOriginal =
-                        paginaFonte?.querySelector(
-                            'a.btn-new-workout[href="treinos.html"]'
-                        );
-
-                    if (linkTreinosOriginal) {
-                        calendarioSupabase.insertAdjacentElement(
-                            'afterend',
-                            linkTreinosOriginal.cloneNode(true)
-                        );
-                    }
-
                     /* Remover elementos visuais provisórios.
                        Os dados e eventos continuam existentes. */
 
