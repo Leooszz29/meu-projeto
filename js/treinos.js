@@ -8231,11 +8231,6 @@ window.addEventListener(
             painelHistoricoSupabase.className =
                 'active-training-section';
 
-            painelProgressoSupabase.insertAdjacentElement(
-                'afterend',
-                painelHistoricoSupabase
-            );
-
             async function renderizarHistoricoSupabase() {
                 const registros =
                     await consultarHistoricoTreinosSupabase();
