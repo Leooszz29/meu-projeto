@@ -1075,8 +1075,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 .workout-title {
     min-width: 0;
 
-    overflow: hidden;
-
     color: var(--chalk);
 
     font-family: 'Bebas Neue', sans-serif;
@@ -1086,8 +1084,9 @@ body:not(.theme-feminino):not(.theme-masculino)
     letter-spacing: 1.3px;
     text-transform: uppercase;
 
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.2;
 }
 
 .workout-actions {
