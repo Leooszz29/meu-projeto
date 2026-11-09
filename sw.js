@@ -2,7 +2,7 @@
    FITZONE - SERVICE WORKER
 ========================================= */
 
-const CACHE_NAME = 'fitzone-v14';
+const CACHE_NAME = 'fitzone-v15';
 
 const IMAGE_CACHE_NAME = 'fitzone-images-v1';
 
@@ -25,7 +25,8 @@ const APP_SHELL = [
     './css/perfil.css',
     './css/treinos.css',
     './css/treinos.css?v=20261031-series-v22',
-    './css/calendario.css',
+    './css/calendario.css',   
+    './css/calendario.css?v=20261103-loading-v17',
     './css/desempenho.css',
     './css/biblioteca.css',
 
