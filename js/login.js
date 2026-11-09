@@ -1040,7 +1040,17 @@ async function handleLogin(e) {
 
 if (
     tipoContaLogin === 'supabase' ||
-    (tipoContaLogin === 'auto' && !usuarioSalvo)
+    (
+        tipoContaLogin === 'auto' &&
+        (
+            !usuarioSalvo ||
+            !validarCredenciais(
+                usuarioSalvo,
+                email,
+                password
+            )
+        )
+    )
 ) {
         submitBtn.disabled = true;
         submitBtn.classList.add('loading');
