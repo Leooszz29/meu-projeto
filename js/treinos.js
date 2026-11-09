@@ -1192,6 +1192,7 @@ function renderizarCartoesSupabase(treinos, lista) {
                     document.createTextNode(' descanso')
                 );
 
+                const tipoExercicio =
                     document.createElement('span');
 
                 const tipoExecucao =
