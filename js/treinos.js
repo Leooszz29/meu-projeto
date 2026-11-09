@@ -1188,12 +1188,28 @@ function renderizarCartoesSupabase(treinos, lista) {
                     document.createTextNode(' repetições · ')
                 );
                 detalhesExercicio.appendChild(descansoInfo);
-                detalhesExercicio.appendChild(
-                    document.createTextNode(' descanso')
-                );
+
+                const tipoExercicio =
+                    document.createElement('span');
+
+                const tipoExecucao =
+                    exercicio.tipoExecucao || 'individual';
+
+                const tiposExecucao = {
+                    individual: 'INDIVIDUAL',
+                    bisset: 'BI-SET',
+                    triset: 'TRI-SET'
+                };
+
+                tipoExercicio.className =
+                    `exercise-type-badge ${tipoExecucao}`;
+
+                tipoExercicio.textContent =
+                    tiposExecucao[tipoExecucao] || 'INDIVIDUAL';
 
                 informacoes.appendChild(nome);
                 informacoes.appendChild(detalhesExercicio);
+                informacoes.appendChild(tipoExercicio);
 
                 const editarExercicio =
                     document.createElement('button');
