@@ -8930,8 +8930,7 @@ window.addEventListener(
                             lista
                         );
 
-                        await renderizarProgressoSupabase();
-                        await renderizarHistoricoSupabase();
+                        await renderizarProgressoSupabase();                  
 
                         mensagem.textContent =
                             'Treino finalizado e registrado ' +
@@ -9103,8 +9102,7 @@ window.addEventListener(
                     lista
                 );
 
-                await renderizarProgressoSupabase();
-                await renderizarHistoricoSupabase();
+                await renderizarProgressoSupabase();                
 
                 lista.removeAttribute('aria-busy');
 
