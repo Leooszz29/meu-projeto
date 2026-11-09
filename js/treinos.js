@@ -8445,7 +8445,7 @@ window.addEventListener(
                             document.createElement('span');
 
                         texto.textContent =
-                            `Série ${numero}`;
+                            String(numero);
 
                         rotulo.append(checkbox, texto);
                         controlesSeries.appendChild(rotulo);
