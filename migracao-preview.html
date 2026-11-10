@@ -800,6 +800,54 @@
                         }
                     }
 
+                    /* =========================================
+                       PREPARAR PREFERENCIAS PARA MIGRACAO
+                       SOMENTE LEITURA - V1
+                    ========================================= */
+
+                    let preferenciasConvertidas = null;
+                    let preferenciasFormatoValido = false;
+
+                    if (preferenciasLocaisValidas) {
+                        const dadosPreferencias =
+                            JSON.parse(preferenciasLocais);
+
+                        const paginasPermitidas = [
+                            'calendario.html',
+                            'treinos.html',
+                            'desempenho.html'
+                        ];
+
+                        preferenciasFormatoValido =
+                            (
+                                dadosPreferencias.mensagensMotivacionais ===
+                                    undefined ||
+                                typeof dadosPreferencias.mensagensMotivacionais ===
+                                    'boolean'
+                            ) &&
+                            (
+                                dadosPreferencias.paginaInicial ===
+                                    undefined ||
+                                paginasPermitidas.includes(
+                                    dadosPreferencias.paginaInicial
+                                )
+                            );
+
+                        if (preferenciasFormatoValido) {
+                            preferenciasConvertidas = {
+                                genero: generoLocalValido
+                                    ? generoLocal
+                                    : null,
+                                mensagensMotivacionais:
+                                    dadosPreferencias.mensagensMotivacionais
+                                        ?? true,
+                                paginaInicial:
+                                    dadosPreferencias.paginaInicial
+                                        ?? 'calendario.html'
+                            };
+                        }
+                    }
+
                     const idsProgresso = progresso
                         ? Object.keys(progresso)
                         : [];
@@ -967,6 +1015,36 @@
                                     ? 'Encontradas'
                                     : 'Não localizadas'
                             ),
+
+                        'Formato das preferências: ' +
+                            (
+                                preferenciasFormatoValido
+                                    ? 'Válido'
+                                    : 'Requer verificação'
+                            ),
+                        'Preferências preparadas: ' +
+                            (
+                                preferenciasConvertidas
+                                    ? 'Sim'
+                                    : 'Não'
+                            ),
+                        'Página inicial: ' +
+                            (
+                                preferenciasConvertidas?.paginaInicial
+                                    || 'Não identificada'
+                            ),
+                        'Mensagens motivacionais: ' +
+                            (
+                                preferenciasConvertidas
+                                    ? (
+                                        preferenciasConvertidas
+                                            .mensagensMotivacionais
+                                            ? 'Ativadas'
+                                            : 'Desativadas'
+                                    )
+                                    : 'Não identificadas'
+                            ),
+
                         'Situação: requer tratamento antes da migração',
 
                         '',
