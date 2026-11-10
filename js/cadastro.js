@@ -143,8 +143,8 @@ async function handleSignup(e) {
 
     const password = passwordInput.value;
     const confirmPassword = confirmPasswordInput.value;
-    const genero = generoInput.value;    
-    const tipoConta = tipoContaInput.value;
+    const genero = generoInput.value;
+    const tipoConta = 'supabase';
 
     // Validação
 
