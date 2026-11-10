@@ -477,6 +477,113 @@
                         );
                     }
 
+                    /* =========================================
+                       PREPARAR TREINO ATIVO PARA SUPABASE
+                       SOMENTE LEITURA - V1
+                    ========================================= */
+
+                    let treinoAtivoConvertido = null;
+                    let seriesAtivasConvertidas = 0;
+
+                    if (treinoAtivo) {
+                        const treinoCorrespondente = treinos.find(
+                            treino => treino.id === treinoAtivo.id
+                        );
+
+                        if (!treinoCorrespondente) {
+                            problemas.push(
+                                'Treino ativo não encontrado para conversão'
+                            );
+                        } else {
+                            const progressoOriginal =
+                                progresso?.[treinoAtivo.id] || {};
+
+                            const progressoConvertido = {};
+
+                            treinoCorrespondente.exercicios.forEach(
+                                (exercicio, indice) => {
+                                    const chaveExercicio =
+                                        exercicio.id ||
+                                        `exercise-${indice}`;
+
+                                    const series =
+                                        progressoOriginal[chaveExercicio] || [];
+
+                                    const quantidadeSeries =
+                                        Number(exercicio.series);
+
+                                    if (
+                                        !Array.isArray(series) ||
+                                        !Number.isInteger(quantidadeSeries) ||
+                                        quantidadeSeries < 1 ||
+                                        !series.every(
+                                            numero =>
+                                                Number.isInteger(numero) &&
+                                                numero >= 1 &&
+                                                numero <= quantidadeSeries
+                                        )
+                                    ) {
+                                        problemas.push(
+                                            'Progresso incompatível no exercício ' +
+                                            (indice + 1)
+                                        );
+                                        return;
+                                    }
+
+                                    if (series.length > 0) {
+                                        progressoConvertido[chaveExercicio] =
+                                            [...series].sort(
+                                                (a, b) => a - b
+                                            );
+
+                                        seriesAtivasConvertidas +=
+                                            series.length;
+                                    }
+                                }
+                            );
+
+                            const chavesExercicios = new Set(
+                                treinoCorrespondente.exercicios.map(
+                                    (exercicio, indice) =>
+                                        exercicio.id ||
+                                        `exercise-${indice}`
+                                )
+                            );
+
+                            Object.keys(progressoOriginal).forEach(
+                                chave => {
+                                    if (!chavesExercicios.has(chave)) {
+                                        problemas.push(
+                                            'Progresso sem exercício correspondente'
+                                        );
+                                    }
+                                }
+                            );
+
+                            treinoAtivoConvertido = {
+                                treino_id: treinoAtivo.id,
+                                treino_nome: treinoAtivo.nome,
+                                progresso: progressoConvertido
+                            };
+                        }
+                    }
+
+                    const treinoAtivoConvertidoValido =
+                        treinoAtivo === null ||
+                        (
+                            treinoAtivoConvertido !== null &&
+                            treinoAtivoConvertido.treino_id ===
+                                treinoAtivo.id &&
+                            seriesAtivasConvertidas ===
+                                seriesTreinoAtivo
+                        );
+
+                    if (!treinoAtivoConvertidoValido) {
+                        problemas.push(
+                            'Falha na conversão do treino ativo'
+                        );
+                    }
+
                     const resumoCompatibilidade =
                         problemas.length === 0
                             ? 'Nenhuma incompatibilidade inicial encontrada.'
@@ -527,14 +634,30 @@
                             ),
                         'Históricos preparados: ' +
                             historicosConvertidos.length,
+
                         'Estrutura do histórico: ' +
                             (
                                 historicosConvertidosValidos
                                     ? 'Válida'
                                     : 'Incompatível'
                             ),
+                        'Treino ativo preparado: ' +
+                            (
+                                treinoAtivoConvertido
+                                    ? 'Sim'
+                                    : 'Não'
+                            ),
+                        'Séries preservadas na conversão: ' +
+                            seriesAtivasConvertidas,
+                        'Estrutura do treino ativo: ' +
+                            (
+                                treinoAtivoConvertidoValido
+                                    ? 'Válida'
+                                    : 'Incompatível'
+                            ),
                         '',
                         'COMPATIBILIDADE INICIAL',
+
                         resumoCompatibilidade,
                         '',
                         'Nenhum dado foi alterado.',
