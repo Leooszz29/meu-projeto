@@ -70,25 +70,13 @@
                 </select>
             </div>
 
-            <!-- TIPO DE CONTA FITZONE -->
-            <div class="form-group">
-                <label for="tipoContaCadastro">
-                    Tipo de conta
-                </label>
-
-                <select
-                    id="tipoContaCadastro"
-                    name="tipoConta"
-                    required
-                >
-                    <option value="tradicional">
-                        Tradicional — modo de estudos (local)
-                    </option>
-                    <option value="supabase">
-                        Supabase — conta na nuvem
-                    </option>
-                </select>
-            </div>
+            <!-- NOVOS CADASTROS UTILIZAM SUPABASE -->
+            <input
+                type="hidden"
+                id="tipoContaCadastro"
+                name="tipoConta"
+                value="supabase"
+            >
 
             <div class="form-group">
                 <label for="password">Senha</label>
