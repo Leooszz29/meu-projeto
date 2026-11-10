@@ -199,6 +199,97 @@
                     const favoritos =
                         lerCategoria('favoritos', 'lista');
 
+                    /* =========================================
+                       ANALISE DE COMPATIBILIDADE - V1
+                       SOMENTE LEITURA
+                    ========================================= */
+
+                    const problemas = [];
+
+                    const idsTreinos = new Set();
+
+                    treinos.forEach((treino, indice) => {
+                        if (
+                            !treino ||
+                            typeof treino.id !== 'string' ||
+                            !treino.id.trim() ||
+                            typeof treino.nome !== 'string' ||
+                            !treino.nome.trim() ||
+                            !Array.isArray(treino.exercicios)
+                        ) {
+                            problemas.push(
+                                `Treino ${indice + 1}: estrutura inválida`
+                            );
+                            return;
+                        }
+
+                        if (idsTreinos.has(treino.id)) {
+                            problemas.push(
+                                `Treino ${indice + 1}: ID duplicado`
+                            );
+                        }
+
+                        idsTreinos.add(treino.id);
+                    });
+
+                    const chavesHistorico = new Set();
+
+                    historico.forEach((registro, indice) => {
+                        if (
+                            !registro ||
+                            typeof registro.workoutId !== 'string' ||
+                            !registro.workoutId.trim() ||
+                            typeof registro.data !== 'string' ||
+                            !Number.isFinite(Date.parse(registro.data)) ||
+                            !Array.isArray(registro.exercicios)
+                        ) {
+                            problemas.push(
+                                `Histórico ${indice + 1}: estrutura inválida`
+                            );
+                            return;
+                        }
+
+                        const chave = [
+                            registro.workoutId,
+                            registro.data
+                        ].join('|');
+
+                        if (chavesHistorico.has(chave)) {
+                            problemas.push(
+                                `Histórico ${indice + 1}: registro repetido`
+                            );
+                        }
+
+                        chavesHistorico.add(chave);
+                    });
+
+                    if (
+                        treinoAtivo &&
+                        (
+                            typeof treinoAtivo.id !== 'string' ||
+                            !idsTreinos.has(treinoAtivo.id) ||
+                            typeof treinoAtivo.nome !== 'string' ||
+                            !treinoAtivo.progresso ||
+                            typeof treinoAtivo.progresso !== 'object' ||
+                            Array.isArray(treinoAtivo.progresso)
+                        )
+                    ) {
+                        problemas.push(
+                            'Treino ativo: estrutura incompatível'
+                        );
+                    }
+
+                    const resumoCompatibilidade =
+                        problemas.length === 0
+                            ? 'Nenhuma incompatibilidade inicial encontrada.'
+                            : [
+                                `${problemas.length} possível(is) incompatibilidade(s):`,
+                                ...problemas.slice(0, 10),
+                                problemas.length > 10
+                                    ? 'Existem outras ocorrências.'
+                                    : ''
+                            ].filter(Boolean).join('\n');
+
                     const data = Number.isFinite(
                         Date.parse(backup.exportadoEm)
                     )
@@ -222,6 +313,9 @@
                         'Perfil: ' +
                             (perfil ? 'Presente' : 'Ausente'),
                         'Favoritos: ' + favoritos.length,
+                        '',
+                        'COMPATIBILIDADE INICIAL',
+                        resumoCompatibilidade,
                         '',
                         'Nenhum dado foi alterado.',
                         '',
