@@ -263,20 +263,26 @@
                         chavesHistorico.add(chave);
                     });
 
-                    if (
-                        treinoAtivo &&
-                        (
-                            typeof treinoAtivo.id !== 'string' ||
-                            !idsTreinos.has(treinoAtivo.id) ||
-                            typeof treinoAtivo.nome !== 'string' ||
-                            !treinoAtivo.progresso ||
-                            typeof treinoAtivo.progresso !== 'object' ||
-                            Array.isArray(treinoAtivo.progresso)
-                        )
-                    ) {
-                        problemas.push(
-                            'Treino ativo: estrutura incompatível'
+                    /* =========================================
+                       VALIDAR TREINO ATIVO TRADICIONAL
+                    ========================================= */
+
+                    if (treinoAtivo) {
+                        const treinoCorrespondente = treinos.find(
+                            treino => treino.id === treinoAtivo.id
                         );
+
+                        if (
+                            typeof treinoAtivo.id !== 'string' ||
+                            !treinoAtivo.id.trim() ||
+                            typeof treinoAtivo.nome !== 'string' ||
+                            !treinoAtivo.nome.trim() ||
+                            !treinoCorrespondente
+                        ) {
+                            problemas.push(
+                                'Treino ativo: estrutura incompatível'
+                            );
+                        }
                     }
 
                     const resumoCompatibilidade =
