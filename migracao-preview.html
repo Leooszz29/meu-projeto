@@ -74,6 +74,9 @@
         </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/supabase-config.js"></script>
+
     <script>
         const arquivoInput =
             document.getElementById('arquivoBackup');
@@ -937,6 +940,41 @@
                             0
                         );
 
+                    /* =========================================
+                       CONFERIR IDENTIDADE SUPABASE
+                       SOMENTE LEITURA - V1
+                    ========================================= */
+
+                    let identidadeSupabase = null;
+                    let situacaoIdentidade =
+                        'Conta Supabase não verificada';
+
+                    try {
+                        identidadeSupabase =
+                            await obterIdentidadeSupabaseFitZone();
+
+                        if (!identidadeSupabase) {
+                            situacaoIdentidade =
+                                'Nenhuma sessão Supabase autenticada';
+                        } else if (
+                            identidadeSupabase.email === emailBackup
+                        ) {
+                            situacaoIdentidade =
+                                'E-mails correspondentes';
+                        } else {
+                            situacaoIdentidade =
+                                'E-mails diferentes - transferência bloqueada';
+                        }
+
+                    } catch (erro) {
+                        situacaoIdentidade =
+                            'Não foi possível verificar a conta Supabase';
+                    }
+
+                    const identidadeCorrespondente =
+                        identidadeSupabase !== null &&
+                        identidadeSupabase.email === emailBackup;
+
                     const resumoCompatibilidade =
                         problemas.length === 0
                             ? 'Nenhuma incompatibilidade inicial encontrada.'
@@ -1116,6 +1154,18 @@
 
                         'Situação: requer tratamento antes da migração',
 
+                        '',
+
+                        'IDENTIDADE SUPABASE',
+                        'Verificação: ' +
+                            situacaoIdentidade,
+                        'Identidade correspondente: ' +
+                            (
+                                identidadeCorrespondente
+                                    ? 'Sim'
+                                    : 'Não'
+                            ),
+                        'Transferência de dados: Não autorizada nesta etapa',
                         '',
 
                         'COMPATIBILIDADE INICIAL',
