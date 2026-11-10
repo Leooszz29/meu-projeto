@@ -190,6 +190,9 @@
                     const treinoAtivo =
                         lerCategoria('treinoAtivo', 'objeto');
 
+                    const progresso =
+                        lerCategoria('progresso', 'objeto');
+
                     const checkins =
                         lerCategoria('checkins', 'objeto');
 
@@ -285,6 +288,62 @@
                         }
                     }
 
+                    /* =========================================
+                       VALIDAR PROGRESSO DAS SERIES
+                       SOMENTE LEITURA
+                    ========================================= */
+
+                    let seriesMarcadas = 0;
+                    let seriesTreinoAtivo = 0;
+
+                    if (progresso) {
+                        Object.entries(progresso).forEach(
+                            ([treinoId, exercicios]) => {
+                                if (
+                                    !exercicios ||
+                                    typeof exercicios !== 'object' ||
+                                    Array.isArray(exercicios)
+                                ) {
+                                    problemas.push(
+                                        `Progresso inválido: ${treinoId}`
+                                    );
+                                    return;
+                                }
+
+                                Object.entries(exercicios).forEach(
+                                    ([exercicioId, series]) => {
+                                        if (
+                                            !exercicioId ||
+                                            !Array.isArray(series) ||
+                                            !series.every(
+                                                numero =>
+                                                    Number.isInteger(numero) &&
+                                                    numero >= 1
+                                            ) ||
+                                            new Set(series).size !==
+                                                series.length
+                                        ) {
+                                            problemas.push(
+                                                'Séries inválidas no progresso'
+                                            );
+                                            return;
+                                        }
+
+                                        seriesMarcadas += series.length;
+
+                                        if (
+                                            treinoAtivo &&
+                                            treinoId === treinoAtivo.id
+                                        ) {
+                                            seriesTreinoAtivo +=
+                                                series.length;
+                                        }
+                                    }
+                                );
+                            }
+                        );
+                    }
+
                     const resumoCompatibilidade =
                         problemas.length === 0
                             ? 'Nenhuma incompatibilidade inicial encontrada.'
@@ -319,6 +378,10 @@
                         'Perfil: ' +
                             (perfil ? 'Presente' : 'Ausente'),
                         'Favoritos: ' + favoritos.length,
+                        'Séries marcadas no backup: ' +
+                            seriesMarcadas,
+                        'Séries do treino ativo: ' +
+                            seriesTreinoAtivo,
                         '',
                         'COMPATIBILIDADE INICIAL',
                         resumoCompatibilidade,
