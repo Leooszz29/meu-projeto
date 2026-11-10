@@ -385,6 +385,98 @@
                         );
                     }
 
+                    /* =========================================
+                       PREPARAR HISTORICO PARA SUPABASE
+                       SOMENTE LEITURA - V1
+                    ========================================= */
+
+                    const historicosConvertidos = [];
+                    const chavesConclusoes = new Set();
+
+                    historico.forEach((registro, indice) => {
+                        const dataConclusao =
+                            new Date(registro.data);
+
+                        if (
+                            typeof registro.workoutId !== 'string' ||
+                            !registro.workoutId.trim() ||
+                            !Number.isFinite(
+                                dataConclusao.getTime()
+                            )
+                        ) {
+                            problemas.push(
+                                `Histórico ${indice + 1}: conversão inválida`
+                            );
+                            return;
+                        }
+
+                        const ano = dataConclusao.getFullYear();
+                        const mes = String(
+                            dataConclusao.getMonth() + 1
+                        ).padStart(2, '0');
+
+                        const dia = String(
+                            dataConclusao.getDate()
+                        ).padStart(2, '0');
+
+                        const dataLocal =
+                            `${ano}-${mes}-${dia}`;
+
+                        const chaveConclusao = JSON.stringify([
+                            registro.workoutId,
+                            dataLocal
+                        ]);
+
+                        if (chavesConclusoes.has(chaveConclusao)) {
+                            problemas.push(
+                                `Histórico ${indice + 1}: ` +
+                                'mesmo treino concluído ' +
+                                'mais de uma vez no mesmo dia'
+                            );
+                        }
+
+                        chavesConclusoes.add(chaveConclusao);
+
+                        historicosConvertidos.push({
+                            treino_id: registro.workoutId,
+                            data_local: dataLocal,
+                            dados: {
+                                ...registro
+                            },
+                            concluido_em:
+                                registro.data
+                        });
+                    });
+
+                    const historicosConvertidosValidos =
+                        historicosConvertidos.length ===
+                            historico.length &&
+                        historicosConvertidos.every(
+                            registro =>
+                                typeof registro.treino_id === 'string' &&
+                                registro.treino_id.trim() !== '' &&
+                                /^\d{4}-\d{2}-\d{2}$/.test(
+                                    registro.data_local
+                                ) &&
+                                registro.dados.workoutId ===
+                                    registro.treino_id &&
+                                typeof registro.dados.nome === 'string' &&
+                                Array.isArray(
+                                    registro.dados.exercicios
+                                ) &&
+                                Number.isFinite(
+                                    Date.parse(
+                                        registro.concluido_em
+                                    )
+                                )
+                        );
+
+                    if (!historicosConvertidosValidos) {
+                        problemas.push(
+                            'Falha na preparação do histórico para Supabase'
+                        );
+                    }
+
                     const resumoCompatibilidade =
                         problemas.length === 0
                             ? 'Nenhuma incompatibilidade inicial encontrada.'
@@ -430,6 +522,14 @@
                         'Estrutura dos treinos: ' +
                             (
                                 treinosConvertidosValidos
+                                    ? 'Válida'
+                                    : 'Incompatível'
+                            ),
+                        'Históricos preparados: ' +
+                            historicosConvertidos.length,
+                        'Estrutura do histórico: ' +
+                            (
+                                historicosConvertidosValidos
                                     ? 'Válida'
                                     : 'Incompatível'
                             ),
