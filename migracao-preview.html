@@ -344,6 +344,47 @@
                         );
                     }
 
+                    /* =========================================
+                       PREPARAR TREINOS PARA MIGRACAO
+                       SOMENTE LEITURA - V1
+                    ========================================= */
+
+                    const treinosConvertidos = treinos.map(
+                        treino => ({
+                            treino_id: treino.id,
+                            dados: {
+                                ...treino
+                            }
+                        })
+                    );
+
+                    const idsConvertidos = new Set(
+                        treinosConvertidos.map(
+                            treino => treino.treino_id
+                        )
+                    );
+
+                    const treinosConvertidosValidos =
+                        treinosConvertidos.every(
+                            treino =>
+                                typeof treino.treino_id === 'string' &&
+                                treino.treino_id.trim() !== '' &&
+                                treino.dados.id === treino.treino_id &&
+                                typeof treino.dados.nome === 'string' &&
+                                treino.dados.nome.trim() !== '' &&
+                                Array.isArray(
+                                    treino.dados.exercicios
+                                )
+                        ) &&
+                        idsConvertidos.size ===
+                            treinosConvertidos.length;
+
+                    if (!treinosConvertidosValidos) {
+                        problemas.push(
+                            'Falha na preparação dos treinos para Supabase'
+                        );
+                    }
+
                     const resumoCompatibilidade =
                         problemas.length === 0
                             ? 'Nenhuma incompatibilidade inicial encontrada.'
@@ -382,6 +423,16 @@
                             seriesMarcadas,
                         'Séries do treino ativo: ' +
                             seriesTreinoAtivo,
+                        '',
+                        'PREPARAÇÃO PARA SUPABASE',
+                        'Treinos preparados: ' +
+                            treinosConvertidos.length,
+                        'Estrutura dos treinos: ' +
+                            (
+                                treinosConvertidosValidos
+                                    ? 'Válida'
+                                    : 'Incompatível'
+                            ),
                         '',
                         'COMPATIBILIDADE INICIAL',
                         resumoCompatibilidade,
