@@ -693,6 +693,66 @@
                         favoritosValidos &&
                         secoesDesempenhoValidas;
 
+                    /* =========================================
+                       VALIDAR PERFIL E FOTO
+                       SOMENTE LEITURA - V1
+                    ========================================= */
+
+                    const camposPerfil = [
+                        'nome',
+                        'idade',
+                        'tipoSanguineo',
+                        'peso',
+                        'altura',
+                        'treinador',
+                        'infoPessoais'
+                    ];
+
+                    const perfilValido =
+                        perfil === null ||
+                        (
+                            camposPerfil.every(
+                                campo =>
+                                    !Object.hasOwn(perfil, campo) ||
+                                    typeof perfil[campo] === 'string'
+                            ) &&
+                            (
+                                !Object.hasOwn(perfil, 'nome') ||
+                                perfil.nome.trim().length > 0
+                            )
+                        );
+
+                    if (!perfilValido) {
+                        problemas.push(
+                            'Perfil: dados incompatíveis'
+                        );
+                    }
+
+                    const fotoOriginal =
+                        backup.dados.fotoPerfil;
+
+                    const fotoValida =
+                        fotoOriginal === null ||
+                        (
+                            typeof fotoOriginal === 'string' &&
+                            /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(
+                                fotoOriginal
+                            )
+                        );
+
+                    if (!fotoValida) {
+                        problemas.push(
+                            'Foto do perfil: formato incompatível'
+                        );
+                    }
+
+                    const fotoPresente =
+                        fotoOriginal !== null &&
+                        fotoOriginal !== undefined;
+
+                    const perfilFotoValidos =
+                        perfilValido && fotoValida;
+
                     const resumoCompatibilidade =
                         problemas.length === 0
                             ? 'Nenhuma incompatibilidade inicial encontrada.'
@@ -779,9 +839,24 @@
                                     ? 'Válidas'
                                     : 'Incompatíveis'
                             ),
+
                         'Validação complementar: ' +
                             (
                                 dadosComplementaresValidos
+                                    ? 'Aprovada'
+                                    : 'Requer correção'
+                            ),
+                        '',
+                        'PERFIL E FOTO',
+                        'Perfil: ' +
+                            (perfilValido ? 'Válido' : 'Incompatível'),
+                        'Foto personalizada: ' +
+                            (fotoPresente ? 'Presente' : 'Ausente'),
+                        'Formato da foto: ' +
+                            (fotoValida ? 'Válido' : 'Incompatível'),
+                        'Validação do perfil e foto: ' +
+                            (
+                                perfilFotoValidos
                                     ? 'Aprovada'
                                     : 'Requer correção'
                             ),
