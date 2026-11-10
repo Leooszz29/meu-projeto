@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>Pré-visualização da Migração | FitZone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #101216;
+            color: #ffffff;
+            margin: 0;
+            padding: 24px;
+        }
+
+        main {
+            max-width: 560px;
+            margin: 40px auto;
+        }
+
+        h1 {
+            color: #e4bd68;
+        }
+
+        input {
+            display: block;
+            margin: 20px 0;
+            max-width: 100%;
+        }
+
+        #resultado {
+            background: #1d222a;
+            border-radius: 12px;
+            padding: 20px;
+            white-space: pre-wrap;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>FitZone — Migração</h1>
+
+        <p>
+            Selecione o backup tradicional para analisar
+            seus dados antes da migração.
+        </p>
+
+        <p>
+            Esta ferramenta apenas lê o arquivo.
+            Nenhum dado será enviado ou alterado.
+        </p>
+
+        <input
+            type="file"
+            id="arquivoBackup"
+            accept=".json,application/json"
+        >
+
+        <div id="resultado" role="status">
+            Nenhum arquivo selecionado.
+        </div>
+    </main>
+
+    <script>
+        const arquivoInput =
+            document.getElementById('arquivoBackup');
+
+        const resultado =
+            document.getElementById('resultado');
+
+        arquivoInput.addEventListener(
+            'change',
+            async () => {
+                const arquivo = arquivoInput.files?.[0];
+
+                if (!arquivo) {
+                    return;
+                }
+
+                resultado.textContent =
+                    'Analisando backup...';
+
+                try {
+                    if (
+                        arquivo.size === 0 ||
+                        arquivo.size > 20 * 1024 * 1024
+                    ) {
+                        throw new Error(
+                            'O arquivo deve ter até 20 MB.'
+                        );
+                    }
+
+                    const texto = await arquivo.text();
+                    const backup = JSON.parse(texto);
+
+                    if (
+                        !backup ||
+                        backup.aplicativo !== 'FitZone' ||
+                        backup.versaoBackup !== 1 ||
+                        typeof backup.contaEmail !== 'string' ||
+                        !backup.contaEmail.trim() ||
+                        !backup.dados ||
+                        typeof backup.dados !== 'object' ||
+                        Array.isArray(backup.dados)
+                    ) {
+                        throw new Error(
+                            'Formato de backup incompatível.'
+                        );
+                    }
+
+                    const obrigatorias = [
+                        'perfil',
+                        'fotoPerfil',
+                        'treinos',
+                        'historico',
+                        'progresso',
+                        'treinoAtivo',
+                        'checkins',
+                        'metaMensal'
+                    ];
+
+                    const opcionais = [
+                        'favoritos',
+                        'secoesDesempenho'
+                    ];
+
+                    const categorias = [
+                        ...obrigatorias,
+                        ...opcionais
+                    ];
+
+                    if (
+                        !obrigatorias.every(
+                            chave => Object.hasOwn(
+                                backup.dados,
+                                chave
+                            )
+                        ) ||
+                        !Object.entries(backup.dados).every(
+                            ([chave, valor]) =>
+                                categorias.includes(chave) &&
+                                (
+                                    valor === null ||
+                                    typeof valor === 'string'
+                                )
+                        )
+                    ) {
+                        throw new Error(
+                            'Categorias do backup inválidas.'
+                        );
+                    }
+
+                    function lerCategoria(nome, tipo) {
+                        const valor = backup.dados[nome];
+
+                        if (valor === null || valor === undefined) {
+                            return tipo === 'lista' ? [] : null;
+                        }
+
+                        const dados = JSON.parse(valor);
+
+                        const valido = tipo === 'lista'
+                            ? Array.isArray(dados)
+                            : (
+                                dados !== null &&
+                                typeof dados === 'object' &&
+                                !Array.isArray(dados)
+                            );
+
+                        if (!valido) {
+                            throw new Error(
+                                'Dados inválidos: ' + nome
+                            );
+                        }
+
+                        return dados;
+                    }
+
+                    const treinos =
+                        lerCategoria('treinos', 'lista');
+
+                    const historico =
+                        lerCategoria('historico', 'lista');
+
+                    const treinoAtivo =
+                        lerCategoria('treinoAtivo', 'objeto');
+
+                    const checkins =
+                        lerCategoria('checkins', 'objeto');
+
+                    const perfil =
+                        lerCategoria('perfil', 'objeto');
+
+                    const favoritos =
+                        lerCategoria('favoritos', 'lista');
+
+                    const data = Number.isFinite(
+                        Date.parse(backup.exportadoEm)
+                    )
+                        ? new Date(
+                            backup.exportadoEm
+                        ).toLocaleDateString('pt-BR')
+                        : 'Não identificada';
+
+                    resultado.textContent = [
+                        'ANÁLISE INICIAL CONCLUÍDA',
+                        '',
+                        'Data do backup: ' + data,
+                        'Treinos: ' + treinos.length,
+                        'Histórico: ' + historico.length,
+                        'Treino ativo: ' +
+                            (treinoAtivo ? 'Sim' : 'Não'),
+                        'Check-ins registrados: ' +
+                            (checkins
+                                ? Object.keys(checkins).length
+                                : 0),
+                        'Perfil: ' +
+                            (perfil ? 'Presente' : 'Ausente'),
+                        'Favoritos: ' + favoritos.length,
+                        '',
+                        'Nenhum dado foi alterado.',
+                        '',
+                        'Esta é uma análise preliminar.',
+                        'A compatibilidade completa ainda',
+                        'precisa ser verificada.'
+                    ].join('\n');
+
+                } catch (erro) {
+                    resultado.textContent =
+                        'Não foi possível analisar o backup.\n' +
+                        erro.message;
+                }
+            }
+        );
+    </script>
+</body>
+</html>
