@@ -763,6 +763,43 @@
                         'Preferências do usuário'
                     ];
 
+                    /* =========================================
+                       LOCALIZAR PREFERENCIAS TRADICIONAIS
+                       SOMENTE LEITURA - V1
+                    ========================================= */
+
+                    const emailBackup =
+                        backup.contaEmail.trim().toLowerCase();
+
+                    const generoLocal = localStorage.getItem(
+                        `generoFitZone:${emailBackup}`
+                    );
+
+                    const generoLocalValido =
+                        generoLocal === 'masculino' ||
+                        generoLocal === 'feminino';
+
+                    const preferenciasLocais = localStorage.getItem(
+                        `fitzonePreferencias:${emailBackup}`
+                    );
+
+                    let preferenciasLocaisValidas = false;
+
+                    if (preferenciasLocais !== null) {
+                        try {
+                            const dadosPreferencias =
+                                JSON.parse(preferenciasLocais);
+
+                            preferenciasLocaisValidas =
+                                dadosPreferencias !== null &&
+                                typeof dadosPreferencias === 'object' &&
+                                !Array.isArray(dadosPreferencias);
+
+                        } catch (erro) {
+                            preferenciasLocaisValidas = false;
+                        }
+                    }
+
                     const idsProgresso = progresso
                         ? Object.keys(progresso)
                         : [];
@@ -915,9 +952,23 @@
                         'AUDITORIA DE DADOS PENDENTES',
                         'Informações fora do backup: ' +
                             dadosNaoIncluidos.join(', '),
+
                         'Séries de outros treinos: ' +
                             seriesOutrosTreinos,
+                        'Gênero neste navegador: ' +
+                            (
+                                generoLocalValido
+                                    ? 'Encontrado'
+                                    : 'Não localizado'
+                            ),
+                        'Preferências neste navegador: ' +
+                            (
+                                preferenciasLocaisValidas
+                                    ? 'Encontradas'
+                                    : 'Não localizadas'
+                            ),
                         'Situação: requer tratamento antes da migração',
+
                         '',
 
                         'COMPATIBILIDADE INICIAL',
