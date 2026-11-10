@@ -753,6 +753,56 @@
                     const perfilFotoValidos =
                         perfilValido && fotoValida;
 
+                    /* =========================================
+                       AUDITORIA DE DADOS NAO COBERTOS
+                       SOMENTE LEITURA - V1
+                    ========================================= */
+
+                    const dadosNaoIncluidos = [
+                        'Gênero e tema visual',
+                        'Preferências do usuário'
+                    ];
+
+                    const idsProgresso = progresso
+                        ? Object.keys(progresso)
+                        : [];
+
+                    const outrosProgressos = idsProgresso.filter(
+                        treinoId =>
+                            !treinoAtivo ||
+                            treinoId !== treinoAtivo.id
+                    );
+
+                    const seriesOutrosTreinos =
+                        outrosProgressos.reduce(
+                            (total, treinoId) => {
+                                const exercicios =
+                                    progresso[treinoId];
+
+                                if (
+                                    !exercicios ||
+                                    typeof exercicios !== 'object' ||
+                                    Array.isArray(exercicios)
+                                ) {
+                                    return total;
+                                }
+
+                                return total + Object.values(
+                                    exercicios
+                                ).reduce(
+                                    (subtotal, series) =>
+                                        subtotal +
+                                        (
+                                            Array.isArray(series)
+                                                ? series.length
+                                                : 0
+                                        ),
+                                    0
+                                );
+                            },
+                            0
+                        );
+
                     const resumoCompatibilidade =
                         problemas.length === 0
                             ? 'Nenhuma incompatibilidade inicial encontrada.'
@@ -861,6 +911,15 @@
                                     : 'Requer correção'
                             ),
                         '',
+
+                        'AUDITORIA DE DADOS PENDENTES',
+                        'Informações fora do backup: ' +
+                            dadosNaoIncluidos.join(', '),
+                        'Séries de outros treinos: ' +
+                            seriesOutrosTreinos,
+                        'Situação: requer tratamento antes da migração',
+                        '',
+
                         'COMPATIBILIDADE INICIAL',
 
                         resumoCompatibilidade,
