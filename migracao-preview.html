@@ -61,6 +61,14 @@
             accept=".json,application/json"
         >
 
+        <button
+            type="button"
+            id="exportarPreferencias"
+            disabled
+        >
+            Exportar preferências para migração
+        </button>
+
         <div id="resultado" role="status">
             Nenhum arquivo selecionado.
         </div>
@@ -73,6 +81,44 @@
         const resultado =
             document.getElementById('resultado');
 
+        const botaoExportarPreferencias =
+            document.getElementById('exportarPreferencias');
+
+        let preferenciasParaExportar = null;
+
+        botaoExportarPreferencias.addEventListener(
+            'click',
+            () => {
+                if (!preferenciasParaExportar) {
+                    return;
+                }
+
+                const conteudo = JSON.stringify(
+                    preferenciasParaExportar,
+                    null,
+                    2
+                );
+
+                const arquivo = new Blob(
+                    [conteudo],
+                    { type: 'application/json' }
+                );
+
+                const url = URL.createObjectURL(arquivo);
+                const link = document.createElement('a');
+
+                link.href = url;
+                link.download =
+                    'fitzone-preferencias-migracao.json';
+
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+
+                URL.revokeObjectURL(url);
+            }
+        );
+
         arquivoInput.addEventListener(
             'change',
             async () => {
@@ -81,6 +127,9 @@
                 if (!arquivo) {
                     return;
                 }
+
+                preferenciasParaExportar = null;
+                botaoExportarPreferencias.disabled = true;
 
                 resultado.textContent =
                     'Analisando backup...';
@@ -906,6 +955,26 @@
                             backup.exportadoEm
                         ).toLocaleDateString('pt-BR')
                         : 'Não identificada';
+
+                    if (
+                        problemas.length === 0 &&
+                        preferenciasConvertidas &&
+                        preferenciasConvertidas.genero !== null
+                    ) {
+                        preferenciasParaExportar = {
+                            aplicativo: 'FitZone',
+                            tipo: 'preferencias-migracao',
+                            versao: 1,
+                            contaEmail: emailBackup,
+                            exportadoEm:
+                                new Date().toISOString(),
+                            preferencias: {
+                                ...preferenciasConvertidas
+                            }
+                        };
+
+                        botaoExportarPreferencias.disabled = false;
+                    }
 
                     resultado.textContent = [
                         'ANÁLISE INICIAL CONCLUÍDA',
