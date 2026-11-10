@@ -584,6 +584,115 @@
                         );
                     }
 
+                    /* =========================================
+                       VALIDAR DADOS COMPLEMENTARES
+                       SOMENTE LEITURA - V1
+                    ========================================= */
+
+                    const checkinsValidos =
+                        !checkins ||
+                        Object.entries(checkins).every(
+                            ([data, registro]) => {
+                                if (
+                                    !/^\d{4}-\d{2}-\d{2}$/.test(data)
+                                ) {
+                                    return false;
+                                }
+
+                                const [ano, mes, dia] =
+                                    data.split('-').map(Number);
+
+                                const dataVerificada = new Date(
+                                    Date.UTC(ano, mes - 1, dia)
+                                );
+
+                                return (
+                                    dataVerificada.getUTCFullYear() === ano &&
+                                    dataVerificada.getUTCMonth() === mes - 1 &&
+                                    dataVerificada.getUTCDate() === dia &&
+                                    registro !== null &&
+                                    typeof registro === 'object' &&
+                                    !Array.isArray(registro) &&
+                                    typeof registro.checked === 'boolean' &&
+                                    typeof registro.treino === 'string'
+                                );
+                            }
+                        );
+
+                    if (!checkinsValidos) {
+                        problemas.push(
+                            'Check-ins: estrutura incompatível'
+                        );
+                    }
+
+                    const valorMetaMensal =
+                        backup.dados.metaMensal;
+
+                    const metaMensalValida =
+                        valorMetaMensal === null ||
+                        (
+                            valorMetaMensal.trim() !== '' &&
+                            Number.isInteger(
+                                Number(valorMetaMensal)
+                            ) &&
+                            Number(valorMetaMensal) >= 1 &&
+                            Number(valorMetaMensal) <= 100
+                        );
+
+                    if (!metaMensalValida) {
+                        problemas.push(
+                            'Meta mensal: valor incompatível'
+                        );
+                    }
+
+                    const favoritosValidos =
+                        favoritos.every(
+                            favorito =>
+                                typeof favorito === 'string' &&
+                                favorito.trim() !== ''
+                        ) &&
+                        new Set(favoritos).size ===
+                            favoritos.length;
+
+                    if (!favoritosValidos) {
+                        problemas.push(
+                            'Favoritos: estrutura incompatível'
+                        );
+                    }
+
+                    let secoesDesempenhoValidas = true;
+
+                    if (
+                        backup.dados.secoesDesempenho !== null &&
+                        backup.dados.secoesDesempenho !== undefined
+                    ) {
+                        try {
+                            const secoes = JSON.parse(
+                                backup.dados.secoesDesempenho
+                            );
+
+                            secoesDesempenhoValidas =
+                                secoes !== null &&
+                                typeof secoes === 'object' &&
+                                !Array.isArray(secoes);
+
+                        } catch (erro) {
+                            secoesDesempenhoValidas = false;
+                        }
+                    }
+
+                    if (!secoesDesempenhoValidas) {
+                        problemas.push(
+                            'Preferências visuais: estrutura incompatível'
+                        );
+                    }
+
+                    const dadosComplementaresValidos =
+                        checkinsValidos &&
+                        metaMensalValida &&
+                        favoritosValidos &&
+                        secoesDesempenhoValidas;
+
                     const resumoCompatibilidade =
                         problemas.length === 0
                             ? 'Nenhuma incompatibilidade inicial encontrada.'
@@ -649,11 +758,32 @@
                             ),
                         'Séries preservadas na conversão: ' +
                             seriesAtivasConvertidas,
+
                         'Estrutura do treino ativo: ' +
                             (
                                 treinoAtivoConvertidoValido
                                     ? 'Válida'
                                     : 'Incompatível'
+                            ),
+                        '',
+                        'DADOS COMPLEMENTARES',
+                        'Check-ins: ' +
+                            (checkinsValidos ? 'Válidos' : 'Incompatíveis'),
+                        'Meta mensal: ' +
+                            (metaMensalValida ? 'Válida' : 'Incompatível'),
+                        'Favoritos: ' +
+                            (favoritosValidos ? 'Válidos' : 'Incompatíveis'),
+                        'Preferências visuais: ' +
+                            (
+                                secoesDesempenhoValidas
+                                    ? 'Válidas'
+                                    : 'Incompatíveis'
+                            ),
+                        'Validação complementar: ' +
+                            (
+                                dadosComplementaresValidos
+                                    ? 'Aprovada'
+                                    : 'Requer correção'
                             ),
                         '',
                         'COMPATIBILIDADE INICIAL',
