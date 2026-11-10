@@ -547,56 +547,66 @@ function alternarVisibilidadeSenha() {
    FITZONE - BOTAO RECUPERACAO SUPABASE
 ========================================= */
 
-const forgotPasswordSupabaseBtn =
-    document.getElementById('forgotPasswordSupabaseBtn');
+const recoveryEmailLinkBtn =
+    document.getElementById('recoveryEmailLinkBtn');
 
-if (forgotPasswordSupabaseBtn) {
-    forgotPasswordSupabaseBtn.addEventListener(
+if (recoveryEmailLinkBtn) {
+    recoveryEmailLinkBtn.addEventListener(
         'click',
         async () => {
             const email =
-                emailInput.value.trim().toLowerCase();
+                recoveryEmail.value.trim().toLowerCase();
 
-            clearError();
+            recoveryError.textContent = '';
+            recoveryError.classList.remove('show');
 
             if (!email || !validateEmail(email)) {
-                showError(
-                    'Informe um e-mail válido no campo de login ' +
-                    'para recuperar sua senha Supabase.'
-                );
-
-                emailInput.focus();
+                recoveryError.textContent =
+                    'Informe um e-mail válido.';
+                recoveryError.classList.add('show');
+                recoveryEmail.focus();
                 return;
             }
 
-            forgotPasswordSupabaseBtn.disabled = true;
-            forgotPasswordSupabaseBtn.textContent =
+            recoveryEmailLinkBtn.disabled = true;
+            recoveryEmailLinkBtn.textContent =
                 'Enviando solicitação...';
 
             try {
                 await solicitarRecuperacaoSenhaSupabase(email);
 
+                passwordRecoveryOverlay.classList.remove(
+                    'show'
+                );
+
+                passwordRecoveryOverlay.setAttribute(
+                    'aria-hidden',
+                    'true'
+                );
+
                 showSuccess(
-                    'Se existir uma conta Supabase para este e-mail, ' +
-                    'você receberá um link de recuperação. ' +
+                    'Se houver uma conta com recuperação ' +
+                    'por e-mail para esse endereço, ' +
+                    'você receberá um link. ' +
                     'Verifique também a pasta de spam.'
                 );
 
             } catch (erro) {
                 console.error(
-                    'Erro ao solicitar recuperação Supabase:',
+                    'Erro ao solicitar recuperação por e-mail:',
                     erro
                 );
 
-                showError(
-                    'Não foi possível solicitar a recuperação. ' +
-                    'Verifique sua conexão e tente novamente.'
-                );
+                recoveryError.textContent =
+                    'Não foi possível enviar a solicitação. ' +
+                    'Verifique sua conexão e tente novamente.';
+
+                recoveryError.classList.add('show');
 
             } finally {
-                forgotPasswordSupabaseBtn.disabled = false;
-                forgotPasswordSupabaseBtn.textContent =
-                    'Recuperar senha da conta Supabase';
+                recoveryEmailLinkBtn.disabled = false;
+                recoveryEmailLinkBtn.textContent =
+                    'Receber link por e-mail';
             }
         }
     );
