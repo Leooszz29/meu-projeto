@@ -341,6 +341,59 @@
                     );
                 }
 
+                /* =========================================
+                   CONFERIR TREINOS REAIS NO SUPABASE
+                   SOMENTE LEITURA
+                ========================================= */
+
+                const cliente =
+                    inicializarSupabaseFitZone();
+
+                if (!cliente) {
+                    throw new Error(
+                        'Não foi possível conectar ao Supabase.'
+                    );
+                }
+
+                const { data: treinosBanco, error: erroTreinos } =
+                    await cliente
+                        .from('fitzone_treinos')
+                        .select('treino_id')
+                        .eq('usuario_id', identidade.id);
+
+                if (erroTreinos) {
+                    throw new Error(
+                        'Falha ao consultar treinos no Supabase: ' +
+                        erroTreinos.message
+                    );
+                }
+
+                const idsBanco = new Set(
+                    (treinosBanco || []).map(
+                        treino => treino.treino_id
+                    )
+                );
+
+                const idsBackup = new Set(
+                    destino.treinos.map(
+                        treino => treino.treino_id
+                    )
+                );
+
+                const treinosBancoCorrespondem =
+                    idsBanco.size === idsBackup.size &&
+                    [...idsBackup].every(
+                        id => idsBanco.has(id)
+                    );
+
+                if (!treinosBancoCorrespondem) {
+                    throw new Error(
+                        'Os treinos atuais do Supabase ' +
+                        'não correspondem ao backup atualizado. ' +
+                        'Nenhuma migração foi autorizada.'
+                    );
+                }
+
                 const mapaTreinos = new Map(
                     destino.treinos.map(t => [
                         t.treino_id,
@@ -390,6 +443,8 @@
                     'IDENTIDADE',
                     'Sessão Supabase: autenticada',
                     'Backup de destino: correspondente',
+                    'Treinos atuais no banco: ' + idsBanco.size,
+                    'Treinos do backup conferidos: Sim',
                     'E-mails diferentes: permitidos para análise',
                     'Migração: NÃO AUTORIZADA',
                     '',
