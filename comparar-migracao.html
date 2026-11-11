@@ -1548,6 +1548,29 @@
            IMPORTACAO PROTEGIDA DO HISTORICO
         ========================================= */
 
+        function compararConteudoHistorico(a, b) {
+            function normalizar(valor) {
+                if (Array.isArray(valor)) {
+                    return valor.map(normalizar);
+                }
+
+                if (objetoValido(valor)) {
+                    const ordenado = {};
+
+                    Object.keys(valor).sort().forEach(chave => {
+                        ordenado[chave] = normalizar(valor[chave]);
+                    });
+
+                    return ordenado;
+                }
+
+                return valor;
+            }
+
+            return JSON.stringify(normalizar(a)) ===
+                JSON.stringify(normalizar(b));
+        }
+
         botaoHistorico.addEventListener('click', async () => {
             if (
                 historicoEmAndamento ||
@@ -1633,8 +1656,12 @@
                                 atual.treino_id === registro.treino_id &&
                                 atual.data_local === registro.data_local &&
                                 atual.concluido_em === registro.concluido_em &&
-                                JSON.stringify(atual.dados) ===
-                                    JSON.stringify(registro.dados);
+
+                                compararConteudoHistorico(
+                                    atual.dados,
+                                    registro.dados
+                                );
+
                         })
                     ) {
                         throw new Error(
@@ -1735,8 +1762,12 @@
                     conferidos.length !==
                         plano.existentes.length + 1 ||
                     !gravado ||
-                    JSON.stringify(gravado.dados) !==
-                        JSON.stringify(registro.dados) ||
+
+                    !compararConteudoHistorico(
+                        gravado.dados,
+                        registro.dados
+                    ) ||
+
                     gravado.concluido_em !== registro.concluido_em
                 ) {
                     throw new Error(
