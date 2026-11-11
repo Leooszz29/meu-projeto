@@ -394,6 +394,62 @@
                     );
                 }
 
+                /* =========================================
+                   CONFERIR HISTORICO REAL NO SUPABASE
+                   SOMENTE LEITURA
+                ========================================= */
+
+                const {
+                    data: historicoBanco,
+                    error: erroHistorico
+                } = await cliente
+                    .from('fitzone_historico_treinos')
+                    .select('id, treino_id, data_local')
+                    .eq('usuario_id', identidade.id);
+
+                if (erroHistorico) {
+                    throw new Error(
+                        'Falha ao consultar histórico no Supabase: ' +
+                        erroHistorico.message
+                    );
+                }
+
+                const registrosBanco = historicoBanco || [];
+
+                const chaveRegistro = registro =>
+                    JSON.stringify([
+                        String(registro.id),
+                        registro.treino_id,
+                        registro.data_local
+                    ]);
+
+                const chavesHistoricoBanco = new Set(
+                    registrosBanco.map(chaveRegistro)
+                );
+
+                const chavesHistoricoBackup = new Set(
+                    destino.historico.map(chaveRegistro)
+                );
+
+                const historicoBancoCorresponde =
+                    registrosBanco.length ===
+                        destino.historico.length &&
+                    chavesHistoricoBanco.size ===
+                        registrosBanco.length &&
+                    chavesHistoricoBackup.size ===
+                        destino.historico.length &&
+                    [...chavesHistoricoBackup].every(
+                        chave => chavesHistoricoBanco.has(chave)
+                    );
+
+                if (!historicoBancoCorresponde) {
+                    throw new Error(
+                        'O histórico atual do Supabase não ' +
+                        'corresponde ao backup atualizado. ' +
+                        'Nenhuma migração foi autorizada.'
+                    );
+                }
+
                 const mapaTreinos = new Map(
                     destino.treinos.map(t => [
                         t.treino_id,
@@ -445,6 +501,9 @@
                     'Backup de destino: correspondente',
                     'Treinos atuais no banco: ' + idsBanco.size,
                     'Treinos do backup conferidos: Sim',
+                    'Históricos atuais no banco: ' +
+                        registrosBanco.length,
+                    'Históricos do backup conferidos: Sim',
                     'E-mails diferentes: permitidos para análise',
                     'Migração: NÃO AUTORIZADA',
                     '',
