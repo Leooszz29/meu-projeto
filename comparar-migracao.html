@@ -121,6 +121,15 @@
             Comparar backups
         </button>
 
+        <!-- IMPORTAÇÃO SEGURA: BLOQUEADA ATÉ VALIDAÇÃO -->
+        <button
+            type="button"
+            id="importarTreinos"
+            disabled
+        >
+            Importação ainda não disponível
+        </button>
+
         <div id="resultado" role="status">
             Selecione os dois arquivos para iniciar.
         </div>
@@ -132,6 +141,28 @@
     <script>
         const resultado = document.getElementById('resultado');
         const botao = document.getElementById('comparar');
+
+        const botaoImportar =
+            document.getElementById('importarTreinos');
+
+        let planoImportacao = null;
+
+        function bloquearImportacao() {
+            planoImportacao = null;
+            botaoImportar.disabled = true;
+            botaoImportar.textContent =
+                'Importação ainda não disponível';
+        }
+
+        ['backupTradicional', 'backupSupabase'].forEach(
+            id => {
+                document.getElementById(id)
+                    .addEventListener(
+                        'change',
+                        bloquearImportacao
+                    );
+            }
+        );
 
         const objetoValido = valor =>
             valor !== null &&
@@ -462,8 +493,11 @@
             return `${ano}-${mes}-${dia}`;
         }
 
-        botao.addEventListener('click', async () => {
+            botao.addEventListener('click', async () => {
             botao.disabled = true;
+            botao.addEventListener('click', async () => {
+            botao.disabled = true;
+            bloquearImportacao();
             resultado.textContent =
                 'Validando identidade e comparando arquivos...';
 
@@ -789,6 +823,41 @@
                 const totalTreinosPrevisto =
                     destino.treinos.length +
                     treinosParaImportar.length;
+
+                /* =========================================
+                   PREPARAR PLANO DE IMPORTACAO
+                   SEM GRAVAR DADOS
+                ========================================= */
+
+                if (
+                    simulacaoSegura &&
+                    treinosParaImportar.length > 0 &&
+                    treinosParaImportar.every(treino =>
+                        typeof treino.treino_id === 'string' &&
+                        treino.treino_id.trim() &&
+                        objetoValido(treino.dados) &&
+                        treino.dados.id === treino.treino_id &&
+                        typeof treino.dados.nome === 'string' &&
+                        treino.dados.nome.trim() &&
+                        Array.isArray(treino.dados.exercicios) &&
+                        !idsBanco.has(treino.treino_id)
+                    )
+                ) {
+                    planoImportacao = {
+                        usuarioId: identidade.id,
+                        registros: treinosParaImportar.map(
+                            treino => ({
+                                treino_id: treino.treino_id,
+                                dados: structuredClone(treino.dados)
+                            })
+                        )
+                    };
+                }
+
+                // A importação continuará bloqueada.
+                botaoImportar.disabled = true;
+                botaoImportar.textContent =
+                    'Importação aguardando liberação';
 
                 const mapaTreinos = new Map(
                     destino.treinos.map(t => [
