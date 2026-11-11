@@ -921,6 +921,59 @@
                         historicosNovos++;
                     }
                 }
+ 
+                /* =========================================
+                   SIMULAR IMPORTACAO DO HISTORICO
+                   SOMENTE LEITURA
+                ========================================= */
+
+                const chavesHistoricoOrigem = new Set();
+                const registrosHistoricoParaImportar = [];
+                const conflitosHistorico = [];
+
+                for (const registro of origem.historico) {
+                    const diaConclusao = dataLocal(registro.data);
+
+                    const chave = JSON.stringify([
+                        registro.workoutId,
+                        diaConclusao
+                    ]);
+
+                    if (chavesHistoricoOrigem.has(chave)) {
+                        conflitosHistorico.push(
+                            'Conclusão duplicada no backup.'
+                        );
+                        continue;
+                    }
+
+                    chavesHistoricoOrigem.add(chave);
+
+                    if (!idsBanco.has(registro.workoutId)) {
+                        conflitosHistorico.push(
+                            'O treino do histórico não existe ' +
+                            'na conta Supabase.'
+                        );
+                        continue;
+                    }
+
+                    if (chavesHistorico.has(chave)) {
+                        continue;
+                    }
+
+                    registrosHistoricoParaImportar.push({
+                        treino_id: registro.workoutId,
+                        data_local: diaConclusao,
+                        dados: structuredClone(registro),
+                        concluido_em: registro.data
+                    });
+                }
+
+                const historicoSeguro =
+                    conflitosHistorico.length === 0;
+
+                const totalHistoricoPrevisto =
+                    destino.historico.length +
+                    registrosHistoricoParaImportar.length;
 
                 resultado.textContent = [
                     'COMPARAÇÃO INICIAL CONCLUÍDA',
@@ -966,6 +1019,17 @@
                     'Chaves ausentes: ' + historicosNovos,
                     'Chaves coincidentes: ' +
                         historicosCoincidentes,
+                    '',
+                    'SIMULAÇÃO DA IMPORTAÇÃO DO HISTÓRICO',
+                    'Registros novos: ' +
+                        registrosHistoricoParaImportar.length,
+                    'Conflitos encontrados: ' +
+                        conflitosHistorico.length,
+                    'Total previsto de históricos: ' +
+                        totalHistoricoPrevisto,
+                    'Simulação segura: ' +
+                        (historicoSeguro ? 'Sim' : 'Não'),
+                    'Histórico importado: Não',
                     '',
                     'CHECK-INS TRADICIONAIS',
                     'Registros: ' + origem.totalCheckins,
