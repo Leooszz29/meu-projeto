@@ -10,6 +10,19 @@ const FITZONE_SUPABASE_PUBLISHABLE_KEY =
     'sb_publishable_9viROz4cpNBRds8aW5isQA_hYUpRdfH';
 
 /* =========================================
+   FITZONE - DESATIVAR SESSOES TRADICIONAIS
+========================================= */
+
+try {
+    localStorage.removeItem('fitzoneSessao');
+} catch (erro) {
+    console.warn(
+        'Não foi possível limpar a sessão tradicional:',
+        erro
+    );
+}
+
+/* =========================================
    FITZONE - INICIALIZAR CLIENTE SUPABASE
 ========================================= */
 
