@@ -138,6 +138,14 @@
             Verificar segurança da importação
         </button>
 
+        <button
+            type="button"
+            id="importarHistorico"
+            disabled
+        >
+            Importar histórico tradicional
+        </button>
+
         <div id="resultado" role="status">
             Selecione os dois arquivos para iniciar.
         </div>
@@ -155,11 +163,19 @@
 
         let planoImportacao = null;
 
+        const botaoHistorico =
+            document.getElementById('importarHistorico');
+
+        let planoHistorico = null;
+        let historicoEmAndamento = false;
+
         const botaoSeguranca =
             document.getElementById('verificarSeguranca');
 
         function bloquearImportacao() {
             planoImportacao = null;
+            planoHistorico = null;
+            botaoHistorico.disabled = true;
             botaoSeguranca.disabled = true;
             botaoImportar.disabled = true;
             botaoImportar.textContent =
@@ -975,6 +991,25 @@
                     destino.historico.length +
                     registrosHistoricoParaImportar.length;
 
+                if (
+                    historicoSeguro &&
+                    registrosHistoricoParaImportar.length === 1 &&
+                    destino.historico.length === 1 &&
+                    origem.historico.length === 1
+                ) {
+                    planoHistorico = {
+                        usuarioId: identidade.id,
+                        registros: structuredClone(
+                            registrosHistoricoParaImportar
+                        ),
+                        existentes: structuredClone(
+                            destino.historico
+                        )
+                    };
+
+                    botaoHistorico.disabled = false;
+                }
+
                 resultado.textContent = [
                     'COMPARAÇÃO INICIAL CONCLUÍDA',
                     '',
@@ -1508,6 +1543,229 @@
                 }
             }
         );
+
+        /* =========================================
+           IMPORTACAO PROTEGIDA DO HISTORICO
+        ========================================= */
+
+        botaoHistorico.addEventListener('click', async () => {
+            if (
+                historicoEmAndamento ||
+                botaoHistorico.disabled ||
+                !planoHistorico
+            ) {
+                return;
+            }
+
+            historicoEmAndamento = true;
+            botaoHistorico.disabled = true;
+            botao.disabled = true;
+            botaoImportar.disabled = true;
+            botaoSeguranca.disabled = true;
+
+            const campos = [
+                document.getElementById('backupTradicional'),
+                document.getElementById('backupSupabase')
+            ];
+
+            campos.forEach(campo => campo.disabled = true);
+
+            let gravacaoIniciada = false;
+
+            try {
+                const plano = planoHistorico;
+
+                const conferir = async () => {
+                    const identidade =
+                        await obterIdentidadeSupabaseFitZone();
+
+                    if (
+                        !identidade ||
+                        identidade.id !== plano.usuarioId
+                    ) {
+                        throw new Error(
+                            'A conta Supabase foi alterada.'
+                        );
+                    }
+
+                    const cliente =
+                        inicializarSupabaseFitZone();
+
+                    if (!cliente) {
+                        throw new Error('Supabase indisponível.');
+                    }
+
+                    const { data: treinos, error: erroTreinos } =
+                        await cliente
+                            .from('fitzone_treinos')
+                            .select('treino_id')
+                            .eq('usuario_id', identidade.id);
+
+                    if (erroTreinos) throw erroTreinos;
+
+                    const idsTreinos = new Set(
+                        (treinos || []).map(t => t.treino_id)
+                    );
+
+                    const { data: historicos, error } =
+                        await cliente
+                            .from('fitzone_historico_treinos')
+                            .select(
+                                'id, treino_id, data_local, dados, concluido_em'
+                            )
+                            .eq('usuario_id', identidade.id);
+
+                    if (error) throw error;
+
+                    const atuais = historicos || [];
+
+                    const referencia = plano.existentes;
+
+                    if (
+                        atuais.length !== referencia.length ||
+                        !referencia.every(registro => {
+                            const atual = atuais.find(
+                                item => String(item.id) ===
+                                    String(registro.id)
+                            );
+
+                            return atual &&
+                                atual.treino_id === registro.treino_id &&
+                                atual.data_local === registro.data_local &&
+                                atual.concluido_em === registro.concluido_em &&
+                                JSON.stringify(atual.dados) ===
+                                    JSON.stringify(registro.dados);
+                        })
+                    ) {
+                        throw new Error(
+                            'O histórico existente mudou. ' +
+                            'Faça um backup atualizado.'
+                        );
+                    }
+
+                    const chaves = new Set(
+                        atuais.map(registro =>
+                            JSON.stringify([
+                                registro.treino_id,
+                                registro.data_local
+                            ])
+                        )
+                    );
+
+                    for (const registro of plano.registros) {
+                        const chave = JSON.stringify([
+                            registro.treino_id,
+                            registro.data_local
+                        ]);
+
+                        if (
+                            !idsTreinos.has(registro.treino_id) ||
+                            chaves.has(chave) ||
+                            !objetoValido(registro.dados) ||
+                            registro.dados.workoutId !==
+                                registro.treino_id ||
+                            !Number.isFinite(
+                                Date.parse(registro.concluido_em)
+                            ) ||
+                            dataLocal(registro.concluido_em) !==
+                                registro.data_local
+                        ) {
+                            throw new Error(
+                                'Histórico duplicado ou inválido.'
+                            );
+                        }
+
+                        chaves.add(chave);
+                    }
+
+                    return { cliente, identidade, atuais };
+                };
+
+                await conferir();
+
+                const registro = plano.registros[0];
+
+                const confirmar = window.confirm(
+                    'IMPORTAR HISTÓRICO TRADICIONAL?\n\n' +
+                    'Registros para adicionar: 1\n' +
+                    'Data da conclusão: ' +
+                    registro.data_local + '\n\n' +
+                    'O histórico TESTE e os 3 treinos ' +
+                    'serão preservados.\n\n' +
+                    'Confirma a gravação no Supabase?'
+                );
+
+                if (!confirmar) {
+                    resultado.textContent +=
+                        '\n\nImportação de histórico cancelada.';
+                    return;
+                }
+
+                const { cliente, identidade } = await conferir();
+
+                gravacaoIniciada = true;
+
+                const { error } = await cliente
+                    .from('fitzone_historico_treinos')
+                    .insert({
+                        usuario_id: identidade.id,
+                        treino_id: registro.treino_id,
+                        data_local: registro.data_local,
+                        dados: structuredClone(registro.dados),
+                        concluido_em: registro.concluido_em
+                    });
+
+                if (error) throw error;
+
+                const { data: conferidos, error: erroFinal } =
+                    await cliente
+                        .from('fitzone_historico_treinos')
+                        .select('treino_id, data_local, dados, concluido_em')
+                        .eq('usuario_id', identidade.id);
+
+                if (erroFinal) throw erroFinal;
+
+                const gravado = (conferidos || []).find(
+                    item =>
+                        item.treino_id === registro.treino_id &&
+                        item.data_local === registro.data_local
+                );
+
+                if (
+                    conferidos.length !==
+                        plano.existentes.length + 1 ||
+                    !gravado ||
+                    JSON.stringify(gravado.dados) !==
+                        JSON.stringify(registro.dados) ||
+                    gravado.concluido_em !== registro.concluido_em
+                ) {
+                    throw new Error(
+                        'Gravação não pôde ser confirmada. ' +
+                        'Não repita antes de conferir os dados.'
+                    );
+                }
+
+                resultado.textContent +=
+                    '\n\nHISTÓRICO IMPORTADO COM SUCESSO' +
+                    '\nRegistros adicionados: 1' +
+                    '\nTotal de históricos: ' +
+                    conferidos.length +
+                    '\nConferência: Aprovada';
+
+            } catch (erro) {
+                resultado.textContent +=
+                    '\n\nIMPORTAÇÃO DO HISTÓRICO INTERROMPIDA' +
+                    '\n' + erro.message +
+                    (gravacaoIniciada
+                        ? '\nConfira o banco antes de repetir.'
+                        : '\nNenhuma gravação iniciada.');
+            } finally {
+                historicoEmAndamento = false;
+                bloquearImportacao();
+                botao.disabled = false;
+                campos.forEach(campo => campo.disabled = false);
+            }
+        });
 
     </script>
 </body>
