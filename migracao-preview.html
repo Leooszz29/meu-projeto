@@ -152,16 +152,42 @@
 
                     if (
                         !backup ||
-                        backup.aplicativo !== 'FitZone' ||
-                        backup.versaoBackup !== 1 ||
+                        typeof backup !== 'object' ||
+                        Array.isArray(backup)
+                    ) {
+                        throw new Error(
+                            'Backup inválido: estrutura principal.'
+                        );
+                    }
+
+                    if (backup.aplicativo !== 'FitZone') {
+                        throw new Error(
+                            'Backup inválido: identificação do aplicativo.'
+                        );
+                    }
+
+                    if (backup.versaoBackup !== 1) {
+                        throw new Error(
+                            'Backup inválido: versão incompatível.'
+                        );
+                    }
+
+                    if (
                         typeof backup.contaEmail !== 'string' ||
-                        !backup.contaEmail.trim() ||
+                        !backup.contaEmail.trim()
+                    ) {
+                        throw new Error(
+                            'Backup inválido: contaEmail ausente ou vazio.'
+                        );
+                    }
+
+                    if (
                         !backup.dados ||
                         typeof backup.dados !== 'object' ||
                         Array.isArray(backup.dados)
                     ) {
                         throw new Error(
-                            'Formato de backup incompatível.'
+                            'Backup inválido: estrutura dos dados.'
                         );
                     }
 
