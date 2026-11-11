@@ -130,6 +130,14 @@
             Importação ainda não disponível
         </button>
 
+        <button
+            type="button"
+            id="verificarSeguranca"
+            disabled
+        >
+            Verificar segurança da importação
+        </button>
+
         <div id="resultado" role="status">
             Selecione os dois arquivos para iniciar.
         </div>
@@ -147,8 +155,12 @@
 
         let planoImportacao = null;
 
+        const botaoSeguranca =
+            document.getElementById('verificarSeguranca');
+
         function bloquearImportacao() {
             planoImportacao = null;
+            botaoSeguranca.disabled = true;
             botaoImportar.disabled = true;
             botaoImportar.textContent =
                 'Importação ainda não disponível';
@@ -853,6 +865,9 @@
                     };
                 }
 
+                botaoSeguranca.disabled =
+                    planoImportacao === null;
+
                 // A importação continuará bloqueada.
                 botaoImportar.disabled = true;
                 botaoImportar.textContent =
@@ -1084,6 +1099,44 @@
                     idsAtuais.size + plano.registros.length
             };
         }
+
+        /* =========================================
+           TESTAR SEGURANCA SEM GRAVAR DADOS
+        ========================================= */
+
+        botaoSeguranca.addEventListener(
+            'click',
+            async () => {
+                botaoSeguranca.disabled = true;
+
+                try {
+                    const verificacao =
+                        await conferirImportacaoTreinos();
+
+                    resultado.textContent +=
+                        '\n\nVERIFICAÇÃO FINAL DE SEGURANÇA' +
+                        '\nTreinos autorizáveis: ' +
+                        verificacao.quantidade +
+                        '\nTotal previsto: ' +
+                        verificacao.totalPrevisto +
+                        '\nVerificação de segurança: Aprovada' +
+                        '\nImportação executada: Não';
+
+                } catch (erro) {
+                    bloquearImportacao();
+
+                    resultado.textContent +=
+                        '\n\nVERIFICAÇÃO FINAL BLOQUEADA' +
+                        '\n' + erro.message +
+                        '\nNenhum dado foi alterado.';
+
+                } finally {
+                    botaoSeguranca.disabled =
+                        planoImportacao === null;
+                }
+            }
+        );
+
     </script>
 </body>
 </html>
