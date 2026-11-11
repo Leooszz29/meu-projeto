@@ -1289,17 +1289,42 @@
                         )
                     );
 
+                    function normalizarRegistro(valor) {
+                        if (Array.isArray(valor)) {
+                            return valor.map(normalizarRegistro);
+                        }
+
+                        if (objetoValido(valor)) {
+                            const ordenado = {};
+
+                            Object.keys(valor)
+                                .sort()
+                                .forEach(chave => {
+                                    ordenado[chave] =
+                                        normalizarRegistro(valor[chave]);
+                                });
+
+                            return ordenado;
+                        }
+
+                        return valor;
+                    }
+
                     const todosPresentes =
-                        registros.every(
-                            treino =>
+                        registros.every(treino => {
+                            const salvo = registrosPorId.get(
+                                treino.treino_id
+                            );
+
+                            return (
+                                objetoValido(salvo) &&
                                 JSON.stringify(
-                                    registrosPorId.get(
-                                        treino.treino_id
-                                    )
+                                    normalizarRegistro(salvo)
                                 ) === JSON.stringify(
-                                    treino.dados
+                                    normalizarRegistro(treino.dados)
                                 )
-                        );
+                            );
+                        });
 
                     if (!todosPresentes) {
                         throw new Error(
