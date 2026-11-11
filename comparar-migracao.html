@@ -205,6 +205,97 @@
             const ativo =
                 lerDadosTradicionais(backup, 'treinoAtivo');
 
+            const progresso =
+                lerDadosTradicionais(backup, 'progresso');
+
+            if (
+                progresso !== null &&
+                !objetoValido(progresso)
+            ) {
+                throw new Error(
+                    'Progresso tradicional inválido.'
+                );
+            }
+
+            const treinosPorId = new Map(
+                treinos.map(treino => [
+                    treino.id,
+                    treino
+                ])
+            );
+
+            let seriesMarcadas = 0;
+            let seriesTreinoAtivo = 0;
+
+            for (
+                const [treinoId, exercicios]
+                of Object.entries(progresso || {})
+            ) {
+                const treino = treinosPorId.get(treinoId);
+
+                if (!treino || !objetoValido(exercicios)) {
+                    throw new Error(
+                        'Progresso sem treino correspondente.'
+                    );
+                }
+
+                const exerciciosValidos = new Map(
+                    treino.exercicios.map(
+                        (exercicio, indice) => [
+                            exercicio.id || `exercise-${indice}`,
+                            exercicio
+                        ]
+                    )
+                );
+
+                for (
+                    const [exercicioId, series]
+                    of Object.entries(exercicios)
+                ) {
+                    const exercicio =
+                        exerciciosValidos.get(exercicioId);
+
+                    const limite =
+                        Number(exercicio?.series);
+
+                    if (
+                        !exercicio ||
+                        !Number.isInteger(limite) ||
+                        limite < 1 ||
+                        !Array.isArray(series) ||
+                        !series.every(numero =>
+                            Number.isInteger(numero) &&
+                            numero >= 1 &&
+                            numero <= limite
+                        ) ||
+                        new Set(series).size !== series.length
+                    ) {
+                        throw new Error(
+                            'Séries tradicionais incompatíveis.'
+                        );
+                    }
+
+                    seriesMarcadas += series.length;
+
+                    if (ativo && ativo.id === treinoId) {
+                        seriesTreinoAtivo += series.length;
+                    }
+                }
+            }
+
+            if (
+                ativo &&
+                (
+                    !treinosPorId.has(ativo.id) ||
+                    typeof ativo.nome !== 'string' ||
+                    !ativo.nome.trim()
+                )
+            ) {
+                throw new Error(
+                    'Treino ativo tradicional incompatível.'
+                );
+            }
+
             if (
                 !Array.isArray(treinos) ||
                 !Array.isArray(historico)
@@ -239,7 +330,13 @@
                 );
             }
 
-            return { treinos, historico, ativo };
+            return {
+                treinos,
+                historico,
+                ativo,
+                seriesMarcadas,
+                seriesTreinoAtivo
+            };
         }
 
         function validarSupabase(backup) {
@@ -646,6 +743,13 @@
                     'Chaves ausentes: ' + historicosNovos,
                     'Chaves coincidentes: ' +
                         historicosCoincidentes,
+                    '',
+                    'PROGRESSO TRADICIONAL',
+                    'Séries marcadas: ' +
+                        origem.seriesMarcadas,
+                    'Séries no treino ativo: ' +
+                        origem.seriesTreinoAtivo,
+                    'Validação das séries: Sim',
                     '',
                     'TREINO ATIVO',
                     'Tradicional: ' +
