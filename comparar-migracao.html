@@ -730,6 +730,66 @@
                     );
                 }
 
+                /* =========================================
+                   SIMULAR IMPORTACAO DOS TREINOS
+                   SEM GRAVAR DADOS
+                ========================================= */
+
+                const idsTradicionais = new Set();
+
+                const treinosParaImportar = [];
+                const treinosJaExistentes = [];
+                const treinosConflitantes = [];
+
+                const treinosDestinoPorId = new Map(
+                    destino.treinos.map(treino => [
+                        treino.treino_id,
+                        treino
+                    ])
+                );
+
+                for (const treino of origem.treinos) {
+                    if (idsTradicionais.has(treino.id)) {
+                        throw new Error(
+                            'O backup tradicional possui ' +
+                            'identificadores de treinos duplicados.'
+                        );
+                    }
+
+                    idsTradicionais.add(treino.id);
+
+                    const convertido = {
+                        treino_id: treino.id,
+                        dados: { ...treino }
+                    };
+
+                    const existente =
+                        treinosDestinoPorId.get(treino.id);
+
+                    if (!existente) {
+                        treinosParaImportar.push(convertido);
+                        continue;
+                    }
+
+                    if (
+                        conteudosIguais(
+                            existente.dados,
+                            convertido.dados
+                        )
+                    ) {
+                        treinosJaExistentes.push(convertido);
+                    } else {
+                        treinosConflitantes.push(convertido);
+                    }
+                }
+
+                const simulacaoSegura =
+                    treinosConflitantes.length === 0;
+
+                const totalTreinosPrevisto =
+                    destino.treinos.length +
+                    treinosParaImportar.length;
+
                 const mapaTreinos = new Map(
                     destino.treinos.map(t => [
                         t.treino_id,
@@ -797,6 +857,19 @@
                     'Supabase: ' + destino.treinos.length,
                     'IDs ausentes no destino: ' + treinosNovos,
                     'IDs coincidentes: ' + treinosCoincidentes,
+                    '',                    
+                    'SIMULAÇÃO DA IMPORTAÇÃO DOS TREINOS',
+                    'Treinos novos para importar: ' +
+                        treinosParaImportar.length,
+                    'Treinos idênticos já existentes: ' +
+                        treinosJaExistentes.length,
+                    'Treinos conflitantes: ' +
+                        treinosConflitantes.length,
+                    'Total previsto após importação: ' +
+                        totalTreinosPrevisto,
+                    'Simulação sem conflitos: ' +
+                        (simulacaoSegura ? 'Sim' : 'Não'),
+                    'Importação executada: Não',
                     '',
                     'HISTÓRICO',
                     'Tradicional: ' + origem.historico.length,
