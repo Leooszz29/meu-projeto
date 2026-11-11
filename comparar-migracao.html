@@ -982,6 +982,108 @@
                 botao.disabled = false;
             }
         });
+
+        /* =========================================
+           CONFERENCIA FINAL ANTES DA IMPORTACAO
+           SOMENTE LEITURA
+        ========================================= */
+
+        async function conferirImportacaoTreinos() {
+            const plano = planoImportacao;
+
+            if (
+                !plano ||
+                typeof plano.usuarioId !== 'string' ||
+                !Array.isArray(plano.registros) ||
+                plano.registros.length === 0 ||
+                plano.registros.length > 200
+            ) {
+                throw new Error(
+                    'Plano de importação ausente ou inválido.'
+                );
+            }
+
+            const identidade =
+                await obterIdentidadeSupabaseFitZone();
+
+            if (
+                !identidade ||
+                identidade.id !== plano.usuarioId
+            ) {
+                throw new Error(
+                    'A conta Supabase foi alterada. ' +
+                    'Execute uma nova comparação.'
+                );
+            }
+
+            const cliente =
+                inicializarSupabaseFitZone();
+
+            if (!cliente) {
+                throw new Error(
+                    'Não foi possível conectar ao Supabase.'
+                );
+            }
+
+            const { data, error } = await cliente
+                .from('fitzone_treinos')
+                .select('treino_id')
+                .eq('usuario_id', identidade.id);
+
+            if (error) {
+                throw new Error(
+                    'Falha ao conferir os treinos atuais: ' +
+                    error.message
+                );
+            }
+
+            const idsAtuais = new Set(
+                (data || []).map(
+                    treino => treino.treino_id
+                )
+            );
+
+            const idsImportacao = new Set();
+
+            for (const treino of plano.registros) {
+                if (
+                    !treino ||
+                    typeof treino.treino_id !== 'string' ||
+                    !treino.treino_id.trim() ||
+                    !objetoValido(treino.dados) ||
+                    treino.dados.id !== treino.treino_id ||
+                    typeof treino.dados.nome !== 'string' ||
+                    !treino.dados.nome.trim() ||
+                    !Array.isArray(treino.dados.exercicios)
+                ) {
+                    throw new Error(
+                        'Foi encontrado um treino inválido.'
+                    );
+                }
+
+                if (idsImportacao.has(treino.treino_id)) {
+                    throw new Error(
+                        'O plano possui treinos duplicados.'
+                    );
+                }
+
+                if (idsAtuais.has(treino.treino_id)) {
+                    throw new Error(
+                        'Um treino do plano já existe no ' +
+                        'Supabase. Execute uma nova comparação.'
+                    );
+                }
+
+                idsImportacao.add(treino.treino_id);
+            }
+
+            return {
+                usuarioId: identidade.id,
+                quantidade: plano.registros.length,
+                totalPrevisto:
+                    idsAtuais.size + plano.registros.length
+            };
+        }
     </script>
 </body>
 </html>
