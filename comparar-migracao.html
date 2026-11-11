@@ -358,7 +358,7 @@
                 const { data: treinosBanco, error: erroTreinos } =
                     await cliente
                         .from('fitzone_treinos')
-                        .select('treino_id')
+                        .select('treino_id, dados')
                         .eq('usuario_id', identidade.id);
 
                 if (erroTreinos) {
@@ -404,7 +404,7 @@
                     error: erroHistorico
                 } = await cliente
                     .from('fitzone_historico_treinos')
-                    .select('id, treino_id, data_local')
+                    .select('id, treino_id, data_local, dados, concluido_em')
                     .eq('usuario_id', identidade.id);
 
                 if (erroHistorico) {
@@ -446,6 +446,93 @@
                     throw new Error(
                         'O histórico atual do Supabase não ' +
                         'corresponde ao backup atualizado. ' +
+                        'Nenhuma migração foi autorizada.'
+                    );
+                }
+
+                /* =========================================
+                   VALIDAR CONTEUDO COMPLETO DOS REGISTROS
+                   SOMENTE LEITURA
+                ========================================= */
+
+                function normalizarConteudo(valor) {
+                    if (Array.isArray(valor)) {
+                        return valor.map(normalizarConteudo);
+                    }
+
+                    if (objetoValido(valor)) {
+                        const ordenado = {};
+
+                        Object.keys(valor)
+                            .sort()
+                            .forEach(chave => {
+                                ordenado[chave] =
+                                    normalizarConteudo(valor[chave]);
+                            });
+
+                        return ordenado;
+                    }
+
+                    return valor;
+                }
+
+                function conteudosIguais(primeiro, segundo) {
+                    return JSON.stringify(
+                        normalizarConteudo(primeiro)
+                    ) === JSON.stringify(
+                        normalizarConteudo(segundo)
+                    );
+                }
+
+                const treinosBackupPorId = new Map(
+                    destino.treinos.map(treino => [
+                        treino.treino_id,
+                        treino
+                    ])
+                );
+
+                const conteudoTreinosConfere =
+                    (treinosBanco || []).every(treino => {
+                        const salvo = treinosBackupPorId.get(
+                            treino.treino_id
+                        );
+
+                        return salvo &&
+                            conteudosIguais(
+                                treino.dados,
+                                salvo.dados
+                            );
+                    });
+
+                const historicoBackupPorChave = new Map(
+                    destino.historico.map(registro => [
+                        chaveRegistro(registro),
+                        registro
+                    ])
+                );
+
+                const conteudoHistoricoConfere =
+                    registrosBanco.every(registro => {
+                        const salvo = historicoBackupPorChave.get(
+                            chaveRegistro(registro)
+                        );
+
+                        return salvo &&
+                            conteudosIguais(
+                                registro.dados,
+                                salvo.dados
+                            ) &&
+                            registro.concluido_em ===
+                                salvo.concluido_em;
+                    });
+
+                if (
+                    !conteudoTreinosConfere ||
+                    !conteudoHistoricoConfere
+                ) {
+                    throw new Error(
+                        'O conteúdo dos registros atuais ' +
+                        'não corresponde ao backup Supabase. ' +
                         'Nenhuma migração foi autorizada.'
                     );
                 }
@@ -504,6 +591,8 @@
                     'Históricos atuais no banco: ' +
                         registrosBanco.length,
                     'Históricos do backup conferidos: Sim',
+                    'Conteúdo dos treinos conferido: Sim',
+                    'Conteúdo do histórico conferido: Sim',
                     'E-mails diferentes: permitidos para análise',
                     'Migração: NÃO AUTORIZADA',
                     '',
