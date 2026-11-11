@@ -1,1 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>Comparação de Migração | FitZone</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px 16px;
+            background: #101216;
+            color: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 24px auto;
+        }
+
+        h1 {
+            color: #e4bd68;
+            font-size: 26px;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #c9ced6;
+        }
+
+        label {
+            display: block;
+            margin-top: 22px;
+            margin-bottom: 9px;
+            font-weight: bold;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #1d222a;
+            color: #ffffff;
+            border: 1px solid #414c5b;
+            border-radius: 8px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 24px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #e4bd68;
+            color: #151515;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #resultado {
+            margin-top: 24px;
+            padding: 18px;
+            background: #1d222a;
+            border: 1px solid #414c5b;
+            border-radius: 12px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>FitZone — Comparação de Migração</h1>
+
+        <p>
+            Compare os backups tradicional e Supabase
+            antes de migrar seus dados.
+        </p>
+
+        <p>
+            Esta ferramenta funciona somente em modo
+            de leitura. Nenhum dado será restaurado,
+            enviado ou alterado.
+        </p>
+
+        <label for="backupTradicional">
+            1. Backup tradicional
+        </label>
+
+        <input
+            type="file"
+            id="backupTradicional"
+            accept=".json,application/json"
+        >
+
+        <label for="backupSupabase">
+            2. Backup Supabase atualizado
+        </label>
+
+        <input
+            type="file"
+            id="backupSupabase"
+            accept=".json,application/json"
+        >
+
+        <button type="button" id="comparar">
+            Comparar backups
+        </button>
+
+        <div id="resultado" role="status">
+            Selecione os dois arquivos para iniciar.
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/supabase-config.js"></script>
+
+    <script>
+        const resultado = document.getElementById('resultado');
+        const botao = document.getElementById('comparar');
+
+        const objetoValido = valor =>
+            valor !== null &&
+            typeof valor === 'object' &&
+            !Array.isArray(valor);
+
+        async function lerArquivo(inputId) {
+            const arquivo =
+                document.getElementById(inputId).files[0];
+
+            if (!arquivo) {
+                throw new Error(
+                    'Selecione os dois arquivos JSON.'
+                );
+            }
+
+            if (
+                arquivo.size === 0 ||
+                arquivo.size > 20 * 1024 * 1024
+            ) {
+                throw new Error(
+                    'Um arquivo está vazio ou excede 20 MB.'
+                );
+            }
+
+            return JSON.parse(await arquivo.text());
+        }
+
+        function lerDadosTradicionais(backup, chave) {
+            if (!Object.hasOwn(backup.dados, chave)) {
+                throw new Error(
+                    'Categoria tradicional ausente: ' + chave
+                );
+            }
+
+            const valor = backup.dados[chave];
+
+            if (valor === null) {
+                return null;
+            }
+
+            if (typeof valor !== 'string') {
+                throw new Error(
+                    'Categoria tradicional inválida: ' + chave
+                );
+            }
+
+            return JSON.parse(valor);
+        }
+
+        function validarTradicional(backup) {
+            if (
+                !objetoValido(backup) ||
+                backup.aplicativo !== 'FitZone' ||
+                backup.versaoBackup !== 1 ||
+                typeof backup.contaEmail !== 'string' ||
+                !backup.contaEmail.trim() ||
+                !objetoValido(backup.dados)
+            ) {
+                throw new Error(
+                    'Backup tradicional incompatível.'
+                );
+            }
+
+            const treinos =
+                lerDadosTradicionais(backup, 'treinos') ?? [];
+
+            const historico =
+                lerDadosTradicionais(backup, 'historico') ?? [];
+
+            const ativo =
+                lerDadosTradicionais(backup, 'treinoAtivo');
+
+            if (
+                !Array.isArray(treinos) ||
+                !Array.isArray(historico)
+            ) {
+                throw new Error(
+                    'Treinos ou histórico tradicional inválidos.'
+                );
+            }
+
+            if (!treinos.every(t =>
+                objetoValido(t) &&
+                typeof t.id === 'string' &&
+                t.id.trim() &&
+                typeof t.nome === 'string' &&
+                Array.isArray(t.exercicios)
+            )) {
+                throw new Error(
+                    'Estrutura dos treinos tradicionais inválida.'
+                );
+            }
+
+            if (!historico.every(h =>
+                objetoValido(h) &&
+                typeof h.workoutId === 'string' &&
+                h.workoutId.trim() &&
+                typeof h.data === 'string' &&
+                Number.isFinite(Date.parse(h.data)) &&
+                Array.isArray(h.exercicios)
+            )) {
+                throw new Error(
+                    'Estrutura do histórico tradicional inválida.'
+                );
+            }
+
+            return { treinos, historico, ativo };
+        }
+
+        function validarSupabase(backup) {
+            if (
+                !objetoValido(backup) ||
+                backup.aplicativo !== 'FitZone' ||
+                backup.origem !== 'supabase' ||
+                backup.versaoBackup !== 1 ||
+                backup.tipo !== 'treinos-historico' ||
+                typeof backup.usuarioId !== 'string' ||
+                !backup.usuarioId.trim() ||
+                !objetoValido(backup.dados) ||
+                !Array.isArray(backup.dados.treinos) ||
+                !Array.isArray(backup.dados.historico)
+            ) {
+                throw new Error(
+                    'Backup Supabase incompatível.'
+                );
+            }
+
+            if (!backup.dados.treinos.every(t =>
+                objetoValido(t) &&
+                typeof t.treino_id === 'string' &&
+                objetoValido(t.dados)
+            )) {
+                throw new Error(
+                    'Treinos Supabase inválidos.'
+                );
+            }
+
+            if (!backup.dados.historico.every(h =>
+                objetoValido(h) &&
+                typeof h.treino_id === 'string' &&
+                typeof h.data_local === 'string' &&
+                objetoValido(h.dados)
+            )) {
+                throw new Error(
+                    'Histórico Supabase inválido.'
+                );
+            }
+
+            return backup.dados;
+        }
+
+        function dataLocal(data) {
+            const valor = new Date(data);
+
+            if (!Number.isFinite(valor.getTime())) {
+                throw new Error(
+                    'Data de histórico inválida.'
+                );
+            }
+
+            const ano = valor.getFullYear();
+            const mes = String(
+                valor.getMonth() + 1
+            ).padStart(2, '0');
+            const dia = String(
+                valor.getDate()
+            ).padStart(2, '0');
+
+            return `${ano}-${mes}-${dia}`;
+        }
+
+        botao.addEventListener('click', async () => {
+            botao.disabled = true;
+            resultado.textContent =
+                'Validando identidade e comparando arquivos...';
+
+            try {
+                const tradicional = await lerArquivo(
+                    'backupTradicional'
+                );
+
+                const supabase = await lerArquivo(
+                    'backupSupabase'
+                );
+
+                const origem =
+                    validarTradicional(tradicional);
+
+                const destino =
+                    validarSupabase(supabase);
+
+                const identidade =
+                    await obterIdentidadeSupabaseFitZone();
+
+                if (!identidade || !identidade.id) {
+                    throw new Error(
+                        'Entre na conta Supabase definitiva ' +
+                        'antes de comparar os backups.'
+                    );
+                }
+
+                if (supabase.usuarioId !== identidade.id) {
+                    throw new Error(
+                        'O backup Supabase não pertence ' +
+                        'à conta atualmente autenticada.'
+                    );
+                }
+
+                const mapaTreinos = new Map(
+                    destino.treinos.map(t => [
+                        t.treino_id,
+                        t
+                    ])
+                );
+
+                let treinosNovos = 0;
+                let treinosCoincidentes = 0;
+
+                for (const treino of origem.treinos) {
+                    if (mapaTreinos.has(treino.id)) {
+                        treinosCoincidentes++;
+                    } else {
+                        treinosNovos++;
+                    }
+                }
+
+                const chavesHistorico = new Set(
+                    destino.historico.map(h =>
+                        JSON.stringify([
+                            h.treino_id,
+                            h.data_local
+                        ])
+                    )
+                );
+
+                let historicosNovos = 0;
+                let historicosCoincidentes = 0;
+
+                for (const registro of origem.historico) {
+                    const chave = JSON.stringify([
+                        registro.workoutId,
+                        dataLocal(registro.data)
+                    ]);
+
+                    if (chavesHistorico.has(chave)) {
+                        historicosCoincidentes++;
+                    } else {
+                        historicosNovos++;
+                    }
+                }
+
+                resultado.textContent = [
+                    'COMPARAÇÃO INICIAL CONCLUÍDA',
+                    '',
+                    'IDENTIDADE',
+                    'Sessão Supabase: autenticada',
+                    'Backup de destino: correspondente',
+                    'E-mails diferentes: permitidos para análise',
+                    'Migração: NÃO AUTORIZADA',
+                    '',
+                    'TREINOS',
+                    'Tradicional: ' + origem.treinos.length,
+                    'Supabase: ' + destino.treinos.length,
+                    'IDs ausentes no destino: ' + treinosNovos,
+                    'IDs coincidentes: ' + treinosCoincidentes,
+                    '',
+                    'HISTÓRICO',
+                    'Tradicional: ' + origem.historico.length,
+                    'Supabase: ' + destino.historico.length,
+                    'Chaves ausentes: ' + historicosNovos,
+                    'Chaves coincidentes: ' +
+                        historicosCoincidentes,
+                    '',
+                    'TREINO ATIVO',
+                    'Tradicional: ' +
+                        (origem.ativo ? 'Sim' : 'Não'),
+                    'Supabase: ' +
+                        (destino.treinoAtivo ? 'Sim' : 'Não'),
+                    '',
+                    'ATENÇÃO',
+                    'IDs coincidentes não garantem conteúdos iguais.',
+                    'Dados adicionais e conflitos exigem validação.',
+                    'O backup não comprova sozinho a titularidade',
+                    'da conta tradicional.',
+                    '',
+                    'Nenhum dado foi enviado ou alterado.',
+                    'Esta análise não autoriza restauração.'
+                ].join('\n');
+
+            } catch (erro) {
+                resultado.textContent =
+                    'Não foi possível comparar os backups.\n' +
+                    erro.message;
+            } finally {
+                botao.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
 
