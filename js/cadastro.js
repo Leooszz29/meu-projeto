@@ -167,31 +167,16 @@ async function handleSignup(e) {
         return;
     }
 
-    if (tipoConta === 'supabase') {
-        const senhaValida =
-            password.length >= 8 &&
-            /[A-Za-z]/.test(password) &&
-            /[0-9]/.test(password);
+    const senhaValida =
+        password.length >= 8 &&
+        /[A-Za-z]/.test(password) &&
+        /[0-9]/.test(password);
 
-        if (!senhaValida) {
-            showError(
-                'A senha Supabase deve ter no mínimo ' +
-                '8 caracteres, incluindo letras e números.'
-            );
-            return;
-        }
-
-    } else if (tipoConta === 'tradicional') {
-        if (password.length < 6) {
-            showError(
-                'A senha tradicional deve ter ' +
-                'no mínimo 6 caracteres.'
-            );
-            return;
-        }
-
-    } else {
-        showError('Selecione um tipo de conta válido.');
+    if (!senhaValida) {
+        showError(
+            'A senha Supabase deve ter no mínimo ' +
+            '8 caracteres, incluindo letras e números.'
+        );
         return;
     }
 
@@ -255,122 +240,10 @@ async function handleSignup(e) {
 
         return;
     }
-
-    // Salvar dados do usuário no navegador
-    let usuario;
-
-    try {
-        usuario = {
-            nome: name,
-            email: email,
-            senha: password,
-            genero: genero
-        };
-
-    } catch (error) {
-        console.error(
-            'Erro ao carregar o gênero do cadastro:',
-            error
-        );
-
-        showError(
-            'Não foi possível acessar o armazenamento do navegador. ' +
-            'Tente novamente.'
-        );
-
-        return;
-    }
-
-    // Busca as contas já cadastradas
-    let usuarios = [];
-
-    try {
-        const dadosSalvos =
-            localStorage.getItem('usuarios');
-
-        const dadosConvertidos =
-            dadosSalvos
-                ? JSON.parse(dadosSalvos)
-                : [];
-
-        if (!Array.isArray(dadosConvertidos)) {
-            throw new Error(
-                'Formato inválido dos usuários'
-            );
-        }
-
-        usuarios = dadosConvertidos;
-
-    } catch (error) {
-        console.error(
-            'Erro ao carregar usuários:',
-            error
-        );
-
-        showError(
-            'Não foi possível carregar os cadastros. ' +
-            'Os dados existentes foram preservados.'
-        );
-
-        return;
-    }
-
-    const emailJaCadastrado =
-        usuarios.some(
-            usuarioCadastrado =>
-                usuarioCadastrado !== null &&
-                typeof usuarioCadastrado === 'object' &&
-                !Array.isArray(usuarioCadastrado) &&
-                typeof usuarioCadastrado.email === 'string' &&
-                usuarioCadastrado.email.trim().toLowerCase() ===
-                email
-        );
-
-    if (emailJaCadastrado) {
-        showError(
-            'Este e-mail já está cadastrado.'
-        );
-        return;
-    }
-
-    // Adiciona a nova conta sem apagar as anteriores
-    usuarios.push(usuario);
-
-    // Salva novamente a lista completa
-    try {
-        localStorage.setItem(
-            'usuarios',
-            JSON.stringify(usuarios)
-        );
-    } catch (error) {
-        console.error(
-            'Erro ao salvar o cadastro:',
-            error
-        );
-
-        showError(
-            'Não foi possível salvar sua conta. ' +
-            'Verifique o armazenamento do navegador e tente novamente.'
-        );
-
-        return;
-    }
-
-    // Desabilitar botão durante envio
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Criando conta...';
-
-    // Simular envio (remova isso quando conectar a um backend)
-    setTimeout(() => {
-        showSuccess('Conta criada com sucesso! Redirecionando para o login... 💪');
-
-        setTimeout(() => {
-            window.location.href = 'login.html';
-        }, 1800);
-    }, 1200);
 }
 
 // ==================== INICIALIZAÇÃO ====================
+window.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('DOMContentLoaded', () => {
     // Aplicar tema de acordo com o gênero escolhido no Duelo de Ferro
     const genero = localStorage.getItem('generoFitZone');
