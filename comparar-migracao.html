@@ -1108,6 +1108,7 @@
             'click',
             async () => {
                 botaoSeguranca.disabled = true;
+                botaoImportar.disabled = true;
 
                 try {
                     const verificacao =
@@ -1121,6 +1122,10 @@
                         verificacao.totalPrevisto +
                         '\nVerificação de segurança: Aprovada' +
                         '\nImportação executada: Não';
+                    botaoImportar.disabled = false;
+                    botaoImportar.textContent =
+                        'Importar treinos tradicionais';
+
 
                 } catch (erro) {
                     bloquearImportacao();
@@ -1133,6 +1138,206 @@
                 } finally {
                     botaoSeguranca.disabled =
                         planoImportacao === null;
+                }
+            }
+        );
+
+        /* =========================================
+           IMPORTAÇÃO PROTEGIDA DE TREINOS
+           SOMENTE REGISTROS AUSENTES
+        ========================================= */
+
+        let importacaoEmAndamento = false;
+
+        botaoImportar.addEventListener(
+            'click',
+            async () => {
+                if (
+                    importacaoEmAndamento ||
+                    botaoImportar.disabled ||
+                    !planoImportacao
+                ) {
+                    return;
+                }
+
+                importacaoEmAndamento = true;
+                botaoImportar.disabled = true;
+                botaoSeguranca.disabled = true;
+                botao.disabled = true;
+
+                const campoTradicional =
+                    document.getElementById(
+                        'backupTradicional'
+                    );
+
+                const campoSupabase =
+                    document.getElementById(
+                        'backupSupabase'
+                    );
+
+                campoTradicional.disabled = true;
+                campoSupabase.disabled = true;
+
+                let gravacaoIniciada = false;
+
+                try {
+                    const verificacao =
+                        await conferirImportacaoTreinos();
+
+                    const plano = planoImportacao;
+
+                    if (
+                        verificacao.usuarioId !== plano.usuarioId ||
+                        verificacao.quantidade !==
+                            plano.registros.length
+                    ) {
+                        throw new Error(
+                            'O plano de importação mudou.'
+                        );
+                    }
+
+                    const confirmar = window.confirm(
+                        'IMPORTAÇÃO DE TREINOS FITZONE\n\n' +
+                        'Conta Supabase definitiva confirmada.\n\n' +
+                        'Treinos para adicionar: ' +
+                        verificacao.quantidade + '\n' +
+                        'Total previsto: ' +
+                        verificacao.totalPrevisto + '\n\n' +
+                        'O treino TESTE será preservado.\n' +
+                        'Histórico, treino ativo, check-ins e ' +
+                        'preferências não serão importados agora.\n\n' +
+                        'Deseja realmente gravar os treinos?'
+                    );
+
+                    if (!confirmar) {
+                        resultado.textContent +=
+                            '\n\nImportação cancelada pelo usuário.' +
+                            '\nNenhum dado foi alterado.';
+
+                        return;
+                    }
+
+                    // Conferir novamente depois da confirmação.
+                    await conferirImportacaoTreinos();
+
+                    const identidadeFinal =
+                        await obterIdentidadeSupabaseFitZone();
+
+                    if (
+                        !identidadeFinal ||
+                        identidadeFinal.id !== plano.usuarioId
+                    ) {
+                        throw new Error(
+                            'A sessão Supabase mudou. ' +
+                            'Importação cancelada.'
+                        );
+                    }
+
+                    const cliente =
+                        inicializarSupabaseFitZone();
+
+                    if (!cliente) {
+                        throw new Error(
+                            'Supabase indisponível.'
+                        );
+                    }
+
+                    const registros = plano.registros.map(
+                        treino => ({
+                            usuario_id: identidadeFinal.id,
+                            treino_id: treino.treino_id,
+                            dados: structuredClone(treino.dados),
+                            atualizado_em:
+                                new Date().toISOString()
+                        })
+                    );
+
+                    gravacaoIniciada = true;
+
+                    const { error: erroInsercao } =
+                        await cliente
+                            .from('fitzone_treinos')
+                            .insert(registros);
+
+                    if (erroInsercao) {
+                        throw new Error(
+                            'Falha ao inserir treinos: ' +
+                            erroInsercao.message
+                        );
+                    }
+
+                    const { data: conferidos, error: erroConsulta } =
+                        await cliente
+                            .from('fitzone_treinos')
+                            .select('treino_id, dados')
+                            .eq('usuario_id', identidadeFinal.id);
+
+                    if (erroConsulta) {
+                        throw new Error(
+                            'Gravação realizada, mas a consulta ' +
+                            'de conferência falhou: ' +
+                            erroConsulta.message
+                        );
+                    }
+
+                    const registrosPorId = new Map(
+                        (conferidos || []).map(
+                            treino => [
+                                treino.treino_id,
+                                treino.dados
+                            ]
+                        )
+                    );
+
+                    const todosPresentes =
+                        registros.every(
+                            treino =>
+                                JSON.stringify(
+                                    registrosPorId.get(
+                                        treino.treino_id
+                                    )
+                                ) === JSON.stringify(
+                                    treino.dados
+                                )
+                        );
+
+                    if (!todosPresentes) {
+                        throw new Error(
+                            'A conferência posterior encontrou ' +
+                            'divergências. Não repita a importação ' +
+                            'antes de verificar os dados.'
+                        );
+                    }
+
+                    resultado.textContent +=
+                        '\n\nIMPORTAÇÃO DE TREINOS CONCLUÍDA' +
+                        '\nTreinos adicionados: ' +
+                        registros.length +
+                        '\nTreinos atuais: ' +
+                        registrosPorId.size +
+                        '\nConferência dos novos treinos: Aprovada' +
+                        '\nHistórico importado: Não' +
+                        '\nTreino ativo importado: Não' +
+                        '\nCheck-ins importados: Não';
+
+                    bloquearImportacao();
+
+                } catch (erro) {
+                    bloquearImportacao();
+
+                    resultado.textContent +=
+                        '\n\nIMPORTAÇÃO INTERROMPIDA' +
+                        '\n' + erro.message +
+                        (gravacaoIniciada
+                            ? '\nVerifique os dados no Supabase ' +
+                              'antes de tentar novamente.'
+                            : '\nA gravação não foi iniciada.');
+
+                } finally {
+                    importacaoEmAndamento = false;
+                    botao.disabled = false;
+                    campoTradicional.disabled = false;
+                    campoSupabase.disabled = false;
                 }
             }
         );
