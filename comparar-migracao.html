@@ -208,6 +208,65 @@
             const progresso =
                 lerDadosTradicionais(backup, 'progresso');
 
+            /* =========================================
+               VALIDAR CHECK-INS TRADICIONAIS
+               SOMENTE LEITURA
+            ========================================= */
+
+            const checkins =
+                lerDadosTradicionais(backup, 'checkins');
+
+            if (
+                checkins !== null &&
+                !objetoValido(checkins)
+            ) {
+                throw new Error(
+                    'Check-ins tradicionais inválidos.'
+                );
+            }
+
+            const registrosCheckins =
+                Object.entries(checkins || {});
+
+            const checkinsValidos =
+                registrosCheckins.every(([data, registro]) => {
+                    if (
+                        !/^\d{4}-\d{2}-\d{2}$/.test(data) ||
+                        !objetoValido(registro) ||
+                        typeof registro.checked !== 'boolean' ||
+                        typeof registro.treino !== 'string'
+                    ) {
+                        return false;
+                    }
+
+                    const [ano, mes, dia] =
+                        data.split('-').map(Number);
+
+                    const dataVerificada = new Date(
+                        Date.UTC(ano, mes - 1, dia)
+                    );
+
+                    return (
+                        dataVerificada.getUTCFullYear() === ano &&
+                        dataVerificada.getUTCMonth() === mes - 1 &&
+                        dataVerificada.getUTCDate() === dia
+                    );
+                });
+
+            if (!checkinsValidos) {
+                throw new Error(
+                    'Estrutura ou datas dos check-ins inválidas.'
+                );
+            }
+
+            const totalCheckins =
+                registrosCheckins.length;
+
+            const checkinsMarcados =
+                registrosCheckins.filter(
+                    ([, registro]) => registro.checked
+                ).length;
+
             if (
                 progresso !== null &&
                 !objetoValido(progresso)
@@ -335,7 +394,9 @@
                 historico,
                 ativo,
                 seriesMarcadas,
-                seriesTreinoAtivo
+                seriesTreinoAtivo,
+                totalCheckins,
+                checkinsMarcados
             };
         }
 
@@ -743,6 +804,11 @@
                     'Chaves ausentes: ' + historicosNovos,
                     'Chaves coincidentes: ' +
                         historicosCoincidentes,
+                    '',
+                    'CHECK-INS TRADICIONAIS',
+                    'Registros: ' + origem.totalCheckins,
+                    'Marcados: ' + origem.checkinsMarcados,
+                    'Validação dos check-ins: Sim',
                     '',
                     'PROGRESSO TRADICIONAL',
                     'Séries marcadas: ' +
