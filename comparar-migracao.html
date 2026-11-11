@@ -537,6 +537,41 @@
                     );
                 }
 
+                /* =========================================
+                   CONFERIR TREINO ATIVO NO SUPABASE
+                   SOMENTE LEITURA
+                ========================================= */
+
+                const {
+                    data: treinoAtivoBanco,
+                    error: erroTreinoAtivo
+                } = await cliente
+                    .from('fitzone_treino_ativo')
+                    .select('*')
+                    .eq('usuario_id', identidade.id)
+                    .maybeSingle();
+
+                if (erroTreinoAtivo) {
+                    throw new Error(
+                        'Falha ao consultar treino ativo: ' +
+                        erroTreinoAtivo.message
+                    );
+                }
+
+                const treinoAtivoCorresponde =
+                    conteudosIguais(
+                        treinoAtivoBanco,
+                        destino.treinoAtivo
+                    );
+
+                if (!treinoAtivoCorresponde) {
+                    throw new Error(
+                        'O treino ativo atual do Supabase ' +
+                        'não corresponde ao backup. ' +
+                        'Nenhuma migração foi autorizada.'
+                    );
+                }
+
                 const mapaTreinos = new Map(
                     destino.treinos.map(t => [
                         t.treino_id,
@@ -593,6 +628,9 @@
                     'Históricos do backup conferidos: Sim',
                     'Conteúdo dos treinos conferido: Sim',
                     'Conteúdo do histórico conferido: Sim',
+                    'Treino ativo no banco: ' +
+                        (treinoAtivoBanco ? 'Sim' : 'Não'),
+                    'Treino ativo do backup conferido: Sim',
                     'E-mails diferentes: permitidos para análise',
                     'Migração: NÃO AUTORIZADA',
                     '',
