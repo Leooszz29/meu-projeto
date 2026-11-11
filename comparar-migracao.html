@@ -861,6 +861,12 @@
                                 treino_id: treino.treino_id,
                                 dados: structuredClone(treino.dados)
                             })
+                        ),
+                        treinosExistentes: destino.treinos.map(
+                            treino => ({
+                                treino_id: treino.treino_id,
+                                dados: structuredClone(treino.dados)
+                            })
                         )
                     };
                 }
@@ -1057,6 +1063,78 @@
                     treino => treino.treino_id
                 )
             );
+
+            /* =========================================
+               PROTEGER OS TREINOS JA EXISTENTES
+            ========================================= */
+
+            if (!Array.isArray(plano.treinosExistentes)) {
+                throw new Error(
+                    'Referência dos treinos existentes ausente.'
+                );
+            }
+
+            const { data: atuais, error: erroAtuais } =
+                await cliente
+                    .from('fitzone_treinos')
+                    .select('treino_id, dados')
+                    .eq('usuario_id', identidade.id);
+
+            if (erroAtuais) {
+                throw new Error(
+                    'Falha ao conferir o conteúdo atual: ' +
+                    erroAtuais.message
+                );
+            }
+
+            const atuaisPorId = new Map(
+                (atuais || []).map(treino => [
+                    treino.treino_id,
+                    treino.dados
+                ])
+            );
+
+            function normalizarParaConferencia(valor) {
+                if (Array.isArray(valor)) {
+                    return valor.map(normalizarParaConferencia);
+                }
+
+                if (objetoValido(valor)) {
+                    const ordenado = {};
+
+                    Object.keys(valor)
+                        .sort()
+                        .forEach(chave => {
+                            ordenado[chave] =
+                                normalizarParaConferencia(valor[chave]);
+                        });
+
+                    return ordenado;
+                }
+
+                return valor;
+            }
+
+            const referenciasConferem =
+                atuaisPorId.size ===
+                    plano.treinosExistentes.length &&
+                plano.treinosExistentes.every(treino =>
+                    JSON.stringify(
+                        normalizarParaConferencia(
+                            atuaisPorId.get(treino.treino_id)
+                        )
+                    ) === JSON.stringify(
+                        normalizarParaConferencia(treino.dados)
+                    )
+                );
+
+            if (!referenciasConferem) {
+                throw new Error(
+                    'Um treino existente foi alterado desde ' +
+                    'a comparação. Faça novos backups e ' +
+                    'execute novamente a análise.'
+                );
+            }
 
             const idsImportacao = new Set();
 
