@@ -244,7 +244,6 @@ async function handleSignup(e) {
 
 // ==================== INICIALIZAÇÃO ====================
 window.addEventListener('DOMContentLoaded', () => {
-window.addEventListener('DOMContentLoaded', () => {
     // Aplicar tema de acordo com o gênero escolhido no Duelo de Ferro
     const genero = localStorage.getItem('generoFitZone');
     const characterImg = document.getElementById('characterImg');
