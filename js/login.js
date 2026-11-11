@@ -25,52 +25,8 @@ const passwordRecoveryClose =
 const recoveryEmail =
     document.getElementById('recoveryEmail');
 
-const recoveryContinueBtn =
-    document.getElementById('recoveryContinueBtn');
-
 const recoveryError =
     document.getElementById('recoveryError');
-
-const recoveryCodeOverlay =
-    document.getElementById('recoveryCodeOverlay');
-
-const recoveryCodeClose =
-    document.getElementById('recoveryCodeClose');
-
-const recoveryCode =
-    document.getElementById('recoveryCode');
-
-const recoveryCodeError =
-    document.getElementById('recoveryCodeError');
-
-const verifyRecoveryCodeBtn =
-    document.getElementById('verifyRecoveryCodeBtn');
-
-const newPasswordOverlay =
-    document.getElementById('newPasswordOverlay');
-
-const newPasswordClose =
-    document.getElementById('newPasswordClose');
-
-const newPassword =
-    document.getElementById('newPassword');
-
-const confirmNewPassword =
-    document.getElementById('confirmNewPassword');
-
-const toggleNewPassword =
-    document.getElementById('toggleNewPassword');
-
-const toggleConfirmNewPassword =
-    document.getElementById('toggleConfirmNewPassword');
-
-const newPasswordError =
-    document.getElementById('newPasswordError');
-
-const saveNewPasswordBtn =
-    document.getElementById('saveNewPasswordBtn');
-
-let recoveryCodeGenerated = null;
 
 /* =========================================
    FITZONE - LOGIN COM SUPABASE AUTH
@@ -367,57 +323,6 @@ function carregarSessao() {
     }
 }
 
-function gerarCodigoRecuperacao() {
-    return Math.floor(
-        100000 + Math.random() * 900000
-    ).toString();
-}
-
-function resetarCamposNovaSenha() {
-
-    newPassword.value = '';
-    confirmNewPassword.value = '';
-
-    newPassword.type = 'password';
-    confirmNewPassword.type = 'password';
-
-    toggleNewPassword
-        .querySelector('.icon-eye')
-        .classList.remove('is-hidden');
-
-    toggleNewPassword
-        .querySelector('.icon-eye-off')
-        .classList.add('is-hidden');
-
-    toggleConfirmNewPassword
-        .querySelector('.icon-eye')
-        .classList.remove('is-hidden');
-
-    toggleConfirmNewPassword
-        .querySelector('.icon-eye-off')
-        .classList.add('is-hidden');
-
-    toggleNewPassword.setAttribute(
-        'aria-pressed',
-        'false'
-    );
-
-    toggleConfirmNewPassword.setAttribute(
-        'aria-pressed',
-        'false'
-    );
-
-    toggleNewPassword.setAttribute(
-        'aria-label',
-        'Mostrar nova senha'
-    );
-
-    toggleConfirmNewPassword.setAttribute(
-        'aria-label',
-        'Mostrar confirmação da senha'
-    );
-}
-
 function validarCredenciais(usuarioSalvo, email, password) {
     if (
         !usuarioSalvo ||
@@ -644,104 +549,6 @@ passwordRecoveryClose.addEventListener('click', () => {
     recoveryError.classList.remove('show');
     recoveryError.textContent = '';
 
-});
-
-recoveryCode.addEventListener('input', () => {
-
-    recoveryCode.value =
-        recoveryCode.value
-            .replace(/\D/g, '')
-            .slice(0, 6);
-
-    recoveryCodeError.classList.remove('show');
-});
-
-recoveryCodeClose.addEventListener('click', () => {
-
-    recoveryCodeOverlay.classList.remove('show');
-
-    recoveryCodeOverlay.setAttribute(
-        'aria-hidden',
-        'true'
-    );
-
-    recoveryCode.value = '';
-
-    recoveryCodeGenerated = null;
-
-    recoveryCodeError.classList.remove('show');
-});
-
-toggleNewPassword.addEventListener('click', () => {
-
-    const isHidden =
-        newPassword.type === 'password';
-
-    newPassword.type =
-        isHidden ? 'text' : 'password';
-
-    toggleNewPassword.setAttribute(
-        'aria-pressed',
-        String(isHidden)
-    );
-
-    toggleNewPassword.setAttribute(
-        'aria-label',
-        isHidden
-            ? 'Ocultar nova senha'
-            : 'Mostrar nova senha'
-    );
-
-    toggleNewPassword
-        .querySelector('.icon-eye')
-        .classList.toggle('is-hidden', isHidden);
-
-    toggleNewPassword
-        .querySelector('.icon-eye-off')
-        .classList.toggle('is-hidden', !isHidden);
-});
-
-toggleConfirmNewPassword.addEventListener('click', () => {
-
-    const isHidden =
-        confirmNewPassword.type === 'password';
-
-    confirmNewPassword.type =
-        isHidden ? 'text' : 'password';
-
-    toggleConfirmNewPassword.setAttribute(
-        'aria-pressed',
-        String(isHidden)
-    );
-
-    toggleConfirmNewPassword.setAttribute(
-        'aria-label',
-        isHidden
-            ? 'Ocultar confirmação da senha'
-            : 'Mostrar confirmação da senha'
-    );
-
-    toggleConfirmNewPassword
-        .querySelector('.icon-eye')
-        .classList.toggle('is-hidden', isHidden);
-
-    toggleConfirmNewPassword
-        .querySelector('.icon-eye-off')
-        .classList.toggle('is-hidden', !isHidden);
-});
-
-newPasswordClose.addEventListener('click', () => {
-
-    newPasswordOverlay.classList.remove('show');
-
-    newPasswordOverlay.setAttribute(
-        'aria-hidden',
-        'true'
-    );
-
-    resetarCamposNovaSenha();
-
-    newPasswordError.classList.remove('show');
 });
 
 /* =========================================
