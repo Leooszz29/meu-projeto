@@ -2,7 +2,7 @@
    FITZONE - SERVICE WORKER
 ========================================= */
 
-const CACHE_NAME = 'fitzone-v16-security';
+const CACHE_NAME = 'fitzone-v17-security';
 
 const IMAGE_CACHE_NAME = 'fitzone-images-v1';
 
