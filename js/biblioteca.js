@@ -2,7 +2,6 @@
    FITZONE - BIBLIOTECA DE EXERCICIOS
 ========================================= */
 
-
 document.addEventListener('DOMContentLoaded', async () => {
 
     const paginaBiblioteca =
@@ -20,30 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let origemSessao = null;
     let identidadeSupabase = null;
 
-    try {
-        const dadosSessao =
-            localStorage.getItem('fitzoneSessao');
-
-        const sessaoLocal = dadosSessao
-            ? JSON.parse(dadosSessao)
-            : null;
-
-        if (
-            sessaoLocal &&
-            sessaoLocal.autenticado === true &&
-            typeof sessaoLocal.email === 'string' &&
-            sessaoLocal.email.trim()
-        ) {
-            sessao = sessaoLocal;
-            origemSessao = 'local';
-        }
-
-    } catch (erro) {
-        console.warn(
-            'Erro ao consultar sessão tradicional:',
-            erro
-        );
-    }
+    // Autenticacao exclusivamente pelo Supabase.
 
     if (!sessao) {
         try {
