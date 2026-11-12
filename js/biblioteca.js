@@ -15,72 +15,60 @@ document.addEventListener('DOMContentLoaded', async () => {
        VERIFICAR SESSAO SUPABASE
     ========================================= */
 
-    let sessao = null;
     let identidadeSupabase = null;
 
-    // Autenticacao exclusivamente pelo Supabase.
+    try {
+        identidadeSupabase =
+            await obterIdentidadeSupabaseFitZone();
 
-    if (!sessao) {
-        try {
-            identidadeSupabase =
-                await obterIdentidadeSupabaseFitZone();
+    } catch (erro) {
+        console.error(
+            'Não foi possível validar a sessão Supabase:',
+            erro
+        );
 
-            if (identidadeSupabase) {
-                sessao = {
-                    autenticado: true,
-                    email: identidadeSupabase.email
-                };
-            }
+        const aviso = document.createElement('main');
 
-        } catch (erro) {
-            console.error(
-                'Não foi possível validar a sessão Supabase:',
-                erro
-            );
+        aviso.style.cssText =
+            'min-height:100vh;' +
+            'display:flex;' +
+            'flex-direction:column;' +
+            'align-items:center;' +
+            'justify-content:center;' +
+            'gap:16px;' +
+            'padding:24px;' +
+            'text-align:center;';
 
-            const aviso = document.createElement('main');
+        const titulo = document.createElement('h1');
+        titulo.textContent = 'FITZONE';
 
-            aviso.style.cssText =
-                'min-height:100vh;' +
-                'display:flex;' +
-                'flex-direction:column;' +
-                'align-items:center;' +
-                'justify-content:center;' +
-                'gap:16px;' +
-                'padding:24px;' +
-                'text-align:center;';
+        const mensagem = document.createElement('p');
+        mensagem.textContent =
+            navigator.onLine === false
+                ? 'Você está sem internet. ' +
+                  'Não foi possível verificar sua conta Supabase.'
+                : 'Não foi possível verificar sua sessão. ' +
+                  'Confira a conexão e tente novamente.';
 
-            const titulo = document.createElement('h1');
-            titulo.textContent = 'FITZONE';
+        const botao = document.createElement('button');
+        botao.type = 'button';
+        botao.textContent = 'Tentar novamente';
 
-            const mensagem = document.createElement('p');
-            mensagem.textContent =
-                navigator.onLine === false
-                    ? 'Você está sem internet. ' +
-                      'Não foi possível verificar sua conta Supabase.'
-                    : 'Não foi possível verificar sua sessão. ' +
-                      'Confira a conexão e tente novamente.';
+        botao.addEventListener('click', () => {
+            window.location.replace('biblioteca.html');
+        });
 
-            const botao = document.createElement('button');
-            botao.type = 'button';
-            botao.textContent = 'Tentar novamente';
+        aviso.append(
+            titulo,
+            mensagem,
+            botao
+        );
 
-            botao.addEventListener('click', () => {
-                window.location.replace('biblioteca.html');
-            });
-
-            aviso.append(
-                titulo,
-                mensagem,
-                botao
-            );
-
-            document.body.replaceChildren(aviso);
-            return;
-        }
+        document.body.replaceChildren(aviso);
+        return;
     }
 
-    if (!sessao) {
+    if (!identidadeSupabase) {
         window.location.replace('login.html');
         return;
     }
@@ -94,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     ========================================= */
 
     const idSupabaseInicial =
-        identidadeSupabase?.id || null;
+        identidadeSupabase.id;
 
     /* =========================================
        PROTEGER CONTRA TROCA DE CONTA
@@ -125,14 +113,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    window.addEventListener('storage', (event) => {
-        if (
-            event.storageArea === localStorage &&
-            (event.key === 'fitzoneSessao' || event.key === null)
-        ) {
-            void verificarContinuidadeSessaoBiblioteca();
-        }
-    });
+    const clienteSessaoBiblioteca =
+        inicializarSupabaseFitZone();
+
+    if (clienteSessaoBiblioteca) {
+        clienteSessaoBiblioteca.auth.onAuthStateChange(
+            (evento, sessaoAtual) => {
+                const idUsuarioAtual =
+                    sessaoAtual?.user?.id;
+
+                if (
+                    evento === 'SIGNED_OUT' ||
+                    (
+                        evento === 'SIGNED_IN' &&
+                        idUsuarioAtual !== idSupabaseInicial
+                    )
+                ) {
+                    window.location.replace('login.html');
+                }
+            }
+        );
+    }
 
     window.addEventListener('pageshow', () => {
         void verificarContinuidadeSessaoBiblioteca();
