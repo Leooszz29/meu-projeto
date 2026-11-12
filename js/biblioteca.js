@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     /* =========================================
-       VERIFICAR SESSAO HIBRIDA
+       VERIFICAR SESSAO SUPABASE
     ========================================= */
 
     let sessao = null;
@@ -108,33 +108,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function verificarContinuidadeSessaoBiblioteca() {
         try {
-            if (origemSessao === 'supabase') {
-                const identidadeAtual =
-                    await obterIdentidadeSupabaseFitZone();
-
-                if (
-                    !identidadeAtual ||
-                    identidadeAtual.id !== idSupabaseInicial
-                ) {
-                    window.location.replace('login.html');
-                    return false;
-                }
-
-                return true;
-            }
-
-            const dadosSessao =
-                localStorage.getItem('fitzoneSessao');
-
-            const sessaoAtual = dadosSessao
-                ? JSON.parse(dadosSessao)
-                : null;
+            const identidadeAtual =
+                await obterIdentidadeSupabaseFitZone();
 
             if (
-                !sessaoAtual ||
-                sessaoAtual.autenticado !== true ||
-                typeof sessaoAtual.email !== 'string' ||
-                sessaoAtual.email.trim().toLowerCase() !== email
+                !identidadeAtual ||
+                identidadeAtual.id !== idSupabaseInicial
             ) {
                 window.location.replace('login.html');
                 return false;
