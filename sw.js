@@ -2,7 +2,7 @@
    FITZONE - SERVICE WORKER
 ========================================= */
 
-const CACHE_NAME = 'fitzone-v20';
+const CACHE_NAME = 'fitzone-v21';
 
 const IMAGE_CACHE_NAME = 'fitzone-images-v1';
 
@@ -36,7 +36,7 @@ const APP_SHELL = [
     './js/cadastro.js?v=20261104-cadastro-hibrido-v1',
     './js/perfil.js?v=20261112-supabase-v3',
     './js/treinos.js?v=20261104-treino-ativo-backup-v1',
-    './js/calendario.js?v=20261103-tema-nuvem-v2',
+    './js/calendario.js?v=20261112-supabase-v3',
     './js/desempenho-router.js?v=20261103-tema-nuvem-v11',
     './js/biblioteca.js?v=20261112-supabase-v2',
 
