@@ -1,5 +1,3 @@
-const PROFILE_STORAGE_KEY = 'fitzonePerfil';
-
 /* =========================================
    FITZONE - IDENTIFICAR CONTA SUPABASE
 ========================================= */
@@ -21,11 +19,6 @@ async function identificarAcessoSupabasePerfil() {
         id: identidade.id,
         email: identidade.email
     };
-}
-
-function carregarSessao() {
-    // Autenticacao tradicional desativada.
-    return null;
 }
 
 // ========================================
@@ -99,64 +92,6 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-function obterChavePerfil() {
-    const sessao = carregarSessao();
-
-    if (
-        !sessao ||
-        sessao.autenticado !== true ||
-        typeof sessao.email !== 'string' ||
-        !sessao.email.trim()
-    ) {
-        throw new Error(
-            'Sessão inválida: não é possível acessar o perfil.'
-        );
-    }
-
-    return `${PROFILE_STORAGE_KEY}:${sessao.email.trim().toLowerCase()}`;
-}
-
-// ========================================
-// CARREGAR PERFIL SALVO
-// ========================================
-
-function loadProfile() {
-    try {
-        const saved = localStorage.getItem(obterChavePerfil());
-
-        if (!saved) {
-            return {};
-        }
-
-        const data = JSON.parse(saved);
-
-        return data && typeof data === 'object' ? data : {};
-
-    } catch (error) {
-        console.error('Erro ao carregar perfil:', error);
-        return {};
-    }
-}
-
-// ========================================
-// SALVAR PERFIL
-// ========================================
-
-function saveProfile(data) {
-    try {
-        localStorage.setItem(
-            obterChavePerfil(),
-            JSON.stringify(data)
-        );
-
-        return true;
-
-    } catch (error) {
-        console.error('Erro ao salvar perfil:', error);
-        return false;
-    }
-}
-
 // ========================================
 // PEGAR VALOR DE UM CAMPO
 // ========================================
@@ -169,126 +104,6 @@ function getValue(id) {
     }
 
     return element.value.trim();
-}
-
-// ========================================
-// PREENCHER FORMULÁRIO
-// ========================================
-
-function fillForm() {
-
-    const perfil = loadProfile();
-
-    let usuario = {};
-
-    try {
-        const sessao =
-            carregarSessao();
-
-        const usuarios =
-            JSON.parse(
-                localStorage.getItem('usuarios')
-            ) || [];
-
-        if (sessao && sessao.email) {
-            usuario =
-                usuarios.find(
-                    usuarioCadastrado =>
-                        usuarioCadastrado.email.toLowerCase() ===
-                        sessao.email.toLowerCase()
-                ) || {};
-        }
-    } catch (error) {
-        console.warn(
-            'Não foi possível carregar o usuário:',
-            error
-        );
-    }
-
-    // Nome:
-    // primeiro tenta o perfil salvo.
-    // Se não existir, usa o nome do cadastro.
-
-    const nome = document.getElementById('nome');
-
-    if (nome) {
-        nome.value =
-            perfil.nome ||
-            usuario.nome ||
-            '';
-    }
-
-    const idade = document.getElementById('idade');
-
-    if (idade) {
-        idade.value = perfil.idade || '';
-    }
-
-    const tipoSanguineo =
-        document.getElementById('tipoSanguineo');
-
-    if (tipoSanguineo) {
-        tipoSanguineo.value =
-            perfil.tipoSanguineo || '';
-    }
-
-    const peso = document.getElementById('peso');
-
-    if (peso) {
-        peso.value = perfil.peso || '';
-    }
-
-    const altura = document.getElementById('altura');
-
-    if (altura) {
-        altura.value = perfil.altura || '';
-    }
-
-    const treinador =
-        document.getElementById('treinador');
-
-    if (treinador) {
-        treinador.value =
-            perfil.treinador || '';
-    }
-
-    const infoPessoais =
-        document.getElementById('infoPessoais');
-
-    if (infoPessoais) {
-        infoPessoais.value =
-            perfil.infoPessoais || '';
-    }
-
-    /* CARREGAR GENERO DA CONTA TRADICIONAL */
-
-    const campoGenero =
-        document.getElementById('generoPerfil');
-
-    if (campoGenero) {
-        const sessao = carregarSessao();
-
-        const email =
-            sessao?.email?.trim().toLowerCase();
-
-        const generoLocal = email
-            ? localStorage.getItem(
-                `generoFitZone:${email}`
-            )
-            : null;
-
-        const genero =
-            generoLocal ||
-            usuario.genero ||
-            '';
-
-        campoGenero.value =
-            ['masculino', 'feminino'].includes(genero)
-                ? genero
-                : '';
-
-        aplicarGeneroVisualPerfil(campoGenero.value);
-    }
 }
 
 /* =========================================
@@ -392,131 +207,6 @@ function showSuccess() {
     }, 2200);
 }
 
-// ========================================
-// SALVAR PERFIL PELO CLIQUE
-// ========================================
-
-function handleSaveProfile() {
-    const nome =
-        getValue('nome');
-
-    if (!nome) {
-        alert(
-            'Não foi possível salvar o perfil.\n\n' +
-            'O campo Nome é obrigatório.\n' +
-            'Preencha seu nome e tente novamente.'
-        );
-
-        document
-            .getElementById('nome')
-            ?.focus();
-
-        return;
-    }
-
-    const idade =
-        Number(getValue('idade'));
-
-    if (
-        !Number.isInteger(idade) ||
-        idade < 10 ||
-        idade > 120
-    ) {
-
-        alert(
-            'Não foi possível salvar o perfil.\n\n' +
-            'O campo Idade deve conter um valor ' +
-            'entre 10 e 120 anos.\n' +
-            'Corrija a idade e tente novamente.'
-        );
-
-        document
-            .getElementById('idade')
-            ?.focus();
-
-        return;
-    }
-
-    const peso =
-        Number(getValue('peso'));
-
-    if (
-        !Number.isFinite(peso) ||
-        peso < 20 ||
-        peso > 400
-    ) {
-
-        alert(
-            'Não foi possível salvar o perfil.\n\n' +
-            'O campo Peso deve conter um valor ' +
-            'entre 20 e 400 kg.\n' +
-            'Corrija o peso e tente novamente.'
-        );
-
-        document
-            .getElementById('peso')
-            ?.focus();
-
-        return;
-    }
-
-    const altura =
-        Number(getValue('altura'));
-
-    if (
-        !Number.isFinite(altura) ||
-        altura < 100 ||
-        altura > 250
-    ) {
-
-        alert(
-            'Não foi possível salvar o perfil.\n\n' +
-            'O campo Altura deve conter um valor ' +
-            'entre 100 e 250 cm.\n' +
-            'Corrija a altura e tente novamente.'
-        );
-
-        document
-            .getElementById('altura')
-            ?.focus();
-
-        return;
-    }
-
-    const data = {
-        nome: getValue('nome'),
-        idade: getValue('idade'),
-
-        tipoSanguineo:
-            getValue('tipoSanguineo'),
-
-        peso:
-            getValue('peso'),
-
-        altura:
-            getValue('altura'),
-
-        treinador:
-            getValue('treinador'),
-
-        infoPessoais:
-            getValue('infoPessoais')
-    };
-
-    const sucesso =
-        saveProfile(data);
-
-    if (!sucesso) {
-        alert(
-            'Não foi possível salvar o perfil. Tente novamente.'
-        );
-
-        return;
-    }
-
-    showSuccess();
-}
-
 /* =========================================
    FITZONE - SALVAR FORMULARIO SUPABASE
 ========================================= */
@@ -579,30 +269,11 @@ async function handleSaveProfileSupabase() {
     }
 }
 
-// ========================================
-// FINALIZAR SESSÃO
-// ========================================
-
-function handleEndSession() {
-    try {
-        localStorage.removeItem(
-            'fitzoneSessao'
-        );
-    } catch (error) {
-        console.warn(
-            'Não foi possível encerrar a sessão:',
-            error
-        );
-    }
-
-    window.location.href = 'login.html';
-}
-
 /* =========================================
    FITZONE - ALTERAR GENERO DO PERFIL
 ========================================= */
 
-async function alterarGeneroPerfil(origem) {
+async function alterarGeneroPerfil() {
     const campo = document.getElementById('generoPerfil');
 
     if (!campo) {
@@ -618,65 +289,28 @@ async function alterarGeneroPerfil(origem) {
     campo.disabled = true;
 
     try {
-        let email = null;
+        const identidade =
+            await obterIdentidadeSupabaseFitZone();
 
-        if (origem === 'supabase') {
-            const identidade =
-                await obterIdentidadeSupabaseFitZone();
-
-            if (!identidade) {
-                throw new Error('Sessão Supabase inválida.');
-            }
-
-            await atualizarGeneroSupabaseFitZone(genero);
-
-            email = identidade.email;
-        } else {
-            const sessao = carregarSessao();
-
-            if (!sessao?.email) {
-                throw new Error('Sessão tradicional inválida.');
-            }
-
-            email = sessao.email.trim().toLowerCase();
-
-            const usuarios = JSON.parse(
-                localStorage.getItem('usuarios') || '[]'
-            );
-
-            if (!Array.isArray(usuarios)) {
-                throw new Error('Lista de usuários inválida.');
-            }
-
-            const usuario = usuarios.find(item =>
-                typeof item?.email === 'string' &&
-                item.email.trim().toLowerCase() === email
-            );
-
-            if (!usuario) {
-                throw new Error('Usuário não encontrado.');
-            }
-
-            usuario.genero = genero;
-
-            localStorage.setItem(
-                'usuarios',
-                JSON.stringify(usuarios)
-            );
+        if (
+            !identidade ||
+            identidade.id !== idPreferenciasSupabasePerfil
+        ) {
+            throw new Error('Sessão Supabase inválida.');
         }
 
-        if (email) {
-            try {
-                localStorage.setItem(
-                    `generoFitZone:${email.trim().toLowerCase()}`,
-                    genero
-                );
-            } catch (erroLocal) {
-                console.warn(
-                    'Tema salvo na conta, mas sem cache local:',
-                    erroLocal
-                );
-            }
+        await atualizarGeneroSupabaseFitZone(genero);
+
+        try {
+            localStorage.setItem(
+                `generoFitZone:${identidade.email}`,
+                genero
+            );
+        } catch (erroLocal) {
+            console.warn(
+                'Tema salvo na conta, mas sem cache local:',
+                erroLocal
+            );
         }
 
         aplicarGeneroVisualPerfil(genero);
@@ -697,40 +331,20 @@ async function alterarGeneroPerfil(origem) {
             'Nenhum outro dado do perfil foi modificado.'
         );
 
-        if (origem === 'supabase') {
-            try {
-                const perfil =
-                    await consultarPerfilSupabaseFitZone();
+        try {
+            const perfil =
+                await consultarPerfilSupabaseFitZone();
 
-                campo.value = perfil?.genero || '';
-                aplicarGeneroVisualPerfil(perfil?.genero);
-            } catch (erroConsulta) {
-                console.warn(
-                    'Não foi possível restaurar o gênero:',
-                    erroConsulta
-                );
-            }
-        } else {
-            try {
-                const sessao = carregarSessao();
-                const email = sessao.email.trim().toLowerCase();
-                const usuarios = JSON.parse(
-                    localStorage.getItem('usuarios') || '[]'
-                );
+            campo.value = perfil?.genero || '';
+            aplicarGeneroVisualPerfil(perfil?.genero);
 
-                const usuario = usuarios.find(item =>
-                    item?.email?.trim().toLowerCase() === email
-                );
-
-                campo.value = usuario?.genero || '';
-                aplicarGeneroVisualPerfil(campo.value);
-            } catch (erroConsulta) {
-                console.warn(
-                    'Não foi possível restaurar a seleção:',
-                    erroConsulta
-                );
-            }
+        } catch (erroConsulta) {
+            console.warn(
+                'Não foi possível restaurar o gênero:',
+                erroConsulta
+            );
         }
+
     } finally {
         campo.disabled = false;
     }
@@ -756,68 +370,6 @@ function aplicarGeneroVisualPerfil(genero) {
     document.body.classList.add(
         `theme-${genero}`
     );
-}
-
-// ========================================
-// PERSONAGEM / GÊNERO
-// ========================================
-
-function loadCharacter() {
-    const characterImg =
-        document.getElementById('characterImg');
-
-    if (!characterImg) {
-        return;
-    }
-
-    let genero = null;
-
-    try {
-        const sessao =
-            carregarSessao();
-
-        if (
-            sessao &&
-            sessao.email
-        ) {
-            genero =
-                localStorage.getItem(
-                    `generoFitZone:${sessao.email.toLowerCase()}`
-                );
-        }
-    } catch (error) {
-        console.warn(
-            'Não foi possível carregar o gênero:',
-            error
-        );
-    }
-
-    // APLICA O TEMA DE ACORDO COM O GÊNERO
-
-    if (genero === 'masculino') {
-        document.body.classList.add('theme-masculino');
-    } else if (genero === 'feminino') {
-        document.body.classList.add('theme-feminino');
-    }
-
-    const imagens = {
-        masculino:
-            'https://cdn-icons-png.flaticon.com/512/4140/4140048.png',
-
-        feminino:
-            'https://cdn-icons-png.flaticon.com/512/4140/4140047.png'
-    };
-
-    if (genero && imagens[genero]) {
-        characterImg.src =
-            imagens[genero];
-
-        characterImg.style.display =
-            'block';
-    } else {
-        characterImg.style.display =
-            'none';
-    }
 }
 
 // ========================================
@@ -954,7 +506,8 @@ function initializeProfileActionsSupabase() {
         campoGeneroSupabase.addEventListener(
             'change',
             async () => {
-                await alterarGeneroPerfil('supabase');
+                await alterarGeneroPerfil();
+
             }
         );
     }
@@ -1024,45 +577,6 @@ function initializeProfileActionsSupabase() {
 
         await handleSaveProfileSupabase();
     });
-}
-
-function initializeProfileActions() {
-    const profileForm =
-        document.getElementById('profileForm');
-
-    const endSessionButton =
-        document.getElementById('btnEndSession');
-
-    /* ALTERAR GENERO TRADICIONAL */
-
-    const campoGeneroTradicional =
-        document.getElementById('generoPerfil');
-
-    if (campoGeneroTradicional) {
-        campoGeneroTradicional.addEventListener(
-            'change',
-            async () => {
-                await alterarGeneroPerfil('local');
-            }
-        );
-    }
-
-    if (profileForm) {
-        profileForm.addEventListener(
-            'submit',
-            (event) => {
-                event.preventDefault();
-                handleSaveProfile();
-            }
-        );
-    }
-
-    if (endSessionButton) {
-        endSessionButton.addEventListener(
-            'click',
-            handleEndSession
-        );
-    }
 }
 
 /* =========================================
@@ -1436,213 +950,80 @@ async function initializeProfilePhotoSupabase(acessoInicial) {
     }
 }
 
-// ========================================
-// FOTO PERSONALIZADA DO PERFIL
-// ========================================
+async function initializeProfile() {
+    if (navigator.onLine === false) {
+        await new Promise(resolve => {
+            setTimeout(resolve, 1000);
+        });
 
-function initializeProfilePhoto() {
-    const botao = document.getElementById('editProfilePhoto');
-    const campo = document.getElementById('profilePhotoInput');
-    const imagem = document.getElementById('characterImg');
-    const menu = document.getElementById('profilePhotoMenu');
-    const alterarFoto = document.getElementById('changeProfilePhoto');
-    const removerFoto = document.getElementById('removeProfilePhoto');
+        const aviso = document.createElement('main');
 
-    const sessao = carregarSessao();
+        aviso.style.cssText =
+            'min-height:100vh;' +
+            'display:flex;' +
+            'flex-direction:column;' +
+            'align-items:center;' +
+            'justify-content:center;' +
+            'gap:16px;' +
+            'padding:24px;' +
+            'text-align:center;';
 
-    if (!botao || !campo || !imagem || !sessao?.email) {
+        const titulo = document.createElement('h1');
+        titulo.textContent = 'FITZONE';
+
+        const mensagem = document.createElement('p');
+        mensagem.textContent =
+            'Você está sem internet. ' +
+            'Não foi possível verificar sua conta Supabase.';
+
+        const orientacao = document.createElement('p');
+        orientacao.textContent =
+            'Conecte-se à internet para continuar.';
+
+        const botao = document.createElement('button');
+        botao.type = 'button';
+        botao.textContent = 'Tentar novamente';
+
+        botao.addEventListener('click', () => {
+            window.location.replace('perfil.html');
+        });
+
+        aviso.append(
+            titulo,
+            mensagem,
+            orientacao,
+            botao
+        );
+
+        document.body.replaceChildren(aviso);
         return;
     }
 
-    const chaveFoto =
-        `fotoPerfilFitZone:${sessao.email.toLowerCase()}`;
-
-    // Recuperar foto salva
     try {
-        const fotoSalva = localStorage.getItem(chaveFoto);
+        const acessoSupabase =
+            await identificarAcessoSupabasePerfil();
 
-        if (fotoSalva) {
-            imagem.src = fotoSalva;
-            imagem.style.display = 'block';
-            imagem.style.objectFit = 'cover';
-            imagem.style.borderRadius = '50%';
-        }
-    } catch (erro) {
-        console.warn('Erro ao carregar foto:', erro);
-    }
-
-    // Abrir e fechar o menu de edição
-    botao.addEventListener('click', () => {
-        if (!menu) return;
-
-        menu.hidden = !menu.hidden;
-    });
-
-    // Escolher uma nova foto
-    alterarFoto?.addEventListener('click', () => {
-        menu.hidden = true;
-        campo.click();
-    });
-
-    // Remover foto personalizada e restaurar personagem
-    removerFoto?.addEventListener('click', () => {
-        const fotoSalva = localStorage.getItem(chaveFoto);
-
-        if (!fotoSalva) {
-            menu.hidden = true;
+        if (!acessoSupabase.autenticado) {
+            window.location.replace('login.html');
             return;
         }
 
-        const confirmar = confirm(
-            'Deseja remover sua foto e restaurar o personagem padrão?'
-        );
+        idPreferenciasSupabasePerfil =
+            acessoSupabase.id;
 
-        if (!confirmar) {
-            return;
-        }
+        monitorarSessaoSupabasePerfil();
 
         try {
-            localStorage.removeItem(chaveFoto);
+            const perfilSupabase =
+                await consultarPerfilSupabaseFitZone();
 
-            imagem.style.objectFit = 'contain';
-            imagem.style.borderRadius = '0';
-
-            loadCharacter();
-
-            menu.hidden = true;
-            campo.value = '';
+            preencherFormularioSupabase(perfilSupabase);
 
         } catch (erro) {
-            console.error('Erro ao remover foto:', erro);
-            alert('Não foi possível remover a foto.');
-        }
-    });
-
-    // Fechar o menu ao clicar fora
-    document.addEventListener('click', (evento) => {
-        if (
-            menu &&
-            !menu.contains(evento.target) &&
-            !botao.contains(evento.target)
-        ) {
-            menu.hidden = true;
-        }
-    });
-
-    // Selecionar e salvar foto
-    campo.addEventListener('change', () => {
-        const arquivo = campo.files?.[0];
-
-        if (!arquivo) return;
-
-        const tiposPermitidos = [
-            'image/jpeg',
-            'image/png',
-            'image/webp'
-        ];
-
-        if (!tiposPermitidos.includes(arquivo.type)) {
-            alert('Selecione uma imagem JPG, PNG ou WebP.');
-            campo.value = '';
-            return;
-        }
-
-        if (arquivo.size > 5 * 1024 * 1024) {
-            alert('A imagem deve ter no máximo 5 MB.');
-            campo.value = '';
-            return;
-        }
-
-        const leitor = new FileReader();
-
-        leitor.onload = () => {
-            const fotoOriginal = new Image();
-
-            fotoOriginal.onload = () => {
-                const canvas = document.createElement('canvas');
-                const tamanho = 300;
-
-                canvas.width = tamanho;
-                canvas.height = tamanho;
-
-                const contexto = canvas.getContext('2d');
-
-                if (!contexto) {
-                    alert('Não foi possível processar a imagem.');
-                    return;
-                }
-
-                const lado = Math.min(
-                    fotoOriginal.width,
-                    fotoOriginal.height
-                );
-
-                const origemX = (fotoOriginal.width - lado) / 2;
-                const origemY = (fotoOriginal.height - lado) / 2;
-
-                contexto.drawImage(
-                    fotoOriginal,
-                    origemX,
-                    origemY,
-                    lado,
-                    lado,
-                    0,
-                    0,
-                    tamanho,
-                    tamanho
-                );
-
-                const fotoOtimizada =
-                    canvas.toDataURL('image/jpeg', 0.8);
-
-                try {
-                    localStorage.setItem(
-                        chaveFoto,
-                        fotoOtimizada
-                    );
-
-                    imagem.src = fotoOtimizada;
-                    imagem.style.display = 'block';
-                    imagem.style.objectFit = 'cover';
-                    imagem.style.borderRadius = '50%';
-
-                } catch (erro) {
-                    console.error('Erro ao salvar foto:', erro);
-                    alert(
-                        'Não foi possível salvar a foto. Verifique o espaço disponível no navegador.'
-                    );
-                }
-            };
-
-            fotoOriginal.onerror = () => {
-                alert('Não foi possível abrir a imagem selecionada.');
-            };
-
-            fotoOriginal.src = leitor.result;
-        };
-
-        leitor.onerror = () => {
-            alert('Erro ao ler a imagem.');
-        };
-
-        leitor.readAsDataURL(arquivo);
-        campo.value = '';
-    });
-}
-
-async function initializeProfile() {
-    const sessao =
-        carregarSessao();
-
-    if (
-        !sessao ||
-        sessao.autenticado !== true
-    ) {
-
-        if (navigator.onLine === false) {
-            await new Promise(resolve => {
-                setTimeout(resolve, 1000);
-            });
+            console.error(
+                'Erro ao consultar perfil Supabase:',
+                erro
+            );
 
             const aviso = document.createElement('main');
 
@@ -1661,12 +1042,8 @@ async function initializeProfile() {
 
             const mensagem = document.createElement('p');
             mensagem.textContent =
-                'Você está sem internet. ' +
-                'Não foi possível verificar sua conta Supabase.';
-
-            const orientacao = document.createElement('p');
-            orientacao.textContent =
-                'Conecte-se à internet para continuar.';
+                'Conta reconhecida, mas não foi possível ' +
+                'consultar o perfil.';
 
             const botao = document.createElement('button');
             botao.type = 'button';
@@ -1679,134 +1056,57 @@ async function initializeProfile() {
             aviso.append(
                 titulo,
                 mensagem,
-                orientacao,
                 botao
             );
 
             document.body.replaceChildren(aviso);
             return;
         }
-        try {
-            const acessoSupabase =
-                await identificarAcessoSupabasePerfil();
 
-            if (acessoSupabase.autenticado) {
+        initializeIMC();
+        initializeProfileActionsSupabase();
+        iniciarConfiguracoesFitZone();
 
-                idPreferenciasSupabasePerfil =
-                    acessoSupabase.id;
-
-                monitorarSessaoSupabasePerfil();
-
-                const aviso = document.createElement('main');
-
-                aviso.style.cssText =
-                    'min-height:100vh;' +
-                    'display:flex;' +
-                    'flex-direction:column;' +
-                    'align-items:center;' +
-                    'justify-content:center;' +
-                    'gap:16px;' +
-                    'padding:24px;' +
-                    'text-align:center;';
-
-                const titulo = document.createElement('h1');
-                titulo.textContent = 'FitZone';
-
-                const mensagem = document.createElement('p');
-                mensagem.textContent =
-                    'Conta Supabase reconhecida com sucesso!';
-
-                /* Consultar nome salvo no perfil Supabase */
-                try {
-                    const perfilSupabase =
-                        await consultarPerfilSupabaseFitZone();
-
-                    preencherFormularioSupabase(perfilSupabase);
-
-                } catch (erro) {
-                    console.error(
-                        'Erro ao consultar perfil Supabase:',
-                        erro
-                    );
-
-                    mensagem.textContent =
-                        'Conta reconhecida, mas não foi possível ' +
-                        'consultar o perfil.';
-
-                    aviso.append(titulo, mensagem);
-
-                    document.body.replaceChildren(aviso);
-                    return;
-                }
-
-                /* =========================================
-                   PREPARAR PERFIL SUPABASE
-                ========================================= */
-
-                initializeIMC();
-                initializeProfileActionsSupabase();               
-                iniciarConfiguracoesFitZone();
-
-                /* =========================================
-                   FOTO DE PERFIL SUPABASE - STORAGE
-                ========================================= */
-
-                await initializeProfilePhotoSupabase(
-                    acessoSupabase
-                );
-
-                /* Habilitar salvamento do perfil Supabase */
-                const botaoSalvar =
-                    document.getElementById('btnSaveProfile');
-
-                if (botaoSalvar) {
-                    botaoSalvar.disabled = false;
-                    botaoSalvar.removeAttribute('title');
-                }
-
-                document.getElementById(
-                    'fitzonePerfilLoader'
-                )?.remove();
-
-                return;
-            }
-
-        } catch (erro) {
-            console.error(
-                'Erro ao identificar conta Supabase no perfil:',
-                erro
-            );
-        }
-
-        window.location.replace('login.html');
-        return;
-    }
-
-    fillForm();
-    loadCharacter();
-    initializeProfilePhoto();
-    initializeIMC();
-    initializeProfileActions();   
-    iniciarConfiguracoesFitZone();
-
-    /* MOSTRAR PAGINA ATIVA NO MENU MOBILE */
-    if (window.matchMedia('(max-width: 520px)').matches) {
-        const linkAtivo = document.querySelector(
-            '.app-nav-actions .app-nav-link.active'
+        await initializeProfilePhotoSupabase(
+            acessoSupabase
         );
 
-        if (linkAtivo) {
-            linkAtivo.scrollIntoView({
-                behavior: 'instant',
-                block: 'nearest',
-                inline: 'center'
-            });
-        }
-    }
+        const botaoSalvar =
+            document.getElementById('btnSaveProfile');
 
-    document.getElementById(
-        'fitzonePerfilLoader'
-    )?.remove();
+        if (botaoSalvar) {
+            botaoSalvar.disabled = false;
+            botaoSalvar.removeAttribute('title');
+        }
+
+        /* MOSTRAR PAGINA ATIVA NO MENU MOBILE */
+
+        if (window.matchMedia('(max-width: 520px)').matches) {
+            const linkAtivo = document.querySelector(
+                '.app-nav-actions .app-nav-link.active'
+            );
+
+            if (linkAtivo) {
+                linkAtivo.scrollIntoView({
+                    behavior: 'instant',
+                    block: 'nearest',
+                    inline: 'center'
+                });
+            }
+        }
+
+        document.getElementById(
+            'fitzonePerfilLoader'
+        )?.remove();
+
+    } catch (erro) {
+        console.error(
+            'Erro ao inicializar perfil Supabase:',
+            erro
+        );
+
+        window.location.replace('login.html');
+    }
 }
 
 // ========================================
