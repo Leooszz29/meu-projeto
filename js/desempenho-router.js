@@ -36,58 +36,6 @@
         )?.remove();
     }
 
-    function obterSessaoTradicional() {
-        try {
-            const dados = localStorage.getItem(
-                'fitzoneSessao'
-            );
-
-            const sessao = dados
-                ? JSON.parse(dados)
-                : null;
-
-            return Boolean(
-                sessao &&
-                sessao.autenticado === true &&
-                typeof sessao.email === 'string' &&
-                sessao.email.trim()
-            );
-        } catch (erro) {
-            console.warn(
-                'Erro ao verificar sessão tradicional:',
-                erro
-            );
-
-            return false;
-        }
-    }
-
-    function carregarDesempenhoTradicional() {
-        const script = document.createElement('script');
-
-        script.src = 'js/desempenho.js';
-        script.async = false;
-
-        script.addEventListener(
-            'load',
-            finalizarCarregamentoDesempenho
-        );
-
-        script.addEventListener(
-            'error',
-            mostrarErroCarregamentoDesempenho
-        );
-
-        document.body.appendChild(script);
-    }
-
-    /* Conta tradicional: preservar funcionamento original */
-
-    if (obterSessaoTradicional()) {
-        carregarDesempenhoTradicional();
-        return;
-    }
-
     const pagina = document.querySelector('.page');
 
     function mostrarAvisoOfflineDesempenho() {
