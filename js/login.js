@@ -597,6 +597,7 @@ function validateEmail(email) {
     return emailRegex.test(email);
 }
 
+
 async function handleLogin(e) {
     e.preventDefault();
     clearError();
@@ -609,227 +610,82 @@ async function handleLogin(e) {
         emailInput.value.trim().toLowerCase();
 
     const password = passwordInput.value;
-    const tipoContaLogin =
-    document.getElementById('tipoContaLogin')?.value || 'auto';
 
-    // Validação
     if (!email || !password) {
-        showError('Por favor, preencha todos os campos');
+        showError('Por favor, preencha todos os campos.');
         return;
     }
 
     if (!validateEmail(email)) {
-        showError('Por favor, digite um email válido');
+        showError('Por favor, digite um e-mail válido.');
         return;
     }
 
     if (password.length < 6) {
-        showError('Senha deve ter no mínimo 6 caracteres');
+        showError('Senha deve ter no mínimo 6 caracteres.');
         return;
     }
 
-    // Buscar usuário cadastrado
-    const usuarioSalvo =
-        carregarUsuarioSalvo(email);
-
-    /* =========================================
-       LOGIN PRINCIPAL - CONTA SUPABASE
-    ========================================= */
-
-if (
-    tipoContaLogin === 'supabase' ||
-    (
-        tipoContaLogin === 'auto' &&
-        (
-            !usuarioSalvo ||
-            !validarCredenciais(
-                usuarioSalvo,
-                email,
-                password
-            )
-        )
-    )
-) {
-        submitBtn.disabled = true;
-        submitBtn.classList.add('loading');
-
-        try {
-const dados =
-    await autenticarUsuarioSupabase(
-        email,
-        password
-    );
-
-if (!dados?.user) {
-    showError('E-mail ou senha incorretos.');
-    return;
-}
-
-            /* Evitar conflito com uma sessão local anterior */
-            try {
-                localStorage.removeItem('fitzoneSessao');
-            } catch (erro) {
-                console.error(
-                    'Não foi possível limpar a sessão local:',
-                    erro
-                );
-
-                showError(
-                    'Não foi possível alternar de conta. Tente novamente.'
-                );
-
-                return;
-            }
-
-            atualizarPreferenciaEmail(email);
-
-            showSuccess(
-                'Login realizado com sucesso! Seja bem-vindo! 💪'
-            );
-
-            window.location.href = obterPaginaInicialFitZone(
-                dados.user.email,
-                dados.user.id
-            );
-            return;
-
-        } catch (erro) {
-            console.error(
-                'Erro na autenticação Supabase:',
-                erro
-            );
-
-            const credenciaisInvalidas =
-                erro.code === 'invalid_credentials' ||
-                erro.status === 400;
-
-            if (credenciaisInvalidas) {
-                showError('E-mail ou senha incorretos.');
-            } else {
-                showError(
-                    'Não foi possível conectar ao Supabase. Tente novamente.'
-                );
-            }
-
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('loading');
-        }
-
-        return;
-    }
-
-    // Validar credenciais
-    if (
-        !validarCredenciais(
-            usuarioSalvo,
-            email,
-            password
-        )
-    ) {
-        showError(
-            'E-mail ou senha incorretos'
-        );
-
-        return;
-    }
-
-    // Desabilitar botão durante envio
     submitBtn.disabled = true;
-
     submitBtn.classList.add('loading');
 
-    /* Encerrar sessão Supabase antes de entrar na conta local */
     try {
-        const clienteSupabase =
-            inicializarSupabaseFitZone();
-
-        const { error: erroLogout } =
-            await clienteSupabase.auth.signOut({
-                scope: 'local'
-            });
-
-        if (erroLogout) {
-            throw erroLogout;
-        }
-
-    } catch (erro) {
-        console.error(
-            'Erro ao encerrar sessão Supabase:',
-            erro
-        );
-
-        showError(
-            'Não foi possível alternar de conta. Tente novamente.'
-        );
-
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('loading');
-
-        return;
-    }
-
-    // Simular envio (remova isso quando conectar a um backend)
-    setTimeout(() => {
-
-        // Armazenar ou remover preferência de lembrar
-        atualizarPreferenciaEmail(email);
-
-        try {
-            localStorage.setItem(
-                'fitzoneSessao',
-                JSON.stringify({
-                    autenticado: true,
-                    email: email
-                })
-            );
-        } catch (erro) {
-            console.error(
-                'Erro ao salvar a sessão:',
-                erro
+        const dados =
+            await autenticarUsuarioSupabase(
+                email,
+                password
             );
 
-            showError(
-                'Não foi possível iniciar sua sessão. Tente novamente.'
-            );
-
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('loading');
+        if (!dados?.user) {
+            showError('E-mail ou senha incorretos.');
             return;
         }
 
-        try {
-            const generoSelecionado =
-                usuarioSalvo.genero ||
-                localStorage.getItem(
-                    `generoFitZone:${email.toLowerCase()}`
-                ) ||
-                localStorage.getItem('generoFitZone');
+        localStorage.removeItem('fitzoneSessao');
 
-            if (generoSelecionado) {
-                localStorage.setItem(
-                    `generoFitZone:${email.toLowerCase()}`,
-                    generoSelecionado
-                );
-            }
-
-        } catch (erro) {
-            console.warn(
-                'Não foi possível atualizar o gênero do usuário:',
-                erro
-            );
-        }
+        atualizarPreferenciaEmail(email);
 
         showSuccess(
             'Login realizado com sucesso! Seja bem-vindo! 💪'
         );
 
-        // Redirecionar para a pagina inicial preferida
-        setTimeout(() => {
-            window.location.href = obterPaginaInicialFitZone(email);
-        }, 700);
-    }, 600);
+        window.location.href =
+            obterPaginaInicialFitZone(
+                dados.user.email,
+                dados.user.id
+            );
 
+    } catch (erro) {
+        console.error(
+            'Erro na autenticação Supabase:',
+            erro
+        );
+
+        const credenciaisInvalidas =
+            erro.code === 'invalid_credentials' ||
+            erro.code === 'email_not_confirmed' ||
+            (
+                erro.status === 400 &&
+                erro.code === 'invalid_credentials'
+            );
+
+        if (credenciaisInvalidas) {
+            showError(
+                'Não foi possível autenticar. ' +
+                'Verifique seu e-mail, senha e ' +
+                'a confirmação da conta.'
+            );
+        } else {
+            showError(
+                'Não foi possível conectar ao Supabase. ' +
+                'Verifique sua conexão e tente novamente.'
+            );
+        }
+
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+    }
 }
 
 // ==================== INICIALIZAÇÃO ====================
