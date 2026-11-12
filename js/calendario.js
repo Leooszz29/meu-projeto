@@ -35,29 +35,8 @@ document.addEventListener("DOMContentLoaded", async () => {
        PROTECAO DE ACESSO AO CALENDARIO
     ========================================= */
 
-    let sessaoValida = false;
-
-    try {
-        const sessaoJSON =
-            localStorage.getItem("fitzoneSessao");
-
-        const sessao = sessaoJSON
-            ? JSON.parse(sessaoJSON)
-            : null;
-
-        sessaoValida = Boolean(
-            sessao &&
-            sessao.autenticado === true &&
-            typeof sessao.email === "string" &&
-            sessao.email.trim()
-        );
-
-    } catch (error) {
-        console.warn(
-            "Não foi possível validar a sessão:",
-            error
-        );
-    }
+    // Autenticacao tradicional desativada.
+    const sessaoValida = false;
 
     if (!sessaoValida) {
         try {
