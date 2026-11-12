@@ -10,14 +10,72 @@ const FITZONE_SUPABASE_PUBLISHABLE_KEY =
     'sb_publishable_9viROz4cpNBRds8aW5isQA_hYUpRdfH';
 
 /* =========================================
-   FITZONE - DESATIVAR SESSOES TRADICIONAIS
+   FITZONE - DESATIVAR AUTENTICACAO TRADICIONAL
 ========================================= */
 
 try {
     localStorage.removeItem('fitzoneSessao');
+
+    const dadosUsuarios =
+        localStorage.getItem('usuarios');
+
+    if (dadosUsuarios !== null) {
+        const usuarios = JSON.parse(dadosUsuarios);
+
+        if (!Array.isArray(usuarios)) {
+            throw new Error(
+                'Formato inválido dos usuários tradicionais.'
+            );
+        }
+
+        let credenciaisRemovidas = false;
+
+        const usuariosSeguros = usuarios.map(
+            (usuario) => {
+                if (
+                    !usuario ||
+                    typeof usuario !== 'object' ||
+                    Array.isArray(usuario)
+                ) {
+                    return usuario;
+                }
+
+                if (
+                    !Object.prototype.hasOwnProperty.call(
+                        usuario,
+                        'senha'
+                    )
+                ) {
+                    return usuario;
+                }
+
+                const usuarioSeguro = {
+                    ...usuario
+                };
+
+                delete usuarioSeguro.senha;
+
+                credenciaisRemovidas = true;
+
+                return usuarioSeguro;
+            }
+        );
+
+        if (credenciaisRemovidas) {
+            localStorage.setItem(
+                'usuarios',
+                JSON.stringify(usuariosSeguros)
+            );
+
+            console.info(
+                'FitZone: credenciais tradicionais removidas.'
+            );
+        }
+    }
+
 } catch (erro) {
     console.warn(
-        'Não foi possível limpar a sessão tradicional:',
+        'Não foi possível concluir a limpeza tradicional:',
         erro
     );
 }
