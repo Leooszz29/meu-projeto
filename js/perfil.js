@@ -32,52 +32,70 @@ function carregarSessao() {
 // PROTEGER PERFIL CONTRA TROCA DE CONTA
 // ========================================
 
-const sessaoInicialPerfil = carregarSessao();
-
-const emailSessaoInicialPerfil =
-    sessaoInicialPerfil?.autenticado === true &&
-    typeof sessaoInicialPerfil.email === 'string'
-        ? sessaoInicialPerfil.email.trim().toLowerCase()
-        : null;
-
-function verificarContinuidadeSessaoPerfil() {
-    if (!emailSessaoInicialPerfil) {
+async function verificarContinuidadeSessaoPerfil() {
+    if (!idPreferenciasSupabasePerfil) {
         return true;
     }
 
-    const sessaoAtual = carregarSessao();
+    try {
+        const identidadeAtual =
+            await obterIdentidadeSupabaseFitZone();
 
-    if (
-        !emailSessaoInicialPerfil ||
-        !sessaoAtual ||
-        sessaoAtual.autenticado !== true ||
-        typeof sessaoAtual.email !== 'string' ||
-        sessaoAtual.email.trim().toLowerCase() !== emailSessaoInicialPerfil
-    ) {
-        window.location.replace('login.html');
+        if (
+            !identidadeAtual ||
+            identidadeAtual.id !==
+                idPreferenciasSupabasePerfil
+        ) {
+            window.location.replace('login.html');
+            return false;
+        }
+
+        return true;
+
+    } catch (erro) {
+        console.warn(
+            'Não foi possível verificar a sessão do perfil:',
+            erro
+        );
+
         return false;
     }
-
-    return true;
 }
 
-window.addEventListener('storage', (event) => {
-    if (
-        event.storageArea === localStorage &&
-        (event.key === 'fitzoneSessao' || event.key === null)
-    ) {
-        verificarContinuidadeSessaoPerfil();
-    }
-});
+function monitorarSessaoSupabasePerfil() {
+    const cliente =
+        inicializarSupabaseFitZone();
 
-window.addEventListener(
-    'pageshow',
-    verificarContinuidadeSessaoPerfil
-);
+    if (!cliente) {
+        return;
+    }
+
+    cliente.auth.onAuthStateChange(
+        (evento, sessaoAtual) => {
+            const idUsuarioAtual =
+                sessaoAtual?.user?.id;
+
+            if (
+                evento === 'SIGNED_OUT' ||
+                (
+                    evento === 'SIGNED_IN' &&
+                    idUsuarioAtual !==
+                        idPreferenciasSupabasePerfil
+                )
+            ) {
+                window.location.replace('login.html');
+            }
+        }
+    );
+}
+
+window.addEventListener('pageshow', () => {
+    void verificarContinuidadeSessaoPerfil();
+});
 
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
-        verificarContinuidadeSessaoPerfil();
+        void verificarContinuidadeSessaoPerfil();
     }
 });
 
@@ -1677,6 +1695,8 @@ async function initializeProfile() {
                 idPreferenciasSupabasePerfil =
                     acessoSupabase.id;
 
+                monitorarSessaoSupabasePerfil();
+
                 const aviso = document.createElement('main');
 
                 aviso.style.cssText =
@@ -1812,39 +1832,11 @@ if (document.readyState === 'loading') {
 let idPreferenciasSupabasePerfil = null;
 
 function obterChavePreferenciasFitZone() {
-    if (idPreferenciasSupabasePerfil) {
-        return `fitzonePreferencias:supabase:${idPreferenciasSupabasePerfil}`;
-    }
-
-    try {
-        const sessaoJSON =
-            localStorage.getItem('fitzoneSessao');
-
-        const sessao = sessaoJSON
-            ? JSON.parse(sessaoJSON)
-            : null;
-
-        if (
-            !sessao ||
-            sessao.autenticado !== true ||
-            typeof sessao.email !== 'string' ||
-            !sessao.email.trim()
-        ) {
-            return null;
-        }
-
-        const email = sessao.email.trim().toLowerCase();
-
-        return `fitzonePreferencias:${email}`;
-
-    } catch (erro) {
-        console.warn(
-            'Não foi possível identificar as preferências:',
-            erro
-        );
-
+    if (!idPreferenciasSupabasePerfil) {
         return null;
     }
+
+    return `fitzonePreferencias:supabase:${idPreferenciasSupabasePerfil}`;
 }
 
 /* =========================================
