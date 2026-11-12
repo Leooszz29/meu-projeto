@@ -4683,16 +4683,6 @@ const emailSessaoInicialFitZone =
 ========================================= */
 
 async function verificarOrigemAcessoTreinos() {
-    const sessaoLocal = carregarSessao();
-
-    if (sessaoLocal) {
-        return {
-            origem: 'local',
-            autenticado: true,
-            email: sessaoLocal.email
-        };
-    }
-
     const acessoSupabase =
         await identificarAcessoSupabaseTreinos();
 
@@ -4767,7 +4757,7 @@ async function verificarContinuidadeSupabaseTreinos(
 }
 
 /* =========================================
-   FITZONE - CONFERIR SESSAO HIBRIDA
+   FITZONE - CONFERIR SESSAO SUPABASE
 ========================================= */
 
 async function conferirSessaoHibridaTreinos(
@@ -4775,34 +4765,16 @@ async function conferirSessaoHibridaTreinos(
 ) {
     if (
         !acessoInicial ||
-        acessoInicial.autenticado !== true
+        acessoInicial.autenticado !== true ||
+        acessoInicial.origem !== 'supabase' ||
+        !acessoInicial.id
     ) {
         return false;
     }
 
-    const acessoAtual =
-        await verificarOrigemAcessoTreinos();
-
-    if (
-        !acessoAtual.autenticado ||
-        acessoAtual.origem !== acessoInicial.origem
-    ) {
-        return false;
-    }
-
-    if (acessoInicial.origem === 'local') {
-        return (
-            acessoAtual.email === acessoInicial.email
-        );
-    }
-
-    if (acessoInicial.origem === 'supabase') {
-        return (
-            acessoAtual.id === acessoInicial.id
-        );
-    }
-
-    return false;
+    return await verificarContinuidadeSupabaseTreinos(
+        acessoInicial.id
+    );
 }
 
 /* =========================================
@@ -4834,44 +4806,40 @@ function verificarContinuidadeSessaoFitZone(
     return true;
 }
 
-window.addEventListener('storage', async (event) => {
-    if (event.storageArea !== localStorage) {
+/* =========================================
+   FITZONE - MONITORAR AUTENTICACAO SUPABASE
+========================================= */
+
+function monitorarSessaoSupabaseTreinos() {
+    const cliente =
+        inicializarSupabaseFitZone();
+
+    if (!cliente) {
         return;
     }
 
-    if (
-        event.key !== 'fitzoneSessao' &&
-        event.key !== null
-    ) {
-        return;
-    }
+    cliente.auth.onAuthStateChange(
+        (evento, sessaoAtual) => {
+            if (!acessoInicialTreinosFitZone) {
+                return;
+            }
 
-    if (!acessoInicialTreinosFitZone) {
-        return;
-    }
+            const idUsuarioAtual =
+                sessaoAtual?.user?.id;
 
-    try {
-        const sessaoValida =
-            await conferirSessaoHibridaTreinos(
-                acessoInicialTreinosFitZone
-            );
-
-        if (!sessaoValida) {
-            console.warn(
-                'Sessão FitZone encerrada ou alterada.'
-            );
-
-            window.location.replace('login.html');
+            if (
+                evento === 'SIGNED_OUT' ||
+                (
+                    evento === 'SIGNED_IN' &&
+                    idUsuarioAtual !==
+                        acessoInicialTreinosFitZone.id
+                )
+            ) {
+                window.location.replace('login.html');
+            }
         }
-    } catch (erro) {
-        console.error(
-            'Erro ao verificar a sessão:',
-            erro
-        );
-
-        window.location.replace('login.html');
-    }
-});
+    );
+}
 
 /* =========================================
    FITZONE - VERIFICAR SESSAO AO REABRIR PAGINA
@@ -4952,19 +4920,8 @@ window.addEventListener(
         let acessoPagina;
 
         try {
-            const sessaoTradicional =
-                carregarSessao();
-
-            if (sessaoTradicional) {
-                acessoPagina = {
-                    origem: 'local',
-                    autenticado: true,
-                    email: sessaoTradicional.email
-                };
-            } else {
-                acessoPagina =
-                    await verificarOrigemAcessoTreinos();
-            }
+            acessoPagina =
+                await verificarOrigemAcessoTreinos();
 
             if (
                 navigator.onLine === false &&
@@ -5038,6 +4995,8 @@ window.addEventListener(
             acessoPagina.origem === 'supabase'
         ) {
             acessoInicialTreinosFitZone = acessoPagina;
+
+            monitorarSessaoSupabaseTreinos();
 
             /* =========================================
                TEMA TREINOS SUPABASE - NUVEM
