@@ -24,25 +24,8 @@ async function identificarAcessoSupabasePerfil() {
 }
 
 function carregarSessao() {
-
-    try {
-
-        const sessaoJSON =
-            localStorage.getItem('fitzoneSessao');
-
-        return sessaoJSON
-            ? JSON.parse(sessaoJSON)
-            : null;
-
-    } catch (error) {
-
-        console.warn(
-            'Não foi possível carregar a sessão:',
-            error
-        );
-
-        return null;
-    }
+    // Autenticacao tradicional desativada.
+    return null;
 }
 
 // ========================================
