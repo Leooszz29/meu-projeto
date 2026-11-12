@@ -499,50 +499,10 @@ async function excluirTreinoBancoSupabase(treinoId) {
 }
 
 // ==================== SESSÃO ====================
+
 function carregarSessao() {
-
-    try {
-
-        const sessaoJSON =
-            localStorage.getItem('fitzoneSessao');
-
-        if (!sessaoJSON) {
-            return null;
-        }
-
-        const sessao = JSON.parse(sessaoJSON);
-
-        if (
-            !sessao ||
-            typeof sessao !== 'object' ||
-            Array.isArray(sessao) ||
-            sessao.autenticado !== true ||
-            typeof sessao.email !== 'string' ||
-            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-                sessao.email.trim()
-            )
-        ) {
-            console.warn(
-                'Estrutura da sessão FitZone inválida.'
-            );
-
-            return null;
-        }
-
-        return {
-            ...sessao,
-            email: sessao.email.trim().toLowerCase()
-        };
-
-    } catch (error) {
-
-        console.warn(
-            'Não foi possível carregar a sessão:',
-            error
-        );
-
-        return null;
-    }
+    // Autenticacao tradicional desativada.
+    return null;
 }
 
 function obterChaveTreinoAtivo() {
