@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     ========================================= */
 
     let sessao = null;
-    let origemSessao = null;
     let identidadeSupabase = null;
 
     // Autenticacao exclusivamente pelo Supabase.
@@ -27,8 +26,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 await obterIdentidadeSupabaseFitZone();
 
             if (identidadeSupabase) {
-                origemSessao = 'supabase';
-
                 sessao = {
                     autenticado: true,
                     email: identidadeSupabase.email
@@ -96,9 +93,6 @@ document.addEventListener('DOMContentLoaded', async () => {
        IDENTIDADE DA CONTA ATUAL
     ========================================= */
 
-    const email =
-        sessao.email.trim().toLowerCase();
-
     const idSupabaseInicial =
         identidadeSupabase?.id || null;
 
@@ -151,43 +145,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     /* =========================================
-       TEMA POR GENERO - HIBRIDO
+       TEMA POR GENERO - SUPABASE
     ========================================= */
 
-    if (origemSessao === 'supabase') {
-        await sincronizarTemaSupabaseFitZone(
-            identidadeSupabase
-        );
-
-    } else {
-        const genero = localStorage.getItem(
-            `generoFitZone:${email}`
-        );
-
-        document.body.classList.remove(
-            'theme-masculino',
-            'theme-feminino'
-        );
-
-        if (genero === 'masculino') {
-            document.body.classList.add(
-                'theme-masculino'
-            );
-
-        } else if (genero === 'feminino') {
-            document.body.classList.add(
-                'theme-feminino'
-            );
-        }
-    }
+    await sincronizarTemaSupabaseFitZone(
+        identidadeSupabase
+    );
 
     /* =========================================
        FAVORITOS POR USUARIO
     ========================================= */
 
-    const chaveFavoritos = origemSessao === 'supabase'
-        ? `fitzoneFavoritos:supabase:${idSupabaseInicial}`
-        : `fitzoneFavoritos:${email}`;
+    const chaveFavoritos =
+        `fitzoneFavoritos:supabase:${idSupabaseInicial}`;
 
     let favoritosSalvos = [];
 
@@ -209,8 +179,7 @@ document.addEventListener('DOMContentLoaded', async () => {
        FAVORITOS SUPABASE - SINCRONIZACAO
     ========================================= */
 
-    let favoritosNuvemProntos =
-        origemSessao !== 'supabase';
+    let favoritosNuvemProntos = false;
 
     const chaveMigracaoFavoritos =
         `fitzoneFavoritosMigrados:${idSupabaseInicial}`;
@@ -230,10 +199,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function sincronizarFavoritosSupabase() {
-        if (origemSessao !== 'supabase') {
-            return;
-        }
-
         favoritosNuvemProntos = false;
 
         const cliente = inicializarSupabaseFitZone();
@@ -797,10 +762,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             botaoFavorito.addEventListener(
                 'click',
                 async () => {
-                    if (
-                        origemSessao === 'supabase' &&
-                        !favoritosNuvemProntos
-                    ) {
+                    if (!favoritosNuvemProntos) {
                         alert(
                             'Os favoritos ainda não estão ' +
                             'sincronizados com o Supabase.'
@@ -811,33 +773,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                     botaoFavorito.disabled = true;
 
                     try {
-                        if (origemSessao === 'supabase') {
-                            const sessaoContinuaValida =
-                                await verificarContinuidadeSessaoBiblioteca();
+                        const sessaoContinuaValida =
+                            await verificarContinuidadeSessaoBiblioteca();
 
-                            if (!sessaoContinuaValida) {
-                                throw new Error(
-                                    'Sessão não validada.'
-                                );
-                            }
-
-                            const adicionar =
-                                !favoritos.has(exercicio.id);
-
-                            await alterarFavoritoSupabase(
-                                exercicio.id,
-                                adicionar
+                        if (!sessaoContinuaValida) {
+                            throw new Error(
+                                'Sessão não validada.'
                             );
-
-                        } else {
-                            if (favoritos.has(exercicio.id)) {
-                                favoritos.delete(exercicio.id);
-                            } else {
-                                favoritos.add(exercicio.id);
-                            }
-
-                            salvarCacheFavoritos();
                         }
+
+                        const adicionar =
+                            !favoritos.has(exercicio.id);
+
+                        await alterarFavoritoSupabase(
+                            exercicio.id,
+                            adicionar
+                        );
 
                         atualizarBotaoFavorito();
 
@@ -990,23 +941,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /* EXIBICAO INICIAL */
 
-    if (origemSessao === 'supabase') {
-        try {
-            await sincronizarFavoritosSupabase();
+    try {
+        await sincronizarFavoritosSupabase();
 
-        } catch (erro) {
-            console.error(
-                'Erro ao sincronizar favoritos Supabase:',
-                erro
-            );
+    } catch (erro) {
+        console.error(
+            'Erro ao sincronizar favoritos Supabase:',
+            erro
+        );
 
-            alert(
-                'Não foi possível sincronizar os favoritos. ' +
-                'Eles ficarão disponíveis para consulta local, ' +
-                'mas alterações serão bloqueadas até a ' +
-                'sincronização funcionar.'
-            );
-        }
+        alert(
+            'Não foi possível sincronizar os favoritos. ' +
+            'Eles ficarão disponíveis para consulta local, ' +
+            'mas alterações serão bloqueadas até a ' +
+            'sincronização funcionar.'
+        );
     }
 
     atualizarBiblioteca();
@@ -1031,7 +980,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     /* =========================================
-       ENCERRAR SESSAO HIBRIDA
+       ENCERRAR SESSAO SUPABASE
     ========================================= */
 
     const btnEndSession =
@@ -1052,29 +1001,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                 btnEndSession.disabled = true;
 
                 try {
-                    if (origemSessao === 'supabase') {
-                        const cliente =
-                            inicializarSupabaseFitZone();
+                    const cliente =
+                        inicializarSupabaseFitZone();
 
-                        if (!cliente) {
-                            throw new Error(
-                                'Supabase indisponível.'
-                            );
-                        }
-
-                        const { error } =
-                            await cliente.auth.signOut({
-                                scope: 'local'
-                            });
-
-                        if (error) {
-                            throw error;
-                        }
-
-                    } else {
-                        localStorage.removeItem(
-                            'fitzoneSessao'
+                    if (!cliente) {
+                        throw new Error(
+                            'Supabase indisponível.'
                         );
+                    }
+
+                    const { error } =
+                        await cliente.auth.signOut({
+                            scope: 'local'
+                        });
+
+                    if (error) {
+                        throw error;
                     }
 
                     window.location.replace('login.html');
