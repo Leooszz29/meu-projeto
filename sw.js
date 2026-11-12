@@ -2,7 +2,7 @@
    FITZONE - SERVICE WORKER
 ========================================= */
 
-const CACHE_NAME = 'fitzone-v15';
+const CACHE_NAME = 'fitzone-v16-security';
 
 const IMAGE_CACHE_NAME = 'fitzone-images-v1';
 
@@ -38,7 +38,6 @@ const APP_SHELL = [
     './js/treinos.js?v=20261104-treino-ativo-backup-v1',
     './js/calendario.js?v=20261103-tema-nuvem-v2',
     './js/desempenho-router.js?v=20261103-tema-nuvem-v11',
-    './js/desempenho.js',
     './js/biblioteca.js?v=20261104-supabase-v1',
 
     './img/icons/fitzone-192.png',
@@ -50,10 +49,26 @@ const APP_SHELL = [
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then((cache) => cache.addAll(APP_SHELL))
+            .then((cache) => {
+                const arquivosAtualizados = APP_SHELL.map(
+                    (arquivo) => new Request(
+                        new URL(
+                            arquivo,
+                            self.registration.scope
+                        ),
+                        {
+                            cache: 'reload'
+                        }
+                    )
+                );
+
+                return cache.addAll(arquivosAtualizados);
+            })
     );
 
-    console.info('FitZone: arquivos essenciais preparados para uso offline.');
+    console.info(
+        'FitZone: arquivos essenciais atualizados para uso offline.'
+    );
 });
 
 self.addEventListener('activate', (event) => {
@@ -147,11 +162,26 @@ self.addEventListener('fetch', (event) => {
 
                 return response;
             })
-            .catch(async () => {
-                const cachedResponse = await caches.match(request);
 
-                if (cachedResponse) {
-                    return cachedResponse;
+            .catch(async () => {
+                const cacheAtual =
+                    await caches.open(CACHE_NAME);
+
+                const respostaAtual =
+                    await cacheAtual.match(request);
+
+                if (respostaAtual) {
+                    return respostaAtual;
+                }
+
+                const cacheImagens =
+                    await caches.open(IMAGE_CACHE_NAME);
+
+                const imagemSalva =
+                    await cacheImagens.match(request);
+
+                if (imagemSalva) {
+                    return imagemSalva;
                 }
 
                 return Response.error();
