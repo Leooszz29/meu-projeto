@@ -2,8 +2,8 @@
 "use strict";
 
 /* =========================================
-   FITZONE - DESEMPENHO HIBRIDO
-   Roteamento tradicional / Supabase
+   FITZONE - DESEMPENHO SUPABASE
+   Indicadores, conquistas e historico
 ========================================= */
 
 (async function iniciarDesempenhoFitZone() {
@@ -100,6 +100,27 @@
         if (!cliente) {
             throw new Error('Supabase indisponível.');
         }
+
+        /* =========================================
+           MONITORAR SESSAO SUPABASE
+        ========================================= */
+
+        cliente.auth.onAuthStateChange(
+            (evento, sessaoAtual) => {
+                const idUsuarioAtual =
+                    sessaoAtual?.user?.id;
+
+                if (
+                    evento === 'SIGNED_OUT' ||
+                    (
+                        evento === 'SIGNED_IN' &&
+                        idUsuarioAtual !== identidade.id
+                    )
+                ) {
+                    window.location.replace('login.html');
+                }
+            }
+        );
 
         /* =========================================
            TEMA DESEMPENHO SUPABASE - NUVEM
