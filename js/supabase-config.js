@@ -83,57 +83,6 @@ async function consultarUsuarioSupabaseFitZone() {
 ========================================= */
 
 async function consultarOrigemSessaoFitZone() {
-    let sessaoLocal = null;
-
-    try {
-        const dados = localStorage.getItem('fitzoneSessao');
-
-        sessaoLocal = dados ? JSON.parse(dados) : null;
-    } catch (erro) {
-        console.warn(
-            'Não foi possível consultar a sessão local:',
-            erro
-        );
-    }
-
-    if (
-        sessaoLocal &&
-        sessaoLocal.autenticado === true &&
-        typeof sessaoLocal.email === 'string' &&
-        sessaoLocal.email.trim()
-    ) {
-        try {
-            const usuariosSalvos = JSON.parse(
-                localStorage.getItem('usuarios') || '[]'
-            );
-
-            const emailSessao =
-                sessaoLocal.email.trim().toLowerCase();
-
-            const contaExiste =
-                Array.isArray(usuariosSalvos) &&
-                usuariosSalvos.some((usuario) =>
-                    usuario &&
-                    typeof usuario.email === 'string' &&
-                    usuario.email.trim().toLowerCase() ===
-                        emailSessao
-                );
-
-            if (contaExiste) {
-                return {
-                    origem: 'local',
-                    autenticado: true
-                };
-            }
-
-        } catch (erro) {
-            console.warn(
-                'Não foi possível validar a conta tradicional:',
-                erro
-            );
-        }
-    }
-
     const usuarioSupabase =
         await consultarUsuarioSupabaseFitZone();
 
