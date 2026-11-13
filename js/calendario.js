@@ -1062,15 +1062,31 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (modalMotivacaoSupabase) {
                     try {
-                        const chavePreferencias =
-                            `fitzonePreferencias:supabase:${acessoSupabase.id}`;
 
-                        const preferenciasJSON =
-                            localStorage.getItem(chavePreferencias);
+                        let preferencias;
 
-                        const preferencias = preferenciasJSON
-                            ? JSON.parse(preferenciasJSON)
-                            : {};
+                        try {
+                            preferencias =
+                                await carregarPreferenciasSupabaseFitZone(
+                                    acessoSupabase.id
+                                );
+
+                        } catch (erroPreferencias) {
+                            console.warn(
+                                'Não foi possível consultar ' +
+                                'as preferências de motivação:',
+                                erroPreferencias
+                            );
+
+                            preferencias =
+                                obterPreferenciasContingenciaFitZone(
+                                    acessoSupabase.id
+                                );
+                        }
+
+                        await obterUsuarioVinculadoSupabaseFitZone(
+                            acessoSupabase.id
+                        );
 
                         if (preferencias.mensagensMotivacionais !== false) {
                             const agora = new Date();
