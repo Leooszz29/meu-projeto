@@ -1074,7 +1074,7 @@ async function initializeProfile() {
 
         initializeIMC();
         initializeProfileActionsSupabase();
-        iniciarConfiguracoesFitZone();
+        await iniciarConfiguracoesFitZone();
 
         await initializeProfilePhotoSupabase(
             acessoSupabase
@@ -1134,219 +1134,165 @@ if (document.readyState === 'loading') {
     initializeProfile();
 }
 
+
 /* =========================================
-   FITZONE - CHAVE DAS PREFERENCIAS DO USUARIO
+   FITZONE - PREFERENCIAS DO PERFIL SUPABASE
 ========================================= */
 
 let idPreferenciasSupabasePerfil = null;
 
-function obterChavePreferenciasFitZone() {
-    if (!idPreferenciasSupabasePerfil) {
-        return null;
-    }
-
-    return `fitzonePreferencias:supabase:${idPreferenciasSupabasePerfil}`;
-}
-
 /* =========================================
-   FITZONE - CARREGAR PREFERENCIAS DO USUARIO
+   FITZONE - INICIAR CONFIGURACOES DO PERFIL
 ========================================= */
 
-function carregarPreferenciasFitZone() {
-    const chave = obterChavePreferenciasFitZone();
-
-    const preferenciasPadrao = {
-        mensagensMotivacionais: true,
-        paginaInicial: 'calendario.html'
-    };
-
-    if (!chave) {
-        return preferenciasPadrao;
-    }
-
-    try {
-        const dados = localStorage.getItem(chave);
-
-        if (!dados) {
-            return preferenciasPadrao;
-        }
-
-        const preferencias = JSON.parse(dados);
-
-        if (
-            !preferencias ||
-            typeof preferencias !== 'object' ||
-            Array.isArray(preferencias)
-        ) {
-            return preferenciasPadrao;
-        }
-
-        const paginasPermitidas = [
-            'calendario.html',
-            'treinos.html',
-            'desempenho.html'
-        ];
-
-        return {
-            mensagensMotivacionais:
-                typeof preferencias.mensagensMotivacionais === 'boolean'
-                    ? preferencias.mensagensMotivacionais
-                    : true,
-
-            paginaInicial:
-                paginasPermitidas.includes(preferencias.paginaInicial)
-                    ? preferencias.paginaInicial
-                    : 'calendario.html'
-        };
-
-    } catch (erro) {
-        console.warn(
-            'Não foi possível carregar as preferências:',
-            erro
-        );
-
-        return preferenciasPadrao;
-    }
-}
-
-/* =========================================
-   FITZONE - SALVAR PREFERENCIAS DO USUARIO
-========================================= */
-
-function salvarPreferenciasFitZone(preferencias) {
-    const chave = obterChavePreferenciasFitZone();
-
-    if (!chave) {
-        console.warn(
-            'Não foi possível salvar: sessão inválida.'
-        );
-
-        return false;
-    }
-
-    try {
-        const dadosAtuais = localStorage.getItem(chave);
-
-        let preferenciasAtuais = {};
-
-        if (dadosAtuais !== null) {
-            preferenciasAtuais = JSON.parse(dadosAtuais);
-
-            if (
-                !preferenciasAtuais ||
-                typeof preferenciasAtuais !== 'object' ||
-                Array.isArray(preferenciasAtuais)
-            ) {
-                throw new Error(
-                    'Preferências existentes inválidas.'
-                );
-            }
-        }
-
-        const dadosAtualizados = {
-            ...preferenciasAtuais
-        };
-
-        if (typeof preferencias.mensagensMotivacionais === 'boolean') {
-            dadosAtualizados.mensagensMotivacionais =
-                preferencias.mensagensMotivacionais;
-        }
-
-        if (typeof preferencias.paginaInicial === 'string') {
-            const paginasPermitidas = [
-                'calendario.html',
-                'treinos.html',
-                'desempenho.html'
-            ];
-
-            if (!paginasPermitidas.includes(preferencias.paginaInicial)) {
-                throw new Error('Página inicial inválida.');
-            }
-
-            dadosAtualizados.paginaInicial =
-                preferencias.paginaInicial;
-        }
-
-        localStorage.setItem(
-            chave,
-            JSON.stringify(dadosAtualizados)
-        );
-
-        return true;
-
-    } catch (erro) {
-        console.error(
-            'Erro ao salvar preferências:',
-            erro
-        );
-
-        return false;
-    }
-}
-
-/* =========================================
-   FITZONE - CONTROLE DAS MENSAGENS MOTIVACIONAIS
-========================================= */
-
-function iniciarConfiguracoesFitZone() {
+async function iniciarConfiguracoesFitZone() {
     const checkbox = document.getElementById(
         'fitzoneMotivacaoAtiva'
     );
-
-    if (!checkbox) {
-        return;
-    }
-
-    const preferencias = carregarPreferenciasFitZone();
-
-    checkbox.checked = preferencias.mensagensMotivacionais;
-
-    checkbox.addEventListener('change', () => {
-        const valorAnterior =
-            !checkbox.checked;
-
-        const salvou = salvarPreferenciasFitZone({
-            mensagensMotivacionais: checkbox.checked
-        });
-
-        if (!salvou) {
-            checkbox.checked = valorAnterior;
-
-            alert(
-                'Não foi possível salvar a preferência. Tente novamente.'
-            );
-        }
-    });
-
-    /* =========================================
-       PAGINA INICIAL PREFERIDA
-    ========================================= */
 
     const seletorPagina = document.getElementById(
         'fitzonePaginaInicial'
     );
 
-    if (seletorPagina) {
-        seletorPagina.value = preferencias.paginaInicial;
+    if (!checkbox || !seletorPagina) {
+        return;
+    }
 
-        seletorPagina.addEventListener('change', () => {
+    const usuarioId =
+        idPreferenciasSupabasePerfil;
+
+    let preferencias;
+
+    let salvando = false;
+
+    function bloquearConfiguracoes(bloquear) {
+        checkbox.disabled = bloquear;
+        seletorPagina.disabled = bloquear;
+    }
+
+    function aplicarPreferencias(dados) {
+        checkbox.checked =
+            dados.mensagensMotivacionais;
+
+        seletorPagina.value =
+            dados.paginaInicial;
+    }
+
+    bloquearConfiguracoes(true);
+
+    try {
+        preferencias =
+            await carregarPreferenciasSupabaseFitZone(
+                usuarioId
+            );
+
+        aplicarPreferencias(preferencias);
+
+    } catch (erro) {
+        console.error(
+            'Erro ao carregar preferências do perfil:',
+            erro
+        );
+
+        preferencias =
+            obterPreferenciasContingenciaFitZone(
+                usuarioId
+            );
+
+        aplicarPreferencias(preferencias);
+
+        const mensagem =
+            'Não foi possível sincronizar as preferências. ' +
+            'Atualize a página para tentar novamente.';
+
+        checkbox.title = mensagem;
+        seletorPagina.title = mensagem;
+
+        alert(mensagem);
+
+        return;
+    }
+
+    bloquearConfiguracoes(false);
+
+    /* =========================================
+       SALVAR UMA PREFERENCIA POR VEZ
+    ========================================= */
+
+    async function salvarAlteracao(alteracao) {
+        if (salvando) {
+            return;
+        }
+
+        salvando = true;
+
+        bloquearConfiguracoes(true);
+
+        try {
+            preferencias =
+                await salvarPreferenciasSupabaseFitZone(
+                    usuarioId,
+                    alteracao
+                );
+
+            aplicarPreferencias(preferencias);
+
+        } catch (erro) {
+            console.error(
+                'Erro ao salvar preferência Supabase:',
+                erro
+            );
+
+            aplicarPreferencias(preferencias);
+
+            alert(
+                'Não foi possível confirmar o salvamento. ' +
+                'Atualize a página e confira as configurações.'
+            );
+
+        } finally {
+            salvando = false;
+
+            bloquearConfiguracoes(false);
+        }
+    }
+
+    /* =========================================
+       MENSAGENS MOTIVACIONAIS
+    ========================================= */
+
+    checkbox.addEventListener(
+        'change',
+        async () => {
+            const valor = checkbox.checked;
+
+            await salvarAlteracao({
+                mensagensMotivacionais: valor
+            });
+        }
+    );
+
+    /* =========================================
+       PAGINA INICIAL PREFERIDA
+    ========================================= */
+
+    seletorPagina.addEventListener(
+        'change',
+        async () => {
             const novaPagina = seletorPagina.value;
 
-            const salvou = salvarPreferenciasFitZone({
+            if (
+                !validarPaginaInicialFitZone(
+                    novaPagina
+                )
+            ) {
+                aplicarPreferencias(preferencias);
+                return;
+            }
+
+            await salvarAlteracao({
                 paginaInicial: novaPagina
             });
-
-            if (!salvou) {
-                const preferenciasAtuais =
-                    carregarPreferenciasFitZone();
-
-                seletorPagina.value =
-                    preferenciasAtuais.paginaInicial;
-
-                alert(
-                    'Não foi possível salvar a página inicial. Tente novamente.'
-                );
-            }
-        });
-    }
+        }
+    );
 }
