@@ -559,3 +559,641 @@ async function obterChaveArmazenamentoSupabaseFitZone(tipo) {
 
     return 'fitzone:' + tipo + ':' + chaveUsuario;
 }
+
+/* =========================================
+   FITZONE - PREFERENCIAS SUPABASE
+========================================= */
+
+const FITZONE_PREFERENCIAS_PADRAO = Object.freeze({
+    paginaInicial: 'calendario.html',
+    mensagensMotivacionais: true,
+    metaMensal: 12
+});
+
+const FITZONE_PAGINAS_INICIAIS_PERMITIDAS =
+    Object.freeze([
+        'calendario.html',
+        'treinos.html',
+        'desempenho.html'
+    ]);
+
+const FITZONE_COLUNAS_PREFERENCIAS =
+    'pagina_inicial, mensagens_motivacionais, meta_mensal';
+
+/* =========================================
+   FITZONE - VALIDAR PREFERENCIAS
+========================================= */
+
+function validarPaginaInicialFitZone(valor) {
+    return FITZONE_PAGINAS_INICIAIS_PERMITIDAS
+        .includes(valor);
+}
+
+function validarMetaMensalFitZone(valor) {
+    return (
+        Number.isInteger(valor) &&
+        valor >= 1 &&
+        valor <= 100
+    );
+}
+
+/* =========================================
+   FITZONE - LER PREFERENCIAS LOCAIS ANTIGAS
+========================================= */
+
+function lerPreferenciasLocaisFitZone(usuarioId) {
+    if (
+        typeof usuarioId !== 'string' ||
+        !usuarioId.trim()
+    ) {
+        throw new Error('Identidade inválida.');
+    }
+
+    const preferencias = {};
+
+    const chavePreferencias =
+        `fitzonePreferencias:supabase:${usuarioId}`;
+
+    const chaveMeta =
+        `metaMensalFitZone:supabase:${usuarioId}`;
+
+    try {
+        const dados =
+            localStorage.getItem(chavePreferencias);
+
+        if (dados !== null) {
+            const locais = JSON.parse(dados);
+
+            if (
+                locais &&
+                typeof locais === 'object' &&
+                !Array.isArray(locais)
+            ) {
+                if (
+                    validarPaginaInicialFitZone(
+                        locais.paginaInicial
+                    )
+                ) {
+                    preferencias.paginaInicial =
+                        locais.paginaInicial;
+                }
+
+                if (
+                    typeof locais.mensagensMotivacionais
+                        === 'boolean'
+                ) {
+                    preferencias.mensagensMotivacionais =
+                        locais.mensagensMotivacionais;
+                }
+            }
+        }
+
+    } catch (erro) {
+        console.warn(
+            'Não foi possível consultar as preferências locais:',
+            erro
+        );
+    }
+
+    try {
+        const metaLocal =
+            localStorage.getItem(chaveMeta);
+
+        if (
+            metaLocal !== null &&
+            metaLocal.trim() !== ''
+        ) {
+            const meta = Number(metaLocal);
+
+            if (validarMetaMensalFitZone(meta)) {
+                preferencias.metaMensal = meta;
+            }
+        }
+
+    } catch (erro) {
+        console.warn(
+            'Não foi possível consultar a meta local:',
+            erro
+        );
+    }
+
+    return preferencias;
+}
+
+/* =========================================
+   FITZONE - NORMALIZAR PREFERENCIAS
+========================================= */
+
+function normalizarPreferenciasSupabaseFitZone(dados) {
+    return {
+        paginaInicial:
+            validarPaginaInicialFitZone(
+                dados?.pagina_inicial
+            )
+                ? dados.pagina_inicial
+                : FITZONE_PREFERENCIAS_PADRAO.paginaInicial,
+
+        mensagensMotivacionais:
+            typeof dados?.mensagens_motivacionais
+                === 'boolean'
+                ? dados.mensagens_motivacionais
+                : FITZONE_PREFERENCIAS_PADRAO
+                    .mensagensMotivacionais,
+
+        metaMensal:
+            validarMetaMensalFitZone(
+                dados?.meta_mensal
+            )
+                ? dados.meta_mensal
+                : FITZONE_PREFERENCIAS_PADRAO.metaMensal
+    };
+}
+
+/* =========================================
+   FITZONE - CONSULTAR PREFERENCIAS BRUTAS
+========================================= */
+
+async function consultarPreferenciasBrutasSupabaseFitZone(
+    usuarioIdEsperado
+) {
+    const usuario =
+        await obterUsuarioVinculadoSupabaseFitZone(
+            usuarioIdEsperado
+        );
+
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error('Supabase indisponível.');
+    }
+
+    const { data, error } = await cliente
+        .from('fitzone_perfis')
+        .select(FITZONE_COLUNAS_PREFERENCIAS)
+        .eq('id', usuario.id)
+        .maybeSingle();
+
+    if (error) {
+        throw error;
+    }
+
+    await obterUsuarioVinculadoSupabaseFitZone(
+        usuarioIdEsperado
+    );
+
+    return data;
+}
+
+/* =========================================
+   FITZONE - GARANTIR PERFIL PARA PREFERENCIAS
+========================================= */
+
+async function garantirPerfilPreferenciasSupabaseFitZone(
+    usuarioIdEsperado
+) {
+    const usuario =
+        await obterUsuarioVinculadoSupabaseFitZone(
+            usuarioIdEsperado
+        );
+
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error('Supabase indisponível.');
+    }
+
+    const nome = String(
+        usuario.user_metadata?.nome || ''
+    ).trim();
+
+    const dados = {
+        id: usuario.id
+    };
+
+    if (nome) {
+        dados.nome = nome;
+    }
+
+    const { error } = await cliente
+        .from('fitzone_perfis')
+        .upsert(
+            dados,
+            {
+                onConflict: 'id',
+                ignoreDuplicates: true
+            }
+        );
+
+    if (error) {
+        throw error;
+    }
+
+    await obterUsuarioVinculadoSupabaseFitZone(
+        usuarioIdEsperado
+    );
+
+    return true;
+}
+
+/* =========================================
+   FITZONE - MIGRAR PREFERENCIA INDIVIDUAL
+========================================= */
+
+async function migrarCampoPreferenciaSupabaseFitZone(
+    usuarioIdEsperado,
+    coluna,
+    valor
+) {
+    const camposPermitidos = [
+        'pagina_inicial',
+        'mensagens_motivacionais',
+        'meta_mensal'
+    ];
+
+    if (!camposPermitidos.includes(coluna)) {
+        throw new Error(
+            'Campo de preferência inválido.'
+        );
+    }
+
+    if (
+        coluna === 'pagina_inicial' &&
+        !validarPaginaInicialFitZone(valor)
+    ) {
+        throw new Error('Página inicial inválida.');
+    }
+
+    if (
+        coluna === 'mensagens_motivacionais' &&
+        typeof valor !== 'boolean'
+    ) {
+        throw new Error(
+            'Preferência motivacional inválida.'
+        );
+    }
+
+    if (
+        coluna === 'meta_mensal' &&
+        !validarMetaMensalFitZone(valor)
+    ) {
+        throw new Error('Meta mensal inválida.');
+    }
+
+    const usuario =
+        await obterUsuarioVinculadoSupabaseFitZone(
+            usuarioIdEsperado
+        );
+
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error('Supabase indisponível.');
+    }
+
+    const { data, error } = await cliente
+        .from('fitzone_perfis')
+        .update({
+            [coluna]: valor
+        })
+        .eq('id', usuario.id)
+        .is(coluna, null)
+        .select(coluna);
+
+    if (error) {
+        throw error;
+    }
+
+    return (
+        Array.isArray(data) &&
+        data.length === 1
+    );
+}
+
+/* =========================================
+   FITZONE - MIGRAR PREFERENCIAS LOCAIS
+========================================= */
+
+async function migrarPreferenciasLocaisSupabaseFitZone(
+    usuarioIdEsperado
+) {
+    await obterUsuarioVinculadoSupabaseFitZone(
+        usuarioIdEsperado
+    );
+
+    const locais =
+        lerPreferenciasLocaisFitZone(
+            usuarioIdEsperado
+        );
+
+    let nuvem =
+        await consultarPreferenciasBrutasSupabaseFitZone(
+            usuarioIdEsperado
+        );
+
+    const campos = [
+        {
+            coluna: 'pagina_inicial',
+            valor: locais.paginaInicial
+        },
+        {
+            coluna: 'mensagens_motivacionais',
+            valor: locais.mensagensMotivacionais
+        },
+        {
+            coluna: 'meta_mensal',
+            valor: locais.metaMensal
+        }
+    ];
+
+    const pendentes = campos.filter(campo =>
+        campo.valor !== undefined &&
+        nuvem?.[campo.coluna] == null
+    );
+
+    if (pendentes.length === 0) {
+        return nuvem;
+    }
+
+    if (!nuvem) {
+        await garantirPerfilPreferenciasSupabaseFitZone(
+            usuarioIdEsperado
+        );
+    }
+
+    for (const campo of pendentes) {
+        await migrarCampoPreferenciaSupabaseFitZone(
+            usuarioIdEsperado,
+            campo.coluna,
+            campo.valor
+        );
+    }
+
+    nuvem =
+        await consultarPreferenciasBrutasSupabaseFitZone(
+            usuarioIdEsperado
+        );
+
+    return nuvem;
+}
+
+/* =========================================
+   FITZONE - CARREGAR PREFERENCIAS DA CONTA
+========================================= */
+
+async function carregarPreferenciasSupabaseFitZone(
+    usuarioIdEsperado
+) {
+    const dados =
+        await migrarPreferenciasLocaisSupabaseFitZone(
+            usuarioIdEsperado
+        );
+
+    return normalizarPreferenciasSupabaseFitZone(
+        dados
+    );
+}
+
+/* =========================================
+   FITZONE - PREFERENCIAS LOCAIS DE CONTINGENCIA
+========================================= */
+
+function obterPreferenciasContingenciaFitZone(
+    usuarioIdEsperado
+) {
+    const locais =
+        lerPreferenciasLocaisFitZone(
+            usuarioIdEsperado
+        );
+
+    return {
+        ...FITZONE_PREFERENCIAS_PADRAO,
+        ...locais
+    };
+}
+
+/* =========================================
+   FITZONE - ATUALIZAR COPIA LOCAL CONFIRMADA
+========================================= */
+
+function atualizarCopiaLocalPreferenciasFitZone(
+    usuarioIdEsperado,
+    preferencias
+) {
+    const chavePreferencias =
+        `fitzonePreferencias:supabase:${usuarioIdEsperado}`;
+
+    const chaveMeta =
+        `metaMensalFitZone:supabase:${usuarioIdEsperado}`;
+
+    try {
+        const dados =
+            localStorage.getItem(chavePreferencias);
+
+        let atuais = {};
+
+        if (dados !== null) {
+            try {
+                const existentes = JSON.parse(dados);
+
+                if (
+                    existentes &&
+                    typeof existentes === 'object' &&
+                    !Array.isArray(existentes)
+                ) {
+                    atuais = existentes;
+                }
+
+            } catch (erro) {
+                console.warn(
+                    'Cópia local antiga inválida:',
+                    erro
+                );
+            }
+        }
+
+        let preferenciasAlteradas = false;
+
+        if (
+            validarPaginaInicialFitZone(
+                preferencias.paginaInicial
+            )
+        ) {
+            atuais.paginaInicial =
+                preferencias.paginaInicial;
+
+            preferenciasAlteradas = true;
+        }
+
+        if (
+            typeof preferencias.mensagensMotivacionais
+                === 'boolean'
+        ) {
+            atuais.mensagensMotivacionais =
+                preferencias.mensagensMotivacionais;
+
+            preferenciasAlteradas = true;
+        }
+
+        if (preferenciasAlteradas) {
+            localStorage.setItem(
+                chavePreferencias,
+                JSON.stringify(atuais)
+            );
+        }
+
+        if (
+            validarMetaMensalFitZone(
+                preferencias.metaMensal
+            )
+        ) {
+            localStorage.setItem(
+                chaveMeta,
+                String(preferencias.metaMensal)
+            );
+        }
+
+    } catch (erro) {
+        console.warn(
+            'Não foi possível atualizar a cópia local:',
+            erro
+        );
+    }
+}
+
+/* =========================================
+   FITZONE - SALVAR PREFERENCIAS NA NUVEM
+========================================= */
+
+async function salvarPreferenciasSupabaseFitZone(
+    usuarioIdEsperado,
+    preferencias
+) {
+    if (
+        !preferencias ||
+        typeof preferencias !== 'object' ||
+        Array.isArray(preferencias)
+    ) {
+        throw new Error('Preferências inválidas.');
+    }
+
+    const camposPermitidos = [
+        'paginaInicial',
+        'mensagensMotivacionais',
+        'metaMensal'
+    ];
+
+    const chaves = Object.keys(preferencias);
+
+    if (
+        chaves.length === 0 ||
+        chaves.some(chave =>
+            !camposPermitidos.includes(chave)
+        )
+    ) {
+        throw new Error(
+            'Campos de preferência inválidos.'
+        );
+    }
+
+    const dados = {};
+
+    if (
+        Object.prototype.hasOwnProperty.call(
+            preferencias,
+            'paginaInicial'
+        )
+    ) {
+        if (
+            !validarPaginaInicialFitZone(
+                preferencias.paginaInicial
+            )
+        ) {
+            throw new Error('Página inicial inválida.');
+        }
+
+        dados.pagina_inicial =
+            preferencias.paginaInicial;
+    }
+
+    if (
+        Object.prototype.hasOwnProperty.call(
+            preferencias,
+            'mensagensMotivacionais'
+        )
+    ) {
+        if (
+            typeof preferencias.mensagensMotivacionais
+                !== 'boolean'
+        ) {
+            throw new Error(
+                'Preferência motivacional inválida.'
+            );
+        }
+
+        dados.mensagens_motivacionais =
+            preferencias.mensagensMotivacionais;
+    }
+
+    if (
+        Object.prototype.hasOwnProperty.call(
+            preferencias,
+            'metaMensal'
+        )
+    ) {
+        if (
+            !validarMetaMensalFitZone(
+                preferencias.metaMensal
+            )
+        ) {
+            throw new Error('Meta mensal inválida.');
+        }
+
+        dados.meta_mensal =
+            preferencias.metaMensal;
+    }
+
+    await garantirPerfilPreferenciasSupabaseFitZone(
+        usuarioIdEsperado
+    );
+
+    const usuario =
+        await obterUsuarioVinculadoSupabaseFitZone(
+            usuarioIdEsperado
+        );
+
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error('Supabase indisponível.');
+    }
+
+    const { data, error } = await cliente
+        .from('fitzone_perfis')
+        .update(dados)
+        .eq('id', usuario.id)
+        .select(FITZONE_COLUNAS_PREFERENCIAS)
+        .single();
+
+    if (error) {
+        throw error;
+    }
+
+    if (!data) {
+        throw new Error(
+            'Não foi possível confirmar o salvamento.'
+        );
+    }
+
+    await obterUsuarioVinculadoSupabaseFitZone(
+        usuarioIdEsperado
+    );
+
+    atualizarCopiaLocalPreferenciasFitZone(
+        usuarioIdEsperado,
+        preferencias
+    );
+
+    return normalizarPreferenciasSupabaseFitZone(
+        data
+    );
+}
