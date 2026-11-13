@@ -1379,7 +1379,8 @@ window.addEventListener(
             painel.append(titulo, mensagem, lista);
 
             /* =========================================
-               BACKUP DE TREINOS SUPABASE V1
+               BACKUP SUPABASE V2
+               TREINOS, HISTORICO E PREFERENCIAS
             ========================================= */
 
             const botaoBackupSupabase =
@@ -1511,6 +1512,32 @@ window.addEventListener(
                             throw error;
                         }
 
+                        /* =========================================
+                           CONSULTAR CHECK-INS PARA BACKUP V2
+                        ========================================= */
+
+                        await obterAcessoVinculadoTreinos();
+
+                        const checkins =
+                            await consultarRegistrosBackupSupabase(
+                                cliente,
+                                'fitzone_checkins',
+                                identidade.id,
+                                'data_local'
+                            );
+
+                        /* =========================================
+                           CONSULTAR PREFERENCIAS PARA BACKUP V2
+                           SEM ALTERAR OU MIGRAR OS DADOS
+                        ========================================= */
+
+                        await obterAcessoVinculadoTreinos();
+
+                        const preferencias =
+                            await consultarPreferenciasBrutasSupabaseFitZone(
+                                identidade.id
+                            );
+
                         const identidadeFinal =
                             await obterAcessoVinculadoTreinos();
 
@@ -1526,15 +1553,36 @@ window.addEventListener(
                         const backup = {
                             aplicativo: 'FitZone',
                             origem: 'supabase',
-                            versaoBackup: 1,
+                            versaoBackup: 2,
                             tipo: 'treinos-historico',
+
                             exportadoEm:
                                 new Date().toISOString(),
+
                             usuarioId: identidade.id,
+
                             dados: {
                                 treinos,
+
                                 historico,
-                                treinoAtivo
+
+                                treinoAtivo,
+
+                                checkins,
+
+                                preferencias:
+                                    preferencias === null
+                                        ? null
+                                        : {
+                                            pagina_inicial:
+                                                preferencias.pagina_inicial,
+
+                                            mensagens_motivacionais:
+                                                preferencias.mensagens_motivacionais,
+
+                                            meta_mensal:
+                                                preferencias.meta_mensal
+                                        }
                             }
                         };
 
@@ -1564,7 +1612,7 @@ window.addEventListener(
                         link.href = url;
 
                         link.download =
-                            `fitzone-supabase-treinos-${data}.json`;
+                            `fitzone-supabase-backup-v2-${data}.json`;
 
                         document.body.appendChild(link);
                         link.click();
@@ -1575,8 +1623,24 @@ window.addEventListener(
                         }, 1000);
 
                         alert(
-                            'Backup de treinos Supabase ' +
-                            'exportado com sucesso!'
+                            'Backup Supabase v2 exportado com sucesso!\n\n' +
+
+                            `Treinos: ${treinos.length}\n` +
+
+                            `Históricos: ${historico.length}\n` +
+
+                            'Treino ativo: ' +
+                            (treinoAtivo ? 'Sim' : 'Não') +
+                            '\n' +
+
+                            `Check-ins: ${
+                                checkins.filter(
+                                    registro => !registro.excluido
+                                ).length
+                            }\n` +
+
+                            'Preferências: ' +
+                            (preferencias ? 'Incluídas' : 'Sem perfil')
                         );
 
                     } catch (erro) {
@@ -1825,6 +1889,28 @@ window.addEventListener(
                     typeof valor === 'object' &&
                     !Array.isArray(valor);
 
+                const dataLocalValida = valor => {
+                    if (
+                        typeof valor !== 'string' ||
+                        !/^\d{4}-\d{2}-\d{2}$/.test(valor) ||
+                        valor.startsWith('0000-')
+                    ) {
+                        return false;
+                    }
+
+                    const data =
+                        new Date(valor + 'T00:00:00Z');
+
+                    return (
+                        Number.isFinite(data.getTime()) &&
+                        data.toISOString().slice(0, 10) === valor
+                    );
+                };
+
+                const dataHoraValida = valor =>
+                    typeof valor === 'string' &&
+                    Number.isFinite(Date.parse(valor));
+
                 if (!objetoValido(backup)) {
                     throw new Error(
                         'O arquivo não contém um backup válido.'
@@ -1834,7 +1920,7 @@ window.addEventListener(
                 if (
                     backup.aplicativo !== 'FitZone' ||
                     backup.origem !== 'supabase' ||
-                    backup.versaoBackup !== 1 ||
+                    ![1, 2].includes(backup.versaoBackup) ||
                     backup.tipo !== 'treinos-historico'
                 ) {
                     throw new Error(
@@ -1964,10 +2050,265 @@ window.addEventListener(
                     );
                 }
 
+                /* =========================================
+                   VALIDAR IDENTIDADE DOS REGISTROS
+                ========================================= */
+
+                for (const treino of backup.dados.treinos) {
+                    if (
+                        treino.usuario_id !== backup.usuarioId ||
+                        treino.dados.id !== treino.treino_id
+                    ) {
+                        throw new Error(
+                            'O backup contém um treino ' +
+                            'com identificação inconsistente.'
+                        );
+                    }
+                }
+
+                const conclusoesBackup = new Set();
+
+                for (const registro of backup.dados.historico) {
+                    if (
+                        registro.usuario_id !== backup.usuarioId ||
+                        !dataLocalValida(registro.data_local) ||
+                        !dataHoraValida(registro.concluido_em)
+                    ) {
+                        throw new Error(
+                            'O backup contém um histórico ' +
+                            'com conta ou data inválida.'
+                        );
+                    }
+
+                    const chave = JSON.stringify([
+                        registro.treino_id,
+                        registro.data_local
+                    ]);
+
+                    if (conclusoesBackup.has(chave)) {
+                        throw new Error(
+                            'O backup contém conclusões ' +
+                            'duplicadas para o mesmo treino e dia.'
+                        );
+                    }
+
+                    conclusoesBackup.add(chave);
+                }
+
+                if (
+                    ativo !== null &&
+                    ativo.usuario_id !== backup.usuarioId
+                ) {
+                    throw new Error(
+                        'O treino ativo pertence a outra conta.'
+                    );
+                }
+
+                /* =========================================
+                   VALIDAR CHECK-INS E PREFERENCIAS V2
+                ========================================= */
+
+                let totalCheckins = null;
+                let checkinsExcluidos = null;
+                let totalPreferencias = null;
+
+                if (backup.versaoBackup === 2) {
+                    const checkins =
+                        backup.dados.checkins;
+
+                    const preferencias =
+                        backup.dados.preferencias;
+
+                    if (!Array.isArray(checkins)) {
+                        throw new Error(
+                            'A seção de check-ins está incompleta.'
+                        );
+                    }
+
+                    const datasCheckins = new Set();
+
+                    totalCheckins = 0;
+                    checkinsExcluidos = 0;
+
+                    for (const registro of checkins) {
+                        if (
+                            !objetoValido(registro) ||
+
+                            registro.usuario_id !==
+                                backup.usuarioId ||
+
+                            !dataLocalValida(
+                                registro.data_local
+                            ) ||
+
+                            typeof registro.checked !==
+                                'boolean' ||
+
+                            typeof registro.excluido !==
+                                'boolean' ||
+
+                            typeof registro.treino !==
+                                'string' ||
+
+                            Array.from(registro.treino).length
+                                > 1000 ||
+
+                            !dataHoraValida(
+                                registro.criado_em
+                            ) ||
+
+                            !dataHoraValida(
+                                registro.atualizado_em
+                            )
+                        ) {
+                            throw new Error(
+                                'O backup contém um check-in inválido.'
+                            );
+                        }
+
+                        if (
+                            datasCheckins.has(
+                                registro.data_local
+                            )
+                        ) {
+                            throw new Error(
+                                'O backup contém check-ins ' +
+                                'duplicados para a mesma data.'
+                            );
+                        }
+
+                        datasCheckins.add(
+                            registro.data_local
+                        );
+
+                        if (registro.excluido) {
+                            if (
+                                registro.checked !== false ||
+                                registro.treino !== ''
+                            ) {
+                                throw new Error(
+                                    'O backup contém um check-in ' +
+                                    'excluído com conteúdo inválido.'
+                                );
+                            }
+
+                            checkinsExcluidos++;
+
+                        } else {
+                            if (
+                                !registro.checked &&
+                                !registro.treino.trim()
+                            ) {
+                                throw new Error(
+                                    'O backup contém um check-in vazio.'
+                                );
+                            }
+
+                            totalCheckins++;
+                        }
+                    }
+
+                    /* =========================================
+                       VALIDAR PREFERENCIAS EXPORTADAS
+                    ========================================= */
+
+                    totalPreferencias = 0;
+
+                    if (preferencias !== null) {
+                        if (!objetoValido(preferencias)) {
+                            throw new Error(
+                                'A seção de preferências é inválida.'
+                            );
+                        }
+
+                        const camposPermitidos = [
+                            'pagina_inicial',
+                            'mensagens_motivacionais',
+                            'meta_mensal'
+                        ];
+
+                        const chaves =
+                            Object.keys(preferencias);
+
+                        if (
+                            chaves.length !==
+                                camposPermitidos.length ||
+
+                            camposPermitidos.some(
+                                campo =>
+                                    !Object.prototype
+                                        .hasOwnProperty.call(
+                                            preferencias,
+                                            campo
+                                        )
+                            )
+                        ) {
+                            throw new Error(
+                                'A seção de preferências ' +
+                                'está incompleta.'
+                            );
+                        }
+
+                        if (
+                            preferencias.pagina_inicial !== null &&
+                            !validarPaginaInicialFitZone(
+                                preferencias.pagina_inicial
+                            )
+                        ) {
+                            throw new Error(
+                                'Página inicial inválida no backup.'
+                            );
+                        }
+
+                        if (
+                            preferencias.mensagens_motivacionais !== null &&
+                            typeof preferencias.mensagens_motivacionais !==
+                                'boolean'
+                        ) {
+                            throw new Error(
+                                'Preferência motivacional inválida.'
+                            );
+                        }
+
+                        if (
+                            preferencias.meta_mensal !== null &&
+                            !validarMetaMensalFitZone(
+                                preferencias.meta_mensal
+                            )
+                        ) {
+                            throw new Error(
+                                'Meta mensal inválida no backup.'
+                            );
+                        }
+
+                        totalPreferencias =
+                            camposPermitidos.filter(
+                                campo =>
+                                    preferencias[campo] !== null
+                            ).length;
+                    }
+                }
+
                 return {
-                    treinos: backup.dados.treinos.length,
-                    historico: backup.dados.historico.length,
-                    treinoAtivo: ativo !== null
+                    versao: backup.versaoBackup,
+
+                    treinos:
+                        backup.dados.treinos.length,
+
+                    historico:
+                        backup.dados.historico.length,
+
+                    treinoAtivo:
+                        ativo !== null,
+
+                    checkins:
+                        totalCheckins,
+
+                    checkinsExcluidos:
+                        checkinsExcluidos,
+
+                    preferencias:
+                        totalPreferencias
                 };
             }
 
@@ -2372,12 +2713,42 @@ window.addEventListener(
                                 ? 'Recuperar históricos ausentes'
                                 : 'Nenhum histórico ausente.';
 
+                        const resumoNovasSecoes =
+                            resumo.versao === 2
+
+                                ? '\n\nDADOS ADICIONAIS DO BACKUP V2\n' +
+
+                                  `Check-ins válidos: ${resumo.checkins}\n` +
+
+                                  'Marcadores de exclusão: ' +
+                                  resumo.checkinsExcluidos +
+                                  '\n' +
+
+                                  'Preferências configuradas: ' +
+                                  resumo.preferencias +
+                                  ' de 3\n' +
+
+                                  '\nAs novas seções foram validadas. ' +
+                                  'A restauração de check-ins e ' +
+                                  'preferências ainda não está disponível.'
+
+                                : '\n\nBackup v1 compatível.\n' +
+                                  'Este formato não contém check-ins ' +
+                                  'ou preferências sincronizadas.';
+
                         resultadoBackupSupabase.textContent =
                             '✓ Estrutura inicial validada\n\n' +
+
                             `Arquivo: ${arquivo.name}\n` +
+
+                            `Versão: ${resumo.versao}\n` +
+
                             `Exportado em: ${dataExportacao}\n` +
+
                             `Treinos: ${resumo.treinos}\n` +
+
                             `Histórico: ${resumo.historico}\n` +
+
                             'Treino ativo: ' +
                             (
                                 resumo.treinoAtivo
@@ -2385,22 +2756,36 @@ window.addEventListener(
                                     : 'Não'
                             ) +
 
+                            resumoNovasSecoes +
+
                             resumoComparacao +
+
                             '\n\nTreinos recuperáveis: ' +
                             treinosNovos +
+
                             '\n\nRESTAURAÇÃO DO HISTÓRICO\n' +
+
                             'Históricos recuperáveis: ' +
                             historicosRecuperaveis +
+
                             '\nHistóricos protegidos: ' +
-                            historicosProtegidos +                           
+                            historicosProtegidos +
+
                             '\n\nRESTAURAÇÃO DO TREINO ATIVO\n' +
+
                             'Treino ativo recuperável: ' +
-                            (ativoRecuperavel ? 'Sim' : 'Não') +
-                            '\n' +
+                            (
+                                ativoRecuperavel
+                                    ? 'Sim'
+                                    : 'Não'
+                            ) +
+
                             '\n\nComparação concluída. ' +
+
                             'Nenhum dado foi alterado nesta análise. ' +
-                            'A restauração pode ser iniciada ' +
-                            'somente para históricos ausentes.';
+
+                            'Os registros existentes serão protegidos ' +
+                            'durante a restauração.';
 
                     } catch (erro) {
                         console.error(
