@@ -1952,6 +1952,541 @@ window.addEventListener(
                 gerenciadorBackupSupabase,
                 lista
             );
+           
+            /* =========================================
+               VALIDACOES INTERNAS DO BACKUP
+            ========================================= */
+
+            function objetoValidoBackupSupabase(valor) {
+                return (
+                    valor !== null &&
+                    typeof valor === 'object' &&
+                    !Array.isArray(valor)
+                );
+            }
+
+            function textoValidoBackupSupabase(valor) {
+                return (
+                    typeof valor === 'string' &&
+                    valor.trim().length > 0
+                );
+            }
+
+            function identificadorValidoBackupSupabase(
+                valor
+            ) {
+                return (
+                    textoValidoBackupSupabase(valor) &&
+                    ![
+                        '__proto__',
+                        'constructor',
+                        'prototype'
+                    ].includes(valor)
+                );
+            }
+
+            function inteiroValidoBackupSupabase(
+                valor,
+                minimo,
+                maximo = Number.MAX_SAFE_INTEGER
+            ) {
+                if (
+                    typeof valor !== 'number' &&
+                    (
+                        typeof valor !== 'string' ||
+                        !/^\d+$/.test(valor)
+                    )
+                ) {
+                    return false;
+                }
+
+                const numero = Number(valor);
+
+                return (
+                    Number.isSafeInteger(numero) &&
+                    numero >= minimo &&
+                    numero <= maximo
+                );
+            }
+
+            /* =========================================
+               VALIDAR EXERCICIOS E AGRUPAMENTOS
+            ========================================= */
+
+            function validarExerciciosBackupSupabase(
+                exercicios,
+                contexto
+            ) {
+                if (!Array.isArray(exercicios)) {
+                    throw new Error(
+                        `${contexto}: lista de exercícios inválida.`
+                    );
+                }
+
+                const ids = new Set();
+
+                const grupos = new Map();
+
+                const mapaExercicios = new Map();
+
+                for (const exercicio of exercicios) {
+                    if (
+                        !objetoValidoBackupSupabase(
+                            exercicio
+                        ) ||
+
+                        !identificadorValidoBackupSupabase(
+                            exercicio.id
+                        ) ||
+
+                        !textoValidoBackupSupabase(
+                            exercicio.nome
+                        ) ||
+
+                        !inteiroValidoBackupSupabase(
+                            exercicio.series,
+                            1,
+                            10000
+                        ) ||
+
+                        !inteiroValidoBackupSupabase(
+                            exercicio.repeticoes,
+                            1
+                        ) ||
+
+                        !inteiroValidoBackupSupabase(
+                            exercicio.descanso,
+                            0
+                        )
+                    ) {
+                        throw new Error(
+                            `${contexto}: exercício inválido ` +
+                            'ou com séries, repetições ou ' +
+                            'descanso inconsistentes.'
+                        );
+                    }
+
+                    if (ids.has(exercicio.id)) {
+                        throw new Error(
+                            `${contexto}: exercícios duplicados.`
+                        );
+                    }
+
+                    ids.add(exercicio.id);
+
+                    mapaExercicios.set(
+                        exercicio.id,
+                        exercicio
+                    );
+
+                    const tipo =
+                        exercicio.tipoExecucao == null
+                            ? 'individual'
+                            : exercicio.tipoExecucao;
+
+                    const grupo =
+                        exercicio.grupoExecucao;
+
+                    if (
+                        ![
+                            'individual',
+                            'bisset',
+                            'triset'
+                        ].includes(tipo)
+                    ) {
+                        throw new Error(
+                            `${contexto}: tipo de execução inválido.`
+                        );
+                    }
+
+                    if (tipo === 'individual') {
+                        if (
+                            grupo !== null &&
+                            grupo !== undefined &&
+                            grupo !== ''
+                        ) {
+                            throw new Error(
+                                `${contexto}: exercício individual ` +
+                                'não pode pertencer a um grupo.'
+                            );
+                        }
+
+                        continue;
+                    }
+
+                    if (
+                        !identificadorValidoBackupSupabase(
+                            grupo
+                        )
+                    ) {
+                        throw new Error(
+                            `${contexto}: agrupamento inválido.`
+                        );
+                    }
+
+                    const dadosGrupo =
+                        grupos.get(grupo) || {
+                            tipo,
+                            quantidade: 0
+                        };
+
+                    if (dadosGrupo.tipo !== tipo) {
+                        throw new Error(
+                            `${contexto}: um grupo possui ` +
+                            'tipos de execução diferentes.'
+                        );
+                    }
+
+                    dadosGrupo.quantidade++;
+
+                    const limite =
+                        tipo === 'bisset' ? 2 : 3;
+
+                    if (
+                        dadosGrupo.quantidade > limite
+                    ) {
+                        throw new Error(
+                            `${contexto}: agrupamento ultrapassa ` +
+                            'o limite de exercícios permitido.'
+                        );
+                    }
+
+                    grupos.set(
+                        grupo,
+                        dadosGrupo
+                    );
+                }
+
+                return mapaExercicios;
+            }
+
+            /* =========================================
+               VALIDAR PROGRESSO DO TREINO ATIVO
+            ========================================= */
+
+            function validarProgressoBackupSupabase(
+                ativo,
+                treino
+            ) {
+                if (
+                    !objetoValidoBackupSupabase(
+                        ativo
+                    ) ||
+
+                    !objetoValidoBackupSupabase(
+                        treino
+                    ) ||
+
+                    ativo.treino_id !== treino.id ||
+
+                    !textoValidoBackupSupabase(
+                        ativo.treino_nome
+                    ) ||
+
+                    !objetoValidoBackupSupabase(
+                        ativo.progresso
+                    )
+                ) {
+                    throw new Error(
+                        'O treino ativo possui uma ' +
+                        'referência ou progresso inválido.'
+                    );
+                }
+
+                const exercicios =
+                    validarExerciciosBackupSupabase(
+                        treino.exercicios,
+                        'Treino ativo'
+                    );
+
+                for (
+                    const [exercicioId, marcadas] of
+                    Object.entries(ativo.progresso)
+                ) {
+                    const exercicio =
+                        exercicios.get(exercicioId);
+
+                    if (
+                        !exercicio ||
+                        !Array.isArray(marcadas)
+                    ) {
+                        throw new Error(
+                            'O progresso do treino ativo ' +
+                            'possui um exercício inexistente ' +
+                            'ou inválido.'
+                        );
+                    }
+
+                    const quantidade =
+                        Number(exercicio.series);
+
+                    const seriesMarcadas =
+                        new Set();
+
+                    for (const numero of marcadas) {
+                        if (
+                            !Number.isInteger(numero) ||
+
+                            numero < 1 ||
+
+                            numero > quantidade ||
+
+                            seriesMarcadas.has(numero)
+                        ) {
+                            throw new Error(
+                                'O treino ativo contém ' +
+                                'séries inválidas ou duplicadas.'
+                            );
+                        }
+
+                        seriesMarcadas.add(numero);
+                    }
+                }
+
+                return true;
+            }
+           
+            /* =========================================
+               VALIDAR HISTORICO DE TREINAMENTO
+            ========================================= */
+
+            function validarHistoricoInternoBackupSupabase(
+                registro
+            ) {
+                const dados = registro.dados;
+
+                if (
+                    !objetoValidoBackupSupabase(dados) ||
+
+                    !textoValidoBackupSupabase(
+                        dados.nome
+                    )
+                ) {
+                    throw new Error(
+                        'O histórico contém dados inválidos.'
+                    );
+                }
+
+                if (
+                    dados.workoutId != null &&
+                    dados.workoutId !== registro.treino_id
+                ) {
+                    throw new Error(
+                        'O histórico possui uma identificação ' +
+                        'de treino inconsistente.'
+                    );
+                }
+
+                if (
+                    dados.data != null &&
+                    dados.data !== registro.data_local
+                ) {
+                    throw new Error(
+                        'A data interna do histórico ' +
+                        'não corresponde à data do registro.'
+                    );
+                }
+
+                /* =========================================
+                   COMPATIBILIDADE COM HISTORICOS ANTIGOS
+                ========================================= */
+
+                const possuiExercicios =
+                    dados.exercicios != null;
+
+                const possuiTotalSeries =
+                    dados.seriesTotal != null;
+
+                const possuiSeriesConcluidas =
+                    dados.seriesConcluidas != null;
+
+                const possuiTotalExercicios =
+                    dados.totalExercicios != null;
+
+                if (
+                    possuiExercicios &&
+                    !Array.isArray(dados.exercicios)
+                ) {
+                    throw new Error(
+                        'O histórico possui uma lista ' +
+                        'de exercícios inválida.'
+                    );
+                }
+
+                if (
+                    possuiTotalSeries &&
+                    !inteiroValidoBackupSupabase(
+                        dados.seriesTotal,
+                        0
+                    )
+                ) {
+                    throw new Error(
+                        'O total de séries do histórico é inválido.'
+                    );
+                }
+
+                if (
+                    possuiSeriesConcluidas &&
+                    !inteiroValidoBackupSupabase(
+                        dados.seriesConcluidas,
+                        0
+                    )
+                ) {
+                    throw new Error(
+                        'A quantidade de séries concluídas ' +
+                        'do histórico é inválida.'
+                    );
+                }
+
+                if (
+                    possuiTotalExercicios &&
+                    !inteiroValidoBackupSupabase(
+                        dados.totalExercicios,
+                        0
+                    )
+                ) {
+                    throw new Error(
+                        'O total de exercícios do histórico é inválido.'
+                    );
+                }
+
+                if (
+                    possuiTotalSeries &&
+                    possuiSeriesConcluidas &&
+
+                    Number(dados.seriesConcluidas) >
+                        Number(dados.seriesTotal)
+                ) {
+                    throw new Error(
+                        'O histórico contém mais séries ' +
+                        'concluídas do que séries planejadas.'
+                    );
+                }
+
+                if (!possuiExercicios) {
+                    return true;
+                }
+
+                /* =========================================
+                   CONFERIR DETALHES DE CADA EXERCICIO
+                ========================================= */
+
+                let totalSeries = 0;
+
+                let seriesConcluidas = 0;
+
+                const idsExercicios = new Set();
+
+                for (const exercicio of dados.exercicios) {
+                    if (
+                        !objetoValidoBackupSupabase(
+                            exercicio
+                        ) ||
+
+                        !textoValidoBackupSupabase(
+                            exercicio.nome
+                        ) ||
+
+                        !inteiroValidoBackupSupabase(
+                            exercicio.seriesTotal,
+                            1,
+                            10000
+                        ) ||
+
+                        !inteiroValidoBackupSupabase(
+                            exercicio.seriesConcluidas,
+                            0
+                        )
+                    ) {
+                        throw new Error(
+                            'O histórico contém detalhes ' +
+                            'de exercício inválidos.'
+                        );
+                    }
+
+                    if (exercicio.id != null) {
+                        if (
+                            !identificadorValidoBackupSupabase(
+                                exercicio.id
+                            ) ||
+
+                            idsExercicios.has(
+                                exercicio.id
+                            )
+                        ) {
+                            throw new Error(
+                                'O histórico contém exercícios ' +
+                                'com identificação inválida ' +
+                                'ou duplicada.'
+                            );
+                        }
+
+                        idsExercicios.add(
+                            exercicio.id
+                        );
+                    }
+
+                    const total =
+                        Number(exercicio.seriesTotal);
+
+                    const concluidas =
+                        Number(exercicio.seriesConcluidas);
+
+                    if (concluidas > total) {
+                        throw new Error(
+                            'Um exercício do histórico possui ' +
+                            'mais séries concluídas do que ' +
+                            'séries planejadas.'
+                        );
+                    }
+
+                    totalSeries += total;
+
+                    seriesConcluidas += concluidas;
+                }
+
+                /* =========================================
+                   CONFERIR TOTAIS DO HISTORICO
+                ========================================= */
+
+                if (
+                    possuiTotalExercicios &&
+
+                    Number(dados.totalExercicios) !==
+                        dados.exercicios.length
+                ) {
+                    throw new Error(
+                        'O total de exercícios do histórico ' +
+                        'não corresponde aos seus detalhes.'
+                    );
+                }
+
+                if (
+                    possuiTotalSeries &&
+
+                    Number(dados.seriesTotal) !==
+                        totalSeries
+                ) {
+                    throw new Error(
+                        'O total de séries do histórico ' +
+                        'não corresponde aos exercícios.'
+                    );
+                }
+
+                if (
+                    possuiSeriesConcluidas &&
+
+                    Number(dados.seriesConcluidas) !==
+                        seriesConcluidas
+                ) {
+                    throw new Error(
+                        'O total de séries concluídas ' +
+                        'não corresponde aos exercícios.'
+                    );
+                }
+
+                return true;
+            }
 
             /* =========================================
                VERIFICAR ESTRUTURA DO ARQUIVO
@@ -2055,13 +2590,30 @@ window.addEventListener(
                         );
                     }
 
+                    if (
+                        !identificadorValidoBackupSupabase(
+                            treino.treino_id
+                        )
+                    ) {
+                        throw new Error(
+                            'O backup contém um identificador ' +
+                            'de treino inválido.'
+                        );
+                    }
+
                     if (idsTreinos.has(treino.treino_id)) {
                         throw new Error(
                             'O backup contém treinos duplicados.'
                         );
                     }
 
+                    validarExerciciosBackupSupabase(
+                        treino.dados.exercicios,
+                        `Treino "${treino.dados.nome}"`
+                    );
+
                     idsTreinos.add(treino.treino_id);
+
                 }
 
                 const idsHistoricoBackup = new Set();
@@ -2166,15 +2718,64 @@ window.addEventListener(
                         );
                     }
 
+                    validarHistoricoInternoBackupSupabase(
+                        registro
+                    );
+
                     conclusoesBackup.add(chave);
+
                 }
 
-                if (
-                    ativo !== null &&
-                    ativo.usuario_id !== backup.usuarioId
-                ) {
-                    throw new Error(
-                        'O treino ativo pertence a outra conta.'
+                if (ativo !== null) {
+                    if (
+                        ativo.usuario_id !==
+                            backup.usuarioId
+                    ) {
+                        throw new Error(
+                            'O treino ativo pertence a outra conta.'
+                        );
+                    }
+
+                    if (
+                        !identificadorValidoBackupSupabase(
+                            ativo.treino_id
+                        ) ||
+
+                        !textoValidoBackupSupabase(
+                            ativo.treino_nome
+                        ) ||
+
+                        !dataHoraValida(
+                            ativo.iniciado_em
+                        ) ||
+
+                        !dataHoraValida(
+                            ativo.atualizado_em
+                        )
+                    ) {
+                        throw new Error(
+                            'O treino ativo possui dados ' +
+                            'de identificação ou datas inválidas.'
+                        );
+                    }
+
+                    const treinoCorrespondente =
+                        backup.dados.treinos.find(
+                            registro =>
+                                registro.treino_id ===
+                                    ativo.treino_id
+                        );
+
+                    if (!treinoCorrespondente) {
+                        throw new Error(
+                            'O treino ativo não possui ' +
+                            'um treino correspondente no backup.'
+                        );
+                    }
+
+                    validarProgressoBackupSupabase(
+                        ativo,
+                        treinoCorrespondente.dados
                     );
                 }
 
@@ -2671,7 +3272,9 @@ window.addEventListener(
                                 valor !== null &&
                                 typeof valor === 'object'
                             ) {
-                                const normalizado = {};
+
+                                const normalizado =
+                                    Object.create(null);
 
                                 Object.keys(valor)
                                     .sort()
@@ -2708,7 +3311,10 @@ window.addEventListener(
                         const mapaHistoricoAtual = new Map(
                             historicoExistente.map(
                                 registro => [
-                                    String(registro.id),
+                                    JSON.stringify([
+                                        registro.treino_id,
+                                        registro.data_local
+                                    ]),
                                     registro
                                 ]
                             )
@@ -2742,9 +3348,16 @@ window.addEventListener(
                         let historicosDivergentes = 0;
 
                         for (const registro of backup.dados.historico) {
-                            const atual = mapaHistoricoAtual.get(
-                                String(registro.id)
-                            );
+                            const chaveConclusao =
+                                JSON.stringify([
+                                    registro.treino_id,
+                                    registro.data_local
+                                ]);
+
+                            const atual =
+                                mapaHistoricoAtual.get(
+                                    chaveConclusao
+                                );
 
                             if (!atual) {
                                 historicosNovos++;
@@ -2894,18 +3507,64 @@ window.addEventListener(
                         const ativoBackup =
                             backup.dados.treinoAtivo;
 
-                        const treinoAtivoDisponivel =
+                        const treinoCorrespondenteAtual =
+                            ativoBackup === null
+                                ? null
+                                : treinosExistentes.find(
+                                    treino =>
+                                        treino.treino_id ===
+                                            ativoBackup.treino_id
+                                );
+
+                        let ativoCompativel =
+                            false;
+
+                        let motivoAtivoIncompativel =
+                            '';
+
+                        if (
                             ativoBackup !== null &&
-                            treinosExistentes.some(
-                                treino =>
-                                    treino.treino_id ===
-                                    ativoBackup.treino_id
-                            );
+                            treinoCorrespondenteAtual
+                        ) {
+                            try {
+                                const treinoOriginal =
+                                    backup.dados.treinos.find(
+                                        treino =>
+                                            treino.treino_id ===
+                                                ativoBackup.treino_id
+                                    );
+
+                                if (
+                                    !treinoOriginal ||
+
+                                    !dadosIguaisBackup(
+                                        treinoOriginal.dados,
+                                        treinoCorrespondenteAtual.dados
+                                    )
+                                ) {
+                                    throw new Error(
+                                        'O treino cadastrado foi ' +
+                                        'alterado desde a exportação.'
+                                    );
+                                }
+
+                                validarProgressoBackupSupabase(
+                                    ativoBackup,
+                                    treinoCorrespondenteAtual.dados
+                                );
+
+                                ativoCompativel = true;
+
+                            } catch (erro) {
+                                motivoAtivoIncompativel =
+                                    erro.message;
+                            }
+                        }
 
                         const ativoRecuperavel =
                             ativoBackup !== null &&
                             !ativoExistente &&
-                            treinoAtivoDisponivel;
+                            ativoCompativel;
 
                         /* =========================================
                            COMPARAR NOVAS SECOES DO BACKUP V2
@@ -3041,6 +3700,15 @@ window.addEventListener(
                                 ativoRecuperavel
                                     ? 'Sim'
                                     : 'Não'
+                            ) +
+
+                            (
+                                motivoAtivoIncompativel
+
+                                    ? '\nMotivo do bloqueio: ' +
+                                      motivoAtivoIncompativel
+
+                                    : ''
                             ) +
 
                             '\n\nComparação concluída. ' +
@@ -3625,7 +4293,7 @@ window.addEventListener(
                                 error: erroTreino
                             } = await cliente
                                 .from('fitzone_treinos')
-                                .select('treino_id')
+                                .select('treino_id, dados')
                                 .eq('usuario_id', identidade.id)
                                 .eq('treino_id', ativo.treino_id)
                                 .maybeSingle();
@@ -3640,6 +4308,66 @@ window.addEventListener(
                                     'Recupere primeiro o treino cadastrado.'
                                 );
                             }
+
+                            const treinoOriginal =
+                                backup.dados.treinos.find(
+                                    registro =>
+                                        registro.treino_id ===
+                                            ativo.treino_id
+                                );
+
+                            function normalizar(valor) {
+                                if (Array.isArray(valor)) {
+                                    return valor.map(normalizar);
+                                }
+
+                                if (
+                                    objetoValidoBackupSupabase(
+                                        valor
+                                    )
+                                ) {
+                                    const resultado =
+                                        Object.create(null);
+
+                                    Object.keys(valor)
+                                        .sort()
+                                        .forEach(chave => {
+                                            resultado[chave] =
+                                                normalizar(
+                                                    valor[chave]
+                                                );
+                                        });
+
+                                    return resultado;
+                                }
+
+                                return valor;
+                            }
+
+                            if (
+                                !treinoOriginal ||
+
+                                JSON.stringify(
+                                    normalizar(
+                                        treinoOriginal.dados
+                                    )
+                                ) !==
+
+                                JSON.stringify(
+                                    normalizar(treino.dados)
+                                )
+                            ) {
+                                throw new Error(
+                                    'O treino cadastrado foi alterado ' +
+                                    'desde a exportação. ' +
+                                    'O progresso antigo não será recuperado.'
+                                );
+                            }
+
+                            validarProgressoBackupSupabase(
+                                ativo,
+                                treino.dados
+                            );
                         }
 
                         await verificarCondicoesAtivo();
