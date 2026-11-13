@@ -23,12 +23,47 @@ async function identificarAcessoSupabaseTreinos() {
 }
 
 /* =========================================
+   FITZONE - PROTEGER IDENTIDADE DAS OPERACOES
+========================================= */
+
+async function obterAcessoVinculadoTreinos() {
+    const acessoInicial = acessoInicialTreinosFitZone;
+
+    if (
+        !acessoInicial?.id ||
+        acessoInicial.autenticado !== true ||
+        acessoInicial.origem !== 'supabase' ||
+        sessaoTreinosInvalidada
+    ) {
+        throw new Error('Sessão Supabase inválida.');
+    }
+
+    const acessoAtual =
+        await identificarAcessoSupabaseTreinos();
+
+    if (
+        sessaoTreinosInvalidada ||
+        acessoAtual.autenticado !== true ||
+        acessoAtual.id !== acessoInicial.id
+    ) {
+        sessaoTreinosInvalidada = true;
+        window.location.replace('login.html');
+
+        throw new Error(
+            'A conta foi alterada durante a operação.'
+        );
+    }
+
+    return acessoInicial;
+}
+
+/* =========================================
    FITZONE - TREINO ATIVO NO SUPABASE
 ========================================= */
 
 async function consultarTreinoAtivoSupabase() {
     const acesso =
-        await identificarAcessoSupabaseTreinos();
+        await obterAcessoVinculadoTreinos();
 
     if (!acesso.autenticado || !acesso.id) {
         throw new Error('Sessão Supabase inválida.');
@@ -83,7 +118,7 @@ async function salvarTreinoAtivoSupabase(treino) {
     }
 
     const acesso =
-        await identificarAcessoSupabaseTreinos();
+        await obterAcessoVinculadoTreinos();
 
     if (!acesso.autenticado || !acesso.id) {
         throw new Error('Sessão Supabase inválida.');
@@ -124,8 +159,9 @@ async function salvarTreinoAtivoSupabase(treino) {
 ========================================= */
 
 async function limparTreinoAtivoSupabase() {
+
     const acesso =
-        await identificarAcessoSupabaseTreinos();
+        await obterAcessoVinculadoTreinos();
 
     if (!acesso.autenticado || !acesso.id) {
         throw new Error('Sessão Supabase inválida.');
@@ -154,8 +190,9 @@ async function limparTreinoAtivoSupabase() {
 ========================================= */
 
 async function consultarHistoricoTreinosSupabase() {
+
     const acesso =
-        await identificarAcessoSupabaseTreinos();
+        await obterAcessoVinculadoTreinos();
 
     if (!acesso.autenticado || !acesso.id) {
         throw new Error('Sessão Supabase inválida.');
@@ -212,7 +249,7 @@ async function registrarHistoricoTreinoSupabase(
     }
 
     const acesso =
-        await identificarAcessoSupabaseTreinos();
+        await obterAcessoVinculadoTreinos();
 
     if (!acesso.autenticado || !acesso.id) {
         throw new Error('Sessão Supabase inválida.');
@@ -255,8 +292,9 @@ async function registrarHistoricoTreinoSupabase(
 ========================================= */
 
 async function consultarTreinosBancoSupabase() {
+
     const acesso =
-        await identificarAcessoSupabaseTreinos();
+        await obterAcessoVinculadoTreinos();
 
     if (!acesso.autenticado) {
         throw new Error(
@@ -359,7 +397,7 @@ async function salvarTreinoBancoSupabase(treino) {
     }
 
     const acesso =
-        await identificarAcessoSupabaseTreinos();
+        await obterAcessoVinculadoTreinos();
 
     if (!acesso.autenticado) {
         throw new Error(
@@ -411,7 +449,7 @@ async function excluirTreinoBancoSupabase(treinoId) {
     }
 
     const acesso =
-        await identificarAcessoSupabaseTreinos();
+        await obterAcessoVinculadoTreinos();
 
     if (!acesso.autenticado) {
         throw new Error(
@@ -970,12 +1008,13 @@ async function verificarOrigemAcessoTreinos() {
 ========================================= */
 
 async function prepararTreinosSupabaseFitZone() {
-    const acesso = await verificarOrigemAcessoTreinos();
+    const acesso = await obterAcessoVinculadoTreinos();
 
     if (
         !acesso.autenticado ||
         acesso.origem !== 'supabase'
     ) {
+
         throw new Error(
             'Acesso Supabase inválido.'
         );
@@ -1046,6 +1085,7 @@ async function conferirSessaoHibridaTreinos(
 ========================================= */
 
 let acessoInicialTreinosFitZone = null;
+let sessaoTreinosInvalidada = false;
 
 /* =========================================
    FITZONE - MONITORAR AUTENTICACAO SUPABASE
@@ -1076,6 +1116,8 @@ function monitorarSessaoSupabaseTreinos() {
                         acessoInicialTreinosFitZone.id
                 )
             ) {
+                sessaoTreinosInvalidada = true;
+
                 window.location.replace('login.html');
             }
         }
@@ -1235,7 +1277,9 @@ window.addEventListener(
             acessoPagina.autenticado === true &&
             acessoPagina.origem === 'supabase'
         ) {
-            acessoInicialTreinosFitZone = acessoPagina;
+            acessoInicialTreinosFitZone = Object.freeze({
+                ...acessoPagina
+            });
 
             monitorarSessaoSupabaseTreinos();
 
