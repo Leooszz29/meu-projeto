@@ -182,6 +182,34 @@ async function obterIdentidadeSupabaseFitZone() {
 }
 
 /* =========================================
+   FITZONE - IDENTIDADE VINCULADA A OPERACAO
+========================================= */
+
+async function obterUsuarioVinculadoSupabaseFitZone(
+    usuarioIdEsperado
+) {
+    if (
+        typeof usuarioIdEsperado !== 'string' ||
+        !usuarioIdEsperado.trim()
+    ) {
+        throw new Error('Identidade inicial inválida.');
+    }
+
+    const usuario =
+        await consultarUsuarioSupabaseFitZone();
+
+    if (!usuario || usuario.id !== usuarioIdEsperado) {
+        window.location.replace('login.html');
+
+        throw new Error(
+            'A conta foi alterada durante a operação.'
+        );
+    }
+
+    return usuario;
+}
+
+/* =========================================
    FITZONE - CRIAR PERFIL SUPABASE
 ========================================= */
 
@@ -234,9 +262,10 @@ async function criarPerfilSupabaseFitZone(nome) {
    FITZONE - CONSULTAR PERFIL SUPABASE
 ========================================= */
 
-async function consultarPerfilSupabaseFitZone() {
+async function consultarPerfilSupabaseFitZone(usuarioIdEsperado) {
     const cliente = inicializarSupabaseFitZone();
-    const identidade = await obterIdentidadeSupabaseFitZone();
+    const identidade =
+        await obterUsuarioVinculadoSupabaseFitZone(usuarioIdEsperado);
 
     if (!cliente || !identidade) {
         throw new Error(
@@ -261,9 +290,10 @@ async function consultarPerfilSupabaseFitZone() {
    FITZONE - SALVAR PERFIL SUPABASE
 ========================================= */
 
-async function salvarPerfilSupabaseFitZone(perfil) {
+async function salvarPerfilSupabaseFitZone(perfil, usuarioIdEsperado) {
     const cliente = inicializarSupabaseFitZone();
-    const identidade = await obterIdentidadeSupabaseFitZone();
+    const identidade =
+        await obterUsuarioVinculadoSupabaseFitZone(usuarioIdEsperado);
 
     if (!cliente || !identidade) {
         throw new Error(
@@ -307,14 +337,14 @@ async function salvarPerfilSupabaseFitZone(perfil) {
    FITZONE - ALTERAR APENAS GENERO SUPABASE
 ========================================= */
 
-
-async function atualizarGeneroSupabaseFitZone(genero) {
+async function atualizarGeneroSupabaseFitZone(genero, usuarioIdEsperado) {
     if (!['masculino', 'feminino'].includes(genero)) {
         throw new Error('Gênero inválido.');
     }
 
     const cliente = inicializarSupabaseFitZone();
-    const usuario = await consultarUsuarioSupabaseFitZone();
+    const usuario =
+        await obterUsuarioVinculadoSupabaseFitZone(usuarioIdEsperado);
 
     if (!cliente || !usuario?.id) {
         throw new Error('Sessão Supabase inválida.');
@@ -352,6 +382,8 @@ async function atualizarGeneroSupabaseFitZone(genero) {
         );
     }
 
+    await obterUsuarioVinculadoSupabaseFitZone(usuarioIdEsperado);
+
     const { data: novoPerfil, error: erroCriacao } =
         await cliente
             .from('fitzone_perfis')
@@ -380,7 +412,10 @@ async function atualizarGeneroSupabaseFitZone(genero) {
     /* Se outra operação criou o perfil,
        atualizar somente o gênero. */
 
+    await obterUsuarioVinculadoSupabaseFitZone(usuarioIdEsperado);
+
     const { data: perfilAtualizado, error: erroAtualizacao } =
+
         await cliente
             .from('fitzone_perfis')
             .update({
