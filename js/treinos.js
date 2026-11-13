@@ -101,20 +101,67 @@ async function consultarTreinoAtivoSupabase() {
 
 }
 
+
 /* =========================================
-   FITZONE - SALVAR TREINO ATIVO SUPABASE
+   FITZONE - PROTEGER VERSAO DO TREINO ATIVO
 ========================================= */
 
-async function salvarTreinoAtivoSupabase(treino) {
+function gerarVersaoTreinoAtivoSupabase(versaoAnterior) {
+    const anterior = Date.parse(versaoAnterior);
+
+    if (!Number.isFinite(anterior)) {
+        throw new Error('Versão do treino ativo inválida.');
+    }
+
+    return new Date(
+        Math.max(Date.now(), anterior + 1)
+    ).toISOString();
+}
+
+function filtrarVersaoTreinoAtivoSupabase(
+    consulta,
+    usuarioId,
+    ativo
+) {
+    if (!ativo?.id || !ativo.atualizadoEm) {
+        throw new Error('Versão do treino ativo indisponível.');
+    }
+
+    consulta = consulta
+        .eq('usuario_id', usuarioId)
+        .eq('treino_id', ativo.id)
+        .eq('atualizado_em', ativo.atualizadoEm);
+
+    return ativo.iniciadoEm == null
+        ? consulta.is('iniciado_em', null)
+        : consulta.eq('iniciado_em', ativo.iniciadoEm);
+}
+
+function criarErroConcorrenciaTreinoSupabase() {
+    const erro = new Error(
+        'O treino ativo foi alterado em outro dispositivo. ' +
+        'Confira o progresso atualizado antes de continuar.'
+    );
+
+    erro.code = 'FITZONE_CONFLITO_ATIVO';
+
+    return erro;
+}
+
+/* =========================================
+   FITZONE - INICIAR OU TROCAR TREINO ATIVO
+========================================= */
+
+async function iniciarTreinoAtivoSupabase(
+    treino,
+    ativoEsperado
+) {
     if (
         !treino ||
         typeof treino.id !== 'string' ||
         !treino.id.trim() ||
         typeof treino.nome !== 'string' ||
-        !treino.nome.trim() ||
-        !treino.progresso ||
-        typeof treino.progresso !== 'object' ||
-        Array.isArray(treino.progresso)
+        !treino.nome.trim()
     ) {
         throw new Error('Treino ativo inválido.');
     }
@@ -122,9 +169,81 @@ async function salvarTreinoAtivoSupabase(treino) {
     const acesso =
         await obterAcessoVinculadoTreinos();
 
-    if (!acesso.autenticado || !acesso.id) {
-        throw new Error('Sessão Supabase inválida.');
+    const cliente = inicializarSupabaseFitZone();
+
+    if (!cliente) {
+        throw new Error('Supabase indisponível.');
     }
+
+    const agora = new Date().toISOString();
+
+    const dados = {
+        usuario_id: acesso.id,
+        treino_id: treino.id,
+        treino_nome: treino.nome,
+        progresso: {},
+        iniciado_em: agora,
+        atualizado_em: ativoEsperado
+            ? gerarVersaoTreinoAtivoSupabase(
+                ativoEsperado.atualizadoEm
+            )
+            : agora
+    };
+
+    let resultado;
+
+    if (ativoEsperado) {
+        resultado = await filtrarVersaoTreinoAtivoSupabase(
+            cliente
+                .from('fitzone_treino_ativo')
+                .update(dados),
+            acesso.id,
+            ativoEsperado
+        ).select('usuario_id');
+    } else {
+        resultado = await cliente
+            .from('fitzone_treino_ativo')
+            .insert(dados)
+            .select('usuario_id');
+    }
+
+    if (resultado.error) {
+        if (resultado.error.code === '23505') {
+            throw criarErroConcorrenciaTreinoSupabase();
+        }
+
+        throw resultado.error;
+    }
+
+    if (
+        !Array.isArray(resultado.data) ||
+        resultado.data.length !== 1
+    ) {
+        throw criarErroConcorrenciaTreinoSupabase();
+    }
+
+    return true;
+}
+
+/* =========================================
+   FITZONE - ATUALIZAR SOMENTE O PROGRESSO
+========================================= */
+
+async function atualizarProgressoTreinoAtivoSupabase(
+    ativo,
+    progresso
+) {
+    if (
+        !ativo?.id ||
+        !progresso ||
+        typeof progresso !== 'object' ||
+        Array.isArray(progresso)
+    ) {
+        throw new Error('Progresso do treino inválido.');
+    }
+
+    const acesso =
+        await obterAcessoVinculadoTreinos();
 
     const cliente = inicializarSupabaseFitZone();
 
@@ -132,28 +251,37 @@ async function salvarTreinoAtivoSupabase(treino) {
         throw new Error('Supabase indisponível.');
     }
 
-    const { error } = await cliente
-        .from('fitzone_treino_ativo')
-        .upsert(
-            {
-                usuario_id: acesso.id,
-                treino_id: treino.id,
-                treino_nome: treino.nome,
-                progresso: treino.progresso,
-                iniciado_em:
-                    treino.iniciadoEm || new Date().toISOString(),
-                atualizado_em: new Date().toISOString()
-            },
-            {
-                onConflict: 'usuario_id'
-            }
-        );
+    const atualizadoEm =
+        gerarVersaoTreinoAtivoSupabase(ativo.atualizadoEm);
+
+    const { data, error } =
+        await filtrarVersaoTreinoAtivoSupabase(
+            cliente
+                .from('fitzone_treino_ativo')
+                .update({
+                    progresso,
+                    atualizado_em: atualizadoEm
+                }),
+            acesso.id,
+            ativo
+        ).select('atualizado_em');
 
     if (error) {
         throw error;
     }
 
-    return true;
+    if (
+        !Array.isArray(data) ||
+        data.length !== 1
+    ) {
+        throw criarErroConcorrenciaTreinoSupabase();
+    }
+
+    return {
+        ...ativo,
+        progresso,
+        atualizadoEm: data[0].atualizado_em
+    };
 }
 
 /* =========================================
@@ -4595,6 +4723,10 @@ window.addEventListener(
                         checkbox.dataset.numeroSerie =
                             String(numero);
 
+                        checkbox.dataset.treinoAtivoId = ativo.id;
+                        checkbox.dataset.versaoTreinoAtivo =
+                            ativo.atualizadoEm;
+
                         checkbox.checked =
                             Array.isArray(
                                 progresso[exercicio.id]
@@ -4633,6 +4765,9 @@ window.addEventListener(
                     botaoFinalizar.dataset.finalizarTreinoSupabase =
                         ativo.id;
 
+                    botaoFinalizar.dataset.versaoTreinoAtivo =
+                        ativo.atualizadoEm;
+
                     painelProgressoSupabase.appendChild(
                         botaoFinalizar
                     );
@@ -4647,9 +4782,11 @@ window.addEventListener(
                             'input[data-serie-exercicio]'
                         );
 
-                    if (!checkbox) {
+                    if (!checkbox || checkbox.disabled) {
                         return;
                     }
+
+                    const marcado = checkbox.checked;
 
                     const controles =
                         painelProgressoSupabase.querySelectorAll(
@@ -4679,10 +4816,13 @@ window.addEventListener(
                         const ativo =
                             await consultarTreinoAtivoSupabase();
 
-                        if (!ativo) {
-                            throw new Error(
-                                'Nenhum treino ativo encontrado.'
-                            );
+                        if (
+                            !ativo ||
+                            ativo.id !== checkbox.dataset.treinoAtivoId ||
+                            ativo.atualizadoEm !==
+                                checkbox.dataset.versaoTreinoAtivo
+                        ) {
+                            throw criarErroConcorrenciaTreinoSupabase();
                         }
 
                         let treino = treinoExibidoSupabase;
@@ -4734,7 +4874,7 @@ window.addEventListener(
                                 : []
                         );
 
-                        if (checkbox.checked) {
+                        if (marcado) {
                             marcadas.add(numero);
                         } else {
                             marcadas.delete(numero);
@@ -4745,20 +4885,16 @@ window.addEventListener(
                                 (a, b) => a - b
                             );
 
-                        await salvarTreinoAtivoSupabase({
-                            id: ativo.id,
-                            nome: ativo.nome,
-                            progresso,
-                            iniciadoEm: ativo.iniciadoEm
-                        });
+                        const ativoAtualizado =
+                            await atualizarProgressoTreinoAtivoSupabase(
+                                ativo,
+                                progresso
+                            );
 
                         progressoSalvoNoBanco = true;
 
                         await renderizarProgressoSupabase(
-                            {
-                                ...ativo,
-                                progresso
-                            },
+                            ativoAtualizado,
                             treino
                         );
 
@@ -4773,9 +4909,11 @@ window.addEventListener(
                                 ? 'O progresso foi salvo no Supabase, ' +
                                   'mas não foi possível atualizar a tela. ' +
                                   'Reabra a página para conferir as séries.'
-                                : 'Não foi possível confirmar o salvamento ' +
-                                  'do progresso. Verifique a conexão e ' +
-                                  'reabra a página antes de tentar novamente.'
+                                : erro.code === 'FITZONE_CONFLITO_ATIVO'
+                                    ? erro.message
+                                    : 'Não foi possível confirmar o salvamento ' +
+                                      'do progresso. Verifique a conexão e ' +
+                                      'reabra a página antes de tentar novamente.'
                         );
 
                         try {
@@ -4831,10 +4969,13 @@ window.addEventListener(
                         if (
                             !ativo ||
                             ativo.id !==
-                                botao.dataset.finalizarTreinoSupabase
+                                botao.dataset.finalizarTreinoSupabase ||
+                            ativo.atualizadoEm !==
+                                botao.dataset.versaoTreinoAtivo
                         ) {
                             throw new Error(
-                                'O treino ativo foi alterado.'
+                                'O treino ativo foi alterado. ' +
+                                'Atualize a página e confira as séries.'
                             );
                         }
 
@@ -5025,13 +5166,10 @@ window.addEventListener(
                             return;
                         }
 
-                        await salvarTreinoAtivoSupabase({
-                            id: treino.id,
-                            nome: treino.nome,
-                            progresso: {},
-                            iniciadoEm:
-                                new Date().toISOString()
-                        });
+                        await iniciarTreinoAtivoSupabase(
+                            treino,
+                            ativoAtual
+                        );
 
                         treinoAtivoSupabaseVisualId =
                             treino.id;
@@ -5053,8 +5191,19 @@ window.addEventListener(
                         );
 
                         alert(
-                            'Não foi possível selecionar o treino.'
+                            erro.code === 'FITZONE_CONFLITO_ATIVO'
+                                ? erro.message
+                                : 'Não foi possível selecionar o treino.'
                         );
+
+                        try {
+                            await renderizarProgressoSupabase();
+                        } catch (erroAtualizacao) {
+                            console.error(
+                                'Erro ao recuperar treino ativo:',
+                                erroAtualizacao
+                            );
+                        }
 
                     } finally {
                         botao.disabled = false;
