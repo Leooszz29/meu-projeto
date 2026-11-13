@@ -1394,7 +1394,7 @@ window.addEventListener(
 
                     try {
                         const identidade =
-                            await obterIdentidadeSupabaseFitZone();
+                            await obterAcessoVinculadoTreinos();
 
                         if (
                             !identidade ||
@@ -1442,7 +1442,7 @@ window.addEventListener(
                         }
 
                         const identidadeFinal =
-                            await obterIdentidadeSupabaseFitZone();
+                            await obterAcessoVinculadoTreinos();
 
                         if (
                             !identidadeFinal ||
@@ -1954,7 +1954,7 @@ window.addEventListener(
                             );
 
                         const identidade =
-                            await obterIdentidadeSupabaseFitZone();
+                            await obterAcessoVinculadoTreinos();
 
                         if (
                             !identidade ||
@@ -2023,7 +2023,7 @@ window.addEventListener(
                         }
 
                         const identidadeFinalComparacao =
-                            await obterIdentidadeSupabaseFitZone();
+                            await obterAcessoVinculadoTreinos();
 
                         if (
                             !identidadeFinalComparacao ||
@@ -2375,7 +2375,7 @@ window.addEventListener(
                         validarEstruturaBackupSupabase(backup);
 
                         const identidade =
-                            await obterIdentidadeSupabaseFitZone();
+                            await obterAcessoVinculadoTreinos();
 
                         if (
                             !identidade ||
@@ -2461,7 +2461,7 @@ window.addEventListener(
                         }
 
                         const identidadeFinal =
-                            await obterIdentidadeSupabaseFitZone();
+                            await obterAcessoVinculadoTreinos();
 
                         if (
                             !identidadeFinal ||
@@ -2507,6 +2507,8 @@ window.addEventListener(
                                     new Date().toISOString()
                             })
                         );
+
+                        await obterAcessoVinculadoTreinos();
 
                         const { error } = await cliente
                             .from('fitzone_treinos')
@@ -2571,7 +2573,7 @@ window.addEventListener(
                         validarEstruturaBackupSupabase(backup);
 
                         const identidade =
-                            await obterIdentidadeSupabaseFitZone();
+                            await obterAcessoVinculadoTreinos();
 
                         if (
                             !identidade ||
@@ -2699,7 +2701,7 @@ window.addEventListener(
                         /* REVALIDAR CONTA E REGISTROS */
 
                         const identidadeFinal =
-                            await obterIdentidadeSupabaseFitZone();
+                            await obterAcessoVinculadoTreinos();
 
                         if (
                             !identidadeFinal ||
@@ -2738,7 +2740,7 @@ window.addEventListener(
 
                         for (const registro of registrosParaRestaurar) {
                             const identidadeAtual =
-                                await obterIdentidadeSupabaseFitZone();
+                                await obterAcessoVinculadoTreinos();
 
                             if (
                                 !identidadeAtual ||
@@ -2844,7 +2846,7 @@ window.addEventListener(
                         validarEstruturaBackupSupabase(backup);
 
                         const identidade =
-                            await obterIdentidadeSupabaseFitZone();
+                            await obterAcessoVinculadoTreinos();
 
                         if (
                             !identidade ||
@@ -2950,7 +2952,7 @@ window.addEventListener(
                         }
 
                         const identidadeFinal =
-                            await obterIdentidadeSupabaseFitZone();
+                            await obterAcessoVinculadoTreinos();
 
                         if (
                             !identidadeFinal ||
@@ -2963,9 +2965,12 @@ window.addEventListener(
 
                         await verificarCondicoesAtivo();
 
+                        await obterAcessoVinculadoTreinos();
+
                         const { error } = await cliente
                             .from('fitzone_treino_ativo')
                             .insert({
+
                                 usuario_id: identidade.id,
                                 treino_id: ativo.treino_id,
                                 treino_nome: ativo.treino_nome,
