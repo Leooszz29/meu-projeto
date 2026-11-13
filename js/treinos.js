@@ -78,7 +78,7 @@ async function consultarTreinoAtivoSupabase() {
     const { data, error } = await cliente
         .from('fitzone_treino_ativo')
         .select(
-            'treino_id, treino_nome, progresso, iniciado_em'
+            'treino_id, treino_nome, progresso, iniciado_em, atualizado_em'
         )
         .eq('usuario_id', acesso.id)
         .maybeSingle();
@@ -95,8 +95,10 @@ async function consultarTreinoAtivoSupabase() {
         id: data.treino_id,
         nome: data.treino_nome,
         progresso: data.progresso || {},
-        iniciadoEm: data.iniciado_em
+        iniciadoEm: data.iniciado_em,
+        atualizadoEm: data.atualizado_em
     };
+
 }
 
 /* =========================================
@@ -155,124 +157,57 @@ async function salvarTreinoAtivoSupabase(treino) {
 }
 
 /* =========================================
-   FITZONE - LIMPAR TREINO ATIVO SUPABASE
+   FITZONE - FINALIZAR TREINO ATOMICAMENTE
 ========================================= */
 
-async function limparTreinoAtivoSupabase() {
-
-    const acesso =
-        await obterAcessoVinculadoTreinos();
-
-    if (!acesso.autenticado || !acesso.id) {
-        throw new Error('Sessão Supabase inválida.');
-    }
-
-    const cliente = inicializarSupabaseFitZone();
-
-    if (!cliente) {
-        throw new Error('Supabase indisponível.');
-    }
-
-    const { error } = await cliente
-        .from('fitzone_treino_ativo')
-        .delete()
-        .eq('usuario_id', acesso.id);
-
-    if (error) {
-        throw error;
-    }
-
-    return true;
-}
-
-/* =========================================
-   FITZONE - HISTORICO NO SUPABASE
-========================================= */
-
-async function consultarHistoricoTreinosSupabase() {
-
-    const acesso =
-        await obterAcessoVinculadoTreinos();
-
-    if (!acesso.autenticado || !acesso.id) {
-        throw new Error('Sessão Supabase inválida.');
-    }
-
-    const cliente = inicializarSupabaseFitZone();
-
-    if (!cliente) {
-        throw new Error('Supabase indisponível.');
-    }
-
-    const { data, error } = await cliente
-        .from('fitzone_historico_treinos')
-        .select(
-            'treino_id, data_local, dados, concluido_em'
-        )
-        .eq('usuario_id', acesso.id)
-        .order('concluido_em', {
-            ascending: false
-        });
-
-    if (error) {
-        throw error;
-    }
-
-    return (data || []).map(registro => ({
-        ...registro.dados,
-        workoutId: registro.treino_id,
-        dataLocal: registro.data_local,
-        data: registro.concluido_em
-    }));
-}
-
-/* =========================================
-   FITZONE - REGISTRAR TREINO CONCLUIDO
-========================================= */
-
-async function registrarHistoricoTreinoSupabase(
-    registro,
+async function finalizarTreinoAtomicoSupabase(
+    ativo,
+    treino,
     dataLocal
 ) {
     if (
-        !registro ||
-        typeof registro !== 'object' ||
-        Array.isArray(registro) ||
-        typeof registro.workoutId !== 'string' ||
-        !registro.workoutId.trim() ||
+        !ativo ||
+        !treino ||
+        typeof ativo.id !== 'string' ||
+        !ativo.id.trim() ||
+        treino.id !== ativo.id ||
+        typeof treino.nome !== 'string' ||
+        !Array.isArray(treino.exercicios) ||
+        !ativo.progresso ||
+        typeof ativo.progresso !== 'object' ||
+        Array.isArray(ativo.progresso) ||
+        typeof ativo.atualizadoEm !== 'string' ||
+        !ativo.atualizadoEm ||
         typeof dataLocal !== 'string' ||
         !/^\d{4}-\d{2}-\d{2}$/.test(dataLocal)
     ) {
         throw new Error(
-            'Dados inválidos para registrar o histórico.'
+            'Dados inválidos para finalizar o treino.'
         );
     }
 
     const acesso =
         await obterAcessoVinculadoTreinos();
 
-    if (!acesso.autenticado || !acesso.id) {
-        throw new Error('Sessão Supabase inválida.');
-    }
-
     const cliente = inicializarSupabaseFitZone();
 
     if (!cliente) {
         throw new Error('Supabase indisponível.');
     }
 
-    const { data, error } = await cliente
-        .from('fitzone_historico_treinos')
-        .insert({
-            usuario_id: acesso.id,
-            treino_id: registro.workoutId,
-            data_local: dataLocal,
-            dados: registro,
-            concluido_em: registro.data ||
-                new Date().toISOString()
-        })
-        .select('id')
-        .single();
+    const { data, error } = await cliente.rpc(
+        'fitzone_finalizar_treino',
+        {
+            p_usuario_id: acesso.id,
+            p_treino_id: ativo.id,
+            p_data_local: dataLocal,
+            p_progresso: ativo.progresso,
+            p_iniciado_em: ativo.iniciadoEm ?? null,
+            p_atualizado_em: ativo.atualizadoEm,
+            p_nome: treino.nome,
+            p_exercicios: treino.exercicios
+        }
+    );
 
     if (error) {
         if (error.code === '23505') {
@@ -284,7 +219,14 @@ async function registrarHistoricoTreinoSupabase(
         throw error;
     }
 
-    return data.id;
+    if (typeof data !== 'string' || !data.trim()) {
+        throw new Error(
+            'Não foi possível confirmar a finalização. ' +
+            'Atualize a página e confira o histórico.'
+        );
+    }
+
+    return data;
 }
 
 /* =========================================
@@ -4870,10 +4812,9 @@ window.addEventListener(
 
                     botao.disabled = true;
 
-                    let historicoRegistrado = false;
+                    let finalizacaoConfirmada = false;
 
                     try {
-
                         const sessaoValida =
                             await conferirSessaoHibridaTreinos(
                                 acessoInicialTreinosFitZone
@@ -4918,47 +4859,30 @@ window.addEventListener(
                         let totalSeries = 0;
                         let seriesConcluidas = 0;
 
-                        const resumoExercicios =
-                            exercicios.map(exercicio => {
-                                const total =
-                                    Math.max(
-                                        0,
-                                        Math.floor(
-                                            Number(exercicio.series) || 0
-                                        )
-                                    );
+                        exercicios.forEach(exercicio => {
+                            const total =
+                                Math.max(
+                                    0,
+                                    Math.floor(
+                                        Number(exercicio.series) || 0
+                                    )
+                                );
 
-                                const marcadas =
-                                    ativo.progresso?.[exercicio.id];
+                            const marcadas =
+                                ativo.progresso?.[exercicio.id];
 
-                                const concluidas =
-                                    Array.from(
-                                        { length: total },
-                                        (_, indice) => indice + 1
-                                    ).filter(numero =>
-                                        Array.isArray(marcadas) &&
-                                        marcadas.includes(numero)
-                                    ).length;
+                            const concluidas =
+                                Array.from(
+                                    { length: total },
+                                    (_, indice) => indice + 1
+                                ).filter(numero =>
+                                    Array.isArray(marcadas) &&
+                                    marcadas.includes(numero)
+                                ).length;
 
-                                totalSeries += total;
-                                seriesConcluidas += concluidas;
-
-                                return {
-                                    id: exercicio.id,
-                                    nome: exercicio.nome,
-                                    seriesConcluidas: concluidas,
-                                    seriesTotal: total,
-                                    completo:
-                                        total > 0 &&
-                                        concluidas === total,
-                                    tipoExecucao:
-                                        exercicio.tipoExecucao ||
-                                        'individual',
-                                    grupoExecucao:
-                                        exercicio.grupoExecucao ||
-                                        null
-                                };
-                            });
+                            totalSeries += total;
+                            seriesConcluidas += concluidas;
+                        });
 
                         if (seriesConcluidas === 0) {
                             alert(
@@ -4975,22 +4899,6 @@ window.addEventListener(
                             hoje.getDate()
                         );
 
-                        const historico =
-                            await consultarHistoricoTreinosSupabase();
-
-                        const jaConcluido =
-                            historico.some(registro =>
-                                registro.workoutId === ativo.id &&
-                                registro.dataLocal === dataLocal
-                            );
-
-                        if (jaConcluido) {
-                            alert(
-                                'Este treino já foi concluído hoje.'
-                            );
-                            return;
-                        }
-
                         const confirmar = window.confirm(
                             `Finalizar "${treino.nome}"?\n\n` +
                             `${seriesConcluidas} de ` +
@@ -5002,41 +4910,13 @@ window.addEventListener(
                             return;
                         }
 
-                        const registro = {
-                            workoutId: treino.id,
-                            nome: treino.nome,
-                            data: new Date().toISOString(),
-                            exercicios: resumoExercicios,
-                            totalExercicios: exercicios.length,
-                            seriesConcluidas,
-                            seriesTotal: totalSeries
-                        };
-
-                        await registrarHistoricoTreinoSupabase(
-                            registro,
+                        await finalizarTreinoAtomicoSupabase(
+                            ativo,
+                            treino,
                             dataLocal
                         );
 
-                        historicoRegistrado = true;
-
-                        try {
-
-                            await limparTreinoAtivoSupabase();
-                        } catch (erroLimpeza) {
-                            console.error(
-                                'Histórico registrado, mas falhou ' +
-                                'a limpeza do treino ativo:',
-                                erroLimpeza
-                            );
-
-                            alert(
-                                'O treino foi registrado no histórico, ' +
-                                'mas não foi possível limpar o treino ativo. ' +
-                                'Não finalize novamente.'
-                            );
-
-                            return;
-                        }
+                        finalizacaoConfirmada = true;
 
                         treinoAtivoSupabaseVisualId = null;
 
@@ -5045,7 +4925,7 @@ window.addEventListener(
                             lista
                         );
 
-                        await renderizarProgressoSupabase();                  
+                        await renderizarProgressoSupabase();
 
                         mensagem.textContent =
                             'Treino finalizado e registrado ' +
@@ -5058,13 +4938,16 @@ window.addEventListener(
                         );
 
                         alert(
-                            historicoRegistrado
-                                ? 'O histórico foi registrado no Supabase, ' +
-                                  'mas ocorreu um erro ao concluir a operação. ' +
-                                  'Confira o histórico e o treino ativo ' +
-                                  'antes de tentar novamente.'
-                                : erro.message ||
-                                  'Não foi possível finalizar o treino.'
+                            finalizacaoConfirmada
+                                ? 'O treino foi finalizado no Supabase, ' +
+                                  'mas não foi possível atualizar a tela. ' +
+                                  'Reabra a página para conferir.'
+                                : (
+                                    erro.message ||
+                                    'Não foi possível confirmar a finalização.'
+                                ) +
+                                  '\n\nAtualize a página e confira o histórico ' +
+                                  'e o treino ativo antes de tentar novamente.'
                         );
 
                     } finally {
