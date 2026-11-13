@@ -230,24 +230,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
 
                 try {
-                    const chave =
-                        await obterChaveArmazenamentoSupabaseFitZone(
-                            'checkins'
+                    const checkins =
+                        await carregarCheckinsSupabase(
+                            acessoSupabase.id
                         );
-
-                    const dadosSalvos = localStorage.getItem(chave);
-
-                    const checkins = dadosSalvos
-                        ? JSON.parse(dadosSalvos)
-                        : {};
-
-                    if (
-                        !checkins ||
-                        typeof checkins !== 'object' ||
-                        Array.isArray(checkins)
-                    ) {
-                        throw new Error('Dados de check-in inválidos.');
-                    }
 
                     informacaoCheckins.textContent =
                         'Seus dias com check-in: ' +
@@ -581,7 +567,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 }
 
                                 const dadosAtuais =
-                                    await carregarCheckinsSupabase();
+                                    await carregarCheckinsSupabase(
+                                        acessoSupabase.id
+                                    );
 
                                 const marcado =
                                     modalToggleSupabase.getAttribute(
@@ -601,7 +589,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                                     };
                                 }
 
-                                await salvarCheckinsSupabase(dadosAtuais);
+                                await salvarCheckinsSupabase(
+                                    dadosAtuais,
+                                    acessoSupabase.id
+                                );
 
                                 Object.keys(checkins).forEach(chave => {
                                     delete checkins[chave];
@@ -1234,39 +1225,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     /* =========================================
-       FITZONE - CHAVES DO CALENDARIO SUPABASE
+       FITZONE - CHECK-INS VINCULADOS A CONTA
     ========================================= */
 
-    async function obterChavesCalendarioSupabase() {
-        const chaveCheckins =
-            await obterChaveArmazenamentoSupabaseFitZone(
-                'checkins'
-            );
-
-        const chaveHistorico =
-            await obterChaveArmazenamentoSupabaseFitZone(
-                'historico'
-            );
-
-        return {
-            checkins: chaveCheckins,
-            historico: chaveHistorico
-        };
-    }
-
-    /* =========================================
-       FITZONE - LER CHECK-INS SUPABASE
-    ========================================= */
-
-    async function carregarCheckinsSupabase() {
-        const chaves =
-            await obterChavesCalendarioSupabase();
-
-        const dadosSalvos = localStorage.getItem(
-            chaves.checkins
+    async function obterChaveCheckinsCalendarioSupabase(
+        usuarioIdEsperado
+    ) {
+        await obterUsuarioVinculadoSupabaseFitZone(
+            usuarioIdEsperado
         );
 
-        if (!dadosSalvos) {
+        return `fitzone:checkins:supabase:${usuarioIdEsperado}`;
+    }
+
+    function lerCheckinsCalendarioSupabase(chave) {
+        const dadosSalvos = localStorage.getItem(chave);
+
+        if (dadosSalvos === null) {
             return {};
         }
 
@@ -1285,11 +1260,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         return checkins;
     }
 
-    /* =========================================
-       FITZONE - SALVAR CHECK-INS SUPABASE
-    ========================================= */
+    async function carregarCheckinsSupabase(
+        usuarioIdEsperado
+    ) {
+        const chave =
+            await obterChaveCheckinsCalendarioSupabase(
+                usuarioIdEsperado
+            );
 
-    async function salvarCheckinsSupabase(dados) {
+        return lerCheckinsCalendarioSupabase(chave);
+    }
+
+    async function salvarCheckinsSupabase(
+        dados,
+        usuarioIdEsperado
+    ) {
         if (
             !dados ||
             typeof dados !== 'object' ||
@@ -1300,14 +1285,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             );
         }
 
-        const chaves =
-            await obterChavesCalendarioSupabase();
+        const chave =
+            await obterChaveCheckinsCalendarioSupabase(
+                usuarioIdEsperado
+            );
 
-        // Verificar os dados existentes antes de salvar.
-        await carregarCheckinsSupabase();
+        // Validar os dados atuais da mesma conta.
+        lerCheckinsCalendarioSupabase(chave);
 
         localStorage.setItem(
-            chaves.checkins,
+            chave,
             JSON.stringify(dados)
         );
 
