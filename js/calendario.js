@@ -230,6 +230,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
 
                 try {
+                    await migrarCheckinsLocaisSupabase(
+                        acessoSupabase.id
+                    );
+
                     const checkins =
                         await carregarCheckinsSupabase(
                             acessoSupabase.id
@@ -530,7 +534,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                     );
 
                     modalSupabase.addEventListener('click', evento => {
-                        if (evento.target === modalSupabase) {
+                        if (
+                            evento.target === modalSupabase &&
+                            !modalSalvarSupabase.disabled
+                        ) {
                             fecharModalSupabase();
                         }
                     });
@@ -538,6 +545,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     document.addEventListener('keydown', evento => {
                         if (
                             evento.key === 'Escape' &&
+                            !modalSalvarSupabase.disabled &&
                             modalSupabase.classList.contains('show')
                         ) {
                             fecharModalSupabase();
@@ -547,58 +555,53 @@ document.addEventListener("DOMContentLoaded", async () => {
                     modalSalvarSupabase.addEventListener(
                         'click',
                         async () => {
-                            if (!dataSelecionadaSupabase) {
+                            if (
+                                !dataSelecionadaSupabase ||
+                                modalSalvarSupabase.disabled
+                            ) {
                                 return;
                             }
 
+                            const data = dataSelecionadaSupabase;
+
+                            const marcado =
+                                modalToggleSupabase.getAttribute(
+                                    'aria-checked'
+                                ) === 'true';
+
+                            const treino =
+                                modalTreinoSupabase.value.trim();
+
                             modalSalvarSupabase.disabled = true;
+                            modalCancelarSupabase.disabled = true;
+                            modalToggleSupabase.disabled = true;
+                            modalTreinoSupabase.disabled = true;
+
+                            let salvoNaNuvem = false;
 
                             try {
-                                const acessoAtual =
-                                    await identificarAcessoSupabaseCalendario();
+                                await salvarCheckinSupabase(
+                                    acessoSupabase.id,
+                                    data,
+                                    marcado,
+                                    treino
+                                );
 
-                                if (
-                                    !acessoAtual.autenticado ||
-                                    acessoAtual.identificador !==
-                                        acessoSupabase.identificador
-                                ) {
-                                    window.location.replace('login.html');
-                                    return;
-                                }
+                                salvoNaNuvem = true;
 
-                                const dadosAtuais =
+                                const dadosAtualizados =
                                     await carregarCheckinsSupabase(
                                         acessoSupabase.id
                                     );
-
-                                const marcado =
-                                    modalToggleSupabase.getAttribute(
-                                        'aria-checked'
-                                    ) === 'true';
-
-                                const treino =
-                                    modalTreinoSupabase.value.trim();
-
-                                if (!marcado && !treino) {
-                                    delete dadosAtuais[dataSelecionadaSupabase];
-                                } else {
-                                    dadosAtuais[dataSelecionadaSupabase] = {
-                                        ...dadosAtuais[dataSelecionadaSupabase],
-                                        checked: marcado,
-                                        treino
-                                    };
-                                }
-
-                                await salvarCheckinsSupabase(
-                                    dadosAtuais,
-                                    acessoSupabase.id
-                                );
 
                                 Object.keys(checkins).forEach(chave => {
                                     delete checkins[chave];
                                 });
 
-                                Object.assign(checkins, dadosAtuais);
+                                Object.assign(
+                                    checkins,
+                                    dadosAtualizados
+                                );
 
                                 fecharModalSupabase();
                                 atualizarVisualizacaoCheckinsSupabase();
@@ -610,10 +613,23 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 );
 
                                 alert(
-                                    'Não foi possível salvar o check-in.'
+                                    salvoNaNuvem
+                                        ? 'O check-in foi salvo na nuvem, ' +
+                                          'mas não foi possível atualizar ' +
+                                          'o Calendário. Reabra a página.'
+                                        : 'Não foi possível confirmar o ' +
+                                          'salvamento. Verifique sua ' +
+                                          'conexão e tente novamente.'
                                 );
+
+                                if (salvoNaNuvem) {
+                                    fecharModalSupabase();
+                                }
                             } finally {
                                 modalSalvarSupabase.disabled = false;
+                                modalCancelarSupabase.disabled = false;
+                                modalToggleSupabase.disabled = false;
+                                modalTreinoSupabase.disabled = false;
                             }
                         }
                     );
@@ -931,7 +947,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                     );
 
                     informacaoCheckins.textContent =
-                        'Não foi possível consultar seus check-ins.';
+                        'Não foi possível consultar ou migrar seus check-ins. ' +
+                        'Sua cópia local foi preservada.';
+
+                    const botaoTentarCheckins =
+                        document.createElement('button');
+
+                    botaoTentarCheckins.type = 'button';
+                    botaoTentarCheckins.textContent = 'Tentar novamente';
+
+                    botaoTentarCheckins.addEventListener(
+                        'click',
+                        () => window.location.reload()
+                    );
+
+                    aviso.insertBefore(
+                        botaoTentarCheckins,
+                        voltar
+                    );
                 }
 
                 /* =========================================
@@ -1225,78 +1258,224 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     /* =========================================
-       FITZONE - CHECK-INS VINCULADOS A CONTA
+       FITZONE - CHECK-INS NA NUVEM
     ========================================= */
 
-    async function obterChaveCheckinsCalendarioSupabase(
-        usuarioIdEsperado
-    ) {
-        await obterUsuarioVinculadoSupabaseFitZone(
-            usuarioIdEsperado
-        );
-
-        return `fitzone:checkins:supabase:${usuarioIdEsperado}`;
-    }
-
-    function lerCheckinsCalendarioSupabase(chave) {
-        const dadosSalvos = localStorage.getItem(chave);
-
-        if (dadosSalvos === null) {
-            return {};
+    function validarDataCheckinSupabase(data) {
+        if (
+            typeof data !== 'string' ||
+            !/^\d{4}-\d{2}-\d{2}$/.test(data) ||
+            data.startsWith('0000-')
+        ) {
+            throw new Error('Data de check-in inválida.');
         }
 
-        const checkins = JSON.parse(dadosSalvos);
+        const dataUTC = new Date(data + 'T00:00:00Z');
+
+        if (
+            !Number.isFinite(dataUTC.getTime()) ||
+            dataUTC.toISOString().slice(0, 10) !== data
+        ) {
+            throw new Error('Data de check-in inválida.');
+        }
+    }
+
+    function validarConteudoCheckinSupabase(checked, treino) {
+        if (
+            typeof checked !== 'boolean' ||
+            typeof treino !== 'string' ||
+            Array.from(treino).length > 1000
+        ) {
+            throw new Error('Conteúdo do check-in inválido.');
+        }
+    }
+
+    async function obterClienteCheckinsSupabase(usuarioId) {
+        await obterUsuarioVinculadoSupabaseFitZone(usuarioId);
+
+        const cliente = inicializarSupabaseFitZone();
+
+        if (!cliente) {
+            throw new Error('Supabase indisponível.');
+        }
+
+        return cliente;
+    }
+
+    async function migrarCheckinsLocaisSupabase(usuarioId) {
+        const chaveLocal = `fitzone:checkins:supabase:${usuarioId}`;
+        const chaveMigracao =
+            `fitzone:checkins:migracao-v1:${usuarioId}`;
+
+        await obterUsuarioVinculadoSupabaseFitZone(usuarioId);
+
+        if (localStorage.getItem(chaveMigracao) === 'true') {
+            return;
+        }
+
+        const conteudo = localStorage.getItem(chaveLocal);
+        const checkins = conteudo === null
+            ? {}
+            : JSON.parse(conteudo);
 
         if (
             !checkins ||
             typeof checkins !== 'object' ||
             Array.isArray(checkins)
         ) {
-            throw new Error(
-                'Formato inválido dos check-ins Supabase.'
+            throw new Error('Cópia local de check-ins inválida.');
+        }
+
+        const registros = [];
+
+        for (const [data, registro] of Object.entries(checkins)) {
+            validarDataCheckinSupabase(data);
+
+            if (
+                !registro ||
+                typeof registro !== 'object' ||
+                Array.isArray(registro)
+            ) {
+                throw new Error('Registro local de check-in inválido.');
+            }
+
+            const checked = registro.checked;
+            const treino = registro.treino;
+
+            validarConteudoCheckinSupabase(checked, treino);
+
+            if (!checked && !treino.trim()) {
+                continue;
+            }
+
+            registros.push({
+                usuario_id: usuarioId,
+                data_local: data,
+                checked,
+                treino,
+                excluido: false
+            });
+        }
+
+        let inseridos = 0;
+
+        for (let inicio = 0; inicio < registros.length; inicio += 100) {
+            const cliente =
+                await obterClienteCheckinsSupabase(usuarioId);
+
+            const lote = registros.slice(inicio, inicio + 100);
+
+            const { data, error } = await cliente
+                .from('fitzone_checkins')
+                .upsert(lote, {
+                    onConflict: 'usuario_id,data_local',
+                    ignoreDuplicates: true
+                })
+                .select('data_local');
+
+            if (error) {
+                throw error;
+            }
+
+            inseridos += (data || []).length;
+        }
+
+        await obterUsuarioVinculadoSupabaseFitZone(usuarioId);
+
+        localStorage.setItem(chaveMigracao, 'true');
+
+        if (registros.length > 0) {
+            alert(
+                'Migração de check-ins concluída.\n\n' +
+                'Registros importados: ' + inseridos + '\n' +
+                'Datas já existentes na nuvem: ' +
+                (registros.length - inseridos) + '\n\n' +
+                'Sua cópia local foi preservada.'
             );
         }
+    }
+
+    async function carregarCheckinsSupabase(usuarioId) {
+        const checkins = Object.create(null);
+        const tamanhoPagina = 100;
+        let ultimaData = null;
+
+        while (true) {
+            const cliente =
+                await obterClienteCheckinsSupabase(usuarioId);
+
+            let consulta = cliente
+                .from('fitzone_checkins')
+                .select('data_local, checked, treino')
+                .eq('usuario_id', usuarioId)
+                .eq('excluido', false)
+                .order('data_local', { ascending: true })
+                .limit(tamanhoPagina);
+
+            if (ultimaData !== null) {
+                consulta = consulta.gt('data_local', ultimaData);
+            }
+
+            const { data, error } = await consulta;
+
+            if (error) {
+                throw error;
+            }
+
+            const registros = data || [];
+
+            if (registros.length === 0) {
+                break;
+            }
+
+            for (const registro of registros) {
+                validarDataCheckinSupabase(registro.data_local);
+
+                checkins[registro.data_local] = {
+                    checked: registro.checked,
+                    treino: registro.treino
+                };
+            }
+
+            ultimaData =
+                registros[registros.length - 1].data_local;
+        }
+
+        await obterUsuarioVinculadoSupabaseFitZone(usuarioId);
 
         return checkins;
     }
 
-    async function carregarCheckinsSupabase(
-        usuarioIdEsperado
+    async function salvarCheckinSupabase(
+        usuarioId,
+        data,
+        checked,
+        treino
     ) {
-        const chave =
-            await obterChaveCheckinsCalendarioSupabase(
-                usuarioIdEsperado
-            );
+        validarDataCheckinSupabase(data);
+        validarConteudoCheckinSupabase(checked, treino);
 
-        return lerCheckinsCalendarioSupabase(chave);
-    }
+        const excluido = !checked && !treino.trim();
 
-    async function salvarCheckinsSupabase(
-        dados,
-        usuarioIdEsperado
-    ) {
-        if (
-            !dados ||
-            typeof dados !== 'object' ||
-            Array.isArray(dados)
-        ) {
-            throw new Error(
-                'Formato inválido dos check-ins.'
-            );
+        const cliente =
+            await obterClienteCheckinsSupabase(usuarioId);
+
+        const { error } = await cliente
+            .from('fitzone_checkins')
+            .upsert({
+                usuario_id: usuarioId,
+                data_local: data,
+                checked: excluido ? false : checked,
+                treino: excluido ? '' : treino,
+                excluido,
+                atualizado_em: new Date().toISOString()
+            }, {
+                onConflict: 'usuario_id,data_local'
+            });
+
+        if (error) {
+            throw error;
         }
-
-        const chave =
-            await obterChaveCheckinsCalendarioSupabase(
-                usuarioIdEsperado
-            );
-
-        // Validar os dados atuais da mesma conta.
-        lerCheckinsCalendarioSupabase(chave);
-
-        localStorage.setItem(
-            chave,
-            JSON.stringify(dados)
-        );
 
         return true;
     }
