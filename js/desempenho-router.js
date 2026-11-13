@@ -442,8 +442,10 @@
            META MENSAL - SUPABASE
         ========================================= */
 
-        const chaveMetaSupabase =
-            `metaMensalFitZone:supabase:${identidade.id}`;
+        let metaMensalConfirmada =
+            FITZONE_PREFERENCIAS_PADRAO.metaMensal;
+
+        let metaMensalDisponivel = false;
 
         const campoMeta =
             document.getElementById('monthlyGoalInput');
@@ -545,31 +547,66 @@
             }
         }
 
+
         /* =========================================
-           CARREGAR META SALVA
+           CARREGAR META SALVA NO SUPABASE
         ========================================= */
 
         if (campoMeta) {
-            let valorSalvo = null;
-
             try {
-                valorSalvo = localStorage.getItem(
-                    chaveMetaSupabase
-                );
+                const preferencias =
+                    await carregarPreferenciasSupabaseFitZone(
+                        identidade.id
+                    );
+
+                metaMensalConfirmada =
+                    preferencias.metaMensal;
+
+                metaMensalDisponivel = true;
+
             } catch (erro) {
                 console.warn(
-                    'Não foi possível consultar a meta:',
+                    'Não foi possível sincronizar a meta mensal:',
                     erro
                 );
+
+                const preferenciasLocais =
+                    obterPreferenciasContingenciaFitZone(
+                        identidade.id
+                    );
+
+                metaMensalConfirmada =
+                    preferenciasLocais.metaMensal;
+
+                metaMensalDisponivel = false;
             }
 
             campoMeta.value =
-                valorSalvo !== null &&
-                validarValorMeta(valorSalvo)
-                    ? String(Number(valorSalvo))
-                    : '12';
+                String(metaMensalConfirmada);
 
             atualizarMetaSupabase();
+
+            if (!metaMensalDisponivel) {
+                campoMeta.disabled = true;
+
+                if (botaoDiminuirMeta) {
+                    botaoDiminuirMeta.disabled = true;
+                }
+
+                if (botaoAumentarMeta) {
+                    botaoAumentarMeta.disabled = true;
+                }
+
+                if (botaoSalvarMeta) {
+                    botaoSalvarMeta.disabled = true;
+                }
+
+                if (mensagemMeta) {
+                    mensagemMeta.textContent =
+                        'Não foi possível sincronizar a meta. ' +
+                        'Atualize a página para tentar novamente.';
+                }
+            }
         }
 
         /* =========================================
@@ -612,6 +649,13 @@
             botaoSalvarMeta.addEventListener(
                 'click',
                 async () => {
+                    if (
+                        botaoSalvarMeta.disabled ||
+                        !metaMensalDisponivel
+                    ) {
+                        return;
+                    }
+
                     const meta = Number(campoMeta.value);
 
                     if (!validarValorMeta(meta)) {
@@ -622,23 +666,30 @@
                     }
 
                     botaoSalvarMeta.disabled = true;
+                    campoMeta.disabled = true;
+
+                    if (botaoDiminuirMeta) {
+                        botaoDiminuirMeta.disabled = true;
+                    }
+
+                    if (botaoAumentarMeta) {
+                        botaoAumentarMeta.disabled = true;
+                    }
 
                     try {
-                        const identidadeAtual =
-                            await obterIdentidadeSupabaseFitZone();
+                        const preferencias =
+                            await salvarPreferenciasSupabaseFitZone(
+                                identidade.id,
+                                {
+                                    metaMensal: meta
+                                }
+                            );
 
-                        if (
-                            !identidadeAtual ||
-                            identidadeAtual.id !== identidade.id
-                        ) {
-                            window.location.replace('login.html');
-                            return;
-                        }
+                        metaMensalConfirmada =
+                            preferencias.metaMensal;
 
-                        localStorage.setItem(
-                            chaveMetaSupabase,
-                            String(meta)
-                        );
+                        campoMeta.value =
+                            String(metaMensalConfirmada);
 
                         atualizarMetaSupabase();
 
@@ -652,11 +703,28 @@
                             erro
                         );
 
+                        campoMeta.value =
+                            String(metaMensalConfirmada);
+
+                        atualizarMetaSupabase();
+
                         alert(
-                            'Não foi possível salvar sua meta.'
+                            'Não foi possível confirmar ' +
+                            'o salvamento da meta. ' +
+                            'Atualize a página e confira o valor.'
                         );
+
                     } finally {
                         botaoSalvarMeta.disabled = false;
+                        campoMeta.disabled = false;
+
+                        if (botaoDiminuirMeta) {
+                            botaoDiminuirMeta.disabled = false;
+                        }
+
+                        if (botaoAumentarMeta) {
+                            botaoAumentarMeta.disabled = false;
+                        }
                     }
                 }
             );
