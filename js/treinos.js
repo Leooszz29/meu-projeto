@@ -1887,6 +1887,165 @@ window.addEventListener(
             }
 
             /* =========================================
+               EXECUTAR RESTAURACAO TRANSACIONAL
+               FITZONE RPC V1
+            ========================================= */
+
+            async function executarRestauracaoRpcSupabase(
+                usuarioId,
+                tipo,
+                dados
+            ) {
+                const identidade =
+                    await obterAcessoVinculadoTreinos();
+
+                if (
+                    !identidade ||
+                    identidade.id !== usuarioId ||
+                    identidade.id !== acessoPagina.id
+                ) {
+                    throw new Error(
+                        'A sessão não corresponde à restauração.'
+                    );
+                }
+
+                const cliente =
+                    inicializarSupabaseFitZone();
+
+                if (!cliente) {
+                    throw new Error(
+                        'Supabase indisponível.'
+                    );
+                }
+
+                let quantidadeEsperada;
+
+                if (
+                    [
+                        'treinos',
+                        'historico',
+                        'checkins'
+                    ].includes(tipo)
+                ) {
+                    if (!Array.isArray(dados)) {
+                        throw new Error(
+                            'A restauração exige uma lista de registros.'
+                        );
+                    }
+
+                    quantidadeEsperada =
+                        dados.length;
+
+                    const limites = {
+                        treinos: 200,
+                        historico: 100,
+                        checkins: 10000
+                    };
+
+                    if (
+                        quantidadeEsperada >
+                            limites[tipo]
+                    ) {
+                        throw new Error(
+                            'O limite de registros por operação ' +
+                            'foi ultrapassado.'
+                        );
+                    }
+
+                } else if (tipo === 'ativo') {
+                    quantidadeEsperada = 1;
+
+                } else if (tipo === 'preferencias') {
+                    quantidadeEsperada =
+                        Object.values(dados).filter(
+                            valor => valor !== null
+                        ).length;
+
+                } else {
+                    throw new Error(
+                        'Modalidade de restauração inválida.'
+                    );
+                }
+
+                const tamanhoDados =
+                    new TextEncoder().encode(
+                        JSON.stringify(dados)
+                    ).length;
+
+                if (
+                    tamanhoDados >
+                        15 * 1024 * 1024
+                ) {
+                    throw new Error(
+                        'Os dados da restauração ultrapassam ' +
+                        'o limite de 15 MB.'
+                    );
+                }
+
+                if (quantidadeEsperada === 0) {
+                    return {
+                        recuperados: 0,
+                        ignorados: 0
+                    };
+                }
+
+                /* =========================================
+                   EXECUTAR UMA UNICA CHAMADA AO POSTGRESQL
+                ========================================= */
+
+                const { data, error } =
+                    await cliente.rpc(
+                        'fitzone_restaurar_backup',
+                        {
+                            p_usuario_id: usuarioId,
+                            p_tipo: tipo,
+                            p_dados: dados
+                        }
+                    );
+
+                if (error) {
+                    throw error;
+                }
+
+                /* =========================================
+                   VALIDAR O RETORNO DA TRANSACAO
+                ========================================= */
+
+                if (
+                    !data ||
+                    typeof data !== 'object' ||
+                    Array.isArray(data) ||
+
+                    !Number.isSafeInteger(
+                        data.recuperados
+                    ) ||
+
+                    !Number.isSafeInteger(
+                        data.ignorados
+                    ) ||
+
+                    data.recuperados < 0 ||
+
+                    data.ignorados < 0 ||
+
+                    data.recuperados + data.ignorados !==
+                        quantidadeEsperada
+                ) {
+                    throw new Error(
+                        'Não foi possível confirmar o resultado ' +
+                        'da restauração. Valide o backup novamente.'
+                    );
+                }
+
+                await obterAcessoVinculadoTreinos();
+
+                return {
+                    recuperados: data.recuperados,
+                    ignorados: data.ignorados
+                };
+            }
+
+            /* =========================================
                FITZONE - GERENCIADOR DE BACKUPS SUPABASE
             ========================================= */
 
@@ -3886,30 +4045,42 @@ window.addEventListener(
                             return;
                         }
 
-                        const registros = registrosParaInserir.map(
-                            treino => ({
-                                usuario_id: identidade.id,
-                                treino_id: treino.treino_id,
-                                dados: treino.dados,
-                                atualizado_em:
-                                    treino.atualizado_em ||
-                                    new Date().toISOString()
-                            })
-                        );
+                        const registros =
+                            registrosParaInserir.map(
+                                treino => ({
+                                    usuario_id:
+                                        identidade.id,
 
-                        await obterAcessoVinculadoTreinos();
+                                    treino_id:
+                                        treino.treino_id,
 
-                        const { error } = await cliente
-                            .from('fitzone_treinos')
-                            .insert(registros);
+                                    dados:
+                                        treino.dados,
 
-                        if (error) {
-                            throw error;
-                        }
+                                    criado_em:
+                                        treino.criado_em || null,
+
+                                    atualizado_em:
+                                        treino.atualizado_em || null
+                                })
+                            );
+
+                        const resultado =
+                            await executarRestauracaoRpcSupabase(
+                                identidade.id,
+                                'treinos',
+                                registros
+                            );
 
                         alert(
-                            `${registros.length} treino(s) ` +
-                            'recuperado(s) com sucesso!\n\n' +
+                            'Restauração de treinos concluída!\n\n' +
+
+                            `Recuperados: ${resultado.recuperados}\n` +
+
+                            `Ignorados: ${resultado.ignorados}\n\n` +
+
+                            'Os treinos existentes foram preservados. ' +
+
                             'A página será atualizada.'
                         );
 
@@ -3954,7 +4125,10 @@ window.addEventListener(
 
                     let recuperados = 0;
 
+                    let ignorados = 0;
+
                     try {
+
                         validarEstruturaBackupSupabase(backup);
 
                         const identidade =
@@ -4121,60 +4295,67 @@ window.addEventListener(
                             return;
                         }
 
-                        /* INSERIR SEM SUBSTITUIR EXISTENTES */
+                        /* =========================================
+                           RESTAURAR HISTORICO EM UMA TRANSACAO
+                        ========================================= */
 
-                        for (const registro of registrosParaRestaurar) {
-                            const identidadeAtual =
-                                await obterAcessoVinculadoTreinos();
+                        const registros =
+                            registrosParaRestaurar.map(
+                                registro => ({
+                                    id:
+                                        registro.id,
 
-                            if (
-                                !identidadeAtual ||
-                                identidadeAtual.id !== identidade.id
-                            ) {
-                                throw new Error(
-                                    'Sessão alterada durante a restauração.'
-                                );
-                            }
+                                    usuario_id:
+                                        identidade.id,
 
-                            const { error } = await cliente
-                                .from('fitzone_historico_treinos')
-                                .insert({
-                                    usuario_id: identidade.id,
-                                    treino_id: registro.treino_id,
-                                    data_local: registro.data_local,
-                                    dados: registro.dados,
+                                    treino_id:
+                                        registro.treino_id,
+
+                                    data_local:
+                                        registro.data_local,
+
+                                    dados:
+                                        registro.dados,
+
                                     concluido_em:
                                         registro.concluido_em
-                                });
+                                })
+                            );
 
-                            if (error) {
-                                if (error.code === '23505') {
-                                    console.warn(
-                                        'Histórico já existente, ignorado:',
-                                        registro.treino_id,
-                                        registro.data_local
-                                    );
-                                    continue;
-                                }
+                        const resultado =
+                            await executarRestauracaoRpcSupabase(
+                                identidade.id,
+                                'historico',
+                                registros
+                            );
 
-                                throw error;
-                            }
+                        recuperados =
+                            resultado.recuperados;
 
-                            recuperados++;
-                        }
+                        ignorados =
+                            resultado.ignorados;
 
                         resultadoBackupSupabase.hidden = false;
 
                         resultadoBackupSupabase.textContent =
-                            'Restauração de histórico concluída.\n' +
+                            'Restauração de histórico concluída.\n\n' +
+
                             `Históricos recuperados: ${recuperados}\n` +
+
+                            `Históricos ignorados: ${ignorados}\n\n` +
+
                             'Os registros existentes foram preservados.\n' +
+
                             'Valide o backup novamente para ' +
                             'atualizar a comparação.';
 
                         alert(
-                            `${recuperados} histórico(s) ` +
-                            'recuperado(s).\n\n' +
+                            'Restauração de histórico concluída!\n\n' +
+
+                            `Recuperados: ${recuperados}\n` +
+
+                            `Ignorados: ${ignorados}\n\n` +
+
                             'Atualize a página para conferir ' +
                             'o histórico no FitZone.'
                         );
@@ -4186,10 +4367,21 @@ window.addEventListener(
                         );
 
                         alert(
-                            'A restauração foi interrompida.\n' +
-                            `Registros inseridos nesta tentativa: ${recuperados}.\n` +
-                            erro.message +
-                            '\nConfira o histórico antes de tentar novamente.'
+                            'Não foi possível confirmar ' +
+                            'a restauração do histórico.\n\n' +
+
+                            (
+                                erro?.message ||
+                                'Erro desconhecido.'
+                            ) +
+
+                            '\n\nA recuperação é transacional. ' +
+
+                            'Uma falha de comunicação pode impedir ' +
+                            'a confirmação do resultado. ' +
+
+                            'Valide o backup novamente antes ' +
+                            'de tentar outra recuperação.'
                         );
 
                     } finally {
@@ -4398,29 +4590,68 @@ window.addEventListener(
 
                         await verificarCondicoesAtivo();
 
-                        await obterAcessoVinculadoTreinos();
 
-                        const { error } = await cliente
-                            .from('fitzone_treino_ativo')
-                            .insert({
+                        const treinoOriginal =
+                            backup.dados.treinos.find(
+                                registro =>
+                                    registro.treino_id ===
+                                        ativo.treino_id
+                            );
 
-                                usuario_id: identidade.id,
-                                treino_id: ativo.treino_id,
-                                treino_nome: ativo.treino_nome,
-                                progresso: ativo.progresso,
-                                iniciado_em: ativo.iniciado_em,
-                                atualizado_em:
-                                    new Date().toISOString()
-                            });
-
-                        if (error) {
-                            throw error;
+                        if (!treinoOriginal) {
+                            throw new Error(
+                                'O treino original não foi ' +
+                                'encontrado no backup.'
+                            );
                         }
 
-                        alert(
-                            'Treino em andamento recuperado!\n\n' +
-                            'A página será atualizada.'
-                        );
+                        const dadosRestauracao = {
+                            usuario_id:
+                                identidade.id,
+
+                            treino_id:
+                                ativo.treino_id,
+
+                            treino_nome:
+                                ativo.treino_nome,
+
+                            progresso:
+                                ativo.progresso,
+
+                            iniciado_em:
+                                ativo.iniciado_em,
+
+                            treino_original:
+                                treinoOriginal.dados
+                        };
+
+                        const resultado =
+                            await executarRestauracaoRpcSupabase(
+                                identidade.id,
+                                'ativo',
+                                dadosRestauracao
+                            );
+
+                        if (resultado.recuperados === 0) {
+                            alert(
+                                'Já existe um treino em andamento.\n\n' +
+
+                                'O treino existente foi preservado. ' +
+
+                                'A página será atualizada.'
+                            );
+
+                        } else {
+                            alert(
+                                'Treino em andamento recuperado!\n\n' +
+
+                                'O progresso das séries foi restaurado ' +
+
+                                'com segurança.\n\n' +
+
+                                'A página será atualizada.'
+                            );
+                        }
 
                         window.location.reload();
 
@@ -4582,33 +4813,18 @@ window.addEventListener(
                         return;
                     }
 
-                    /* =========================================
-                       CONFIRMAR IDENTIDADE NOVAMENTE
-                    ========================================= */
-
                     await obterAcessoVinculadoTreinos();
 
-                    restauracaoIniciada = true;
+                    let dadosRestauracao;
 
                     /* =========================================
-                       RESTAURAR CHECK-INS EM LOTES
+                       PREPARAR CHECK-INS PARA UMA TRANSACAO
                     ========================================= */
 
                     if (tipo === 'checkins') {
-                        const tamanhoLote = 100;
-
-                        for (
-                            let inicio = 0;
-                            inicio < ausentes.length;
-                            inicio += tamanhoLote
-                        ) {
-                            await obterAcessoVinculadoTreinos();
-
-                            const lote =
-                                ausentes.slice(
-                                    inicio,
-                                    inicio + tamanhoLote
-                                ).map(registro => ({
+                        dadosRestauracao =
+                            ausentes.map(
+                                registro => ({
                                     usuario_id:
                                         identidade.id,
 
@@ -4629,94 +4845,84 @@ window.addEventListener(
 
                                     atualizado_em:
                                         registro.atualizado_em
-                                }));
+                                })
+                            );
 
-                            const { data, error } =
-                                await cliente
-                                    .from('fitzone_checkins')
-                                    .upsert(
-                                        lote,
-                                        {
-                                            onConflict:
-                                                'usuario_id,data_local',
+                    /* =========================================
+                       PREPARAR PREFERENCIAS AUSENTES
+                    ========================================= */
 
-                                            ignoreDuplicates:
-                                                true
-                                        }
-                                    )
-                                    .select('data_local');
+                    } else {
+                        dadosRestauracao =
+                            Object.create(null);
 
-                            if (error) {
-                                throw error;
-                            }
-
-                            if (!Array.isArray(data)) {
-                                throw new Error(
-                                    'Não foi possível confirmar ' +
-                                    'a recuperação dos check-ins.'
-                                );
-                            }
-
-                            recuperados += data.length;
-
-                            ignorados +=
-                                lote.length - data.length;
+                        for (const campo of ausentes) {
+                            dadosRestauracao[campo.coluna] =
+                                campo.valor;
                         }
                     }
 
                     /* =========================================
-                       RESTAURAR PREFERENCIAS INDIVIDUAIS
+                       EXECUTAR RESTAURACAO TRANSACIONAL
+                    ========================================= */
+
+                    restauracaoIniciada = true;
+
+                    const resultado =
+                        await executarRestauracaoRpcSupabase(
+                            identidade.id,
+                            tipo,
+                            dadosRestauracao
+                        );
+
+                    recuperados =
+                        resultado.recuperados;
+
+                    ignorados =
+                        resultado.ignorados;
+
+                    /* =========================================
+                       ATUALIZAR COPIA LOCAL DAS PREFERENCIAS
+                       SOMENTE APOS CONFIRMACAO DA RPC
                     ========================================= */
 
                     if (tipo === 'preferencias') {
-                        await garantirPerfilPreferenciasSupabaseFitZone(
-                            identidade.id
-                        );
-
-                        for (const campo of ausentes) {
-                            await obterAcessoVinculadoTreinos();
-
-                            const recuperou =
-                                await migrarCampoPreferenciaSupabaseFitZone(
-                                    identidade.id,
-                                    campo.coluna,
-                                    campo.valor
+                        try {
+                            const preferenciasConfirmadas =
+                                await consultarPreferenciasBrutasSupabaseFitZone(
+                                    identidade.id
                                 );
 
-                            if (recuperou) {
-                                recuperados++;
+                            if (preferenciasConfirmadas) {
+                                await obterAcessoVinculadoTreinos();
 
-                            } else {
-                                ignorados++;
+                                atualizarCopiaLocalPreferenciasFitZone(
+                                    identidade.id,
+                                    {
+                                        paginaInicial:
+                                            preferenciasConfirmadas
+                                                .pagina_inicial,
+
+                                        mensagensMotivacionais:
+                                            preferenciasConfirmadas
+                                                .mensagens_motivacionais,
+
+                                        metaMensal:
+                                            preferenciasConfirmadas
+                                                .meta_mensal
+                                    }
+                                );
                             }
-                        }
 
-                        /* Atualizar a cópia local somente
-                           com valores reais do banco. */
+                        } catch (erroCopiaLocal) {
+                            console.warn(
+                                'A restauração foi confirmada, ' +
 
-                        const preferenciasConfirmadas =
-                            await consultarPreferenciasBrutasSupabaseFitZone(
-                                identidade.id
-                            );
+                                'mas não foi possível atualizar ' +
 
-                        if (preferenciasConfirmadas) {
-                            await obterAcessoVinculadoTreinos();
+                                'a cópia local das preferências:',
 
-                            atualizarCopiaLocalPreferenciasFitZone(
-                                identidade.id,
-                                {
-                                    paginaInicial:
-                                        preferenciasConfirmadas
-                                            .pagina_inicial,
-
-                                    mensagensMotivacionais:
-                                        preferenciasConfirmadas
-                                            .mensagens_motivacionais,
-
-                                    metaMensal:
-                                        preferenciasConfirmadas
-                                            .meta_mensal
-                                }
+                                erroCopiaLocal
                             );
                         }
                     }
@@ -4773,34 +4979,35 @@ window.addEventListener(
                         false;
 
                     resultadoBackupSupabase.textContent =
-                        'A restauração foi interrompida.\n\n' +
-
-                        `Registros confirmados: ${recuperados}\n` +
-
-                        `Registros ignorados: ${ignorados}\n\n` +
+                        'Não foi possível confirmar ' +
+                        'a restauração.\n\n' +
 
                         mensagemErro +
 
                         (
                             restauracaoIniciada
 
-                                ? '\n\nAlgumas informações podem ' +
-                                  'ter sido recuperadas antes da falha. ' +
-                                  'Valide o backup novamente.'
+                                ? '\n\nA recuperação utiliza ' +
 
-                                : '\n\nA etapa de gravação não foi iniciada.'
+                                  'uma transação única. ' +
+
+                                  'Em caso de falha na comunicação, ' +
+
+                                  'o resultado pode não ter sido ' +
+
+                                  'recebido pelo aplicativo.\n\n' +
+
+                                  'Valide o backup novamente ' +
+
+                                  'para conferir os dados atuais.'
+
+                                : '\n\nA etapa de gravação ' +
+
+                                  'não foi iniciada.'
                         );
 
                     alert(
-                        'Não foi possível concluir a restauração.' +
-
-                        `\n\nRecuperados confirmados: ${recuperados}` +
-
-                        '\n\n' +
-                        mensagemErro +
-
-                        '\n\nConfira os dados e valide ' +
-                        'o backup novamente.'
+                        resultadoBackupSupabase.textContent
                     );
 
                 } finally {
