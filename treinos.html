@@ -186,50 +186,6 @@
 
 </div>
 
-<!-- GERENCIAMENTO DE BACKUPS -->
-<details class="fitzone-backup-manager">
-    <summary>
-        Gerenciar backups
-    </summary>
-
-    <div class="fitzone-backup-content">
-        <div class="workout-backup-actions">
-
-            <!-- EXPORTAR BACKUP -->
-            <button
-                type="button"
-                id="btnExportWorkoutBackup"
-                class="btn-export-backup"
-                disabled
-            >
-                <span aria-hidden="true">↓</span>
-                Exportar backup
-            </button>
-
-            <!-- RESTAURAR BACKUP -->
-            <button
-                type="button"
-                id="btnRestoreWorkoutBackup"
-                class="btn-export-backup"
-                disabled
-            >
-                <span aria-hidden="true">↑</span>
-                Restaurar backup
-            </button>
-
-            <input
-                type="file"
-                id="workoutBackupFileInput"
-                accept=".json,application/json"
-                hidden
-                disabled
-                aria-label="Selecionar arquivo de backup do FitZone"
-            >
-
-        </div>
-    </div>
-</details>
-
 <!-- PESQUISA DE TREINOS -->
 <div class="workout-search">
     <label for="workoutSearchInput">
@@ -764,99 +720,6 @@
 
 </div>
 
-<!-- MODAL DE AVISO -->
-<div
-    class="modal-overlay"
-    id="warningModalOverlay"
-    role="alertdialog"
-    aria-modal="true"
-    aria-labelledby="warningModalTitle"
-    aria-describedby="warningModalMessage"
->
-    <div class="modal">
-
-        <h2 id="warningModalTitle">
-            Atenção
-        </h2>
-
-        <p id="warningModalMessage">
-            Não foi possível concluir esta ação.
-        </p>
-
-        <div class="modal-actions">
-            <button
-                type="button"
-                class="btn btn-save"
-                id="warningModalOkBtn"
-            >
-                Entendi
-            </button>
-        </div>
-
-    </div>
-</div>
-
-<!-- MODAL DE CONFIRMACAO DA RESTAURACAO -->
-<div
-    class="modal-overlay"
-    id="restoreBackupModalOverlay"
->
-    <div
-        class="modal"
-        role="alertdialog"
-        aria-modal="true"
-        aria-labelledby="restoreBackupModalTitle"
-        aria-describedby="restoreBackupModalDescription"
-    >
-        <h2 id="restoreBackupModalTitle">
-            Confirmar restauração
-        </h2>
-
-        <p id="restoreBackupModalDescription">
-            A restauração poderá substituir ou remover
-            informações atuais do FitZone.
-        </p>
-
-        <p id="restoreBackupSummary">
-            Preparando resumo das alterações...
-        </p>
-
-        <p>
-            Antes de continuar, utilize o botão
-            Exportar backup e guarde uma cópia
-            dos seus dados atuais.
-        </p>
-
-        <label for="restoreBackupSafetyConfirm">
-            <input
-                type="checkbox"
-                id="restoreBackupSafetyConfirm"
-            >
-            Confirmo que exportei e guardei uma cópia
-            de segurança dos meus dados atuais.
-        </label>
-
-        <div class="modal-actions">
-            <button
-                type="button"
-                class="btn btn-cancel"
-                id="restoreBackupCancelBtn"
-            >
-                Cancelar
-            </button>
-
-            <button
-                type="button"
-                class="btn btn-save"
-                id="restoreBackupConfirmBtn"
-                disabled
-            >
-                Confirmar restauração
-            </button>
-        </div>
-    </div>
-</div>
-
 <!-- NOTIFICACAO DE TREINO DUPLICADO -->
 <div
     id="workoutDuplicateSuccess"
@@ -872,6 +735,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.min.js"></script>
 
 <script src="js/supabase-config.js"></script>
-<script src="js/treinos.js?v=20261112-supabase-v4"></script>
+<script src="js/treinos.js?v=20261112-supabase-v5"></script>
 </body>
 </html>
