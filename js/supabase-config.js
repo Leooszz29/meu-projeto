@@ -948,6 +948,22 @@ async function carregarPreferenciasSupabaseFitZone(
             usuarioIdEsperado
         );
 
+    await obterUsuarioVinculadoSupabaseFitZone(
+        usuarioIdEsperado
+    );
+
+    if (dados) {
+        atualizarCopiaLocalPreferenciasFitZone(
+            usuarioIdEsperado,
+            {
+                paginaInicial: dados.pagina_inicial,
+                mensagensMotivacionais:
+                    dados.mensagens_motivacionais,
+                metaMensal: dados.meta_mensal
+            }
+        );
+    }
+
     return normalizarPreferenciasSupabaseFitZone(
         dados
     );
