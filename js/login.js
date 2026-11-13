@@ -141,42 +141,25 @@ async function verificarSessaoSupabaseFitZone() {
    FITZONE - OBTER PAGINA INICIAL DO USUARIO
 ========================================= */
 
-function obterPaginaInicialFitZone(email, idSupabase = null) {
-
+async function obterPaginaInicialFitZone(usuarioId) {
     const paginaPadrao = 'calendario.html';
 
-    if (typeof email !== 'string' || !email.trim()) {
+    if (
+        typeof usuarioId !== 'string' ||
+        !usuarioId.trim()
+    ) {
         return paginaPadrao;
     }
 
-    try {        
-        const chave = idSupabase
-            ? `fitzonePreferencias:supabase:${idSupabase}`
-            : `fitzonePreferencias:${email.trim().toLowerCase()}`;
+    try {
+        const preferencias =
+            await carregarPreferenciasSupabaseFitZone(
+                usuarioId
+            );
 
-        const dados = localStorage.getItem(chave);
-
-        if (!dados) {
-            return paginaPadrao;
-        }
-
-        const preferencias = JSON.parse(dados);
-
-        if (
-            !preferencias ||
-            typeof preferencias !== 'object' ||
-            Array.isArray(preferencias)
-        ) {
-            return paginaPadrao;
-        }
-
-        const paginasPermitidas = [
-            'calendario.html',
-            'treinos.html',
-            'desempenho.html'
-        ];
-
-        return paginasPermitidas.includes(preferencias.paginaInicial)
+        return validarPaginaInicialFitZone(
+            preferencias.paginaInicial
+        )
             ? preferencias.paginaInicial
             : paginaPadrao;
 
@@ -186,7 +169,16 @@ function obterPaginaInicialFitZone(email, idSupabase = null) {
             erro
         );
 
-        return paginaPadrao;
+        const preferenciasLocais =
+            obterPreferenciasContingenciaFitZone(
+                usuarioId
+            );
+
+        return validarPaginaInicialFitZone(
+            preferenciasLocais.paginaInicial
+        )
+            ? preferenciasLocais.paginaInicial
+            : paginaPadrao;
     }
 }
 
@@ -464,15 +456,40 @@ async function handleLogin(e) {
 
         atualizarPreferenciaEmail(email);
 
+        const paginaInicial =
+            await obterPaginaInicialFitZone(
+                dados.user.id
+            );
+
+        const cliente =
+            inicializarSupabaseFitZone();
+
+        if (!cliente) {
+            throw new Error('Supabase indisponível.');
+        }
+
+        const {
+            data: dadosSessao,
+            error: erroSessao
+        } = await cliente.auth.getSession();
+
+        if (erroSessao) {
+            throw erroSessao;
+        }
+
+        if (
+            dadosSessao?.session?.user?.id !==
+                dados.user.id
+        ) {
+            window.location.replace('login.html');
+            return;
+        }
+
         showSuccess(
             'Login realizado com sucesso! Seja bem-vindo! 💪'
         );
 
-        window.location.href =
-            obterPaginaInicialFitZone(
-                dados.user.email,
-                dados.user.id
-            );
+        window.location.href = paginaInicial;
 
     } catch (erro) {
         console.error(
