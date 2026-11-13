@@ -1815,6 +1815,76 @@ window.addEventListener(
                 botaoRestaurarAtivoSupabase,
                 lista
             );
+           
+            /* =========================================
+               RESTAURAR CHECK-INS SUPABASE
+            ========================================= */
+
+            const botaoRestaurarCheckinsSupabase =
+                document.createElement('button');
+
+            botaoRestaurarCheckinsSupabase.type =
+                'button';
+
+            botaoRestaurarCheckinsSupabase.className =
+                'btn-export-backup';
+
+            botaoRestaurarCheckinsSupabase.textContent =
+                'Restaurar check-ins ausentes';
+
+            botaoRestaurarCheckinsSupabase.disabled =
+                true;
+
+            /* =========================================
+               RESTAURAR PREFERENCIAS SUPABASE
+            ========================================= */
+
+            const botaoRestaurarPreferenciasSupabase =
+                document.createElement('button');
+
+            botaoRestaurarPreferenciasSupabase.type =
+                'button';
+
+            botaoRestaurarPreferenciasSupabase.className =
+                'btn-export-backup';
+
+            botaoRestaurarPreferenciasSupabase.textContent =
+                'Restaurar preferências ausentes';
+
+            botaoRestaurarPreferenciasSupabase.disabled =
+                true;
+
+            /* =========================================
+               CONTROLE DOS BOTOES DE RESTAURACAO
+            ========================================= */
+
+            function bloquearBotoesRestauracaoSupabase() {
+                [
+                    botaoRestaurarTreinosSupabase,
+                    botaoRestaurarHistoricoSupabase,
+                    botaoRestaurarAtivoSupabase,
+                    botaoRestaurarCheckinsSupabase,
+                    botaoRestaurarPreferenciasSupabase
+                ].forEach(botao => {
+                    botao.disabled = true;
+                });
+            }
+
+            function iniciarRestauracaoBackupSupabase() {
+                bloquearBotoesRestauracaoSupabase();
+
+                botaoValidarBackupSupabase.disabled =
+                    true;
+            }
+
+            function encerrarRestauracaoBackupSupabase() {
+                backupValidadoParaRestauracao = null;
+
+                bloquearBotoesRestauracaoSupabase();
+
+                botaoValidarBackupSupabase.disabled =
+                    false;
+            }
 
             /* =========================================
                FITZONE - GERENCIADOR DE BACKUPS SUPABASE
@@ -1850,6 +1920,8 @@ window.addEventListener(
                 botaoRestaurarTreinosSupabase,
                 botaoRestaurarHistoricoSupabase,
                 botaoRestaurarAtivoSupabase,
+                botaoRestaurarCheckinsSupabase,
+                botaoRestaurarPreferenciasSupabase,
                 campoArquivoBackupSupabase
             );
 
@@ -1858,7 +1930,9 @@ window.addEventListener(
                 botaoValidarBackupSupabase,
                 botaoRestaurarTreinosSupabase,
                 botaoRestaurarHistoricoSupabase,
-                botaoRestaurarAtivoSupabase
+                botaoRestaurarAtivoSupabase,
+                botaoRestaurarCheckinsSupabase,
+                botaoRestaurarPreferenciasSupabase
             ].forEach(botao => {
                 botao.style.margin = '0';
                 botao.style.width = '100%';
@@ -2313,6 +2387,141 @@ window.addEventListener(
             }
 
             /* =========================================
+               COMPARAR CHECK-INS E PREFERENCIAS V2
+               SOMENTE LEITURA
+            ========================================= */
+
+            async function compararNovasSecoesBackupSupabase(
+                backup,
+                usuarioId
+            ) {
+                const resultado = {
+                    checkinsAusentes: [],
+                    checkinsProtegidos: 0,
+                    preferenciasAusentes: [],
+                    preferenciasProtegidas: 0
+                };
+
+                if (backup.versaoBackup !== 2) {
+                    return resultado;
+                }
+
+                const identidade =
+                    await obterAcessoVinculadoTreinos();
+
+                if (
+                    identidade.id !== usuarioId ||
+                    backup.usuarioId !== usuarioId
+                ) {
+                    throw new Error(
+                        'A conta não corresponde ao backup.'
+                    );
+                }
+
+                const cliente =
+                    inicializarSupabaseFitZone();
+
+                if (!cliente) {
+                    throw new Error(
+                        'Supabase indisponível.'
+                    );
+                }
+
+                /* =========================================
+                   COMPARAR CHECK-INS POR DATA
+                ========================================= */
+
+                if (backup.dados.checkins.length > 0) {
+                    const checkinsAtuais =
+                        await consultarRegistrosBackupSupabase(
+                            cliente,
+                            'fitzone_checkins',
+                            usuarioId,
+                            'data_local'
+                        );
+
+                    const datasExistentes = new Set(
+                        checkinsAtuais.map(
+                            registro => registro.data_local
+                        )
+                    );
+
+                    for (
+                        const registro of backup.dados.checkins
+                    ) {
+                        if (
+                            datasExistentes.has(
+                                registro.data_local
+                            )
+                        ) {
+                            resultado.checkinsProtegidos++;
+
+                        } else {
+                            resultado.checkinsAusentes.push(
+                                registro
+                            );
+                        }
+                    }
+                }
+
+                /* =========================================
+                   COMPARAR PREFERENCIAS INDIVIDUAIS
+                ========================================= */
+
+                const preferenciasBackup =
+                    backup.dados.preferencias;
+
+                if (preferenciasBackup !== null) {
+                    const preferenciasAtuais =
+                        await consultarPreferenciasBrutasSupabaseFitZone(
+                            usuarioId
+                        );
+
+                    const campos = [
+                        {
+                            coluna: 'pagina_inicial',
+                            chave: 'paginaInicial'
+                        },
+                        {
+                            coluna: 'mensagens_motivacionais',
+                            chave: 'mensagensMotivacionais'
+                        },
+                        {
+                            coluna: 'meta_mensal',
+                            chave: 'metaMensal'
+                        }
+                    ];
+
+                    for (const campo of campos) {
+                        const valor =
+                            preferenciasBackup[campo.coluna];
+
+                        if (valor === null) {
+                            continue;
+                        }
+
+                        if (
+                            preferenciasAtuais?.[campo.coluna]
+                                == null
+                        ) {
+                            resultado.preferenciasAusentes.push({
+                                coluna: campo.coluna,
+                                chave: campo.chave,
+                                valor
+                            });
+
+                        } else {
+                            resultado.preferenciasProtegidas++;
+                        }
+                    }
+                }
+
+                await obterAcessoVinculadoTreinos();
+
+                return resultado;
+            }
+
+            /* =========================================
                SELECIONAR ARQUIVO JSON
             ========================================= */
 
@@ -2339,10 +2548,11 @@ window.addEventListener(
                     }
 
                     backupValidadoParaRestauracao = null;
-                    botaoRestaurarTreinosSupabase.disabled = true;
-                    botaoRestaurarHistoricoSupabase.disabled = true;
-                    botaoRestaurarAtivoSupabase.disabled = true;
-                    botaoValidarBackupSupabase.disabled = true;
+
+                    bloquearBotoesRestauracaoSupabase();
+
+                    botaoValidarBackupSupabase.disabled =
+                        true;
 
                     resultadoBackupSupabase.hidden = false;
                     resultadoBackupSupabase.textContent =
@@ -2697,16 +2907,40 @@ window.addEventListener(
                             !ativoExistente &&
                             treinoAtivoDisponivel;
 
-                        botaoRestaurarAtivoSupabase.disabled =
-                            !ativoRecuperavel;
+                        /* =========================================
+                           COMPARAR NOVAS SECOES DO BACKUP V2
+                        ========================================= */
+
+                        const comparacaoNovasSecoes =
+                            await compararNovasSecoesBackupSupabase(
+                                backup,
+                                identidade.id
+                            );
+
+                        await obterAcessoVinculadoTreinos();
+
+                        /* =========================================
+                           HABILITAR RESTAURACOES DISPONIVEIS
+                        ========================================= */
 
                         backupValidadoParaRestauracao = backup;
+
+                        botaoRestaurarAtivoSupabase.disabled =
+                            !ativoRecuperavel;
 
                         botaoRestaurarTreinosSupabase.disabled =
                             treinosNovos === 0;
 
                         botaoRestaurarHistoricoSupabase.disabled =
                             historicosRecuperaveis === 0;
+
+                        botaoRestaurarCheckinsSupabase.disabled =
+                            comparacaoNovasSecoes
+                                .checkinsAusentes.length === 0;
+
+                        botaoRestaurarPreferenciasSupabase.disabled =
+                            comparacaoNovasSecoes
+                                .preferenciasAusentes.length === 0;
 
                         botaoRestaurarHistoricoSupabase.title =
                             historicosRecuperaveis > 0
@@ -2728,9 +2962,38 @@ window.addEventListener(
                                   resumo.preferencias +
                                   ' de 3\n' +
 
-                                  '\nAs novas seções foram validadas. ' +
-                                  'A restauração de check-ins e ' +
-                                  'preferências ainda não está disponível.'
+                                  '\nRESTAURAÇÃO DOS CHECK-INS\n' +
+
+                                  'Check-ins recuperáveis: ' +
+                                  comparacaoNovasSecoes
+                                      .checkinsAusentes.filter(
+                                          registro =>
+                                              !registro.excluido
+                                      ).length +
+
+                                  '\nMarcadores recuperáveis: ' +
+                                  comparacaoNovasSecoes
+                                      .checkinsAusentes.filter(
+                                          registro =>
+                                              registro.excluido
+                                      ).length +
+
+                                  '\nRegistros protegidos: ' +
+                                  comparacaoNovasSecoes
+                                      .checkinsProtegidos +
+
+                                  '\n\nRESTAURAÇÃO DAS PREFERÊNCIAS\n' +
+
+                                  'Preferências recuperáveis: ' +
+                                  comparacaoNovasSecoes
+                                      .preferenciasAusentes.length +
+
+                                  '\nPreferências protegidas: ' +
+                                  comparacaoNovasSecoes
+                                      .preferenciasProtegidas +
+
+                                  '\n\nSomente informações ausentes ' +
+                                  'poderão ser restauradas.'
 
                                 : '\n\nBackup v1 compatível.\n' +
                                   'Este formato não contém check-ins ' +
@@ -2788,6 +3051,10 @@ window.addEventListener(
                             'durante a restauração.';
 
                     } catch (erro) {
+                        backupValidadoParaRestauracao = null;
+
+                        bloquearBotoesRestauracaoSupabase();
+
                         console.error(
                             'Erro ao validar backup Supabase:',
                             erro
@@ -2823,8 +3090,7 @@ window.addEventListener(
                         return;
                     }
 
-                    botaoRestaurarTreinosSupabase.disabled = true;
-                    botaoValidarBackupSupabase.disabled = true;
+                    iniciarRestauracaoBackupSupabase();
 
                     try {
                         validarEstruturaBackupSupabase(backup);
@@ -2995,9 +3261,7 @@ window.addEventListener(
                         );
 
                     } finally {
-                        backupValidadoParaRestauracao = null;
-                        botaoRestaurarTreinosSupabase.disabled = true;
-                        botaoValidarBackupSupabase.disabled = false;
+                        encerrarRestauracaoBackupSupabase();
                     }
                 }
             );
@@ -3018,9 +3282,7 @@ window.addEventListener(
                         return;
                     }
 
-                    botaoRestaurarHistoricoSupabase.disabled = true;
-                    botaoRestaurarTreinosSupabase.disabled = true;
-                    botaoValidarBackupSupabase.disabled = true;
+                    iniciarRestauracaoBackupSupabase();
 
                     let recuperados = 0;
 
@@ -3263,16 +3525,7 @@ window.addEventListener(
                         );
 
                     } finally {
-                        backupValidadoParaRestauracao = null;
-
-                        botaoRestaurarHistoricoSupabase.disabled =
-                            true;
-
-                        botaoRestaurarTreinosSupabase.disabled =
-                            true;
-
-                        botaoValidarBackupSupabase.disabled =
-                            false;
+                        encerrarRestauracaoBackupSupabase();
                     }
                 }
             );
@@ -3292,10 +3545,7 @@ window.addEventListener(
                         return;
                     }
 
-                    botaoRestaurarAtivoSupabase.disabled = true;
-                    botaoRestaurarTreinosSupabase.disabled = true;
-                    botaoRestaurarHistoricoSupabase.disabled = true;
-                    botaoValidarBackupSupabase.disabled = true;
+                    iniciarRestauracaoBackupSupabase();
 
                     try {
                         validarEstruturaBackupSupabase(backup);
@@ -3460,12 +3710,399 @@ window.addEventListener(
                         );
 
                     } finally {
-                        backupValidadoParaRestauracao = null;
-                        botaoRestaurarAtivoSupabase.disabled = true;
-                        botaoRestaurarTreinosSupabase.disabled = true;
-                        botaoRestaurarHistoricoSupabase.disabled = true;
-                        botaoValidarBackupSupabase.disabled = false;
+                        encerrarRestauracaoBackupSupabase();
                     }
+                }
+            );
+           
+            /* =========================================
+               RESTAURAR CHECK-INS E PREFERENCIAS V2
+               SOMENTE INFORMACOES AUSENTES
+            ========================================= */
+
+            async function restaurarNovasSecoesBackupSupabase(
+                tipo
+            ) {
+                if (
+                    tipo !== 'checkins' &&
+                    tipo !== 'preferencias'
+                ) {
+                    throw new Error(
+                        'Tipo de restauração inválido.'
+                    );
+                }
+
+                const backup =
+                    backupValidadoParaRestauracao;
+
+                if (
+                    !backup ||
+                    backup.versaoBackup !== 2
+                ) {
+                    alert(
+                        'Valide um backup Supabase v2 ' +
+                        'antes de restaurar.'
+                    );
+                    return;
+                }
+
+                const botao =
+                    tipo === 'checkins'
+                        ? botaoRestaurarCheckinsSupabase
+                        : botaoRestaurarPreferenciasSupabase;
+
+                if (botao.disabled) {
+                    return;
+                }
+
+                iniciarRestauracaoBackupSupabase();
+
+                let recuperados = 0;
+
+                let ignorados = 0;
+
+                let restauracaoIniciada = false;
+
+                try {
+                    validarEstruturaBackupSupabase(
+                        backup
+                    );
+
+                    const identidade =
+                        await obterAcessoVinculadoTreinos();
+
+                    if (
+                        identidade.id !== acessoPagina.id ||
+                        backup.usuarioId !== identidade.id
+                    ) {
+                        throw new Error(
+                            'A conta não corresponde ao backup.'
+                        );
+                    }
+
+                    const cliente =
+                        inicializarSupabaseFitZone();
+
+                    if (!cliente) {
+                        throw new Error(
+                            'Supabase indisponível.'
+                        );
+                    }
+
+                    /* =========================================
+                       REVALIDAR DADOS ANTES DA CONFIRMACAO
+                    ========================================= */
+
+                    const comparacao =
+                        await compararNovasSecoesBackupSupabase(
+                            backup,
+                            identidade.id
+                        );
+
+                    const ausentes =
+                        tipo === 'checkins'
+                            ? comparacao.checkinsAusentes
+                            : comparacao.preferenciasAusentes;
+
+                    if (ausentes.length === 0) {
+                        alert(
+                            'Nenhuma informação permanece ausente.'
+                        );
+                        return;
+                    }
+
+                    /* =========================================
+                       CONFIRMACAO OBRIGATORIA
+                    ========================================= */
+
+                    const mensagemConfirmacao =
+                        tipo === 'checkins'
+
+                            ? `Foram encontrados ${
+                                ausentes.filter(
+                                    registro =>
+                                        !registro.excluido
+                                ).length
+                            } check-in(s) e ${
+                                ausentes.filter(
+                                    registro =>
+                                        registro.excluido
+                                ).length
+                            } marcador(es) de exclusão ausentes.\n\n` +
+
+                              'Deseja recuperar esses registros?\n\n' +
+
+                              'As datas existentes no Supabase ' +
+                              'serão preservadas, inclusive ' +
+                              'os check-ins excluídos.'
+
+                            : `Foram encontradas ${
+                                ausentes.length
+                            } preferência(s) ainda não configurada(s).\n\n` +
+
+                              'Deseja recuperar esses valores?\n\n' +
+
+                              'As preferências existentes e os ' +
+                              'dados pessoais serão preservados.';
+
+                    const confirmar =
+                        window.confirm(
+                            mensagemConfirmacao
+                        );
+
+                    if (!confirmar) {
+                        return;
+                    }
+
+                    /* =========================================
+                       CONFIRMAR IDENTIDADE NOVAMENTE
+                    ========================================= */
+
+                    await obterAcessoVinculadoTreinos();
+
+                    restauracaoIniciada = true;
+
+                    /* =========================================
+                       RESTAURAR CHECK-INS EM LOTES
+                    ========================================= */
+
+                    if (tipo === 'checkins') {
+                        const tamanhoLote = 100;
+
+                        for (
+                            let inicio = 0;
+                            inicio < ausentes.length;
+                            inicio += tamanhoLote
+                        ) {
+                            await obterAcessoVinculadoTreinos();
+
+                            const lote =
+                                ausentes.slice(
+                                    inicio,
+                                    inicio + tamanhoLote
+                                ).map(registro => ({
+                                    usuario_id:
+                                        identidade.id,
+
+                                    data_local:
+                                        registro.data_local,
+
+                                    checked:
+                                        registro.checked,
+
+                                    treino:
+                                        registro.treino,
+
+                                    excluido:
+                                        registro.excluido,
+
+                                    criado_em:
+                                        registro.criado_em,
+
+                                    atualizado_em:
+                                        registro.atualizado_em
+                                }));
+
+                            const { data, error } =
+                                await cliente
+                                    .from('fitzone_checkins')
+                                    .upsert(
+                                        lote,
+                                        {
+                                            onConflict:
+                                                'usuario_id,data_local',
+
+                                            ignoreDuplicates:
+                                                true
+                                        }
+                                    )
+                                    .select('data_local');
+
+                            if (error) {
+                                throw error;
+                            }
+
+                            if (!Array.isArray(data)) {
+                                throw new Error(
+                                    'Não foi possível confirmar ' +
+                                    'a recuperação dos check-ins.'
+                                );
+                            }
+
+                            recuperados += data.length;
+
+                            ignorados +=
+                                lote.length - data.length;
+                        }
+                    }
+
+                    /* =========================================
+                       RESTAURAR PREFERENCIAS INDIVIDUAIS
+                    ========================================= */
+
+                    if (tipo === 'preferencias') {
+                        await garantirPerfilPreferenciasSupabaseFitZone(
+                            identidade.id
+                        );
+
+                        for (const campo of ausentes) {
+                            await obterAcessoVinculadoTreinos();
+
+                            const recuperou =
+                                await migrarCampoPreferenciaSupabaseFitZone(
+                                    identidade.id,
+                                    campo.coluna,
+                                    campo.valor
+                                );
+
+                            if (recuperou) {
+                                recuperados++;
+
+                            } else {
+                                ignorados++;
+                            }
+                        }
+
+                        /* Atualizar a cópia local somente
+                           com valores reais do banco. */
+
+                        const preferenciasConfirmadas =
+                            await consultarPreferenciasBrutasSupabaseFitZone(
+                                identidade.id
+                            );
+
+                        if (preferenciasConfirmadas) {
+                            await obterAcessoVinculadoTreinos();
+
+                            atualizarCopiaLocalPreferenciasFitZone(
+                                identidade.id,
+                                {
+                                    paginaInicial:
+                                        preferenciasConfirmadas
+                                            .pagina_inicial,
+
+                                    mensagensMotivacionais:
+                                        preferenciasConfirmadas
+                                            .mensagens_motivacionais,
+
+                                    metaMensal:
+                                        preferenciasConfirmadas
+                                            .meta_mensal
+                                }
+                            );
+                        }
+                    }
+
+                    /* =========================================
+                       CONFIRMAR RESULTADO
+                    ========================================= */
+
+                    await obterAcessoVinculadoTreinos();
+
+                    const tituloResultado =
+                        tipo === 'checkins'
+                            ? 'Restauração dos check-ins concluída.'
+                            : 'Restauração das preferências concluída.';
+
+                    resultadoBackupSupabase.hidden =
+                        false;
+
+                    resultadoBackupSupabase.textContent =
+                        tituloResultado +
+                        '\n\nRegistros recuperados: ' +
+                        recuperados +
+
+                        '\nRegistros ignorados por já existirem: ' +
+                        ignorados +
+
+                        '\n\nOs dados existentes foram preservados.' +
+
+                        '\nValide o backup novamente para atualizar ' +
+                        'a comparação.';
+
+                    alert(
+                        tituloResultado +
+
+                        `\n\nRecuperados: ${recuperados}` +
+
+                        `\nIgnorados: ${ignorados}` +
+
+                        '\n\nAbra ou atualize a página ' +
+                        'correspondente para conferir.'
+                    );
+
+                } catch (erro) {
+                    console.error(
+                        'Erro ao restaurar novas seções do backup:',
+                        erro
+                    );
+
+                    const mensagemErro =
+                        erro?.message ||
+                        'Erro desconhecido na restauração.';
+
+                    resultadoBackupSupabase.hidden =
+                        false;
+
+                    resultadoBackupSupabase.textContent =
+                        'A restauração foi interrompida.\n\n' +
+
+                        `Registros confirmados: ${recuperados}\n` +
+
+                        `Registros ignorados: ${ignorados}\n\n` +
+
+                        mensagemErro +
+
+                        (
+                            restauracaoIniciada
+
+                                ? '\n\nAlgumas informações podem ' +
+                                  'ter sido recuperadas antes da falha. ' +
+                                  'Valide o backup novamente.'
+
+                                : '\n\nA etapa de gravação não foi iniciada.'
+                        );
+
+                    alert(
+                        'Não foi possível concluir a restauração.' +
+
+                        `\n\nRecuperados confirmados: ${recuperados}` +
+
+                        '\n\n' +
+                        mensagemErro +
+
+                        '\n\nConfira os dados e valide ' +
+                        'o backup novamente.'
+                    );
+
+                } finally {
+                    encerrarRestauracaoBackupSupabase();
+                }
+            }
+
+            /* =========================================
+               EVENTO - RESTAURAR CHECK-INS
+            ========================================= */
+
+            botaoRestaurarCheckinsSupabase.addEventListener(
+                'click',
+                async () => {
+                    await restaurarNovasSecoesBackupSupabase(
+                        'checkins'
+                    );
+                }
+            );
+
+            /* =========================================
+               EVENTO - RESTAURAR PREFERENCIAS
+            ========================================= */
+
+            botaoRestaurarPreferenciasSupabase.addEventListener(
+                'click',
+                async () => {
+                    await restaurarNovasSecoesBackupSupabase(
+                        'preferencias'
+                    );
                 }
             );
 
