@@ -255,8 +255,12 @@ async function handleSaveProfileSupabase() {
     }
 
     try {
-        await salvarPerfilSupabaseFitZone(perfil);
+        await salvarPerfilSupabaseFitZone(
+            perfil,
+            idPreferenciasSupabasePerfil
+        );
         showSuccess();
+
     } catch (erro) {
         console.error('Erro ao salvar perfil Supabase:', erro);
         alert(
@@ -299,7 +303,10 @@ async function alterarGeneroPerfil() {
             throw new Error('Sessão Supabase inválida.');
         }
 
-        await atualizarGeneroSupabaseFitZone(genero);
+        await atualizarGeneroSupabaseFitZone(
+            genero,
+            idPreferenciasSupabasePerfil
+        );
 
         try {
             localStorage.setItem(
@@ -333,7 +340,9 @@ async function alterarGeneroPerfil() {
 
         try {
             const perfil =
-                await consultarPerfilSupabaseFitZone();
+                await consultarPerfilSupabaseFitZone(
+                    idPreferenciasSupabasePerfil
+                );
 
             campo.value = perfil?.genero || '';
             aplicarGeneroVisualPerfil(perfil?.genero);
@@ -656,14 +665,7 @@ async function initializeProfilePhotoSupabase(acessoInicial) {
     }
 
     async function validarConta() {
-        const identidade =
-            await obterIdentidadeSupabaseFitZone();
-
-        if (!identidade || identidade.id !== usuarioId) {
-            throw new Error(
-                'A conta Supabase foi alterada ou desconectada.'
-            );
-        }
+        await obterUsuarioVinculadoSupabaseFitZone(usuarioId);
     }
 
     async function carregarFotoSupabase() {
@@ -686,6 +688,8 @@ async function initializeProfilePhotoSupabase(acessoInicial) {
             mostrarPersonagemPadrao();
             return;
         }
+
+        await validarConta();
 
         const { data: foto, error } =
             await armazenamento.download(caminho);
@@ -845,9 +849,12 @@ async function initializeProfilePhotoSupabase(acessoInicial) {
                 );
             }
 
+            await validarConta();
+
             const { error } = await armazenamento.upload(
                 caminho,
                 fotoOtimizada,
+
                 {
                     contentType: 'image/webp',
                     upsert: true,
@@ -1015,7 +1022,9 @@ async function initializeProfile() {
 
         try {
             const perfilSupabase =
-                await consultarPerfilSupabaseFitZone();
+                await consultarPerfilSupabaseFitZone(
+                    idPreferenciasSupabasePerfil
+                );
 
             preencherFormularioSupabase(perfilSupabase);
 
