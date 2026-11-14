@@ -2404,7 +2404,7 @@ window.addEventListener(
 
                 return true;
             }
-           
+
             /* =========================================
                VALIDAR HISTORICO DE TREINAMENTO
             ========================================= */
@@ -2435,15 +2435,24 @@ window.addEventListener(
                         'de treino inconsistente.'
                     );
                 }
+                if (dados.data != null) {
+                    const dataInternaValida =
+                        typeof dados.data === 'string' &&
+                        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(
+                            dados.data
+                        ) &&
+                        dados.data.slice(0, 10) === registro.data_local &&
+                        Number.isFinite(Date.parse(dados.data));
 
-                if (
-                    dados.data != null &&
-                    dados.data !== registro.data_local
-                ) {
-                    throw new Error(
-                        'A data interna do histórico ' +
-                        'não corresponde à data do registro.'
-                    );
+                    if (
+                        dados.data !== registro.data_local &&
+                        !dataInternaValida
+                    ) {
+                        throw new Error(
+                            'A data interna do histórico ' +
+                            'não corresponde à data do registro.'
+                        );
+                    }
                 }
 
                 /* =========================================
