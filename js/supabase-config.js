@@ -311,7 +311,6 @@ async function salvarPerfilSupabaseFitZone(perfil, usuarioIdEsperado) {
         id: identidade.id,
         nome: String(perfil.nome).trim(),
         idade: perfil.idade,
-        tipo_sanguineo: perfil.tipoSanguineo,
         peso: perfil.peso,
         altura: perfil.altura,
         treinador: perfil.treinador,
