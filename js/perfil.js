@@ -249,6 +249,7 @@ async function handleSaveProfileSupabase() {
     };
 
     const botao = document.getElementById('btnSaveProfile');
+    let salvamentoConcluido = false;
 
     if (botao) {
         botao.disabled = true;
@@ -259,6 +260,8 @@ async function handleSaveProfileSupabase() {
             perfil,
             idPreferenciasSupabasePerfil
         );
+
+        salvamentoConcluido = true;
         showSuccess();
 
     } catch (erro) {
@@ -267,7 +270,7 @@ async function handleSaveProfileSupabase() {
             'Não foi possível salvar o perfil no Supabase.'
         );
     } finally {
-        if (botao) {
+        if (botao && !salvamentoConcluido) {
             botao.disabled = false;
         }
     }
