@@ -133,7 +133,6 @@ function preencherFormularioSupabase(perfil) {
     const campos = {
         nome: perfil.nome,
         idade: perfil.idade,
-        tipoSanguineo: perfil.tipo_sanguineo,
         peso: perfil.peso,
         altura: perfil.altura,
         treinador: perfil.treinador,
@@ -241,7 +240,6 @@ async function handleSaveProfileSupabase() {
     const perfil = {
         nome,
         idade,
-        tipoSanguineo: getValue('tipoSanguineo'),
         peso,
         altura,
         treinador: getValue('treinador'),
