@@ -708,9 +708,30 @@ async function initializeProfilePhotoSupabase(acessoInicial) {
         return new Promise((resolve, reject) => {
             const url = URL.createObjectURL(arquivo);
             const fotoOriginal = new Image();
-
             fotoOriginal.onload = () => {
                 try {
+                    const largura = fotoOriginal.naturalWidth;
+                    const altura = fotoOriginal.naturalHeight;
+
+                    const limiteDimensao = 6000;
+                    const limitePixels = 24000000;
+
+                    if (
+                        !largura ||
+                        !altura ||
+                        largura > limiteDimensao ||
+                        altura > limiteDimensao ||
+                        largura * altura > limitePixels
+                    ) {
+                        URL.revokeObjectURL(url);
+
+                        reject(new Error(
+                            'A imagem possui dimensões muito grandes. ' +
+                            'Utilize uma imagem de até 24 megapixels.'
+                        ));
+                        return;
+                    }
+
                     const canvas =
                         document.createElement('canvas');
 
