@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 ...new Set(
                     favoritosSalvos.filter(
                         id => typeof id === 'string' &&
-                            id.trim()
+                            idsExerciciosValidos.has(id)
                     )
                 )
             ].map(id => ({
@@ -258,7 +258,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         favoritos.clear();
 
         (data || []).forEach(registro => {
-            favoritos.add(registro.exercicio_id);
+            if (
+                typeof registro.exercicio_id === 'string' &&
+                idsExerciciosValidos.has(registro.exercicio_id)
+            ) {
+                favoritos.add(registro.exercicio_id);
+            }
         });
 
         salvarCacheFavoritos();
@@ -601,6 +606,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             instrucao: 'Apoie o antebraço e a lateral do pé no chão, eleve o quadril e mantenha o corpo alinhado. Repita dos dois lados, respirando normalmente.'
         }
     ];
+    const idsExerciciosValidos = new Set(
+        exercicios.map(exercicio => exercicio.id)
+    );
 
     /* =========================================
        EXIBIR EXERCICIOS NA BIBLIOTECA
