@@ -195,14 +195,45 @@ document.addEventListener("DOMContentLoaded", async () => {
                         );
                     }
 
-                    const { data, error } =
-                        await cliente
-                            .from('fitzone_historico_treinos')
-                            .select('id, data_local, dados')
-                            .eq('usuario_id', acessoSupabase.id)
-                            .order('concluido_em', {
-                                ascending: false
-                            });
+                    const tamanhoPagina = 1000;
+                    let inicioPagina = 0;
+                    let historicoCompleto = [];
+
+                    while (true) {
+                        const { data, error } =
+                            await cliente
+                                .from('fitzone_historico_treinos')
+                                .select('id, data_local, dados')
+                                .eq('usuario_id', acessoSupabase.id)
+                                .order('concluido_em', {
+                                    ascending: false
+                                })
+                                .order('id', {
+                                    ascending: true
+                                })
+                                .range(
+                                    inicioPagina,
+                                    inicioPagina + tamanhoPagina - 1
+                                );
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        const pagina = Array.isArray(data)
+                            ? data
+                            : [];
+
+                        historicoCompleto.push(...pagina);
+
+                        if (pagina.length < tamanhoPagina) {
+                            break;
+                        }
+
+                        inicioPagina += tamanhoPagina;
+                    }
+
+                    const data = historicoCompleto;
 
                     if (error) {
                         throw error;
