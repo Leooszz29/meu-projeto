@@ -538,8 +538,8 @@ function inicializarLogin() {
         document.getElementById('characterImg');
 
     const imagens = {
-        masculino: 'img/atleta-masculino.png',
-        feminino: 'img/atleta-feminino.png'
+        masculino: 'img/atleta-masculino.webp',
+        feminino: 'img/atleta-feminino.webp'
     };
 
     if (genero === 'masculino') {
