@@ -975,7 +975,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     informacaoCheckins.textContent =
                         'Não foi possível consultar ou migrar seus check-ins. ' +
-                        'Sua cópia local foi preservada.';
+                        'Sua cópia local foi preservada. ' +
+                        'Detalhes: ' +
+                        String(
+                            erro?.message ||
+                            erro ||
+                            'Erro sem detalhes disponíveis.'
+                        );
 
                     const botaoTentarCheckins =
                         document.createElement('button');
