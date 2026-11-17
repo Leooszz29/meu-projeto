@@ -3928,6 +3928,8 @@ window.addEventListener(
 
                     iniciarRestauracaoBackupSupabase();
 
+                    let restauracaoIniciada = false;
+
                     try {
                         validarEstruturaBackupSupabase(backup);
 
@@ -4073,6 +4075,8 @@ window.addEventListener(
                                         treino.atualizado_em || null
                                 })
                             );
+
+                        restauracaoIniciada = true;
 
                         const resultado =
                             await executarRestauracaoRpcSupabase(
@@ -4331,6 +4335,8 @@ window.addEventListener(
                                 })
                             );
 
+                        restauracaoIniciada = true;
+
                         const resultado =
                             await executarRestauracaoRpcSupabase(
                                 identidade.id,
@@ -4377,20 +4383,23 @@ window.addEventListener(
 
                         alert(
                             'Não foi possível confirmar ' +
-                            'a restauração do histórico.\n\n' +
+                            'a restauração do treino ativo.\n\n' +
 
                             (
                                 erro?.message ||
                                 'Erro desconhecido.'
                             ) +
 
-                            '\n\nA recuperação é transacional. ' +
+                            (
+                                restauracaoIniciada
+                                    ? '\n\nA gravação já foi iniciada. ' +
+                                      'Uma falha de comunicação pode ' +
+                                      'impedir a confirmação do resultado.'
+                                    : '\n\nA etapa de gravação não foi iniciada.'
+                            ) +
 
-                            'Uma falha de comunicação pode impedir ' +
-                            'a confirmação do resultado. ' +
-
-                            'Valide o backup novamente antes ' +
-                            'de tentar outra recuperação.'
+                            '\n\nConfira o treino ativo atual ' +
+                            'e valide o backup antes de tentar novamente.'
                         );
 
                     } finally {
@@ -4415,6 +4424,8 @@ window.addEventListener(
                     }
 
                     iniciarRestauracaoBackupSupabase();
+
+                    let restauracaoIniciada = false;
 
                     try {
                         validarEstruturaBackupSupabase(backup);
@@ -4633,6 +4644,8 @@ window.addEventListener(
                             treino_original:
                                 treinoOriginal.dados
                         };
+
+                        restauracaoIniciada = true;
 
                         const resultado =
                             await executarRestauracaoRpcSupabase(
