@@ -1391,7 +1391,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             const checked = registro.checked;
             const treino = registro.treino;
 
-            validarConteudoCheckinSupabase(checked, treino);
+            try {
+                validarConteudoCheckinSupabase(
+                    checked,
+                    treino
+                );
+            } catch (erro) {
+                throw new Error(
+                    `Check-in ${data}: ${erro.message} ` +
+                    `(tipo de checked: ${typeof checked}; ` +
+                    `tipo de treino: ${typeof treino}).`
+                );
+            }
 
             if (!checked && !treino.trim()) {
                 continue;
