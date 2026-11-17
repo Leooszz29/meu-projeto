@@ -4106,10 +4106,24 @@ window.addEventListener(
                         );
 
                         alert(
-                            'Não foi possível concluir a restauração.\n' +
-                            erro.message +
-                            '\n\nConfira os dados atuais antes ' +
-                            'de tentar novamente.'
+                            'Não foi possível confirmar ' +
+                            'a restauração dos treinos.\n\n' +
+
+                            (
+                                erro?.message ||
+                                'Erro desconhecido.'
+                            ) +
+
+                            (
+                                restauracaoIniciada
+                                    ? '\n\nA gravação já foi iniciada. ' +
+                                      'Uma falha de comunicação pode ' +
+                                      'impedir a confirmação do resultado.'
+                                    : '\n\nA etapa de gravação não foi iniciada.'
+                            ) +
+
+                            '\n\nValide o backup novamente antes ' +
+                            'de tentar outra recuperação.'
                         );
 
                     } finally {
