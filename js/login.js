@@ -432,8 +432,8 @@ async function handleLogin(e) {
         return;
     }
 
-    if (password.length < 6) {
-        showError('Senha deve ter no mínimo 6 caracteres.');
+    if (password.length < 8) {
+        showError('Senha deve ter no mínimo 8 caracteres.');
         return;
     }
 
