@@ -4140,6 +4140,8 @@ window.addEventListener(
 
                     let ignorados = 0;
 
+                    let restauracaoIniciada = false;
+
                     try {
 
                         validarEstruturaBackupSupabase(backup);
@@ -4383,7 +4385,7 @@ window.addEventListener(
 
                         alert(
                             'Não foi possível confirmar ' +
-                            'a restauração do treino ativo.\n\n' +
+                            'a restauração do histórico.\n\n' +
 
                             (
                                 erro?.message ||
@@ -4398,8 +4400,8 @@ window.addEventListener(
                                     : '\n\nA etapa de gravação não foi iniciada.'
                             ) +
 
-                            '\n\nConfira o treino ativo atual ' +
-                            'e valide o backup antes de tentar novamente.'
+                            '\n\nValide o backup novamente antes ' +
+                            'de tentar outra recuperação.'
                         );
 
                     } finally {
@@ -4684,10 +4686,24 @@ window.addEventListener(
                         );
 
                         alert(
-                            'Não foi possível recuperar o treino ativo.\n' +
-                            erro.message +
-                            '\n\nConfira os dados existentes ' +
-                            'antes de tentar novamente.'
+                            'Não foi possível confirmar ' +
+                            'a restauração do treino ativo.\n\n' +
+
+                            (
+                                erro?.message ||
+                                'Erro desconhecido.'
+                            ) +
+
+                            (
+                                restauracaoIniciada
+                                    ? '\n\nA gravação já foi iniciada. ' +
+                                      'Uma falha de comunicação pode ' +
+                                      'impedir a confirmação do resultado.'
+                                    : '\n\nA etapa de gravação não foi iniciada.'
+                            ) +
+
+                            '\n\nConfira o treino ativo atual ' +
+                            'e valide o backup antes de tentar novamente.'
                         );
 
                     } finally {
@@ -4738,13 +4754,13 @@ window.addEventListener(
 
                 iniciarRestauracaoBackupSupabase();
 
-                let recuperados = 0;
+                    let recuperados = 0;
 
-                let ignorados = 0;
+                    let ignorados = 0;
 
-                let restauracaoIniciada = false;
+                    let restauracaoIniciada = false;
 
-                try {
+                    try {
                     validarEstruturaBackupSupabase(
                         backup
                     );
