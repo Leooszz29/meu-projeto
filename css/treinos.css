@@ -411,15 +411,6 @@ h1{
         border-radius: 18px;
     }
 
-    .empty-state-icon {
-        width: 96px;
-        height: 96px;
-
-        margin-bottom: 18px;
-
-        border-radius: 21px;
-    }
-
     .empty-state strong {
         font-size: 17px;
     }
