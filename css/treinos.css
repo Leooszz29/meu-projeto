@@ -291,118 +291,6 @@ h1{
     opacity: 0.7;
 }
 
-/* ==========================
-   CARD VAZIO FITZONE
-========================== */
-
-.empty-state-icon{
-    width:170px;
-    height:170px;
-
-    margin:0 auto 26px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:30px;
-
-    position:relative;
-
-    background:
-        radial-gradient(circle,
-        rgba(var(--accent-rgb),0.12) 0%,
-        rgba(var(--accent-rgb),0.05) 60%,
-        transparent 100%);
-
-    border:1px solid rgba(var(--accent-rgb),0.35);
-
-    box-shadow:
-        0 0 35px rgba(var(--accent-rgb),0.20),
-        inset 0 0 25px rgba(var(--accent-rgb),0.08);
-}
-
-/* brilho atrás do atleta */
-
-.empty-state-icon::before{
-    content:"";
-
-    position:absolute;
-    inset:18px;
-
-    border-radius:22px;
-
-    background:
-        radial-gradient(circle,
-        rgba(var(--accent-rgb),0.25),
-        transparent 75%);
-
-    filter:blur(8px);
-}
-
-/* área da imagem */
-
-.empty-athlete{
-    width:140px;
-    height:140px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    position:relative;
-    z-index:2;
-}
-
-/* imagem */
-
-.athlete-illustration{
-    display:none;
-
-    width:140px;
-    height:140px;
-
-    object-fit:contain;
-    object-position:center;
-
-    filter:
-        drop-shadow(0 0 12px rgba(var(--accent-rgb),0.20))
-        drop-shadow(0 8px 20px rgba(0,0,0,0.45));
-
-    animation:floatAthlete 3.5s ease-in-out infinite;
-}
-
-/* tema masculino */
-
-body.theme-masculino .athlete-male{
-    display:block;
-}
-
-/* tema feminino */
-
-body.theme-feminino .athlete-female{
-    display:block;
-}
-
-/* caso não exista tema */
-
-body:not(.theme-feminino):not(.theme-masculino)
-.athlete-male{
-    display:block;
-}
-
-/* flutuação */
-
-@keyframes floatAthlete{
-    0%,100%{
-        transform:translateY(0px);
-    }
-
-    50%{
-        transform:translateY(-6px);
-    }
-}
-
 /* TÍTULO */
 
 .empty-state strong{
@@ -531,11 +419,6 @@ body:not(.theme-feminino):not(.theme-masculino)
 
         border-radius: 21px;
     }
-
-.athlete-illustration {
-    width: 80px;
-    height: 80px;
-}
 
     .empty-state strong {
         font-size: 17px;
