@@ -2,7 +2,7 @@
    FITZONE - SERVICE WORKER
 ========================================= */
 
-const CACHE_NAME = 'fitzone-v36';
+const CACHE_NAME = 'fitzone-v37';
 
 const IMAGE_CACHE_NAME = 'fitzone-images-v1';
 
@@ -17,6 +17,8 @@ const APP_SHELL = [
     './calendario.html',
     './desempenho.html',
     './biblioteca.html',
+    './termos.html',
+    './privacidade.html',
     './manifest.json',
 
     './css/style.css',
@@ -29,6 +31,7 @@ const APP_SHELL = [
     './css/calendario.css?v=20261103-loading-v17',
     './css/desempenho.css',
     './css/biblioteca.css',
+    './css/documentos.css',
 
     './js/script.js',
     './js/supabase-config.js',
