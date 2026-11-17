@@ -235,10 +235,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     const data = historicoCompleto;
 
-                    if (error) {
-                        throw error;
-                    }
-
                     historicoTreinosSupabase =
                         Array.isArray(data) ? data : [];
 
