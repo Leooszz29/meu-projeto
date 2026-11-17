@@ -132,23 +132,44 @@
            HISTORICO DO USUARIO AUTENTICADO
         ========================================= */
 
-        const { data, error } = await cliente
-            .from('fitzone_historico_treinos')
-            .select(
-                'id, data_local, dados, concluido_em'
-            )
-            .eq('usuario_id', identidade.id)
-            .order('concluido_em', {
-                ascending: false
-            });
+        const tamanhoPagina = 1000;
+        let inicioPagina = 0;
+        const historico = [];
 
-        if (error) {
-            throw error;
+        while (true) {
+            const { data, error } = await cliente
+                .from('fitzone_historico_treinos')
+                .select(
+                    'id, data_local, dados, concluido_em'
+                )
+                .eq('usuario_id', identidade.id)
+                .order('concluido_em', {
+                    ascending: false
+                })
+                .order('id', {
+                    ascending: true
+                })
+                .range(
+                    inicioPagina,
+                    inicioPagina + tamanhoPagina - 1
+                );
+
+            if (error) {
+                throw error;
+            }
+
+            const pagina = Array.isArray(data)
+                ? data
+                : [];
+
+            historico.push(...pagina);
+
+            if (pagina.length < tamanhoPagina) {
+                break;
+            }
+
+            inicioPagina += tamanhoPagina;
         }
-
-        const historico = Array.isArray(data)
-            ? data
-            : [];
 
         /* =========================================
            CONTADORES PRINCIPAIS
@@ -1301,7 +1322,32 @@
                 `${percentual}%`
             );
 
-            const exercicios = dados.exercicios;
+            const exercicios = dados.exercicios.filter(
+                exercicio => {
+                    if (
+                        !exercicio ||
+                        typeof exercicio !== 'object' ||
+                        Array.isArray(exercicio)
+                    ) {
+                        return false;
+                    }
+
+                    const total =
+                        Number(exercicio.seriesTotal);
+
+                    const concluidas =
+                        Number(exercicio.seriesConcluidas);
+
+                    return (
+                        Number.isFinite(total) &&
+                        Number.isInteger(total) &&
+                        total >= 0 &&
+                        Number.isFinite(concluidas) &&
+                        Number.isInteger(concluidas) &&
+                        concluidas >= 0
+                    );
+                }
+            );
 
             const totalInformado =
                 Number(dados.totalExercicios);
