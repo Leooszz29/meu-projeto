@@ -1389,7 +1389,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const checked = registro.checked;
-            const treino = registro.treino;
+            const treino = typeof registro.treino === 'undefined'
+                ? ''
+                : registro.treino;
 
             try {
                 validarConteudoCheckinSupabase(
